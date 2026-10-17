@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { waitForVisualStoryFinished } from "@lapismd/storybook-addon-visual-delta/playwright";
 
 const storyUrl = (storyId: string) =>
   `/iframe.html?id=${storyId}&viewMode=story`;
@@ -7,6 +8,7 @@ const frameworkReadyTimeout = 45_000;
 async function openStory(page: Page, storyId: string): Promise<void> {
   await page.goto(storyUrl(storyId));
   await page.waitForLoadState("domcontentloaded");
+  await waitForVisualStoryFinished(page, storyId, frameworkReadyTimeout);
   await page.evaluate(async () => {
     await document.fonts.ready;
   });
@@ -138,6 +140,10 @@ test.describe("Workspace real pointer behavior", () => {
     expect(targetBounds).not.toBeNull();
     if (!sourceBounds || !targetBounds) return;
 
+    // A collapsed label must not collapse the native draggable button too.
+    expect(sourceBounds.width).toBeGreaterThan(0);
+    await expect(source).toHaveAttribute("draggable", "true");
+
     await dragWithPause(
       page,
       {
@@ -179,6 +185,47 @@ test.describe("Workspace real pointer behavior", () => {
     await expect(
       targetPane.getByRole("button", { name: "Plan", exact: true }),
     ).toBeVisible();
+  });
+
+  test("compact title hit targets stay fixed when hover reveals close controls", async ({
+    page,
+  }) => {
+    await openStory(
+      page,
+      "workspace-demo-reusable-framework--pointer-drag-surface",
+    );
+    await expect(page.locator("[data-app-shell-ready='true']")).toBeVisible();
+    const source = page.getByRole("button", { name: "Plan", exact: true });
+    const before = await source.boundingBox();
+    expect(before).not.toBeNull();
+    if (!before) return;
+    expect(before.width).toBeGreaterThan(0);
+    expect(
+      await source
+        .locator(".ui-workspace-tab__title")
+        .evaluate((node) => node.getBoundingClientRect().width),
+    ).toBe(0);
+    const point = {
+      x: before.x + before.width / 2,
+      y: before.y + before.height / 2,
+    };
+    await page.mouse.move(point.x, point.y);
+    await expect.poll(() => source.boundingBox()).toEqual(before);
+    expect(
+      await source.evaluate(
+        (node, point) =>
+          node.contains(node.ownerDocument.elementFromPoint(point.x, point.y)),
+        point,
+      ),
+    ).toBe(true);
+    await page.mouse.click(point.x, point.y);
+    await expect(source).toHaveAttribute("aria-pressed", "true");
+    await source.click({ button: "right" });
+    await expect(page.getByRole("menu")).toBeVisible();
+    await page.keyboard.press("Escape");
+    await source.hover();
+    await page.getByRole("button", { name: "Close Plan", exact: true }).click();
+    await expect(source).toHaveCount(0);
   });
 
   test("empty sidebars accept a centre drop and create a sidebar tab", async ({

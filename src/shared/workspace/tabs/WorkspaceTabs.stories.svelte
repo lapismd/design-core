@@ -543,6 +543,18 @@
         expect(getComputedStyle(inactiveIcon!).display).not.toBe("none");
         expect(inactiveIcon!.getBoundingClientRect().width).toBeGreaterThan(0);
       });
+
+      // Keep the label collapsed while leaving room for the actual tab hit
+      // target. Native drag, selection and context menus use this button.
+      tabsRoot.style.setProperty("--ui-workspace-tab-width", "5rem");
+      await waitFor(() => {
+        expect(title.getBoundingClientRect().width).toBe(0);
+        for (const trigger of canvasElement.querySelectorAll<HTMLElement>(
+          "[data-workspace-tab-title-trigger]",
+        )) {
+          expect(trigger.getBoundingClientRect().width).toBeGreaterThan(0);
+        }
+      });
     } finally {
       frame.style.width = previousWidth;
       tabsRoot.style.removeProperty("--ui-workspace-tab-width");

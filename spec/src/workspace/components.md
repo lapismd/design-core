@@ -196,6 +196,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - Top-tab triggers MUST compute `cursor: pointer` at rest and while active.
 - Stacked-tab triggers MUST compute `cursor: pointer` at rest and while active.
 - Cursor presentation MUST NOT remove or replace either drag input path.
+- Compact top tabs MUST hide their label independently of the selectable, draggable title button, retaining its hit area beneath separate menu/close controls; hover MUST NOT move that title hit target under the pointer or turn a tab press into a close action.
 
 ## DC-WS-056 — Settings dialog reveal
 

@@ -139,3 +139,8 @@ Logs: `/tmp/dc-community-land-release.log`,
 The clean default workspace advances onto this combined stack. Other workspaces,
 the published `main` bookmark, package versions and consumer repositories are
 preserved. This local integration includes no push or publication.
+
+Follow-up: the seven deferred Workspace failures were subsequently repaired in
+the main workspace. Full repository and packed-consumer checks pass; see
+[Workspace pointer repairs](workspace-pointer-repairs.md) for the before/after
+counts and regression evidence.

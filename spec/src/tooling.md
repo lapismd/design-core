@@ -108,6 +108,9 @@ immediately thrown error.
 The development catalog readiness probe MUST prepare representative client
 entries and await pending import requests before browser acceptance begins.
 Compilation failures return an unavailable response and allow a later retry.
+Workspace pointer acceptance MUST await the requested story's render and play
+completion before settling fonts or measuring drag targets, using the existing
+bounded framework-readiness window rather than a fixed startup delay.
 Development and Vitest hosts share explicit runtime and parser dependencies;
 catalog icon imports are discovered deterministically for prebundling.
 Emoji Mart is prebundled too, preventing a cold first-open dependency discovery
