@@ -1,8 +1,16 @@
 .ui-transcript-comment-area {
   min-width: 0;
   white-space: normal;
-  font-family: var(--font-sans, system-ui);
-  color: var(--foreground);
+  --_transcript-comment-size: var(
+    --ui-transcript-comment-font-size,
+    var(--conversation-prose-size, var(--ui-transcript-font-size, 0.875rem))
+  );
+  font-family: var(--_transcript-font, var(--font-sans, system-ui));
+  font-size: var(--_transcript-comment-size);
+  color: var(--_transcript-foreground, var(--foreground));
+  --ui-comment-composer-font-size: var(--_transcript-comment-size);
+  --ui-composer-status-radius: var(--radius);
+  isolation: isolate;
 }
 .ui-transcript-comment-context {
   padding: 0.5rem;
@@ -12,8 +20,8 @@
 }
 .ui-transcript-comment-quote {
   margin: 0 0 0.5rem;
-  font-size: var(--mira-markdown-font-size, var(--mira-font-size, 1rem));
-  line-height: var(--mira-markdown-line-height, 1.5);
+  font-size: inherit;
+  line-height: var(--ui-transcript-markdown-line-height, 1.55);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   max-height: 8rem;
@@ -26,6 +34,27 @@
 }
 .ui-transcript-comment-quote > code {
   font: inherit;
+}
+.ui-transcript-comment-quote > [data-ui-component="chat-markdown"] {
+  white-space: normal;
+}
+.ui-transcript-comment-surface {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  border-radius: var(--radius);
+}
+.ui-transcript-comment-context:has(
+    > [data-ui-component="composer-status-banner"]
+  ) {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.ui-transcript-comment-context > .ui-transcript-comment-surface {
+  padding: 0.5rem;
+  background: var(--muted);
+  border: 1px solid var(--border);
 }
 .ui-transcript-comment-list {
   display: grid;
@@ -41,7 +70,7 @@
   display: flex;
   gap: 0.5rem;
   align-items: flex-start;
-  font-size: 1rem;
+  font-size: inherit;
   line-height: 1.5;
 }
 .ui-transcript-comment-content {

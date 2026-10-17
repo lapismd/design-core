@@ -463,7 +463,7 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-validation">
@@ -484,6 +484,25 @@
           status={{
             type: "warning",
             message: "Context window is 90% full.",
+          }}
+          onSubmit={() => {}}
+        />
+      </section>
+      <section>
+        <p>Information (top)</p>
+        <Composer
+          statusPosition="top"
+          status={{ type: "info", message: "Reviewing captured context." }}
+          onSubmit={() => {}}
+        />
+      </section>
+      <section>
+        <p>Success (bottom)</p>
+        <Composer
+          statusPosition="bottom"
+          status={{
+            type: "success",
+            message: "The host acknowledged this message.",
           }}
           onSubmit={() => {}}
         />

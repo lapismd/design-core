@@ -201,6 +201,78 @@ async function checkPrimitiveStates(page) {
   );
 }
 
+async function checkTranscriptAdditions(page) {
+  const scope = page.locator('[data-review="archive-followups"]');
+  // checkStyles repeats the interaction scenario for both themes.
+  await scope
+    .getByRole("button", { name: "Reset archive followups", exact: true })
+    .click();
+  const queue = scope.locator('[data-ui-component="message-queue"]');
+  assert.equal(await queue.getByRole("article").count(), 1);
+  await queue
+    .getByRole("button", {
+      name: "Cancel queued message for Assistant",
+      exact: true,
+    })
+    .click();
+  assert.equal(await queue.getByRole("article").count(), 1);
+  assert.equal(
+    await queue
+      .getByRole("button", {
+        name: "Cancel queued message for Assistant",
+        exact: true,
+      })
+      .isDisabled(),
+    true,
+  );
+  await scope
+    .getByRole("button", { name: "Queue message", exact: true })
+    .click();
+  assert.equal(
+    await scope.getByTestId("archive-queue-result").textContent(),
+    "Queued",
+  );
+  await scope.getByRole("button", { name: "Stop agent", exact: true }).click();
+  assert.equal(
+    await scope.getByTestId("archive-queue-result").textContent(),
+    "Stop requested",
+  );
+  await scope
+    .getByRole("button", { name: "<acp_context>", exact: true })
+    .click();
+  assert.equal(
+    await scope.locator('[data-prompt-element="<first />"]').isVisible(),
+    true,
+  );
+  const sentContext = scope.locator('[data-ui-component="sent-context"]');
+  await sentContext
+    .getByRole("button", { name: "Context delivery unknown", exact: true })
+    .click();
+  await sentContext
+    .getByRole("button", { name: "<sent_application_context>", exact: true })
+    .click();
+  assert.equal(
+    await sentContext.getByText("Captured", { exact: false }).isVisible(),
+    true,
+  );
+  await sentContext
+    .getByRole("button", { name: "Show raw context", exact: true })
+    .click();
+  assert.match(
+    await sentContext
+      .getByRole("region", { name: "Raw context", exact: true })
+      .textContent(),
+    /unknown/,
+  );
+  await sentContext
+    .getByRole("button", { name: "Show rendered context", exact: true })
+    .click();
+  assert.equal(
+    await sentContext.getByText("Captured", { exact: false }).isVisible(),
+    true,
+  );
+}
+
 async function checkTranscript(page) {
   const capture = page.getByRole("textbox", {
     name: "Archive capture",
@@ -252,6 +324,7 @@ async function checkTranscript(page) {
       .isVisible(),
     true,
   );
+  await checkTranscriptAdditions(page);
 }
 
 async function checkStyles(page) {
@@ -371,7 +444,7 @@ import { ResponsiveTabs } from "@lapismd/design-core/shadcn/responsive-tabs";
 import { TagList, type TagListItem, type TagListProps } from "@lapismd/design-core/shadcn/tag-list";
 import { Avatar } from "@lapismd/design-core/shadcn/avatar";
 import { AvatarPicker } from "@lapismd/design-core/forms";
-import { MarkdownContent, Message as SharedMessage, Transcript, TranscriptController, HistoryEdge, CommentQueue, type TranscriptItem } from "@lapismd/design-core/chat";
+import { MarkdownContent, Message as SharedMessage, Transcript, TranscriptFooter, MessageQueue, PromptContext, SentContext, TranscriptController, HistoryEdge, CommentQueue, type TranscriptItem } from "@lapismd/design-core/chat";
 import { Message as LegacyMessage } from "@lapismd/design-core/ai/chat";
 import { AppShell } from "@lapismd/design-core/shell";
 if (SharedMessage !== LegacyMessage) throw new Error("Chat compatibility export differs");
@@ -381,6 +454,10 @@ const transcriptBlock = { id: "archive/source", revision: "v1", kind: "markdown"
 const transcriptItems: TranscriptItem[] = [{ id: "archive/message", kind: "message", role: "assistant", label: "Archive message", author: {id: "agent", name: "Assistant"}, blocks: [transcriptBlock] }];
 const transcriptController = new TranscriptController(() => ({ items: transcriptItems, canComment: true, onSend: (snapshot) => { transcriptResult = "acknowledged"; return {publication: "published", batchId: snapshot.id}; } }));
 const emptyController = new TranscriptController(() => ({items: []}));
+let archiveHasContent = $state(true);
+let archiveFollowupsRevision = $state(0);
+let archiveQueueResult = $state("");
+let archiveQueue = $state([{id:"waiting",submission:{id:"waiting",text:"Retained queued message",comments:[]},recipients:[{id:"assistant",label:"Assistant",state:"queued" as const,cancelling:false}]}]);
 let avatarValue = $state("");
 let navigationValue = $state("overview");
 import { EmojiPicker as LegacyEmojiPicker } from "@lapismd/design-core/ai/experimental";
@@ -430,6 +507,16 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <output data-testid="archive-comment-result">{transcriptResult}</output>
 <HistoryEdge state="loading" /><CommentQueue state={emptyController} />
 {#if transcriptShown}<div data-review="archive-transcript" style="height:320px"><Transcript items={transcriptItems} commentState={transcriptController}>{#snippet composer()}<span>Host composer</span>{/snippet}</Transcript></div>{/if}
+<section data-review="archive-followups">
+<Button onclick={() => { archiveHasContent = true; archiveQueueResult = ""; archiveQueue = archiveQueue.map(entry => ({...entry,recipients:entry.recipients.map(recipient => ({...recipient,cancelling:false}))})); archiveFollowupsRevision++; }}>Reset archive followups</Button>
+{#key archiveFollowupsRevision}
+<MessageQueue entries={archiveQueue} onCancel={() => {archiveQueue = archiveQueue.map(entry => ({...entry,recipients:entry.recipients.map(recipient => ({...recipient,cancelling:true}))}));}} />
+<TranscriptFooter busy canSend hasContent={archiveHasContent} onSend={() => {archiveHasContent=false;archiveQueueResult="Queued";}} onStop={() => {archiveQueueResult="Stop requested";}} />
+<output data-testid="archive-queue-result">{archiveQueueResult}</output>
+<PromptContext content={'<acp_context><first /><second /></acp_context>'} />
+<SentContext delivery="unknown" content={'<sent_application_context>Captured **Markdown**.</sent_application_context>'} rawContent={JSON.stringify({delivery:"unknown"})} />
+{/key}
+</section>
 </main>`,
     );
     copyFileSync(

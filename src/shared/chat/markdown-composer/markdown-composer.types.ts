@@ -51,6 +51,8 @@ export type MarkdownComposerProps = Omit<
   onStop?: () => void;
   status?: ComposerStatus;
   submitLabel?: string;
+  /** Omit the inline send control when a fixed TranscriptFooter owns sending. */
+  showSendButton?: boolean;
   /** Defaults to Enter in framed mode and modifier+Enter in document mode. */
   submitOnEnter?: boolean;
   formattingOpen?: boolean;

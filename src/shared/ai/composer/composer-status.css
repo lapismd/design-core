@@ -1,0 +1,61 @@
+[data-ui-component="composer-status-banner"] {
+  --_status-radius: var(
+    --ui-composer-status-radius,
+    var(--ui-ai-chat-composer-radius, var(--radius))
+  );
+  --_status-padding: var(
+    --ui-composer-status-padding,
+    var(--ui-ai-chat-composer-padding, 0.5rem)
+  );
+  position: relative;
+  z-index: 0;
+  display: flex;
+  min-height: 1.75rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 1rem;
+  font-size: calc(0.75rem * var(--ui-ai-chat-type-scale, 1));
+  line-height: calc(1rem * var(--ui-ai-chat-type-scale, 1));
+  color: var(--ui-composer-status-foreground, var(--foreground));
+  background: var(
+    --ui-composer-status-background,
+    color-mix(in oklab, var(--_status-tone) 14%, var(--background))
+  );
+}
+[data-ui-component="composer-status-banner"][data-position="top"] {
+  margin-bottom: calc(-1 * var(--_status-radius));
+  border-radius: var(--_status-radius) var(--_status-radius) 0 0;
+  padding-block: var(--_status-padding)
+    calc(var(--_status-padding) + var(--_status-radius));
+}
+[data-ui-component="composer-status-banner"][data-position="bottom"] {
+  margin-top: calc(-1 * var(--_status-radius));
+  border-radius: 0 0 var(--_status-radius) var(--_status-radius);
+  padding-block: calc(var(--_status-padding) + var(--_status-radius))
+    var(--_status-padding);
+}
+[data-ui-component="composer-status-banner"][data-status="warning"] {
+  --_status-tone: var(--chart-4);
+}
+[data-ui-component="composer-status-banner"][data-status="error"] {
+  --_status-tone: var(--destructive);
+  background: var(
+    --ui-composer-status-background,
+    color-mix(in oklab, var(--destructive) 12%, var(--background))
+  );
+}
+[data-ui-component="composer-status-banner"][data-status="info"] {
+  --_status-tone: var(--primary);
+}
+[data-ui-component="composer-status-banner"][data-status="success"] {
+  --_status-tone: var(--success, var(--chart-2));
+}
+[data-ui-component="composer-status-banner"] svg {
+  flex: none;
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--_status-tone);
+}
+[data-ui-component="composer-status-banner"][data-status="warning"] svg {
+  color: color-mix(in oklab, var(--chart-4) 62%, var(--foreground));
+}

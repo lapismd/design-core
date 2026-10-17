@@ -7,16 +7,19 @@ including ToolCallDetail, RichToolCallDetail and their normalized presentation t
 
 ## Public surface coverage
 
-| Surface             | Public boundary             | Requirement |
-| ------------------- | --------------------------- | ----------- |
-| Markdown Content    | `@lapismd/design-core/chat` | DC-CHAT-001 |
-| Markdown Composer   | `@lapismd/design-core/chat` | DC-CHAT-002 |
-| Message Actions     | `@lapismd/design-core/chat` | DC-CHAT-003 |
-| Reactions           | `@lapismd/design-core/chat` | DC-CHAT-004 |
-| Comment Composer    | `@lapismd/design-core/chat` | DC-CHAT-005 |
-| Transcript          | `@lapismd/design-core/chat` | DC-CHAT-006 |
-| Transcript Comments | `@lapismd/design-core/chat` | DC-CHAT-007 |
-| Comment Queue       | `@lapismd/design-core/chat` | DC-CHAT-008 |
+| Surface                             | Public boundary             | Requirement |
+| ----------------------------------- | --------------------------- | ----------- |
+| Markdown Content                    | `@lapismd/design-core/chat` | DC-CHAT-001 |
+| Markdown Composer                   | `@lapismd/design-core/chat` | DC-CHAT-002 |
+| Message Actions                     | `@lapismd/design-core/chat` | DC-CHAT-003 |
+| Reactions                           | `@lapismd/design-core/chat` | DC-CHAT-004 |
+| Comment Composer                    | `@lapismd/design-core/chat` | DC-CHAT-005 |
+| Transcript                          | `@lapismd/design-core/chat` | DC-CHAT-006 |
+| Transcript Comments                 | `@lapismd/design-core/chat` | DC-CHAT-007 |
+| Comment Queue                       | `@lapismd/design-core/chat` | DC-CHAT-008 |
+| Transcript Footer and Message Queue | `@lapismd/design-core/chat` | DC-CHAT-009 |
+| Prompt Context                      | `@lapismd/design-core/chat` | DC-CHAT-010 |
+| Sent Context                        | `@lapismd/design-core/chat` | DC-CHAT-011 |
 
 ## DC-CHAT-001 — Markdown Content
 
@@ -25,7 +28,7 @@ including ToolCallDetail, RichToolCallDetail and their normalized presentation t
 ### Acceptance details
 
 - The Chat entry point MUST re-export stable chat primitives without breaking existing AI imports.
-- Embedded transcript comments MUST inherit jj-store typography with no additional Markdown inset, compact paragraph spacing and no first/last block margins; standalone MarkdownContent retains its configurable small outer padding.
+- Transcript reply prose, quoted context and comments MUST share the host prose font and foreground across Mira reader boundaries, with comments defaulting to the transcript prose size (0.875rem) rather than a separate 1rem; retain no additional Markdown inset, compact quoted lists and no first/last block margins while standalone MarkdownContent keeps its configurable small outer padding.
 - Markdown MUST retain transparent parent-composed backgrounds, left-aligned compact/full-width presentation with small token-driven padding, streaming updates, public preview hooks and late stylesheet loading without copying Mira internals.
 - Published Mira 0.0.5 MUST be qualified before the new preview is added; domain-specific references and authorization remain consumer extensions.
 
@@ -80,8 +83,9 @@ including ToolCallDetail, RichToolCallDetail and their normalized presentation t
 ### Acceptance details
 
 - Stable item and block identities MUST retain selection, folds and scroll anchors across append, prepend and source updates, and overlapping inspector readers MUST restore still-mounted source registrations under either teardown order; host extensions own application syntax and authorized navigation.
-- Markdown, code, captured line numbers, patches, grouped tools, raw captures, metadata and custom blocks MUST use native CSS with family-owned tokens and keyboard-accessible controls.
+- Markdown, code, captured line numbers, patches, compact grouped tools with host-supplied icons, raw captures, metadata and custom blocks MUST use native CSS with family-owned tokens and keyboard-accessible controls, with optional author details/actions in shared accessible popovers; nested file disclosures MUST lead with file/patch icons and reasoning MUST have a distinct lightbulb icon unless overridden by the host.
 - HistoryEdge MUST expose loading, empty, load and retry presentation without discarding retained content or executing transport.
+- Controlled document/classic switching MUST reuse the same items and controller, retain captured readers, comments, drafts and disclosures, defer through IME composition and supply the applied view to the composer snippet, as demonstrated by the full-conversation example.
 
 ## DC-CHAT-007 — Anchored transcript comments
 
@@ -89,9 +93,10 @@ including ToolCallDetail, RichToolCallDetail and their normalized presentation t
 
 ### Acceptance details
 
-- Selection, keyboard, typing, paste and IME MUST create equivalent exact anchors; multiple comments and whole-section anchors MUST retain drafts through folding and raw/rich transitions.
+- Selection, keyboard, typing, paste and IME MUST create equivalent exact anchors; multiple comments and whole-section anchors MUST retain drafts through folding and raw/rich transitions, and collapsed files/tools/sections MUST show all nonempty current discussion entries, including replies, in their original order without duplicating historical versions.
 - Changed or missing sources MUST retain quotes and unavailable explanations, and source navigation MUST reveal folded content before restoring selection and focus.
 - Comment editors MUST compose CommentComposer, retain host typography and block edits/submission while disabled or sending.
+- Unavailable-source status MUST reuse Composer's curved status banner with host-selected semantic colour and top/bottom placement, while retaining the exact quote and explanation.
 
 ## DC-CHAT-008 — Comment queue and reply navigation
 
@@ -102,3 +107,35 @@ including ToolCallDetail, RichToolCallDetail and their normalized presentation t
 - Mixed and comments-only submissions MUST preserve exact snapshots and newer edits; only explicit acknowledgement MAY mark submitted entries delivered or clear the corresponding message.
 - Rejection and unknown outcomes MUST retain drafts and request identity; an absent outcome MUST never count as delivery.
 - Source, queue and reply navigation MUST expose named keyboard/touch targets, reveal disclosures and retain discussion state and opener focus.
+
+## DC-CHAT-009 — Transcript footer, queued messages and reactions
+
+**Requirement.** Transcript MUST offer host-neutral queued-message and fixed-footer presentation matching jj-store, alongside controlled message reactions.
+
+### Acceptance details
+
+- TranscriptFooter MUST select Send, Queue or Stop from host-supplied busy/content/pending state, preserve accessible names and keyboard activation, and accept custom actions, workspace content and controls without executing agent operations.
+- MessageQueue MUST retain exact immutable submission text/comments, recipients, cancellation/error/unknown states and expansion; callbacks request host actions and MUST NOT remove entries or infer delivery.
+- Transcript examples MUST show busy-agent message queues, comments-only submission, retained/rejected drafts, extensible footer controls and reaction addition/toggling including custom emoji and disabled controls.
+- Footer and reactions MUST work with externally owned TranscriptController instances; MarkdownComposer MUST allow its send control to be omitted when the fixed footer owns sending, without losing editor identity or formatting controls.
+
+## DC-CHAT-010 — XML prompt context
+
+**Requirement.** PromptContext and promptElementsExtension MUST adapt jj-store's inert XML-style context presentation through Mira's public preview extension API.
+
+### Acceptance details
+
+- Arbitrary tag names and attributes MUST remain escaped display text, with nested safe Markdown, compact single-line sections and accessible disclosures; source tags MUST NOT execute HTML, scripts or host commands.
+- Inline/fenced code, malformed or excessively nested elements MUST retain their original text without guessed hidden boundaries, while UTF-16 offsets, Unicode and document references remain intact.
+- The extension MUST compose with host-owned Markdown hooks in standalone previews and Transcript context blocks, retaining the exact captured text and anchors independently of rendering; the catalog MUST expose a direct recorded XML/Markdown example and keep that context discoverable in the full transcript.
+
+## DC-CHAT-011 — Sent-context disclosure
+
+**Requirement.** SentContext MUST reproduce jj-store's compact application-context disclosure before authored prompt content, with explicit host-owned delivery and one rendered/raw panel.
+
+### Acceptance details
+
+- Prepared, queued, sent, failed and unknown delivery MUST retain distinct labels, with a trailing expansion chevron, subtle resting surface and neutral hover; absent or blank captured content MUST render no disclosure regardless of raw data.
+- Expansion, raw selection and nested XML reader identity MUST survive delivery acknowledgements, raw/rendered switching and collapse/reopen without rewriting captured content; keyboard controls MUST retain visible focus and accessible names.
+- The bounded panel MUST use shared ScrollArea, safe PromptContext Markdown/XML and an icon-only raw toggle; hosts supply exact raw text and Markdown hooks without shared schema interpretation, transport or receipt inference.
+- TranscriptItem MAY provide this context separately from authored blocks; the disclosure MUST precede message content, and recorded examples MUST distinguish demo context from captured delivery evidence.

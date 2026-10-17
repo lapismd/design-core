@@ -147,7 +147,9 @@ Hello
       "markdown-composer",
       "markdown-content",
       "message-actions",
+      "prompt-context",
       "reactions",
+      "sent-context",
       "transcript",
     ]);
   });

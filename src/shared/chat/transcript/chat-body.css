@@ -87,6 +87,17 @@
 .ui-transcript-message-avatar {
   padding-block-start: 0.25rem;
 }
+.ui-transcript-message[data-role="user"] > .ui-transcript-message-avatar {
+  padding-block-start: 0;
+  transform: translateY(
+    calc(
+      (
+          var(--ui-transcript-font-size, 0.875rem) *
+            var(--ui-transcript-line-height, 1.65) - 1.5rem
+        ) / 2
+    )
+  );
+}
 .ui-transcript-message-content {
   min-width: 0;
 }
@@ -115,6 +126,11 @@
 }
 .ui-transcript-context-trigger:hover {
   background: transparent;
+}
+.ui-transcript-context-trigger > svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 .ui-transcript-context-trigger:focus-visible {
   outline: 2px solid var(--ring);

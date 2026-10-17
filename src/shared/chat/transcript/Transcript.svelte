@@ -1,8 +1,24 @@
 <script lang="ts">
+  import {
+    presentationContext,
+    type TranscriptPresentationContext,
+  } from "./presentation-context.js";
   import HistoryEdge from "../history-edge/HistoryEdge.svelte";
+  import SentContext from "../sent-context/SentContext.svelte";
   import { SystemMessage } from "../../ai/chat.js";
-  import { tick, untrack } from "svelte";
+  import { tick, untrack, setContext } from "svelte";
+  import {
+    reactionContext,
+    type TranscriptReactionContext,
+  } from "./reaction-context.js";
+  import {
+    authorContext,
+    type TranscriptAuthorContext,
+  } from "./author-context.js";
   import "./chat-body.css";
+  import LightbulbIcon from "@lucide/svelte/icons/lightbulb";
+  import BotIcon from "@lucide/svelte/icons/bot";
+  import FileTextIcon from "@lucide/svelte/icons/file-text";
   import * as Collapsible from "../../shadcn/collapsible/index.js";
   import { ScrollArea } from "../../shadcn/scroll-area/index.js";
   import ChatDisclosureIcon from "./ChatDisclosureIcon.svelte";
@@ -25,6 +41,7 @@
     onSend,
     reactions = {},
     reactionOptions,
+    authorPopover,
     onReact,
     composer,
     footer,
@@ -56,6 +73,47 @@
     reactionOptions,
   }));
   const comments = $derived(commentState ?? ownedComments);
+  const reactionSettings: TranscriptReactionContext = {
+    get onReact() {
+      return onReact ?? comments.props().onReact;
+    },
+    get reactionOptions() {
+      return reactionOptions ?? comments.props().reactionOptions;
+    },
+    get reactionEmojis() {
+      return hostOptions.reactionEmojis ?? comments.props().reactionEmojis;
+    },
+    get customEmojis() {
+      return hostOptions.customEmojis ?? comments.props().customEmojis;
+    },
+    get reactionsDisabled() {
+      return (
+        hostOptions.reactionsDisabled ?? comments.props().reactionsDisabled
+      );
+    },
+  };
+  setContext(reactionContext, reactionSettings);
+  setContext<TranscriptAuthorContext>(authorContext, {
+    get popover() {
+      return authorPopover;
+    },
+  });
+  setContext<TranscriptPresentationContext>(presentationContext, {
+    get markdown() {
+      return hostOptions.markdown ?? comments.props().markdown;
+    },
+    get unavailableStatus() {
+      return (
+        hostOptions.unavailableStatus ?? comments.props().unavailableStatus
+      );
+    },
+    get unavailableStatusPosition() {
+      return (
+        hostOptions.unavailableStatusPosition ??
+        comments.props().unavailableStatusPosition
+      );
+    },
+  });
   let root = $state<HTMLElement | null>(null);
   let previousSignature = "";
   let composing = $state(false);
@@ -134,7 +192,10 @@
   {#if reactions[item.id]?.length}<ReactionBar
       reactions={reactions[item.id] ?? []}
       label={`Reactions to ${item.label}`}
-      onToggle={(emoji, custom) => onReact?.(item.id, emoji, custom)}
+      disabled={reactionSettings.reactionsDisabled ?? false}
+      customEmojis={reactionSettings.customEmojis ?? []}
+      onToggle={(emoji, custom) =>
+        reactionSettings.onReact?.(item.id, emoji, custom)}
     />{/if}
 {/snippet}
 <div
@@ -183,6 +244,7 @@
               {#if item.kind === "message" && item.blocks.length}
                 <article
                   class="ui-transcript-message"
+                  data-role={item.role}
                   data-message-id={item.id}
                   aria-label={item.author
                     ? `Message from ${item.author.name}`
@@ -196,6 +258,11 @@
                       />{/if}
                   </div>
                   <div class="ui-transcript-message-content">
+                    {#if item.sentContext}<SentContext
+                        {...item.sentContext}
+                        markdown={hostOptions.markdown ??
+                          comments.props().markdown}
+                      />{/if}
                     <span class="sr-only">{item.author?.name ?? item.role}</span
                     ><ChatContent
                       blocks={item.blocks}
@@ -231,6 +298,13 @@
                   />
                 </div>
               {:else if item.kind !== "message"}
+                {@const Icon =
+                  item.icon ??
+                  (item.kind === "reasoning"
+                    ? LightbulbIcon
+                    : item.kind === "handoff"
+                      ? BotIcon
+                      : FileTextIcon)}
                 <div class="ui-transcript-document-inset">
                   <Collapsible.Root
                     open={comments.disclosures[item.id] ??
@@ -240,8 +314,8 @@
                       (comments.disclosures[item.id] = open)}
                   >
                     <Collapsible.Trigger class="ui-transcript-context-trigger"
-                      ><span>{item.label}</span><ChatDisclosureIcon
-                      /></Collapsible.Trigger
+                      ><Icon aria-hidden="true" /><span>{item.label}</span
+                      ><ChatDisclosureIcon /></Collapsible.Trigger
                     >
                     <Collapsible.Content
                       >{#if comments.disclosures[item.id] ?? item.defaultExpanded ?? false}<ChatContent

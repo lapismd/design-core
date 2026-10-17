@@ -10,6 +10,8 @@ Chat additionally registers MarkdownComposer (DC-CHAT-002), MessageActions
 CommentComposer (DC-CHAT-005) adds captured-source comment presentation there.
 Transcript/HistoryEdge (DC-CHAT-006), exact comments (DC-CHAT-007), and the
 comment queue/navigation (DC-CHAT-008) extend that same host-neutral boundary.
+Transcript footer/message queue/reactions (DC-CHAT-009) and safe XML prompt
+context (DC-CHAT-010) use the same canonical Chat chapter and verification map.
 
 Specification governance keeps requirements discoverable, mapped, validated, and changed before or with protected implementation, including same-change verification evidence for expanded public component families.
 

@@ -1,0 +1,41 @@
+import { Meta, Canvas, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./SentContext.stories.svelte";
+import { Basic } from "./SentContext.example-sources";
+
+<Meta of={Stories} />
+
+# Sent Context
+
+The compact context disclosure shown before an authored prompt at the start of an
+agent turn. Adapted from jj-store `3be80ad2104f` under Apache-2.0, LapisMD
+contributors. It starts collapsed, uses a trailing chevron, and switches one panel
+between rendered Markdown/XML and an exact host-supplied raw capture.
+
+<Source code={Basic} language="tsx" />
+<Canvas of={Stories.SentContextAbovePrompt} />
+<Canvas of={Stories.QueuedContextAcknowledgement} />
+<Canvas of={Stories.UnknownDelivery} />
+
+`delivery` is an explicit host receipt: `prepared`, `queued`, `sent`, `failed` or
+`unknown`. Its default is prepared. No schema interpretation or transport is
+performed. Empty `content` suppresses the disclosure even when raw data exists.
+Without `rawContent`, raw mode displays the original content as plain text;
+otherwise `rawLanguage` defaults to JSON. Supply `markdown` for public Mira link,
+asset and extension hooks. Tags are inert display data, with safe nested Markdown.
+
+Bind `open` and `raw`, or observe `onOpenChange` and `onRawChange`, to own UI state.
+Updating delivery retains nested reader identity and expansion. Collapsing or
+switching raw mode hides the rendered tree without destroying its disclosures.
+
+Provide `TranscriptItem.sentContext` to display this above the message blocks in
+both document and classic views. Context remains separate from authored text and
+comment anchors. The recorded conversation has an explicitly labelled unknown
+demo overlay; its capture does not prove outgoing application-context delivery.
+
+Native CSS loads with the family. Tokens: `--ui-sent-context-margin` (0.5rem),
+`--ui-sent-context-font-size` (0.875rem), `--ui-sent-context-padding` (0.75rem),
+`--ui-sent-context-line-height` (1.55), `--ui-sent-context-block-gap` (0.55rem),
+`--ui-sent-context-radius` (0.75rem), `--ui-sent-context-background` (muted),
+`--ui-sent-context-trigger-hover` (neutral colour mix), and
+`--ui-sent-context-max-height` (22.5rem scroll viewport, plus panel padding).
+Shared Button owns keyboard focus; shared ScrollArea owns scrolling.

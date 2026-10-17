@@ -1,10 +1,13 @@
-import type { Snippet } from "svelte";
+import type { Snippet, Component } from "svelte";
+import type { HTMLAttributes } from "svelte/elements";
+import type { ComposerStatus } from "../../ai/types.js";
 import type { Extension } from "@codemirror/state";
 import type { Decoration } from "@codemirror/view";
 import type { TranscriptController } from "./comments.svelte.js";
 import type { CustomEmoji } from "../../shadcn/emoji-picker/index.js";
 import type { Reaction } from "../../ai/experimental/reaction-bar/reaction-bar.types.js";
 import type { MarkdownContentProps } from "../markdown-content/markdown-content.types.js";
+import type { SentContextData } from "../sent-context/sent-context.types.js";
 
 /** Display identity only; resolution, permissions and persistence belong to hosts. */
 export interface TranscriptAuthor {
@@ -15,6 +18,19 @@ export interface TranscriptAuthor {
   initials?: string | undefined;
   shape?: "circle" | "rounded" | undefined;
   background?: string | undefined;
+}
+/** UI-only profile presentation, kept outside captured author/submission data. */
+export interface TranscriptAuthorPopover {
+  description?: ((author: TranscriptAuthor) => string | undefined) | undefined;
+  details?: Snippet<[TranscriptAuthor]> | undefined;
+  actions?:
+    | ((author: TranscriptAuthor) => readonly {
+        id: string;
+        label: string;
+        disabled?: boolean;
+        onSelect: (author: TranscriptAuthor) => void;
+      }[])
+    | undefined;
 }
 /** Immutable captured content. Every range refers to this exact text/revision. */
 export interface TranscriptBlock {
@@ -33,6 +49,8 @@ export interface TranscriptTool {
   id: string;
   revision: string;
   title: string;
+  /** Explicit presentation icon; provider/tool-name guessing belongs to adapters. */
+  icon?: Component | undefined;
   status: "complete" | "error" | "running" | "unknown";
   blocks: readonly TranscriptBlock[];
   /** Exact host-supplied capture; never inferred from provider names. */
@@ -51,8 +69,11 @@ export interface TranscriptTurn {
 }
 export interface TranscriptItem {
   id: string;
+  /** Captured application context shown before this message, separate from authored text. */
+  sentContext?: SentContextData | undefined;
   kind: "message" | "tools" | "context" | "reasoning" | "handoff";
   label: string;
+  icon?: Component | undefined;
   role?: "user" | "assistant" | undefined;
   turn?: TranscriptTurn | undefined;
   author?: TranscriptAuthor | undefined;
@@ -128,6 +149,13 @@ export interface TranscriptHost {
   author?: TranscriptAuthor | undefined;
   canComment?: boolean | undefined;
   commentUnavailable?: string | undefined;
+  /** Overrides the retained-source explanation, colour and attached edge. */
+  unavailableStatus?: ComposerStatus | undefined;
+  unavailableStatusPosition?: "top" | "bottom" | undefined;
+  reactionsDisabled?: boolean | undefined;
+  reactionEmojis?:
+    | readonly import("../../shadcn/emoji-picker/index.js").EmojiOption[]
+    | undefined;
   externalBlocks?: readonly TranscriptBlock[] | undefined;
   /** Emits immutable snapshots; the host executes and acknowledges delivery. */
   onSend?:
@@ -165,7 +193,58 @@ export interface TranscriptHost {
     | ((messageId: string, emoji: string, custom?: CustomEmoji) => void)
     | undefined;
 }
+
+/** A host snapshot; showing/cancelling it never acknowledges or mutates delivery. */
+export interface TranscriptQueuedMessage {
+  id: string;
+  submission: TranscriptSubmission;
+  recipients: readonly TranscriptQueueRecipient[];
+}
+export interface TranscriptQueueRecipient {
+  id: string;
+  label: string;
+  state: "queued" | "unknown";
+  cancelling?: boolean | undefined;
+  disabled?: boolean | undefined;
+  error?: string | undefined;
+}
+export interface MessageQueueProps extends HTMLAttributes<HTMLElement> {
+  entries: readonly TranscriptQueuedMessage[];
+  open?: boolean | undefined;
+  disabled?: boolean | undefined;
+  onCancel?:
+    | ((
+        entry: TranscriptQueuedMessage,
+        recipient: TranscriptQueueRecipient,
+      ) => void | Promise<void>)
+    | undefined;
+  onReview?:
+    | ((
+        entry: TranscriptQueuedMessage,
+        recipient: TranscriptQueueRecipient,
+      ) => void | Promise<void>)
+    | undefined;
+}
+export interface TranscriptFooterProps extends HTMLAttributes<HTMLDivElement> {
+  state?: TranscriptController | undefined;
+  canSend?: boolean | undefined;
+  hasContent?: boolean | undefined;
+  /** Host-owned activity state; a persistent onStop callback does not imply active work. */
+  busy?: boolean | undefined;
+  sendPending?: boolean | undefined;
+  stopping?: boolean | undefined;
+  disabled?: boolean | undefined;
+  onSend?: (() => void | Promise<void>) | undefined;
+  onStop?: (() => void | Promise<void>) | undefined;
+  status?: ComposerStatus | undefined;
+  statusPosition?: "top" | "bottom" | undefined;
+  actions?: Snippet | undefined;
+  workspace?: Snippet | undefined;
+  controls?: Snippet | undefined;
+}
 export interface TranscriptProps extends TranscriptHost {
+  authorPopover?: TranscriptAuthorPopover | undefined;
+  /** Controlled presentation of the same items/readers; applied after active IME composition. */
   view?: "document" | "classic" | undefined;
   loading?: boolean | undefined;
   history?: "idle" | "loading" | "retry" | "empty" | undefined;
@@ -178,6 +257,7 @@ export interface TranscriptProps extends TranscriptHost {
   metadataSupplement?: Snippet<[TranscriptItem]> | undefined;
   messageActions?: Snippet<[string]> | undefined;
   reactions?: Readonly<Record<string, readonly Reaction[]>> | undefined;
+  /** Receives the applied view so the host can adapt one retained composer. */
   composer?: Snippet<["document" | "classic"]> | undefined;
   footer?: Snippet | undefined;
   label?: string | undefined;

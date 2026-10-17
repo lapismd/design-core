@@ -123,9 +123,7 @@ test("comments-only acknowledgement retains delivered text and uses source navig
     .last()
     .click();
   await expect(reader).toBeFocused();
-  await page
-    .getByRole("button", { name: "Send message and comments", exact: true })
-    .click();
+  await page.getByRole("button", { name: "Send message", exact: true }).click();
   await expect(page.getByTestId("transcript-result")).toHaveText(
     "1 comments submitted",
   );
@@ -231,7 +229,7 @@ test("unknown and rejected delivery leave drafts visible", async ({ page }) => {
       .first()
       .fill("Keep my draft");
     await page
-      .getByRole("button", { name: "Send message and comments", exact: true })
+      .getByRole("button", { name: "Send message", exact: true })
       .click();
     await expect(
       page.getByRole("group", { name: "Pending comments", exact: true }),
@@ -367,8 +365,8 @@ test("rendered comments retain jj-store spacing without an extra Markdown inset"
   await page.screenshot({ path: "/tmp/dc-transcript-padding-after.png" });
   const preview = content.locator(".ui-chat-markdown-preview");
   await expect(preview).toHaveCSS("padding", "0px");
-  await expect(preview).toHaveCSS("line-height", "24.8px");
-  await expect(preview).toHaveCSS("font-size", "16px");
+  await expect(preview).toHaveCSS("line-height", "21.7px");
+  await expect(preview).toHaveCSS("font-size", "14px");
   // Exercise actual published Mira defaults arriving after the shared family CSS.
   const styles = pathToFileURL(
     createRequire(import.meta.url).resolve("@lapismd/mira/styles.css"),
@@ -391,6 +389,18 @@ test("rendered comments retain jj-store spacing without an extra Markdown inset"
     "margin-block-end",
     "0px",
   );
+});
+
+test("embedded comments inherit the host palette across Mira reader boundaries", async ({
+  page,
+}) => {
+  await open(page, "inline-comments-and-queue");
+  const expected = await page
+    .locator(".transcript-fixture")
+    .evaluate((el) => getComputedStyle(el).color);
+  const paragraph = page.locator(".ui-transcript-comment-content p").first();
+  await expect(paragraph).toHaveCSS("color", expected);
+  await expect(paragraph).toHaveCSS("font-size", "14px");
 });
 
 test("closing a host inspector restores navigation to the mounted transcript", async ({

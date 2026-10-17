@@ -1,5 +1,5 @@
 <script lang="ts">
-  import TriangleAlertIcon from "@lucide/svelte/icons/triangle-alert";
+  import ComposerStatusBanner from "./ComposerStatusBanner.svelte";
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import ComposerInput from "../composer-input/ComposerInput.svelte";
@@ -120,15 +120,7 @@
   onclick={handleShellClick}
 >
   {#if status && statusPosition === "top"}
-    <div
-      data-ui-part="status"
-      data-position="top"
-      data-status={status.type}
-      role={status.type === "error" ? "alert" : "status"}
-    >
-      <TriangleAlertIcon aria-hidden="true" />
-      <span>{status.message ?? status.type}</span>
-    </div>
+    <ComposerStatusBanner {status} position="top" />
   {/if}
 
   {#if drawer}
@@ -185,14 +177,6 @@
   </div>
 
   {#if status && statusPosition === "bottom"}
-    <div
-      data-ui-part="status"
-      data-position="bottom"
-      data-status={status.type}
-      role={status.type === "error" ? "alert" : "status"}
-    >
-      <TriangleAlertIcon aria-hidden="true" />
-      <span>{status.message ?? status.type}</span>
-    </div>
+    <ComposerStatusBanner {status} position="bottom" />
   {/if}
 </div>

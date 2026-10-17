@@ -1,5 +1,11 @@
 # Architecture
 
+The Chat layer composes host-owned transcript snapshots, footer/queue/reaction
+presentation and optional author details. PromptContext adds inert XML-style
+preview syntax through Mira's public extension API and a declared CodeMirror XML
+language dependency. Runtime/session state, authorization, durable delivery and
+profile routes stay in consumer adapters; reference recordings are catalog-only.
+
 Chat is a host-neutral presentation layer composing Mira public preview APIs.
 Generic responsive navigation and avatar presentation remain in Shadcn; avatar
 editing remains in Forms. AppShell.Topbar is above the bounded Root and receives

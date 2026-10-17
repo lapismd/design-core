@@ -140,7 +140,7 @@
   });
 </script>
 
-<section
+<div
   class="ui-transcript-text-block"
   role="group"
   data-kind={block.kind}
@@ -148,9 +148,11 @@
   data-block-id={block.id}
   aria-label={`${block.label} content`}
 >
-  {#if showHeader && block.kind !== "markdown"}<header>
+  {#if showHeader && block.kind !== "markdown"}<div
+      data-ui-part="capture-heading"
+    >
       {block.label}
-    </header>{/if}
+    </div>{/if}
   <div class="ui-transcript-text-reader">
     <MiraCodeEditor
       bind:this={editor}
@@ -172,4 +174,4 @@
     {messageActions}
     onComment={comment}
   />
-</section>
+</div>

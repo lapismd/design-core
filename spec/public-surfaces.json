@@ -1073,6 +1073,14 @@
     {
       "name": "Chat/History Edge",
       "requirement": "DC-CHAT-006"
+    },
+    {
+      "name": "Chat/Prompt Context",
+      "requirement": "DC-CHAT-010"
+    },
+    {
+      "name": "Chat/Sent Context",
+      "requirement": "DC-CHAT-011"
     }
   ]
 }

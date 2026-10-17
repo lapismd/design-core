@@ -1,5 +1,10 @@
 <script lang="ts">
   import "./markdown-context.css";
+  import { getContext } from "svelte";
+  import {
+    presentationContext,
+    type TranscriptPresentationContext,
+  } from "./presentation-context.js";
   import ChatHoverActions from "./ChatHoverActions.svelte";
   import MarkdownContent from "../markdown-content/MarkdownContent.svelte";
   import ChatTextBlock from "./ChatTextBlock.svelte";
@@ -25,6 +30,10 @@
     messageActions?: TranscriptProps["messageActions"];
     reply?: boolean;
   } = $props();
+  const presentation = getContext<TranscriptPresentationContext | undefined>(
+    presentationContext,
+  );
+  const markdown = $derived(presentation?.markdown ?? state.props().markdown);
 </script>
 
 <div class="ui-transcript-content-flow">
@@ -39,13 +48,13 @@
         data-highlighted={state.forBlocks([block]).length > 0}
       >
         {#if block.kind === "context"}<MarkdownContent
-            {...state.props().markdown}
+            {...markdown}
             content={block.text}
             fullWidth
           />
         {:else if customBlock}{@render customBlock(block)}
         {:else}<MarkdownContent
-            {...state.props().markdown}
+            {...markdown}
             content={block.text}
             fullWidth
           />{/if}

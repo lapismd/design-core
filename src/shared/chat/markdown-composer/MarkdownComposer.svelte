@@ -50,6 +50,7 @@
     onStop,
     status,
     submitLabel = "Send message",
+    showSendButton = true,
     submitOnEnter,
     formattingOpen = $bindable(false),
     colorMode = "inherit",
@@ -354,18 +355,20 @@
         </div>
       {/snippet}
       {#snippet sendButton()}
-        <Button
-          data-ui-part="send-button"
-          data-stop={busy && onStop ? "true" : undefined}
-          size="icon-sm"
-          disabled={busy && onStop ? false : blocked || !hasDraft}
-          aria-label={busy && onStop ? "Stop response" : submitLabel}
-          onclick={busy && onStop ? onStop : submit}
-        >
-          {#if busy && onStop}<SquareIcon
-              aria-hidden="true"
-            />{:else}<ArrowUpIcon aria-hidden="true" />{/if}
-        </Button>
+        {#if showSendButton}
+          <Button
+            data-ui-part="send-button"
+            data-stop={busy && onStop ? "true" : undefined}
+            size="icon-sm"
+            disabled={busy && onStop ? false : blocked || !hasDraft}
+            aria-label={busy && onStop ? "Stop response" : submitLabel}
+            onclick={busy && onStop ? onStop : submit}
+          >
+            {#if busy && onStop}<SquareIcon
+                aria-hidden="true"
+              />{:else}<ArrowUpIcon aria-hidden="true" />{/if}
+          </Button>
+        {/if}
       {/snippet}
     </Composer>
   </Tooltip.Provider>

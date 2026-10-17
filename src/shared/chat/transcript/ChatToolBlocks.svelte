@@ -3,6 +3,8 @@
   import ChatDisclosureIcon from "./ChatDisclosureIcon.svelte";
   import ChatCollapsedComments from "./ChatCollapsedComments.svelte";
   import ChatContent from "./ChatContent.svelte";
+  import FileDiffIcon from "@lucide/svelte/icons/file-diff";
+  import FileTextIcon from "@lucide/svelte/icons/file-text";
   import type { TranscriptBlock, TranscriptProps } from "./model.js";
   import type { TranscriptController } from "./comments.svelte.js";
   let {
@@ -22,6 +24,7 @@
 {#if blocks.length > 1}
   <div class="ui-transcript-tool-files">
     {#each blocks as block, index (block.id)}
+      {@const Icon = block.kind === "patch" ? FileDiffIcon : FileTextIcon}
       <Collapsible.Root
         open={open(block, index)}
         onOpenChange={(value) => (state.disclosures[key(block)] = value)}
@@ -31,6 +34,7 @@
             class="ui-transcript-file-trigger"
             aria-label={`${open(block, index) ? "Hide" : "Show"} captured file ${block.path ?? block.label}`}
           >
+            <Icon aria-hidden="true" />
             <span>{block.path ?? block.label}</span>
             <ChatDisclosureIcon />
           </Collapsible.Trigger>
@@ -59,7 +63,7 @@
 <style>
   .ui-transcript-tool-files {
     display: grid;
-    gap: 0.5rem;
+    gap: var(--ui-transcript-tool-row-gap, 0.25rem);
     padding: 0;
   }
   .ui-transcript-tool-file {
@@ -94,6 +98,8 @@
   }
   :global(.ui-transcript-file-trigger svg) {
     flex-shrink: 0;
+    width: 14px;
+    height: 14px;
   }
   :global(.ui-transcript-file-trigger:focus-visible) {
     outline: 2px solid var(--ring);

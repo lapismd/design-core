@@ -1,5 +1,10 @@
 <script lang="ts">
   import { Button } from "../../shadcn/button/index.js";
+  import { getContext } from "svelte";
+  import {
+    reactionContext,
+    type TranscriptReactionContext,
+  } from "./reaction-context.js";
   import MessageCircleIcon from "@lucide/svelte/icons/message-circle";
   import { EmojiPicker } from "../../shadcn/emoji-picker/index.js";
   import type { TranscriptBlock, TranscriptProps } from "./model.js";
@@ -17,6 +22,10 @@
     reactionTarget?: string | undefined;
     messageActions?: TranscriptProps["messageActions"];
   } = $props();
+  const inherited = getContext<TranscriptReactionContext | undefined>(
+    reactionContext,
+  );
+  const reactions = $derived(inherited ?? state.props());
 </script>
 
 <div
@@ -24,13 +33,27 @@
   role="group"
   aria-label={`Actions for ${block.label}`}
 >
-  {#if reactionTarget && state.props().onReact}
+  {#if reactionTarget && reactions.onReact}
     <EmojiPicker
-      customEmojis={state.props().customEmojis ?? []}
+      customEmojis={reactions.customEmojis ?? []}
+      disabled={reactions.reactionsDisabled ?? false}
+      {...reactions.reactionEmojis === undefined
+        ? {}
+        : { emojis: reactions.reactionEmojis }}
       triggerLabel={`Add reaction to ${block.label}`}
-      presets={state.props().reactionOptions ?? []}
+      presets={reactions.reactionOptions ?? []}
       onSelect={(emoji, custom) =>
-        state.props().onReact?.(reactionTarget!, emoji, custom)}
+        reactions.onReact?.(
+          reactionTarget!,
+          emoji,
+          custom ??
+            reactions.customEmojis?.find(
+              (item) =>
+                item.id === emoji ||
+                item.shortcode === emoji ||
+                `:${item.shortcode}:` === emoji,
+            ),
+        )}
     />
   {/if}
   <Button

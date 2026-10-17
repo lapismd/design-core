@@ -27,6 +27,16 @@ export type {
 } from "../ai/experimental/reaction-bar/reaction-bar.types.js";
 
 export { default as Transcript } from "./transcript/Transcript.svelte";
+export { default as TranscriptFooter } from "./transcript/TranscriptFooter.svelte";
+export { default as MessageQueue } from "./transcript/MessageQueue.svelte";
+export { default as PromptContext } from "./prompt-context/PromptContext.svelte";
+export { default as SentContext } from "./sent-context/SentContext.svelte";
+export type {
+  ContextDelivery,
+  SentContextData,
+  SentContextProps,
+} from "./sent-context/sent-context.types.js";
+export { promptElementsExtension } from "./prompt-context/prompt-elements-extension.js";
 export { default as HistoryEdge } from "./history-edge/HistoryEdge.svelte";
 export { default as CommentQueue } from "./transcript/ChatCommentBatch.svelte";
 export { TranscriptController } from "./transcript/comments.svelte.js";

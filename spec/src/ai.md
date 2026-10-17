@@ -118,7 +118,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract; reusable ComposerStatusBanner MUST preserve the existing curved attached top/bottom treatment with error, warning, info and success semantics.
 - When `disabled` and `isStopShown` are both true, the stop control MUST remain pointer-interactive while input, send, and other body actions stay blocked.
 - `clearOnSubmit` MUST default to the existing clear behavior and allow hosts such as MarkdownComposer to retain the controlled draft after submission intent.
 

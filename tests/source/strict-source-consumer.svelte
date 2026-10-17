@@ -3,6 +3,11 @@
   import {
     Transcript,
     TranscriptController,
+    TranscriptFooter,
+    MessageQueue,
+    PromptContext,
+    SentContext,
+    ComposerStatusBanner,
     HistoryEdge,
     CommentQueue,
     type TranscriptItem,
@@ -201,3 +206,25 @@
 <CommentQueue state={transcriptController} />
 
 <Sidebar.Provider><Sidebar.Trigger side="right" /></Sidebar.Provider>
+
+<TranscriptFooter
+  state={transcriptController}
+  busy
+  hasContent
+  canSend
+  onSend={() => {}}
+  onStop={() => {}}
+/>
+<MessageQueue entries={[]} onCancel={(_entry, _recipient) => {}} />
+<PromptContext
+  content={'<context source="host">Captured **Markdown**.</context>'}
+/>
+<SentContext
+  content="Captured **context**"
+  delivery="unknown"
+  rawContent={'{"delivery":"unknown"}'}
+/>
+<ComposerStatusBanner
+  status={{ type: "info", message: "Captured context" }}
+  position="bottom"
+/>

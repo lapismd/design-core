@@ -3,7 +3,13 @@
   import { expect, userEvent, waitFor } from "storybook/test";
   import Transcript from "./Transcript.svelte";
   import Fixture from "./Transcript.stories.fixture.svelte";
-  import { Basic, Inspector } from "./Transcript.example-sources.js";
+  import {
+    Basic,
+    Inspector,
+    QueuedMessages,
+    ReactionsAndProfiles,
+    RecordedConversation,
+  } from "./Transcript.example-sources.js";
   const { Story } = defineMeta({
     title: "Chat/Transcript",
     component: Transcript,
@@ -49,7 +55,7 @@
     ).toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", {
-        name: /^Send\ message\ and\ comments$/,
+        name: /^Send\ message$/,
       }),
     );
     await waitFor(() =>
@@ -101,7 +107,7 @@
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", {
-        name: "Send message and comments",
+        name: "Send message",
       }),
     );
     await waitFor(() =>
@@ -122,3 +128,70 @@
     docs: { source: { code: Inspector, language: "tsx", type: "code" } },
   }}>{#snippet template()}<Fixture scenario="inspector" />{/snippet}</Story
 >
+
+<Story
+  name="Busy agent and queued messages"
+  parameters={{
+    docs: { source: { code: QueuedMessages, language: "tsx", type: "code" } },
+  }}>{#snippet template()}<Fixture scenario="busy-queue" />{/snippet}</Story
+>
+<Story
+  name="Queue needs attention"
+  parameters={{
+    docs: { source: { code: QueuedMessages, language: "tsx", type: "code" } },
+  }}
+  >{#snippet template()}<Fixture scenario="queue-attention" />{/snippet}</Story
+>
+<Story
+  name="Cancellation awaits confirmation"
+  parameters={{
+    docs: { source: { code: QueuedMessages, language: "tsx", type: "code" } },
+  }}
+  >{#snippet template()}<Fixture scenario="queue-cancelling" />{/snippet}</Story
+>
+<Story name="Quoted lists and typography"
+  >{#snippet template()}<Fixture scenario="typography" />{/snippet}</Story
+>
+<Story name="Unavailable status below"
+  >{#snippet template()}<Fixture scenario="status-bottom" />{/snippet}</Story
+>
+<Story
+  name="Message reactions and author profiles"
+  parameters={{
+    docs: {
+      source: { code: ReactionsAndProfiles, language: "tsx", type: "code" },
+    },
+  }}>{#snippet template()}<Fixture scenario="reactions" />{/snippet}</Story
+>
+<Story
+  name="Full conversation with context tools and replies"
+  parameters={{
+    docs: {
+      source: { code: RecordedConversation, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    const root = canvasElement.querySelector(
+      '[data-ui-component="transcript"]',
+    )!;
+    const reader = canvas.getByRole("textbox", { name: "User message" });
+    const ids = () =>
+      Array.from(canvasElement.querySelectorAll("[data-chat-item]"), (node) =>
+        node.getAttribute("data-chat-item"),
+      );
+    const capturedIds = ids();
+    await userEvent.click(canvas.getByRole("button", { name: "Classic" }));
+    await expect(root).toHaveAttribute("data-conversation-view", "classic");
+    await expect(
+      canvasElement.querySelector('[data-ui-component="markdown-composer"]'),
+    ).toHaveAttribute("data-presentation", "framed");
+    expect(canvas.getByRole("textbox", { name: "User message" })).toBe(reader);
+    expect(ids()).toEqual(capturedIds);
+    await userEvent.click(canvas.getByRole("button", { name: "Document" }));
+    await expect(root).toHaveAttribute("data-conversation-view", "document");
+    expect(canvas.getByRole("textbox", { name: "User message" })).toBe(reader);
+    expect(ids()).toEqual(capturedIds);
+  }}
+>
+  {#snippet template()}<Fixture scenario="full" />{/snippet}
+</Story>

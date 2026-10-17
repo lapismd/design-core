@@ -59,7 +59,7 @@
   border-radius: var(--radius);
   overflow: visible;
 }
-.ui-transcript-text-block header {
+.ui-transcript-text-block [data-ui-part="capture-heading"] {
   padding: 0.5rem 0.75rem;
   color: var(--muted-foreground);
   background: var(--muted);
@@ -111,23 +111,29 @@
 }
 .ui-transcript-text-reader .cm-editor:not([data-comment-editor] *) {
   background: transparent;
-  color: var(--foreground);
+  color: var(--_transcript-foreground, var(--foreground));
   outline: none;
 }
 .ui-transcript-text-reader {
-  --mira-font-sans: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  --mira-font-sans: var(
+    --_transcript-font,
+    var(--font-sans, ui-sans-serif, system-ui, sans-serif)
+  );
   --file-line-width: 100%;
   --file-margins-x: 0px;
   --file-margins-y: 0px;
   --mira-editor-padding: 0px;
   --mira-code-editor-background: transparent;
-  --mira-code-editor-foreground: var(--foreground);
+  --mira-code-editor-foreground: var(
+    --_transcript-foreground,
+    var(--foreground)
+  );
   --mira-code-editor-min-height: 0;
   --mira-code-editor-padding: 0;
 }
 .ui-transcript-text-reader .cm-scroller:not([data-comment-editor] *) {
   overflow: visible;
-  font-family: var(--font-sans, system-ui);
+  font-family: var(--_transcript-font, var(--font-sans, system-ui));
   line-height: 1.65;
 }
 .ui-transcript-text-reader .cm-content:not([data-comment-editor] *) {

@@ -4,6 +4,7 @@
   import ChatDisclosureIcon from "./ChatDisclosureIcon.svelte";
   import CircleAlertIcon from "@lucide/svelte/icons/circle-alert";
   import LoaderCircleIcon from "@lucide/svelte/icons/loader-circle";
+  import WrenchIcon from "@lucide/svelte/icons/wrench";
   import ChatRawToggle from "./ChatRawToggle.svelte";
   import ChatCollapsedComments from "./ChatCollapsedComments.svelte";
   import ChatToolBlocks from "./ChatToolBlocks.svelte";
@@ -56,6 +57,7 @@
 {/snippet}
 
 {#snippet call(tool: TranscriptTool)}
+  {@const Icon = tool.icon ?? WrenchIcon}
   <div class="ui-transcript-tool-item">
     <span class="sr-only" id={statusId(tool)}>{statusLabel(tool)}</span>
     {#if tool.detailPlacement === "sidebar" && onInspectTool}
@@ -71,7 +73,8 @@
               size={14}
             />{:else if tool.status === "running"}<LoaderCircleIcon
               size={14}
-            />{/if}<span>{tool.title}</span><ChatDisclosureIcon />
+            />{:else}<Icon />{/if}<span>{tool.title}</span><ChatDisclosureIcon
+          />
         </Button>
         {@render rawToggle(tool)}
       </div>
@@ -92,7 +95,7 @@
           >
             {#if tool.status === "error"}<CircleAlertIcon size={14} />
             {:else if tool.status === "running"}<LoaderCircleIcon size={14} />
-            {/if}
+            {:else}<Icon />{/if}
             <span>{tool.title}</span>
             <ChatDisclosureIcon />
           </Collapsible.Trigger>
@@ -136,7 +139,8 @@
       class="ui-transcript-tool-trigger ui-transcript-tool-summary"
       aria-label={`${expanded(item.id, item.defaultExpanded) ? "Collapse" : "Expand"} ${item.label}`}
     >
-      <span>{item.label}</span><ChatDisclosureIcon />
+      {@const Icon = item.icon ?? WrenchIcon}<Icon /><span>{item.label}</span
+      ><ChatDisclosureIcon />
     </Collapsible.Trigger>
     <Collapsible.Content class="ui-transcript-tool-group-content"
       >{#if expanded(item.id, item.defaultExpanded)}{#each calls as tool (tool.id)}{@render call(
@@ -198,6 +202,8 @@
   }
   :global(.ui-transcript-tool-trigger svg) {
     flex-shrink: 0;
+    width: 14px;
+    height: 14px;
   }
   :global(.ui-transcript-tool-detail) {
     padding-block-start: 0.5rem;
@@ -211,7 +217,7 @@
   }
   :global(.ui-transcript-tool-group-content:not([hidden])) {
     display: grid;
-    gap: 0.5rem;
+    gap: var(--ui-transcript-tool-row-gap, 0.25rem);
     padding-block-start: 0.5rem;
   }
 </style>

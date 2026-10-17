@@ -1,5 +1,13 @@
 # Package exports
 
+The Chat barrel additionally exports TranscriptFooter, MessageQueue, PromptContext
+and promptElementsExtension. ComposerStatusBanner remains owned by the existing
+AI Composer family and is re-exported through Chat. XML syntax highlighting uses
+the declared registry dependency `@codemirror/lang-xml`; recorded-session data,
+adapters and avatar assets use `.stories.fixture.*` names and MUST be omitted
+from published archives. Packed acceptance exercises the new public footer,
+queue and XML context exports in cold development and production consumers.
+
 The focused `shadcn/tag-list` family exports TagList and its item/props types.
 Strict source consumers cover the same existing wildcard export boundary.
 

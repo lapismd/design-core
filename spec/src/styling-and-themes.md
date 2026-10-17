@@ -259,3 +259,23 @@ share `--ui-transcript-markdown-padding` (0),
 `--ui-transcript-markdown-line-height` (1.55) and
 `--ui-transcript-paragraph-spacing` (0.45rem). These compose the public Markdown
 tokens without adding Mira's document inset or a second comment-editor card.
+`--ui-transcript-foreground` binds the host palette before Mira reader scopes;
+`--ui-transcript-comment-font-size` defaults to the surrounding transcript prose
+size (`--ui-transcript-font-size`, 0.875rem) for rendered comments, quotes and
+comment editors, and
+`--ui-transcript-list-spacing` defaults to 0 for compact quoted lists.
+`--ui-transcript-tool-row-gap` defaults to 0.25rem. Tool/group icons come from
+explicit host components; errors and running states retain their status icons.
+TranscriptFooter exposes `--ui-transcript-footer-gap` (0.75rem) and
+`--ui-transcript-footer-padding` (0.5rem 0.75rem); MessageQueue exposes
+`--ui-transcript-queue-opacity` (0.7). Optional author popovers use the shared
+Popover and ScrollArea, retaining host-owned details/actions and focus restoration.
+
+ComposerStatusBanner owns the existing attached curved status treatment for
+Composer, transcript comments and the fixed footer. Error, warning, info and
+success use semantic tokens. `--ui-composer-status-radius`,
+`--ui-composer-status-padding`, `--ui-composer-status-background` and
+`--ui-composer-status-foreground` allow host composition; defaults preserve
+Composer's existing radius and padding tokens. PromptContext owns its escaped
+XML tag/disclosure styling and delegates safe Markdown to Mira's public extension
+API; tag syntax uses the public `--ui-code-syntax-*` colours and host fonts.

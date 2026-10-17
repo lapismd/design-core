@@ -11,6 +11,9 @@ rendering or composer mounting cannot invalidate a running story through late de
 The offline component catalog includes the Chat layer alongside legacy AI, with
 public imports and colocated examples for MarkdownContent.
 It also discovers the CommentComposer presentation family and its public examples.
+PromptContext adds safe XML-style prompt presentation to the same Chat catalog;
+its recorded-session data and reference adapters are catalog-only `.stories.fixture.*`
+files and MUST remain outside consumer archives.
 
 `package:local` stages the normal source inventory, runs `svelte-package` with
 declarations, verifies every TypeScript and Svelte declaration exists, and writes an

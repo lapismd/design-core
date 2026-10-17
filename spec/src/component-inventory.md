@@ -270,3 +270,16 @@ captured-source reply cards. Hosts own comment IDs, anchors, queues and delivery
 Transcript, HistoryEdge and CommentQueue are shared Chat presentation. The optional
 TranscriptController is owned by the host so state survives presentation teardown;
 it coordinates exact anchors and snapshots but never executes or persists work.
+
+TranscriptFooter and MessageQueue are parts of the Transcript family. They present
+host-owned send/stop intent and queued submission data, without runtime or durable
+queue policy. ComposerStatusBanner is part of the existing Composer family and
+shares its attached status presentation with transcript comments.
+
+PromptContext is shared Chat presentation for XML-style ACP/prompt context. Its
+Mira preview extension never resolves application entities or executes context.
+
+SentContext is shared Chat presentation for the compact sent/prepared/queued/failed/
+unknown application-context disclosure. It composes PromptContext and raw CodeBlock
+inside shared ScrollArea, independently or before Transcript message content.
+Hosts normalize payload schemas and receipts; captured context never implies delivery.

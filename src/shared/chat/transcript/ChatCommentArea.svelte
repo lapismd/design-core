@@ -1,5 +1,11 @@
 <script lang="ts">
   import "./markdown-context.css";
+  import { getContext } from "svelte";
+  import {
+    presentationContext,
+    type TranscriptPresentationContext,
+  } from "./presentation-context.js";
+  import ComposerStatusBanner from "../../ai/composer/ComposerStatusBanner.svelte";
   import { Button } from "../../shadcn/button/index.js";
   import CornerUpLeftIcon from "@lucide/svelte/icons/corner-up-left";
   import XIcon from "@lucide/svelte/icons/x";
@@ -27,7 +33,7 @@
     const entries =
       thread?.comments.filter(
         (c) =>
-          !c.replyTo &&
+          (placement === "summary" || !c.replyTo) &&
           (!commentIds
             ? !c.historical
             : commentIds.includes(c.id) ||
@@ -36,7 +42,7 @@
                 commentIds.includes(`${c.messageId}:${c.version}`))),
       ) ?? [];
     return placement === "summary"
-      ? entries.filter((c) => c.text.trim()).slice(-1)
+      ? entries.filter((c) => c.text.trim())
       : entries;
   });
   const source = $derived(
@@ -44,6 +50,21 @@
   );
   const editable = $derived(placement === "inline" || placement === "queue");
   const available = $derived(thread ? state.isAvailable(thread) : false);
+  const presentation = getContext<TranscriptPresentationContext | undefined>(
+    presentationContext,
+  );
+  const status = $derived(
+    presentation?.unavailableStatus ??
+      state.props().unavailableStatus ?? {
+        type: "warning" as const,
+        message: "Original content unavailable or changed.",
+      },
+  );
+  const statusPosition = $derived(
+    presentation?.unavailableStatusPosition ??
+      state.props().unavailableStatusPosition ??
+      "top",
+  );
   const hasDraft = $derived(
     thread?.comments.some(
       (c) => c.status === "draft" && c.author.id === state.author.id,
@@ -71,90 +92,109 @@
     role="group"
     aria-label={`${placement === "queue" ? "Pending" : placement === "history" ? "Retained" : placement === "reply" ? "Reply context" : "Inline"} comments on ${thread.label}`}
   >
-    {#if source}<blockquote
-        class="ui-transcript-comment-quote"
-        data-chat-quote={thread.anchor.quote}
-      >
-        {#if thread.sourceKind === "markdown" || thread.sourceKind === "context"}
-          <MarkdownContent content={thread.anchor.quote} fullWidth />
-        {:else}<code>{thread.anchor.quote}</code>{/if}
-      </blockquote>{/if}
-    {#if !available}<p class="ui-transcript-comment-unavailable">
-        Original content unavailable or changed.
-      </p>{/if}
-    <div class="ui-transcript-comment-list">
-      {#each comments as comment (comment.id)}
-        <article
-          class="ui-transcript-comment-card"
-          aria-label={`Comment by ${comment.author.name}`}
-          data-status={comment.status}
-          data-comment-id={comment.id}
-          tabindex="-1"
+    {#if !available && statusPosition === "top"}<ComposerStatusBanner
+        {status}
+        position="top"
+      />{/if}
+    <div class="ui-transcript-comment-surface">
+      {#if source}<blockquote
+          class="ui-transcript-comment-quote"
+          data-chat-quote={thread.anchor.quote}
         >
-          <TranscriptAvatar member={comment.author} size="xsmall" decorative />
-          <div class="ui-transcript-comment-content">
-            {#if editable && (comment.status === "draft" || comment.status === "sending")}
-              <ChatCommentEditor
-                {state}
-                {thread}
-                {comment}
-                location={placement === "queue" ? "queue" : "inline"}
-              />
-            {:else}<MarkdownContent content={comment.text} fullWidth />{/if}
-          </div>
-          <div class="ui-transcript-comment-links">
-            {#if (placement === "inline" || placement === "summary") && !comment.replyTo && (comment.status === "draft" || comment.status === "sending" || comment.batchId)}
-              <Button
-                variant="ghost"
-                size="icon-xs"
-                aria-label={comment.batchId
-                  ? "View message"
-                  : "Go to queued comment"}
-                title={comment.batchId
-                  ? "View message"
-                  : "Go to queued comment"}
-                onclick={() => state.goToMessage(thread!, comment)}
-                ><CornerDownRightIcon /></Button
-              >
-            {/if}
-            {#if source || placement === "summary"}
-              <Button
-                variant="ghost"
-                size="icon-xs"
-                disabled={!available && !state.props().onNavigateSource}
-                aria-label={`Go to source: ${thread.label}`}
-                title="Go to source"
-                onclick={(event) =>
-                  state.goToSource(thread!, event.currentTarget)}
-                ><CornerUpLeftIcon /></Button
-              >
-            {/if}
-            {#if comment.status === "draft"}
-              <Button
-                variant="ghost"
-                size="icon-xs"
-                aria-label="Remove pending comment"
-                title="Remove pending comment"
-                onclick={() => state.remove(comment.id)}><XIcon /></Button
-              >
-            {/if}
-            {#if (placement === "inline" || placement === "summary") && comment.id === comments.at(-1)?.id}
-              <Button
-                variant="ghost"
-                size="icon-xs"
-                disabled={state.sending ||
-                  !available ||
-                  state.props().canComment === false}
-                aria-label={hasDraft ? "Add another comment" : "Reply"}
-                title={hasDraft ? "Add another comment" : "Reply"}
-                onclick={(event) => reply(event.currentTarget)}
-                ><MessageSquarePlusIcon /></Button
-              >
-            {/if}
-          </div>
-          <ChatCommentDelivery {state} {comment} />
-        </article>
-      {/each}
+          {#if thread.sourceKind === "markdown" || thread.sourceKind === "context"}
+            <MarkdownContent
+              {...presentation?.markdown ?? state.props().markdown}
+              content={thread.anchor.quote}
+              fullWidth
+            />
+          {:else}<code>{thread.anchor.quote}</code>{/if}
+        </blockquote>{/if}
+      <div class="ui-transcript-comment-list">
+        {#each comments as comment (comment.id)}
+          <article
+            class="ui-transcript-comment-card"
+            aria-label={`Comment by ${comment.author.name}`}
+            data-status={comment.status}
+            data-comment-id={comment.id}
+            tabindex="-1"
+          >
+            <TranscriptAvatar
+              member={comment.author}
+              size="xsmall"
+              decorative
+            />
+            <div class="ui-transcript-comment-content">
+              {#if editable && (comment.status === "draft" || comment.status === "sending")}
+                <ChatCommentEditor
+                  {state}
+                  {thread}
+                  {comment}
+                  location={placement === "queue" ? "queue" : "inline"}
+                />
+              {:else}<MarkdownContent
+                  {...presentation?.markdown ?? state.props().markdown}
+                  content={comment.text}
+                  fullWidth
+                />{/if}
+            </div>
+            <div class="ui-transcript-comment-links">
+              {#if (placement === "inline" || placement === "summary") && !comment.replyTo && (comment.status === "draft" || comment.status === "sending" || comment.batchId)}
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  aria-label={comment.batchId
+                    ? "View message"
+                    : "Go to queued comment"}
+                  title={comment.batchId
+                    ? "View message"
+                    : "Go to queued comment"}
+                  onclick={() => state.goToMessage(thread!, comment)}
+                  ><CornerDownRightIcon /></Button
+                >
+              {/if}
+              {#if source || placement === "summary"}
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  disabled={!available && !state.props().onNavigateSource}
+                  aria-label={`Go to source: ${thread.label}`}
+                  title="Go to source"
+                  onclick={(event) =>
+                    state.goToSource(thread!, event.currentTarget)}
+                  ><CornerUpLeftIcon /></Button
+                >
+              {/if}
+              {#if comment.status === "draft"}
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  aria-label="Remove pending comment"
+                  title="Remove pending comment"
+                  onclick={() => state.remove(comment.id)}><XIcon /></Button
+                >
+              {/if}
+              {#if (placement === "inline" || placement === "summary") && comment.id === comments.at(-1)?.id}
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  disabled={state.sending ||
+                    !available ||
+                    state.props().canComment === false}
+                  aria-label={hasDraft ? "Add another comment" : "Reply"}
+                  title={hasDraft ? "Add another comment" : "Reply"}
+                  onclick={(event) => reply(event.currentTarget)}
+                  ><MessageSquarePlusIcon /></Button
+                >
+              {/if}
+            </div>
+            <ChatCommentDelivery {state} {comment} />
+          </article>
+        {/each}
+      </div>
     </div>
+    {#if !available && statusPosition === "bottom"}<ComposerStatusBanner
+        {status}
+        position="bottom"
+      />{/if}
   </section>
 {/if}

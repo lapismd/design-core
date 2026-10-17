@@ -4,6 +4,7 @@
   --mira-preview-padding: 0;
   --mira-font-sans: var(--font-sans, system-ui, sans-serif);
   --mira-font-mono: var(--font-mono, monospace);
+  --mira-foreground: var(--ui-chat-markdown-foreground, var(--foreground));
   --mira-font-size: var(--ui-chat-markdown-font-size, 0.9375rem);
   --mira-line-height: var(--ui-chat-markdown-line-height, 1.6);
   --mira-markdown-line-height: var(--ui-chat-markdown-line-height, 1.6);
@@ -37,6 +38,17 @@
 [data-ui-component="chat-markdown"] :where(pre, table) {
   max-width: 100%;
   overflow-x: auto;
+}
+[data-ui-component="chat-markdown"][data-compact="true"]
+  > .ui-chat-markdown-preview
+  :where(li) {
+  margin-block: 0;
+  padding-block: var(--ui-chat-markdown-list-spacing, 0);
+}
+[data-ui-component="chat-markdown"][data-compact="true"]
+  > .ui-chat-markdown-preview
+  :where(li > p) {
+  margin-block: 0;
 }
 [data-ui-component="chat-markdown"] img {
   max-width: 100%;

@@ -34,3 +34,61 @@ inset, including in rootless inspectors and standalone queues. Its tokens are
 `--ui-transcript-markdown-line-height` (1.55) and
 `--ui-transcript-paragraph-spacing` (0.45rem). Editable comments use the bare
 CommentComposer presentation inside the existing comment card.
+Reply prose, quoted context and comment cards inherit the same host font and
+foreground. Comments and their editors default to the transcript's prose size
+(0.875rem), with `--ui-transcript-comment-font-size` available for an explicit
+override. This replaces the earlier, larger 1rem default following visual review.
+
+Collapsed file, tool and context headers retain every nonempty current discussion
+entry, including replies, in order. Historical versions remain in history.
+Nested file headers lead with file/patch icons; reasoning uses the lightbulb
+also used by jj-store's thinking control. Hosts can override item icons.
+
+## Footer, waiting messages and author details
+
+Use the `footer` snippet with the public `TranscriptFooter` to keep send controls
+outside the scrolling document. It can read `state={controller}` or explicit
+controlled props. Idle content shows Send; busy content shows Queue; busy empty
+content shows Stop when the host supplies `onStop`. Pending delivery can retain
+a separate stop button. A persistent `onStop` callback does not imply busy state.
+Callbacks request host actions and never imply delivery.
+`actions`, `workspace` and `controls` snippets accept additional buttons and menus.
+Set `showSendButton={false}` on MarkdownComposer to keep one send affordance.
+
+Render `MessageQueue` in `queuedMessages` with exact submission snapshots and
+recipient display states. Cancellation, status review and acknowledgement belong
+to the host. Unknown outcomes retain their content and explanation. Long text
+expands without changing the captured snapshot.
+
+Supply `onReact`, controlled `reactions` and optional custom/restricted emoji to
+enable adding or toggling reactions, including with an external comment controller.
+`authorPopover` supplies descriptions, a details snippet and configurable actions;
+omitting it leaves avatars decorative. Shared Popover and ScrollArea handle
+keyboard dismissal and focus restoration. Tool/group `icon` components are
+explicit presentation inputs; provider interpretation remains in adapters.
+
+## Recorded comparison
+
+The full conversation story reuses jj-store's sanitized Delta session with 30
+captured tools, assistant segments, and returned agent responses. Its review
+comments and replies are the source's explicitly simulated overlay. Waiting
+messages and footer/runtime choices are labelled demos. No agent is contacted.
+The source projection and recording are catalog-only and are not packaged.
+Its Document / Classic selector changes the controlled `view` on the same mounted
+Transcript, items and comment controller. Readers, folds, raw/rich choices,
+reactions, pending comments and queued messages retain their identities and data.
+Use the composer snippet's applied view argument to choose `document` or `framed`
+presentation on one MarkdownComposer. A view change during IME composition waits
+until composition ends; the composer receives that applied view too.
+The returned agent-response section starts open to expose its XML disclosure;
+Chat / Prompt Context / Recorded agent context shows that exact capture directly
+with rendered Markdown, independently of the long transcript.
+See `spec/records/transcript-parity-audit.md` for provenance and the gap audit.
+
+## Sent application context
+
+Set `TranscriptItem.sentContext` with captured `content`, explicit `delivery` and
+optional exact `rawContent`. The compact SentContext disclosure appears before
+authored message blocks. Its delivery labels and raw/rendered UI match jj-store;
+it never infers delivery or adds context to captured comment text. The full story
+labels its unknown-delivery context as demonstration data.

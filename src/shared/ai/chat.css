@@ -682,67 +682,6 @@
   margin-left: auto;
 }
 
-[data-ui-component="ai-chat-composer"] [data-ui-part="status"] {
-  position: relative;
-  z-index: 0;
-  display: flex;
-  min-height: 1.75rem;
-  align-items: center;
-  gap: 0.5rem;
-  padding-inline: 1rem;
-  font-size: calc(0.75rem * var(--ui-ai-chat-type-scale, 1));
-  line-height: calc(1rem * var(--ui-ai-chat-type-scale, 1));
-}
-
-[data-ui-component="ai-chat-composer"]
-  [data-ui-part="status"][data-position="top"] {
-  margin-bottom: calc(-1 * var(--ui-ai-chat-composer-radius));
-  border-radius: var(--ui-ai-chat-composer-radius)
-    var(--ui-ai-chat-composer-radius) 0 0;
-  padding-block: var(--ui-ai-chat-composer-padding)
-    calc(var(--ui-ai-chat-composer-padding) + var(--ui-ai-chat-composer-radius));
-}
-
-[data-ui-component="ai-chat-composer"]
-  [data-ui-part="status"][data-position="bottom"] {
-  margin-top: calc(-1 * var(--ui-ai-chat-composer-radius));
-  border-radius: 0 0 var(--ui-ai-chat-composer-radius)
-    var(--ui-ai-chat-composer-radius);
-  padding-block: calc(
-      var(--ui-ai-chat-composer-padding) + var(--ui-ai-chat-composer-radius)
-    )
-    var(--ui-ai-chat-composer-padding);
-}
-
-[data-ui-component="ai-chat-composer"]
-  [data-ui-part="status"][data-status="warning"] {
-  background: color-mix(in oklab, var(--chart-4) 14%, var(--background));
-  color: var(--foreground);
-}
-
-[data-ui-component="ai-chat-composer"]
-  [data-ui-part="status"][data-status="error"] {
-  background: color-mix(in oklab, var(--destructive) 12%, var(--background));
-  color: var(--foreground);
-}
-
-[data-ui-component="ai-chat-composer"]
-  [data-ui-part="status"][data-status="warning"]
-  svg {
-  color: color-mix(in oklab, var(--chart-4) 62%, var(--foreground));
-}
-
-[data-ui-component="ai-chat-composer"]
-  [data-ui-part="status"][data-status="error"]
-  svg {
-  color: var(--destructive);
-}
-
-[data-ui-component="ai-chat-composer"] [data-ui-part="status"] svg {
-  width: 0.875rem;
-  height: 0.875rem;
-}
-
 [data-ui-component="ai-chat-composer"] [data-ui-part="input-area"] {
   min-width: 0;
 }
