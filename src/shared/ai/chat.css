@@ -508,6 +508,14 @@
   color: var(--destructive);
 }
 
+.dark
+  [data-ui-component="ai-chat-message-metadata"]
+  [data-ui-part="status"][data-status="error"],
+[data-ui-component="ai-chat-message-metadata"].dark
+  [data-ui-part="status"][data-status="error"] {
+  color: color-mix(in srgb, var(--destructive) 60%, var(--foreground));
+}
+
 [data-ui-component="ai-chat-message-metadata"] svg {
   width: 0.75rem;
   height: 0.75rem;

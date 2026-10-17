@@ -19,6 +19,15 @@ export const Basic = `<script lang="ts">
   viewMode="unified"
 />`;
 
+export const DarkMarkdown = `<script lang="ts">
+  import { FileDiff } from "@lapismd/design-core/diff";
+</script>
+
+<div class="dark">
+  <FileDiff path="README.md" viewMode="unified"
+    oldText={'# Notes\\nOld title\\n'} newText={'# Notes\\nHistory is retained\\n'} />
+</div>`;
+
 export const Split = `<script lang="ts">
   import { FileDiff } from "@lapismd/design-core/diff";
 </script>

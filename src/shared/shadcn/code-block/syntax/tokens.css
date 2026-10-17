@@ -1,6 +1,6 @@
 /**
- * Fallback syntax color tokens (also injected by ensureHighlightStyles).
- * Kept in CSS so SSR paints match client defaults.
+ * Bundled base syntax colors. Dark scopes rebind the same public tokens;
+ * explicit syntax themes and host default overrides retain their precedence.
  */
 :root {
   --ui-code-syntax-keyword: var(--ui-code-syntax-keyword-default, #5b21b6);
@@ -15,6 +15,23 @@
   --ui-code-syntax-tag: var(--ui-code-syntax-tag-default, #b91c1c);
   --ui-code-syntax-attribute: var(--ui-code-syntax-attribute-default, #0f766e);
   --ui-code-syntax-property: var(--ui-code-syntax-property-default, #1d4ed8);
+  --ui-code-syntax-punctuation: var(--muted-foreground);
+  --ui-code-syntax-background: var(--muted);
+}
+
+.dark {
+  --ui-code-syntax-keyword: var(--ui-code-syntax-keyword-default, #c4b5fd);
+  --ui-code-syntax-string: var(--ui-code-syntax-string-default, #fcd34d);
+  --ui-code-syntax-comment: var(--muted-foreground);
+  --ui-code-syntax-number: var(--ui-code-syntax-number-default, #fdba74);
+  --ui-code-syntax-function: var(--ui-code-syntax-function-default, #7dd3fc);
+  --ui-code-syntax-type: var(--ui-code-syntax-type-default, #d8b4fe);
+  --ui-code-syntax-variable: var(--foreground);
+  --ui-code-syntax-operator: var(--ui-code-syntax-operator-default, #67e8f9);
+  --ui-code-syntax-constant: var(--ui-code-syntax-constant-default, #fdba74);
+  --ui-code-syntax-tag: var(--ui-code-syntax-tag-default, #fca5a5);
+  --ui-code-syntax-attribute: var(--ui-code-syntax-attribute-default, #5eead4);
+  --ui-code-syntax-property: var(--ui-code-syntax-property-default, #93c5fd);
   --ui-code-syntax-punctuation: var(--muted-foreground);
   --ui-code-syntax-background: var(--muted);
 }

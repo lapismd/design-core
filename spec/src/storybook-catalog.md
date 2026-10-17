@@ -88,6 +88,7 @@ lazy library mounts; the search input alone does not prove grid readiness.
 - Public components must use public package imports and include the state or composition needed to reproduce the scenario.
 - Public reference fixtures may accept typed snippets for bounded consumer-owned content while retaining Design Core ownership of the surrounding composition and styling.
 - Show Code must not present a story-only demo, harness, fixture, story surface, or inferred story args as consumer API.
+- Dark syntax examples MUST show their own mode without changing the surrounding Docs page's selected mode.
 
 ## DC-CAT-007 — Explicit source
 

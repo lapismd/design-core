@@ -4,6 +4,10 @@ Fenced, syntax-highlighted code with optional header, line numbers, copy,
 collapse, and syntax themes. Project-authored Astryx-inspired primitive — see
 `spec/records/code-and-code-block.md`.
 
+The bundled default syntax palette follows the host's `.dark` scope. Override
+the public `--ui-code-syntax-*` tokens on an ancestor or provide `syntaxTheme`
+for a complete per-instance palette; explicit themes retain their own colors.
+
 ## Import
 
 ```ts

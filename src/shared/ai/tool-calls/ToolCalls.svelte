@@ -33,12 +33,29 @@
     onExpandedChange?: (expanded: boolean) => void;
   } = $props();
 
+  const uid = $props.id();
+
   let detailOpen = $state<Record<string, boolean>>({});
   const hasMultipleCalls = $derived(calls.length > 1);
   const latestCall = $derived(calls.at(-1));
   const resolvedLabel = $derived(
     label === "Tool calls" ? `${calls.length} tool calls` : label,
   );
+
+  function callLabelIds(call: ToolCallItem, base: string): string {
+    return [
+      `${base}-action`,
+      `${base}-name`,
+      call.node && `${base}-node`,
+      call.target && `${base}-target`,
+      call.additions != null && `${base}-additions`,
+      call.deletions != null && `${base}-deletions`,
+      call.stats && `${base}-stats`,
+      call.duration && call.status === "complete" && `${base}-duration`,
+    ]
+      .filter(Boolean)
+      .join(" ");
+  }
 
   function callId(call: ToolCallItem, index: number): string {
     return call.id ?? `${call.name}-${index}`;
@@ -62,12 +79,12 @@
   }
 </script>
 
-{#snippet callStatus(status: ToolCallStatus)}
-  <span data-ui-part="call-status" data-status={status}>
+{#snippet callStatus(status: ToolCallStatus, id?: string)}
+  <span {id} data-ui-part="call-status" data-status={status}>
     {#if status === "unknown"}
       <CircleHelpIcon aria-hidden="true" />
     {:else if status === "running" || status === "pending"}
-      <Spinner />
+      <Spinner aria-hidden="true" />
     {:else if status === "complete"}
       <span data-ui-part="status-circle" aria-hidden="true"></span>
       <CheckIcon aria-hidden="true" />
@@ -81,6 +98,7 @@
 
 {#snippet callRow(call: ToolCallItem, index: number)}
   {@const id = callId(call, index)}
+  {@const base = `${uid}-call-${index}`}
   {@const status = call.status ?? "pending"}
   {@const hasDetail = !!(call.detail || call.presentation)}
   {#snippet presentation()}
@@ -93,33 +111,47 @@
       <Collapsible.Trigger
         data-ai-chat-part="call-trigger"
         disabled={!hasDetail}
-        aria-label={hasDetail
-          ? `${detailOpen[id] ? "Hide" : "Show"} details for ${call.name}`
-          : undefined}
+        aria-labelledby={hasDetail ? callLabelIds(call, base) : undefined}
+        aria-describedby={hasDetail ? `${base}-status` : undefined}
       >
-        {@render callStatus(status)}
-        <span data-ui-part="call-name">{call.name}</span>
+        {#if hasDetail}
+          <span id={`${base}-action`} class="sr-only"
+            >{detailOpen[id] ? "Hide" : "Show"} details for</span
+          >
+        {/if}
+        {@render callStatus(status, `${base}-status`)}
+        <span id={`${base}-name`} data-ui-part="call-name">{call.name}</span>
         {#if call.node}
-          <Badge variant="outline">{call.node}</Badge>
+          <Badge id={`${base}-node`} variant="outline">{call.node}</Badge>
         {/if}
         {#if call.target}
-          <span data-ui-part="call-target">{call.target}</span>
+          <span id={`${base}-target`} data-ui-part="call-target"
+            >{call.target}</span
+          >
         {/if}
         {#if call.additions != null || call.deletions != null}
           <span data-ui-part="diff-stats">
             {#if call.additions != null}
-              <span data-kind="addition">+{call.additions}</span>
+              <span id={`${base}-additions`} data-kind="addition"
+                >+{call.additions}</span
+              >
             {/if}
             {#if call.deletions != null}
-              <span data-kind="deletion">−{call.deletions}</span>
+              <span id={`${base}-deletions`} data-kind="deletion"
+                >−{call.deletions}</span
+              >
             {/if}
           </span>
         {/if}
         {#if call.stats}
-          <span data-ui-part="call-stats">{@render call.stats(call)}</span>
+          <span id={`${base}-stats`} data-ui-part="call-stats"
+            >{@render call.stats(call)}</span
+          >
         {/if}
         {#if call.duration && status === "complete"}
-          <span data-ui-part="duration">{call.duration}</span>
+          <span id={`${base}-duration`} data-ui-part="duration"
+            >{call.duration}</span
+          >
         {/if}
         {#if hasDetail}
           <ChevronRightIcon
@@ -169,23 +201,43 @@
       <Collapsible.Root open={expanded} onOpenChange={setExpanded}>
         <Collapsible.Trigger
           data-ai-chat-part="group-trigger"
-          aria-label={`${expanded ? "Collapse" : "Expand"} ${resolvedLabel}`}
+          aria-labelledby={expanded
+            ? `${uid}-group-action ${uid}-group-label`
+            : `${uid}-group-action ${uid}-group-name ${latestCall?.target ? `${uid}-group-target` : ""} ${uid}-group-count ${uid}-group-unit`}
+          aria-describedby={expanded ? undefined : `${uid}-group-status`}
         >
+          <span id={`${uid}-group-action`} class="sr-only"
+            >{expanded
+              ? "Collapse"
+              : label === "Tool calls"
+                ? "Expand"
+                : `Expand ${resolvedLabel}`}</span
+          >
           {#if expanded}
             <span data-ui-part="group-icon">
               <WrenchIcon aria-hidden="true" />
             </span>
-            <span data-ui-part="group-label">{resolvedLabel}</span>
+            <span id={`${uid}-group-label`} data-ui-part="group-label"
+              >{resolvedLabel}</span
+            >
           {:else if latestCall}
-            {@render callStatus(latestCall.status ?? "pending")}
-            <span data-ui-part="call-name">{latestCall.name}</span>
+            {@render callStatus(
+              latestCall.status ?? "pending",
+              `${uid}-group-status`,
+            )}
+            <span id={`${uid}-group-name`} data-ui-part="call-name"
+              >{latestCall.name}</span
+            >
             {#if latestCall.target}
-              <span data-ui-part="call-target">{latestCall.target}</span>
+              <span id={`${uid}-group-target`} data-ui-part="call-target"
+                >{latestCall.target}</span
+              >
             {/if}
-            <span data-ui-part="call-count">
+            <span id={`${uid}-group-count`} data-ui-part="call-count">
               <WrenchIcon aria-hidden="true" />
               {calls.length}
             </span>
+            <span id={`${uid}-group-unit`} class="sr-only">tool calls</span>
           {/if}
           <ChevronRightIcon
             data-ui-part="chevron"

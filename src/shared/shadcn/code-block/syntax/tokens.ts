@@ -1,6 +1,6 @@
 /**
  * Code syntax highlighting tokens for CodeBlock.
- * Defaults reference catalog theme semantics so light/dark follows colorMode.
+ * Base light values; bundled CSS rebinds these tokens within dark scopes.
  */
 
 export const syntaxTokenDefaults = {

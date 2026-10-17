@@ -6,6 +6,7 @@
   import { Textarea } from "../../shadcn/textarea/index.js";
   import {
     Basic,
+    DarkMarkdown,
     NamedSplit,
     Composer,
     Fill,
@@ -187,6 +188,39 @@
       : composerCollapsedPaths.filter((candidate) => candidate !== path);
   }
 </script>
+
+<Story
+  name="Dark unchanged Markdown keeps readable syntax"
+  globals={{ colorMode: "dark" }}
+  tags={["visual-pending"]}
+  args={{
+    path: "README.md",
+    oldText: "# Notes\nOld title\n",
+    newText: "# Notes\nHistory is retained\n",
+    viewMode: "unified",
+  }}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "Unchanged Markdown headings retain syntax highlighting on the dark diff surface alongside readable changed rows.",
+      },
+      source: { code: DarkMarkdown, language: "tsx", type: "code" },
+      story: { inline: false, height: "280px" },
+    },
+  }}
+  play={async ({ canvasElement }) => {
+    const context = canvasElement.querySelector<HTMLElement>(
+      '.ui-diff-file-diff__row[data-variant="context"] .ui-code-token-keyword',
+    );
+    await expect(context).toBeVisible();
+    await expect(context).toHaveTextContent("# Notes");
+    await expect(getComputedStyle(context!).color).not.toBe(
+      getComputedStyle(context!.closest('[data-ui-component="file-diff"]')!)
+        .color,
+    );
+  }}
+/>
 
 <Story
   name="Named split panes"
