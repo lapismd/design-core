@@ -105,6 +105,8 @@ GFM tables and complete fenced code blocks MUST render through the existing safe
 Markdown reader while keeping the original captured source and offsets.
 Incomplete captures remain source content and fenced table examples remain
 literal code; reader widgets never write captured text.
+Embedded previews MUST reset the reader's whitespace-preserving layout so
+renderer formatting whitespace cannot create blank rows around tables.
 
 ### Acceptance details
 

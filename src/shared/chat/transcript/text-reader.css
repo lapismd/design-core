@@ -3,6 +3,12 @@
   min-width: 0;
   margin: 0;
 }
+.ui-transcript-markdown-preview {
+  white-space: normal;
+}
+.ui-transcript-markdown-preview pre {
+  white-space: pre;
+}
 .ui-transcript-text-block[data-kind="code"],
 .ui-transcript-text-block[data-kind="patch"] {
   --mira-code-editor-syntax-keyword: color-mix(

@@ -52,3 +52,12 @@ Visual approval stays pending. This slice does not qualify the Notes native writ
 provider, persistence or restart. Final logs are
 `/tmp/lapis-ai-transcript-source-{complete,types-complete,spec-complete,first-complete}.log`;
 the exact fence before/after logs retain the initial failure.
+
+The user's next review found a large blank area above the table. The widget
+inherited CodeMirror's `white-space: break-spaces`, exposing the renderer's
+formatting newlines. Transcript CSS now resets only its preview host to normal
+whitespace and retains preformatted code. The exact Markdown story fails before
+the fix and passes after; it checks normal whitespace and less than 40px of
+overhead around the table. Logs: `/tmp/lapis-ai-transcript-spacing-{before,after}.log`.
+Missing safe-preview syntax classes are fixed in Mira's owning schema and
+qualified through Notes E-AI-039 rather than bypassing safe rendering.

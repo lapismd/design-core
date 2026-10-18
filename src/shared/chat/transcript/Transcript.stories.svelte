@@ -32,6 +32,12 @@
     await expect(
       within(table).getByRole("cell", { name: "Research" }),
     ).toBeVisible();
+    const preview = table.closest(".ui-transcript-markdown-preview")!;
+    await expect(getComputedStyle(preview).whiteSpace).toBe("normal");
+    await expect(
+      preview.getBoundingClientRect().height -
+        table.getBoundingClientRect().height,
+    ).toBeLessThan(40);
     await waitFor(() => {
       expect(canvasElement.querySelectorAll("pre code")).toHaveLength(2);
     });
