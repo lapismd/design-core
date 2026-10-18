@@ -127,7 +127,7 @@ Data and feedback primitives communicate state without taking ownership of consu
 
 - Avatar and mention triggers MUST retain supplied labels, shape, presence, details and disabled actions without resolving profiles or executing application routes.
 - Popover dismissal MUST restore trigger focus and viewport-bounded content MUST use shared ScrollArea with inherited semantic tokens.
-- Compact trigger sizing MUST NOT shrink the identity avatar inside the author details surface.
+- Compact trigger sizing MUST NOT shrink the identity avatar inside the author details surface; accessible trigger names MUST include visible initials or emoji fallbacks alongside the supplied author label.
 
 ## DC-SHA-059 — Reference Chip
 

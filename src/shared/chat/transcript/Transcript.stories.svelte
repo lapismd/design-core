@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import Transcript from "./Transcript.svelte";
   import Fixture from "./Transcript.stories.fixture.svelte";
   import {
@@ -20,6 +20,39 @@
     },
   });
 </script>
+
+<Story
+  name="Markdown tables and centered avatars"
+  play={async ({ canvas, canvasElement }) => {
+    const table = await canvas.findByRole("table");
+    await expect(within(table).getAllByRole("row")).toHaveLength(3);
+    await expect(
+      within(table).getByRole("columnheader", { name: "Area" }),
+    ).toBeVisible();
+    await expect(
+      within(table).getByRole("cell", { name: "Research" }),
+    ).toBeVisible();
+    await waitFor(() => {
+      expect(canvasElement.querySelectorAll("pre code")).toHaveLength(2);
+    });
+    await expect(canvasElement.querySelector("pre code")).toHaveTextContent(
+      'const review = "weekly";',
+    );
+    const content = canvasElement.querySelector<HTMLElement>(
+      '[data-chat-item] [data-ui-component="avatar"] [data-ui-part="content"]',
+    )!;
+    await expect(getComputedStyle(content).display).toBe("grid");
+    await expect(getComputedStyle(content).alignItems).toBe("center");
+    const box = content.getBoundingClientRect();
+    const initials = content.querySelector("span")!.getBoundingClientRect();
+    await expect(
+      Math.abs((box.left + box.right - initials.left - initials.right) / 2),
+    ).toBeLessThan(1);
+    await expect(
+      Math.abs((box.top + box.bottom - initials.top - initials.bottom) / 2),
+    ).toBeLessThan(1);
+  }}>{#snippet template()}<Fixture scenario="table" />{/snippet}</Story
+>
 
 <Story
   name="Continuous document"

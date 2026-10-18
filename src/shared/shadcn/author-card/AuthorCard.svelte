@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { Avatar, avatarIdentityProps } from "../avatar/index.js";
+  import {
+    Avatar,
+    avatarIdentityProps,
+    avatarInitials,
+  } from "../avatar/index.js";
   import * as HoverCard from "../hover-card/index.js";
   import * as Popover from "../popover/index.js";
   import { ScrollArea } from "../scroll-area/index.js";
@@ -21,6 +25,19 @@
     label,
     class: className,
   }: AuthorCardProps = $props();
+  // Include the visible fallback label for speech-input users as well as the name.
+  const triggerLabel = $derived.by(() => {
+    const base = label ?? `About ${author.name}`;
+    const fallback =
+      author.emoji || author.initials || avatarInitials(author.name);
+    return fallback &&
+      !base
+        .toLocaleLowerCase()
+        .split(/\s+/u)
+        .includes(fallback.toLocaleLowerCase())
+      ? `${base}, ${fallback}`
+      : base;
+  });
 </script>
 
 {#snippet face()}<Avatar
@@ -73,7 +90,7 @@
     class={["ui-author-card__trigger", className]}
     data-trigger={trigger}
     data-size={size}
-    aria-label={label ?? `About ${author.name}`}>{@render face()}</button
+    aria-label={triggerLabel}>{@render face()}</button
   >
 {:else if interaction === "popover"}
   <Popover.Root bind:open
@@ -81,8 +98,7 @@
       class={["ui-author-card__trigger", className]}
       data-trigger={trigger}
       data-size={size}
-      aria-label={label ?? `About ${author.name}`}
-      >{@render face()}</Popover.Trigger
+      aria-label={triggerLabel}>{@render face()}</Popover.Trigger
     >
     <Popover.Content
       class="ui-author-card"
@@ -100,7 +116,7 @@
           class={["ui-author-card__trigger", className]}
           data-trigger={trigger}
           data-size={size}
-          aria-label={label ?? `About ${author.name}`}
+          aria-label={triggerLabel}
           onclick={() => (open = !open)}>{@render face()}</button
         >{/snippet}</HoverCard.Trigger
     >

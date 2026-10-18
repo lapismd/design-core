@@ -31,6 +31,7 @@ export const storybookBrowserDependencies = [
   "@lapismd/mira",
   ...discoverCatalogIcons(fileURLToPath(new URL("../src", import.meta.url))),
   "@lezer/common",
+  "@lezer/markdown",
   "aria-query",
   "react",
   "react-dom",

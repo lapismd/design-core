@@ -1,5 +1,9 @@
 # Storybook catalog
 
+Transcript table previews prebundle the declared Lezer Markdown parser in both
+dev and Vitest catalogs, avoiding a dependency reload during the first play.
+The focused proof is in `spec/records/2026-10-18-transcript-table-avatar.md`.
+
 The component promotion batch adds review-pending catalogs for Responsive Tabs,
 Avatar, Avatar Picker, AppShell top-bar composition, and Chat/Markdown Content.
 Each demonstrates public host-owned contracts through copyable examples.

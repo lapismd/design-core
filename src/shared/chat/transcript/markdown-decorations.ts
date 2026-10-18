@@ -1,4 +1,3 @@
-import { markdownLanguage } from "@codemirror/lang-markdown";
 import { RangeSetBuilder } from "@codemirror/state";
 import { Decoration, type DecorationSet } from "@codemirror/view";
 import {
@@ -7,6 +6,9 @@ import {
   getIndentLineLayout,
 } from "@lapismd/mira/codemirror";
 import { PathLabel } from "./path-label.js";
+import { parser as markdownParser, Table } from "@lezer/markdown";
+import { TranscriptMarkdownPreview } from "./markdown-preview-widget.js";
+import type { TranscriptProps } from "./model.js";
 
 /** Fixed reading decorations: selection never reveals Markdown source markers. */
 export function readingDecorations(
@@ -15,113 +17,145 @@ export function readingDecorations(
   options: {
     fileLink?: (destination: string) => boolean;
     paths?: readonly (readonly [string, string])[] | undefined;
+    markdown?: TranscriptProps["markdown"];
+    contexts?: Map<unknown, unknown>;
   } = {},
 ): {
   decorations: DecorationSet;
   hidden: DecorationSet;
 } {
   const marks: { from: number; to: number; value: Decoration }[] = [];
-  const hidden: { from: number; to: number }[] = [];
-  markdownLanguage.parser.parse(text).iterate({
-    enter(node) {
-      if (ignored.some((r) => node.from >= r.from && node.to <= r.to))
-        return false;
-      const name = node.name;
-      if (
-        name === "ListMark" &&
-        node.node.parent?.parent?.name === "BulletList"
-      ) {
-        const from = text.lastIndexOf("\n", node.from - 1) + 1;
-        const end = text.indexOf("\n", node.to);
-        const layout = getIndentLineLayout(
-          text.slice(from, end < 0 ? undefined : end),
-        );
-        if (layout?.listKind === "ul" && layout.markerTo !== undefined)
-          marks.push(
-            {
-              from: node.from,
-              to: from + layout.markerTo,
-              value: Decoration.mark({
-                class: `cm-formatting-list cm-formatting-list-ul cm-formatting-list-bullet cm-list-${layout.depth}`,
-              }),
-            },
-            {
-              from: node.from,
-              to: node.to,
-              value: Decoration.mark({ class: "cm-meta" }),
-            },
-          );
-      }
-      if (
-        [
-          "HeaderMark",
-          "EmphasisMark",
-          "CodeMark",
-          "StrikethroughMark",
-        ].includes(name)
-      ) {
-        const heading =
-          name === "HeaderMark"
-            ? getAtxHeadingMarkerRange(text.slice(node.from), node.from)
-            : null;
-        hidden.push(heading ?? { from: node.from, to: node.to });
-      }
-      const className = /^ATXHeading/.test(name)
-        ? `ui-transcript-heading ui-transcript-heading-${name.at(-1)}`
-        : name === "StrongEmphasis"
-          ? "ui-transcript-strong"
-          : name === "Emphasis"
-            ? "ui-transcript-emphasis"
-            : name === "InlineCode"
-              ? "ui-transcript-inline-code"
-              : name === "Strikethrough"
-                ? "ui-transcript-strike"
-                : undefined;
-      if (className)
-        marks.push({
-          from: node.from,
-          to: node.to,
-          value: Decoration.mark({ class: className }),
-        });
-      if (name === "Link") {
-        const source = text.slice(node.from, node.to);
-        const url = node.node.getChild("URL");
-        const destination = url
-          ? text.slice(url.from, url.to).replace(/^<|>$/g, "")
-          : "";
-        const external = /^https?:\/\//i.test(destination);
-        const file = !external && options.fileLink?.(destination);
-        if (external || file) {
-          const range = getMarkdownLinkTextRange(source, node.from, node.to);
-          if (!range) return;
-          const { from: start, to: end } = range;
-          hidden.push(
-            { from: node.from, to: start },
-            { from: end, to: node.to },
-          );
+  const hidden: { from: number; to: number; decorated?: boolean }[] = [];
+  markdownParser
+    .configure([Table])
+    .parse(text)
+    .iterate({
+      enter(node) {
+        if (ignored.some((r) => node.from >= r.from && node.to <= r.to))
+          return false;
+        const name = node.name;
+        const completeCode =
+          name === "FencedCode" &&
+          node.node.getChildren("CodeMark").length === 2;
+        if (name === "FencedCode" && !completeCode) return false;
+        if (name === "Table" || completeCode) {
+          if (
+            ignored.some(
+              (range) => node.from < range.to && node.to > range.from,
+            )
+          )
+            return false;
           marks.push({
-            from: start,
-            to: end,
-            value: Decoration.mark({
-              class: "ui-transcript-link",
-              attributes: {
-                role: "link",
-                tabindex: "0",
-                [file ? "data-chat-file-link" : "data-chat-link"]: destination,
-              },
+            from: node.from,
+            to: node.to,
+            value: Decoration.replace({
+              block: true,
+              widget: new TranscriptMarkdownPreview(
+                text.slice(node.from, node.to),
+                options.markdown,
+                options.contexts,
+              ),
             }),
           });
+          hidden.push({ from: node.from, to: node.to, decorated: true });
           return false;
         }
-      }
-    },
-  });
+        if (
+          name === "ListMark" &&
+          node.node.parent?.parent?.name === "BulletList"
+        ) {
+          const from = text.lastIndexOf("\n", node.from - 1) + 1;
+          const end = text.indexOf("\n", node.to);
+          const layout = getIndentLineLayout(
+            text.slice(from, end < 0 ? undefined : end),
+          );
+          if (layout?.listKind === "ul" && layout.markerTo !== undefined)
+            marks.push(
+              {
+                from: node.from,
+                to: from + layout.markerTo,
+                value: Decoration.mark({
+                  class: `cm-formatting-list cm-formatting-list-ul cm-formatting-list-bullet cm-list-${layout.depth}`,
+                }),
+              },
+              {
+                from: node.from,
+                to: node.to,
+                value: Decoration.mark({ class: "cm-meta" }),
+              },
+            );
+        }
+        if (
+          [
+            "HeaderMark",
+            "EmphasisMark",
+            "CodeMark",
+            "StrikethroughMark",
+          ].includes(name)
+        ) {
+          const heading =
+            name === "HeaderMark"
+              ? getAtxHeadingMarkerRange(text.slice(node.from), node.from)
+              : null;
+          hidden.push(heading ?? { from: node.from, to: node.to });
+        }
+        const className = /^ATXHeading/.test(name)
+          ? `ui-transcript-heading ui-transcript-heading-${name.at(-1)}`
+          : name === "StrongEmphasis"
+            ? "ui-transcript-strong"
+            : name === "Emphasis"
+              ? "ui-transcript-emphasis"
+              : name === "InlineCode"
+                ? "ui-transcript-inline-code"
+                : name === "Strikethrough"
+                  ? "ui-transcript-strike"
+                  : undefined;
+        if (className)
+          marks.push({
+            from: node.from,
+            to: node.to,
+            value: Decoration.mark({ class: className }),
+          });
+        if (name === "Link") {
+          const source = text.slice(node.from, node.to);
+          const url = node.node.getChild("URL");
+          const destination = url
+            ? text.slice(url.from, url.to).replace(/^<|>$/g, "")
+            : "";
+          const external = /^https?:\/\//i.test(destination);
+          const file = !external && options.fileLink?.(destination);
+          if (external || file) {
+            const range = getMarkdownLinkTextRange(source, node.from, node.to);
+            if (!range) return;
+            const { from: start, to: end } = range;
+            hidden.push(
+              { from: node.from, to: start },
+              { from: end, to: node.to },
+            );
+            marks.push({
+              from: start,
+              to: end,
+              value: Decoration.mark({
+                class: "ui-transcript-link",
+                attributes: {
+                  role: "link",
+                  tabindex: "0",
+                  [file ? "data-chat-file-link" : "data-chat-link"]:
+                    destination,
+                },
+              }),
+            });
+            return false;
+          }
+        }
+      },
+    });
   const hiddenBuilder = new RangeSetBuilder<Decoration>();
   for (const range of hidden.sort((a, b) => a.from - b.from)) {
     if (range.to > range.from) {
       const value = Decoration.replace({});
       hiddenBuilder.add(range.from, range.to, value);
-      marks.push({ ...range, value });
+      if (!range.decorated) marks.push({ ...range, value });
     }
   }
   for (const [path, label] of [...(options.paths ?? [])].sort(

@@ -79,6 +79,9 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 **Requirement.** The Message family MUST compose role-aware message content, metadata, actions, and tool presentation.
 
+Message layout selectors MUST target their own direct parts so nested Avatar
+content retains its shared size, typography and centered alignment.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/ai/chat`.

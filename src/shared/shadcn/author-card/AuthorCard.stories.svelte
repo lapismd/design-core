@@ -17,7 +17,9 @@
 <Story
   name="Author details and actions"
   play={async ({ canvas }) => {
-    const trigger = canvas.getByRole("button", { name: "About Alex Morgan" });
+    const trigger = canvas.getByRole("button", {
+      name: "About Alex Morgan, AM",
+    });
     await userEvent.click(trigger);
     const card = await within(document.body).findByRole("dialog", {
       name: "About Alex Morgan",
@@ -43,7 +45,7 @@
   name="Mention hover card"
   play={async ({ canvas }) => {
     await userEvent.hover(
-      canvas.getByRole("button", { name: "About Alex Morgan" }),
+      canvas.getByRole("button", { name: "About Alex Morgan, AM" }),
     );
     await within(document.body).findByRole("group", {
       name: "About Alex Morgan",

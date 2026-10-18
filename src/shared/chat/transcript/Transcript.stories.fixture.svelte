@@ -169,6 +169,18 @@
     },
   ]);
   untrack(() => {
+    if (scenario === "table")
+      items = items.map((item) =>
+        item.id === "reply"
+          ? {
+              ...item,
+              blocks: item.blocks.map((block) => ({
+                ...block,
+                text: `${block.text}\n\n| Area | Next action |\n| --- | --- |\n| **Research** | Read the note |\n| Writing | Draft a summary |\n\n\`\`\`typescript\nconst review = "weekly";\n\`\`\`\n\n\`\`\`markdown\n| Literal | Example |\n| --- | --- |\n\`\`\``,
+              })),
+            }
+          : item,
+      );
     if (scenario === "large")
       items = [
         ...items,

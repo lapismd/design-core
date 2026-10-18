@@ -101,6 +101,11 @@ compact fold row with a trailing divider.
 
 **Requirement.** Transcript MUST present immutable host-owned conversations in document and classic views, preserving jj-store reference geometry, exact source text and reader identity during streaming and history loading.
 
+GFM tables and complete fenced code blocks MUST render through the existing safe
+Markdown reader while keeping the original captured source and offsets.
+Incomplete captures remain source content and fenced table examples remain
+literal code; reader widgets never write captured text.
+
 ### Acceptance details
 
 - Stable item and block identities MUST retain selection, folds and scroll anchors across append, prepend and source updates, and overlapping inspector readers MUST restore still-mounted source registrations under either teardown order; host extensions own application syntax and authorized navigation.

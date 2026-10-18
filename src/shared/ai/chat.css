@@ -330,7 +330,7 @@
   object-fit: cover;
 }
 
-[data-ui-component="ai-chat-message"] [data-ui-part="content"] {
+[data-ui-component="ai-chat-message"] > [data-ui-part="content"] {
   display: flex;
   min-width: 0;
   flex: 1 1 auto;
@@ -339,7 +339,7 @@
 }
 
 [data-ui-component="ai-chat-message"][data-sender="user"]
-  [data-ui-part="content"] {
+  > [data-ui-part="content"] {
   align-items: flex-end;
 }
 
@@ -348,7 +348,7 @@
 }
 
 [data-ui-component="ai-chat-message"][data-sender="system"]
-  [data-ui-part="content"] {
+  > [data-ui-part="content"] {
   max-width: 90%;
   align-items: center;
 }

@@ -32,6 +32,8 @@ export function readingExtensions(
           fileLink: (destination) =>
             !!comments.props().resolveFileLink?.(block, destination),
           paths: comments.props().displayPaths?.(block),
+          markdown: comments.props().markdown,
+          contexts,
         })
       : undefined;
   const referenceDecorations = Decoration.set(
