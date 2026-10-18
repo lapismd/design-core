@@ -26,6 +26,7 @@
   import Composer from "../../ai/composer/Composer.svelte";
   import ComposerDrawer from "../../ai/composer-drawer/ComposerDrawer.svelte";
   import { shouldSubmitComposerKey } from "../../ai/composer-behavior.js";
+  import { Separator } from "../../shadcn/separator/index.js";
   import { Button } from "../../shadcn/button/index.js";
   import { ScrollArea } from "../../shadcn/scroll-area/index.js";
   import {
@@ -269,7 +270,7 @@
           >{#snippet child({ props })}
             <Button
               {...props}
-              variant="ghost"
+              variant={formattingOpen ? "secondary" : "ghost"}
               size="icon-sm"
               disabled={blocked}
               aria-label="Formatting options"
@@ -282,6 +283,17 @@
         <Tooltip.Content>Formatting options</Tooltip.Content>
       </Tooltip.Root>
       {#if formattingOpen}
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          aria-label="Hide formatting"
+          onclick={() => (formattingOpen = false)}
+          ><XIcon aria-hidden="true" /></Button
+        >
+        <Separator
+          orientation="vertical"
+          class="ui-markdown-composer__separator"
+        />
         {#each formatActions as action (action.id)}
           <Tooltip.Root>
             <Tooltip.Trigger
@@ -302,16 +314,16 @@
           </Tooltip.Root>
         {/each}
       {/if}
-      <EmojiPicker
-        triggerLabel="Add emoji"
-        disabled={blocked}
-        {customEmojis}
-        {...emojis === undefined ? {} : { emojis }}
-        theme={colorMode === "light" || colorMode === "dark"
-          ? colorMode
-          : "auto"}
-        onSelect={addEmoji}
-      />
+      {#if !formattingOpen}<EmojiPicker
+          triggerLabel="Add emoji"
+          disabled={blocked}
+          {customEmojis}
+          {...emojis === undefined ? {} : { emojis }}
+          theme={colorMode === "light" || colorMode === "dark"
+            ? colorMode
+            : "auto"}
+          onSelect={addEmoji}
+        />{/if}
       {@render additionalActions?.({
         ...publicHandle,
         disabled: blocked,

@@ -8,7 +8,7 @@
   position: relative;
   z-index: 1;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: flex-end;
   align-items: center;
   gap: var(--ui-transcript-footer-gap, 0.75rem);
@@ -21,13 +21,20 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  flex-wrap: wrap;
-  flex: 1 0 auto;
+  flex-wrap: nowrap;
+  flex: 1 1 auto;
   min-width: 0;
   max-width: 100%;
 }
-.ui-transcript-footer__actions:has([data-formatting-open]) {
-  flex-basis: 100%;
+.ui-transcript-footer__actions {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ui-transcript-footer__actions > * {
+  flex-shrink: 0;
+}
+.ui-transcript-footer__actions::-webkit-scrollbar {
+  display: none;
 }
 .ui-transcript-footer__send {
   border-radius: 50%;

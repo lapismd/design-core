@@ -400,3 +400,39 @@
 >
   {#snippet template()}<Fixture scenario="edit" />{/snippet}
 </Story>
+
+<Story
+  name="Inline footer formatting"
+  play={async ({ canvas, canvasElement }) => {
+    const footer = canvasElement.querySelector<HTMLElement>(
+      ".ui-transcript-footer__body",
+    )!;
+    const before = footer.getBoundingClientRect().height;
+    const toggle = canvas.getByRole("button", {
+      name: /^Formatting\ options$/,
+    });
+    await userEvent.click(toggle);
+    await expect(canvas.getByRole("button", { name: /^Bold$/ })).toBeVisible();
+    await expect(footer.getBoundingClientRect().height).toBe(before);
+    await expect(
+      canvas.getByRole("button", { name: "Hide formatting" }),
+    ).toBeVisible();
+    await expect(
+      canvas.queryByRole("button", { name: "Add emoji" }),
+    ).not.toBeInTheDocument();
+    const send = canvas.getByRole("button", {
+      name: /^Stop\ agent$/,
+    });
+    await expect(
+      Math.abs(
+        toggle.getBoundingClientRect().y - send.getBoundingClientRect().y,
+      ),
+    ).toBeLessThan(1);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Hide formatting" }),
+    );
+    await expect(
+      canvas.getByRole("button", { name: "Add emoji" }),
+    ).toBeVisible();
+  }}>{#snippet template()}<Fixture scenario="full" />{/snippet}</Story
+>

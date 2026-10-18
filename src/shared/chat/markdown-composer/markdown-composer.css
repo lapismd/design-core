@@ -82,7 +82,7 @@
 .ui-markdown-composer__actions {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.125rem;
   min-width: 0;
 }
@@ -179,4 +179,12 @@
     > [data-ui-part="body"] {
     border-color: CanvasText;
   }
+}
+
+.ui-markdown-composer__actions > * {
+  flex-shrink: 0;
+}
+.ui-markdown-composer__separator {
+  height: 1.25rem;
+  margin-inline: 0.25rem;
 }
