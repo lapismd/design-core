@@ -115,7 +115,8 @@ The gate MUST retain diagnostics caught during component teardown and fail
 after the story or final suite cleanup instead of relying only on the
 immediately thrown error.
 The development catalog readiness probe MUST prepare representative client
-entries and await pending import requests before browser acceptance begins.
+entries, including the shared Workspace AppShell export graph, and await pending
+import requests before browser acceptance begins.
 Compilation failures return an unavailable response and allow a later retry.
 Workspace pointer acceptance MUST await the requested story's render and play
 completion before settling fonts or measuring drag targets, using the existing

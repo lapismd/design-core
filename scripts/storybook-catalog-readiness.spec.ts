@@ -32,6 +32,22 @@ function fixture() {
 }
 
 describe("catalog client preparation", () => {
+  it("refuses readiness when the shared Workspace shell cannot compile", async () => {
+    const f = fixture();
+    f.server.transformRequest.mockImplementation(async (entry) =>
+      entry === "/src/shared/workspace/app-shell/index.ts"
+        ? null
+        : { code: "export {};" },
+    );
+    const failed = f.response();
+    await f.probe(failed);
+    expect(failed.statusCode).toBe(503);
+    expect(f.server.waitForRequestsIdle).not.toHaveBeenCalled();
+    f.server.transformRequest.mockResolvedValue({ code: "export {};" });
+    const repaired = f.response();
+    await f.probe(repaired);
+    expect(repaired.statusCode).toBe(200);
+  });
   it("does not report ready before client imports settle", async () => {
     const f = fixture();
     let finish!: () => void;

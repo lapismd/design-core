@@ -165,3 +165,4 @@ Data and feedback primitives communicate state without taking ownership of consu
 
 - Invalid dates MUST retain a readable fallback and never throw during rendering.
 - Live updates MUST stop on disposal while supplied clocks, locale and absolute-date thresholds remain deterministic.
+- Interactive accessible names MUST contain the visible date text together with the exact date or host-supplied context label.

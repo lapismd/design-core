@@ -30,6 +30,12 @@
     }),
   );
   const destination = $derived(safeLink(href));
+  const contextLabel = $derived(label ?? formatted.full);
+  const accessibleName = $derived(
+    formatted.text === contextLabel
+      ? formatted.text
+      : `${formatted.text} · ${contextLabel}`,
+  );
   $effect(() => {
     if (now !== undefined) return;
     untrack(() => (liveNow = Date.now()));
@@ -46,13 +52,13 @@
               {...props}
               href={destination}
               class={["ui-relative-time", className]}
-              aria-label={label ?? formatted.full}
+              aria-label={accessibleName}
               ><time datetime={formatted.datetime}>{formatted.text}</time></a
             >{/snippet}</Tooltip.Trigger
         >
       {:else}<Tooltip.Trigger
           class={["ui-relative-time", className]}
-          aria-label={label ?? formatted.full}
+          aria-label={accessibleName}
           ><time datetime={formatted.datetime}>{formatted.text}</time
           ></Tooltip.Trigger
         >{/if}
