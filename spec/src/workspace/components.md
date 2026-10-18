@@ -482,6 +482,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/status-item`.
+- A custom `mount(host)` MAY own controls and CSS instead of built-in chrome; its returned disposer MUST run on replacement/removal with the owner providing accessible controls and resource cleanup.
 - An action's accessible name MUST contain its visible label or segments together with its tooltip context.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 

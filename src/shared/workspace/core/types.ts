@@ -237,6 +237,11 @@ export interface WorkspaceRibbonItem {
 
 export interface WorkspaceStatusItem {
   id: string;
+  /** Own custom controls in this host; cleanup runs on replacement or removal.
+   * Custom content takes precedence over the built-in button/menu presentation.
+   * The owner supplies accessible controls, styling and resource lifetime.
+   */
+  mount?: (host: HTMLElement) => () => void;
   align?: "left" | "right";
   priority?: number;
   label?: string;

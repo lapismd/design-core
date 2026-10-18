@@ -241,3 +241,12 @@ under DC-WS-069.
 
 - Source stylesheet changes MUST reach every open popup.
 - Theme changes MUST retain editor identity.
+
+## Custom status composition
+
+Status contributions may supply `mount(host)` for plugin-owned controls and
+styles. The shared status item owns only the mount boundary and invokes its
+disposer on callback replacement or removal; custom content supplies accessible
+names, buttons and overlay lifetime. Built-in status text/menu rendering remains
+the default (DC-WS-029). No repository or domain-specific content belongs in the
+workspace shell.
