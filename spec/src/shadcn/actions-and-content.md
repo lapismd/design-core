@@ -88,5 +88,5 @@ Action and content primitives adapt shadcn-svelte semantics to Design Core styli
 
 - The public boundary is `@lapismd/design-core/shadcn/code-block`.
 - Token and highlight projection MUST remain consumable under strict indexed-access TypeScript settings without changing rendered ranges; span rendering MUST preserve repeated text and whitespace segments.
-- Token colors for span and range highlighting MUST ship as bundled CSS and remain visible when the host blocks injected inline styles; untrusted source bytes MUST remain text.
+- Token colors for span and range highlighting MUST ship as bundled CSS and remain readable in light and dark mode when the host blocks injected inline styles; explicit syntax themes MUST retain their own token overrides, and untrusted source bytes MUST remain text.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

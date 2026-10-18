@@ -101,6 +101,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Error-status text MUST retain at least 4.5:1 contrast on the Lapis conversation and muted surfaces in dark mode, using existing semantic foreground colors without changing status meaning.
 
 ## DC-AI-008 — System Message
 
@@ -185,14 +186,20 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ## DC-AI-015 — Tool Calls
 
-**Requirement.** The Tool Calls family MUST present tool invocation status, arguments, results, and disclosure without executing tools.
+**Requirement.** The Tool Calls family MUST present tool invocation status, arguments, results, and disclosure accessibly without executing tools.
+
+Call and collapsed-group disclosure names include their complete visible labels,
+including node, target, change counts, custom statistics and duration when
+present; execution status is an accessible description. Per-component IDs keep
+repeated call identities independent without changing the flex layout or
+wrapper/keyboard behavior.
 
 ### Acceptance details
 
 - `--ui-ai-chat-tool-width` MUST allow container-relative sizing with a default of `min(100%, 42rem)`; `--ui-ai-chat-tool-trigger-padding-inline` MUST inset single and grouped trigger contents inside their hit/hover surface without moving the icon on hover; its default is zero.
 - The optional `callWrapper?: Snippet<[ToolCallItem, Snippet]>` MUST compose each call’s existing presentation inside its list item, outside disclosure buttons; without it, rendering remains unchanged and grouped calls expose wrappers only when expanded.
 - Tool-call disclosure indicators MUST retain their fixed size beside long titles, point right while closed and down while open for both grouped calls and individual call details, and single-call rendering MUST remain safe under unchecked-index consumer semantics.
-- Pending and running calls MUST render the public Spinner as a rotating busy indicator; an explicit `unknown` execution status MUST show a static status-unavailable indicator, preserve observed details, and MUST NOT imply failure or completion.
+- Pending and running calls MUST render the public Spinner as a rotating decorative busy indicator with `aria-hidden="true"` while retaining their accessible status text; an explicit `unknown` execution status MUST show a static status-unavailable indicator, preserve observed details, and MUST NOT imply failure or completion.
 
 ## DC-AI-016 — Dictation Button
 

@@ -508,6 +508,14 @@
   color: var(--destructive);
 }
 
+.dark
+  [data-ui-component="ai-chat-message-metadata"]
+  [data-ui-part="status"][data-status="error"],
+[data-ui-component="ai-chat-message-metadata"].dark
+  [data-ui-part="status"][data-status="error"] {
+  color: color-mix(in srgb, var(--destructive) 60%, var(--foreground));
+}
+
 [data-ui-component="ai-chat-message-metadata"] svg {
   width: 0.75rem;
   height: 0.75rem;
@@ -1165,7 +1173,7 @@
   [data-ui-part="call"][data-status="error"]
   [data-ui-part="call-status"],
 [data-ui-component="ai-chat-tool-calls"] [data-ui-part="error"] {
-  color: var(--destructive);
+  color: color-mix(in oklab, var(--destructive) 70%, var(--foreground));
 }
 
 [data-ui-component="ai-chat-tool-calls"] [data-ui-part="call-status"] svg {
@@ -1226,7 +1234,7 @@
 [data-ui-component="ai-chat-tool-calls"]
   [data-ui-part="diff-stats"]
   [data-kind="deletion"] {
-  color: var(--destructive);
+  color: color-mix(in oklab, var(--destructive) 70%, var(--foreground));
 }
 
 [data-ui-component="ai-chat-tool-calls"] [data-ui-part="detail-chevron"] {

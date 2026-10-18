@@ -28,7 +28,7 @@
       canvas.queryByRole("button", { name: "Reply to Read file" }),
     ).not.toBeInTheDocument();
     await userEvent.click(
-      canvas.getByRole("button", { name: "Expand 2 tool calls" }),
+      canvas.getByRole("button", { name: "Expand Edit file 2 tool calls" }),
     );
     const reply = canvas.getByRole("button", { name: "Reply to Read file" });
     await expect(reply).toBeVisible();

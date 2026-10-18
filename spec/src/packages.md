@@ -1,5 +1,8 @@
 # Package exports
 
+The clean archive consumer exercises reconciled ToolCalls disclosure names and
+bundled light/dark CodeBlock syntax colors through their public family exports.
+
 The Chat barrel additionally exports TranscriptFooter, MessageQueue, PromptContext
 and promptElementsExtension. ComposerStatusBanner remains owned by the existing
 AI Composer family and is re-exported through Chat. XML syntax highlighting uses

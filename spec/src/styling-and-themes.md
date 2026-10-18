@@ -66,6 +66,7 @@ currentColor, reduced-motion preferences and Button focus semantics.
 
 - Consumers may override documented semantic tokens without depending on private selectors.
 - Styling validation must distinguish source ownership from Storybook-only presentation.
+- Small tool-failure text and deletion counts MUST retain at least 4.5:1 contrast on Lapis light and dark surfaces, using existing destructive and foreground semantics.
 
 ## DC-CSS-005 — No utility leakage
 
@@ -279,6 +280,17 @@ success use semantic tokens. `--ui-composer-status-radius`,
 Composer's existing radius and padding tokens. PromptContext owns its escaped
 XML tag/disclosure styling and delegates safe Markdown to Mira's public extension
 API; tag syntax uses the public `--ui-code-syntax-*` colours and host fonts.
+
+Default code syntax colors ship as ordinary CSS with light root defaults and
+readable dark defaults inside `.dark`. CodeBlock span/range highlights,
+unchanged diff context and contextual syntax share these tokens. Explicit
+syntax themes and host token overrides retain ownership of their palette;
+changed diff rows keep their separate readable-foreground contract.
+
+Dark Message Metadata error text mixes the existing destructive and foreground
+semantics for readable small status labels on conversation and muted surfaces.
+Its status label and icon remain the error indication; the light palette and
+the theme's destructive background color retain their existing roles.
 
 Community presentation additions use native component-owned CSS. Public tokens
 use --ui-avatar-group-_, --ui-author-card-_, --ui-reference-chip-_,

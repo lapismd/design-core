@@ -87,6 +87,32 @@ async function checkPrimitiveStates(page) {
   assert.equal(styles.standardPanelWidth, "16px");
   assert.equal(styles.standardPanelHeight, "16px");
   assert.equal(styles.composedIconWidth, "20px");
+  const packedTool = page.locator('[data-review="reconciled-tool"]');
+  const toolDisclosure = packedTool.getByRole("button", {
+    name: /details for file.read Docs README.md/,
+  });
+  await toolDisclosure.waitFor();
+  assert.ok(await toolDisclosure.getAttribute("aria-labelledby"));
+  assert.equal(await packedTool.getByRole("status").count(), 0);
+  for (const text of ["Docs", "README.md", "+2", "−1", "4 lines"])
+    assert.ok((await toolDisclosure.innerText()).includes(text));
+  if ((await toolDisclosure.getAttribute("aria-expanded")) !== "true")
+    await toolDisclosure.click();
+  assert.equal(
+    await packedTool.getByText("Packed captured output").isVisible(),
+    true,
+  );
+  const keyword = page.locator(
+    '[data-review="reconciled-syntax"] .ui-code-token-keyword',
+  );
+  await keyword.waitFor();
+  const darkSyntax = await page.evaluate(() =>
+    document.documentElement.classList.contains("dark"),
+  );
+  assert.equal(
+    await keyword.evaluate((element) => getComputedStyle(element).color),
+    darkSyntax ? "rgb(196, 181, 253)" : "rgb(91, 33, 182)",
+  );
   const workspaceToggles = await page
     .locator(
       "[data-workspace-sidebar-toggle], [data-workspace-bottom-panel-toggle]",
@@ -599,6 +625,8 @@ import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
 import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
 import * as Alert from "@lapismd/design-core/shadcn/alert";
 import { PanelToggle, PanelToggleIcon, type PanelToggleIconProps } from "@lapismd/design-core/shadcn/panel-toggle";
+import { CodeBlock } from "@lapismd/design-core/shadcn/code-block";
+import { ToolCalls } from "@lapismd/design-core/ai/chat";
 import { WorkspaceSidebarToggle } from "@lapismd/design-core/workspace/sidebar-toggle";
 import { WorkspaceBottomPanelToggle } from "@lapismd/design-core/workspace/bottom-panel";
 import { EmojiPicker } from "@lapismd/design-core/shadcn/emoji-picker";
@@ -664,6 +692,10 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <Alert.Root data-review="alert"><svg aria-hidden="true" width="16" height="16"><circle cx="8" cy="8" r="6" /></svg><Alert.Title>Archive notice</Alert.Title><Alert.Description>Icon alignment.</Alert.Description></Alert.Root>
 {#each panelVariants as iconVariant}{#each panelSides as side}<PanelToggle {iconVariant} {side} expanded data-review={['panel', iconVariant, side].join('-')} />{/each}{/each}
 <PanelToggleIcon {...panelIcon} class="packed-panel-icon" data-review="panel-icon-only" />
+{#snippet packedToolDetail()}<p>Packed captured output</p>{/snippet}
+{#snippet packedToolStats()}4 lines{/snippet}
+<div data-review="reconciled-tool"><ToolCalls calls={[{id:"read",name:"file.read",node:"Docs",target:"README.md",status:"running",additions:2,deletions:1,stats:packedToolStats,detail:packedToolDetail}]} /></div>
+<div data-review="reconciled-syntax"><CodeBlock code="const answer = 42;" language="javascript" highlightMode="spans" /></div>
 {#each [false, true] as expanded}
 <WorkspaceSidebarToggle side="left" label="Packed left sidebar" size="small" {expanded} onSelect={() => {}} />
 <WorkspaceSidebarToggle side="right" label="Packed right sidebar" {expanded} onSelect={() => {}} />

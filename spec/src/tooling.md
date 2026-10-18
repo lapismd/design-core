@@ -1,5 +1,9 @@
 # Tooling
 
+The packed consumer checks complete ToolCalls disclosure metadata, decorative busy
+indicators and bundled CodeBlock keyword colors in light/dark development and
+production runs, without Tailwind tooling.
+
 The packed public-runtime fixture exercises acknowledged versioned comment edits
 and the docked MarkdownComposer toolbar across teardown/remount, alongside
 Transcript timestamps. These checks run in both themes and development/production

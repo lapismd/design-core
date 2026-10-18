@@ -1,4 +1,11 @@
-import { Meta, Primary, Controls, Source } from "@storybook/addon-docs/blocks";
+import {
+  Canvas,
+  Controls,
+  Description,
+  Meta,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as CodeBlockStories from "./CodeBlock.stories.svelte";
 
 <Meta of={CodeBlockStories} />
@@ -25,3 +32,9 @@ Provenance: `spec/records/code-and-code-block.md` (Astryx-inspired, project-auth
 <Primary />
 
 <Controls />
+
+## Dark defaults and explicit themes
+
+<Description of={CodeBlockStories.DarkDefaultsPreserveCustomSyntaxThemes} />
+
+<Canvas of={CodeBlockStories.DarkDefaultsPreserveCustomSyntaxThemes} />

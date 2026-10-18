@@ -51,7 +51,7 @@ scroll offsets, continuation and keyboard navigation retain the same spacing.
 
 **Requirement.** The File Diff family MUST render unified or split textual changes from two texts or a unified patch without owning comments or version-control transport.
 
-Highlighted additions/removals MUST retain readable syntax foreground on row and intraline washes through `--ui-diff-changed-syntax-foreground` (default `--foreground`), while unchanged rows retain normal syntax colors.
+Highlighted additions/removals MUST retain readable syntax foreground on row and intraline washes through `--ui-diff-changed-syntax-foreground` (default `--foreground`), while unchanged rows retain readable normal syntax colors in both light and dark modes.
 
 ### Acceptance details
 

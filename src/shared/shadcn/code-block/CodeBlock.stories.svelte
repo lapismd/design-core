@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, waitFor } from "storybook/test";
   import { CodeBlock, dracula } from "./index.js";
+  import { Basic, DarkDefaults } from "./CodeBlock.example-sources.js";
 
   const { Story } = defineMeta({
     title: "Shadcn/Content/Code Block",
@@ -37,6 +38,9 @@ export function App() {
 <Story
   name="Default TSX"
   tags={["skip-visual"]}
+  parameters={{
+    docs: { source: { code: Basic, language: "tsx", type: "code" } },
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByRole("group", { name: "tsx" })).toBeVisible();
     await expect(canvas.getByText(/import \{ Button \}/)).toBeVisible();
@@ -44,6 +48,54 @@ export function App() {
 >
   {#snippet template()}
     <CodeBlock code={sampleTsx} language="tsx" />
+  {/snippet}
+</Story>
+
+<Story
+  name="Dark defaults preserve custom syntax themes"
+  globals={{ colorMode: "dark" }}
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      story: { inline: false, height: "240px" },
+      description: {
+        story:
+          "The default span palette stays readable in dark mode, while an explicit syntax theme retains its own colors.",
+      },
+      source: { code: DarkDefaults, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const normal = canvas
+      .getByRole("region", { name: "Default syntax" })
+      .querySelector(".ui-code-token-keyword");
+    const custom = canvas
+      .getByRole("region", { name: "Custom syntax" })
+      .querySelector(".ui-code-token-keyword");
+    await expect(normal).toBeVisible();
+    await expect(custom).toBeVisible();
+    await expect(getComputedStyle(normal!).color).not.toBe(
+      getComputedStyle(normal!.closest("code")!).color,
+    );
+    await expect(getComputedStyle(custom!).color).toBe("rgb(255, 121, 198)");
+  }}
+>
+  {#snippet template()}
+    <section aria-label="Default syntax">
+      <CodeBlock
+        code="const answer = 42;"
+        language="javascript"
+        highlightMode="spans"
+      />
+    </section>
+    <section aria-label="Custom syntax">
+      <CodeBlock
+        code="const answer = 42;"
+        language="javascript"
+        highlightMode="spans"
+        syntaxTheme={dracula}
+      />
+    </section>
   {/snippet}
 </Story>
 
