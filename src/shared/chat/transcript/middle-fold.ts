@@ -5,7 +5,7 @@ import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
 import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
 import type { TranscriptBlock } from "./model.js";
 import type { TranscriptController } from "./comments.svelte.js";
-import { validAnchor } from "./anchors.js";
+import { localAnchor, type ReaderSource } from "./reader-source.js";
 type FoldState = Pick<
   TranscriptController,
   "disclosures" | "threads" | "active"
@@ -89,7 +89,11 @@ class MiddleFoldWidget extends WidgetType {
     icons.delete(dom);
   }
 }
-export function middleDecorations(block: TranscriptBlock, comments: FoldState) {
+export function middleDecorations(
+  block: TranscriptBlock,
+  comments: FoldState,
+  source?: ReaderSource,
+) {
   const range = middleRange(block);
   if (!range) return Decoration.none;
   const anchors = [
@@ -97,12 +101,10 @@ export function middleDecorations(block: TranscriptBlock, comments: FoldState) {
     ...(comments.active ? [comments.active.anchor] : []),
   ];
   if (
-    anchors.some(
-      (anchor) =>
-        validAnchor(block, anchor) &&
-        anchor.from < range.to &&
-        anchor.to >= range.from,
-    )
+    anchors.some((anchor) => {
+      const local = localAnchor(block, anchor, source);
+      return local && local.from < range.to && local.to >= range.from;
+    })
   )
     return Decoration.none;
   const expanded = !!comments.disclosures[middleFoldKey(block)];

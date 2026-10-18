@@ -116,6 +116,9 @@ Table comments MUST appear between their referenced row and the following row,
 with unchanged source order and aligned column widths. Comment context MUST
 retain the complete captured row and its exact selection independently of the
 original source's later availability, using Mira's public table surface.
+Fenced code MUST use the captured code/patch reader's syntax, inline line
+comments and middle-fold controls. Mapping a fenced body into its captured
+Markdown MUST preserve the original anchor identity and UTF-16 selection.
 
 ### Acceptance details
 

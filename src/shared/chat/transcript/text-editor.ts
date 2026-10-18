@@ -14,6 +14,7 @@ import { chatCaret } from "./chat-caret.js";
 import { numberedCodeGutter } from "./numbered-code-gutter.js";
 import type { TranscriptBlock } from "./model.js";
 import type { TranscriptController } from "./comments.svelte.js";
+import type { ReaderSource } from "./reader-source.js";
 
 export const refreshComments = StateEffect.define<null>();
 export function readingExtensions(
@@ -21,6 +22,7 @@ export function readingExtensions(
   comments: TranscriptController,
   contexts: Map<unknown, unknown>,
   fileView = false,
+  source?: ReaderSource,
 ) {
   const references =
     block.kind === "markdown"
@@ -45,23 +47,33 @@ export function readingExtensions(
     true,
   );
   const open = (view: EditorView, initial = "") => {
-    comments.open(block, view.state.selection.main, initial);
+    const selection = view.state.selection.main;
+    const offset = source?.from ?? 0;
+    // Code caret comments use the existing line anchor behavior on the slice.
+    const line = view.state.doc.lineAt(selection.from);
+    const from = selection.empty && source ? line.from : selection.from;
+    const to = selection.empty && source ? line.to : selection.to;
+    comments.open(
+      source?.block ?? block,
+      { from: from + offset, to: to + offset },
+      initial,
+    );
     return true;
   };
   const annotations = StateField.define({
-    create: () => commentDecorations(block, comments, contexts),
+    create: () => commentDecorations(block, comments, contexts, source),
     update: (value, tr) =>
       tr.effects.some((e) => e.is(refreshComments))
-        ? commentDecorations(block, comments, contexts)
+        ? commentDecorations(block, comments, contexts, source)
         : value,
     provide: (field) => EditorView.decorations.from(field),
   });
   let composing = false;
   const folds = StateField.define({
-    create: () => middleDecorations(block, comments),
+    create: () => middleDecorations(block, comments, source),
     update: (value, tr) =>
       tr.effects.some((e) => e.is(refreshComments))
-        ? middleDecorations(block, comments)
+        ? middleDecorations(block, comments, source)
         : value,
     provide: (field) => [
       EditorView.decorations.from(field),
@@ -71,6 +83,15 @@ export function readingExtensions(
   return [
     chatCaret,
     comments.props().readerExtensions?.(block) ?? [],
+    EditorView.updateListener.of((update) => {
+      if (source && update.selectionSet && update.view.hasFocus) {
+        const selection = update.state.selection.main;
+        comments.sourceSelections.set(source.block.id, {
+          from: source.from + selection.from,
+          to: source.from + selection.to,
+        });
+      }
+    }),
     // Input is routed into comments; the retained document rejects every edit.
     Prec.highest(EditorView.editable.of(true)),
     EditorState.transactionFilter.of((tr) => (tr.docChanged ? [] : tr)),

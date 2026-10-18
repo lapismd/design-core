@@ -1,11 +1,11 @@
 <script lang="ts">
   // Adapted from Mira preview/components/code.svelte; Apache-2.0.
-  import { getContext, type Snippet } from "svelte";
+  import { getContext, untrack, type Snippet } from "svelte";
   import { codeLanguageLabel } from "@lapismd/mira/preview";
   import { Button } from "../../shadcn/button/index.js";
   import CopyIcon from "@lucide/svelte/icons/copy";
   import CheckIcon from "@lucide/svelte/icons/check";
-  import RichSourceReader from "./RichSourceReader.svelte";
+  import ChatTextBlock from "./ChatTextBlock.svelte";
   import { richSourceContext, type RichSourceContext } from "./rich-source.js";
   let {
     ref = $bindable(null),
@@ -22,6 +22,18 @@
     [key: string]: unknown;
   } = $props();
   const context = getContext<RichSourceContext>(richSourceContext);
+  const code = untrack(() =>
+    from !== undefined && to !== undefined
+      ? {
+          ...context.block,
+          id: `${context.block.id}/fence/${from}`,
+          text: context.block.text.slice(from, to),
+          kind: "code" as const,
+          path: `source.${({ typescript: "ts", javascript: "js", markdown: "md", bash: "sh" } as Record<string, string>)[language] ?? language}`,
+          label: `${language} code`,
+        }
+      : undefined,
+  );
   let copied = $state(false);
 </script>
 
@@ -43,6 +55,12 @@
         {#if copied}<CheckIcon />{:else}<CopyIcon />{/if}
       </Button>
     </div>
-    <RichSourceReader {from} {to} {language} label={`${language} code`} />
+    {#if code}<ChatTextBlock
+        block={code}
+        state={context.comments}
+        showHeader={false}
+        showActions={false}
+        source={{ block: context.block, from, to }}
+      />{/if}
   </div>
 {:else}<code bind:this={ref}>{@render children?.()}</code>{/if}

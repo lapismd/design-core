@@ -9,9 +9,8 @@ import { estimateMarkdownBlockHeight } from "@lapismd/mira/codemirror";
 import type { TranscriptBlock } from "./model.js";
 import type { TranscriptController } from "./comments.svelte.js";
 import ChatCommentArea from "./ChatCommentArea.svelte";
-import { validAnchor } from "./anchors.js";
 import { richBlockRanges } from "./rich-source.js";
-import { tableSources } from "./table-source.js";
+import { localAnchor, type ReaderSource } from "./reader-source.js";
 
 const mounts = new WeakMap<HTMLElement, ReturnType<typeof mount>>();
 const observers = new WeakMap<HTMLElement, ResizeObserver>();
@@ -78,22 +77,25 @@ export function commentDecorations(
   block: TranscriptBlock,
   state: TranscriptController,
   contexts: Map<unknown, unknown>,
+  source?: ReaderSource,
 ): DecorationSet {
-  const tables = block.kind === "markdown" ? tableSources(block.text) : [];
   const richRanges =
     block.kind === "markdown" ? richBlockRanges(block.text) : [];
   const anchors = state.visibleThreads
     .filter(
       (t) =>
-        validAnchor(block, t.anchor) &&
+        localAnchor(block, t.anchor, source) &&
         !(
           block.kind === "markdown" &&
-          tables.some(
+          richRanges.some(
             (table) => t.anchor.from >= table.from && t.anchor.to <= table.to,
           )
         ),
     )
-    .map((t) => ({ anchor: t.anchor, threadId: t.id }));
+    .map((t) => ({
+      anchor: localAnchor(block, t.anchor, source)!,
+      threadId: t.id,
+    }));
   const ranges = anchors.map(({ anchor, threadId }) => {
     const newline = block.text.indexOf("\n", anchor.to);
     const rich =
@@ -106,7 +108,12 @@ export function commentDecorations(
     return Decoration.widget({
       block: true,
       side: 1,
-      widget: new CommentWidget(state, block, contexts, threadId),
+      widget: new CommentWidget(
+        state,
+        source?.block ?? block,
+        contexts,
+        threadId,
+      ),
     }).range(position);
   });
   for (const { anchor, threadId } of anchors) {

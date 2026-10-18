@@ -169,6 +169,20 @@
     },
   ]);
   untrack(() => {
+    if (scenario === "fenced-code")
+      items = items.map((item) =>
+        item.id === "reply"
+          ? {
+              ...item,
+              blocks: [
+                {
+                  ...prose,
+                  text: `Captured implementation:\n\n\`\`\`typescript\n${Array.from({ length: 60 }, (_, index) => `export const setting${index + 1} = "value ${index + 1}";`).join("\n")}\n\`\`\`\n\nReview before applying.`,
+                },
+              ],
+            }
+          : item,
+      );
     if (scenario === "table")
       items = items.map((item) =>
         item.id === "reply"
@@ -690,7 +704,7 @@
                         {...props}
                         variant="ghost"
                         size="sm"
-                        aria-label={`Choose ${menu.id}`}
+                        aria-label={`Choose ${menu.id}: ${menu.label}`}
                         class="transcript-fixture-choice"
                         ><menu.icon /><span>{menu.label}</span></Button
                       >{/snippet}</DropdownMenu.Trigger

@@ -108,7 +108,7 @@
         }),
       ).toHaveLength(2),
     );
-    const tableArea = cell.closest(".ui-transcript-rich-table")!;
+    const tableArea = cell.closest<HTMLElement>(".ui-transcript-rich-table")!;
     const area = within(tableArea).getByRole("group", {
       name: "Inline comments on Implementation summary",
     });
@@ -148,6 +148,55 @@
       getComputedStyle(code.closest(".cm-editor")!).backgroundColor,
     ).toBe("rgba(0, 0, 0, 0)");
   }}>{#snippet template()}<Fixture scenario="table" />{/snippet}</Story
+>
+
+<Story
+  name="Fenced code uses captured reader comments and folds"
+  play={async ({ canvas }) => {
+    const more = await canvas.findByRole("button", {
+      name: "Show 40 more lines in typescript code",
+    });
+    await userEvent.click(more);
+    await expect(
+      canvas.getByRole("button", { name: "Show less in typescript code" }),
+    ).toBeVisible();
+    const code = canvas.getByRole("textbox", { name: "typescript code" });
+    await userEvent.click(code);
+    await userEvent.keyboard(
+      "{ArrowUp}".repeat(65) +
+        "{Home}{ArrowDown}{Home}{Shift>}{End}{/Shift}{Control>}{Alt>}m{/Alt}{/Control}",
+    );
+    const frame = code.closest<HTMLElement>(".ui-transcript-rich-code")!;
+    const area = await within(frame).findByRole("group", {
+      name: "Inline comments on Implementation summary",
+    });
+    await userEvent.click(
+      within(area).getByRole("textbox", {
+        name: "Comment on Implementation summary",
+      }),
+    );
+    await userEvent.keyboard("Keep this setting in the same module.");
+    const anchors = JSON.parse(
+      canvas.getByTestId("transcript-result").getAttribute("data-anchors")!,
+    );
+    await expect(anchors[0].quote).toBe('export const setting2 = "value 2";');
+    await expect(code).toHaveTextContent(
+      'export const setting20 = "value 20";',
+    );
+    await userEvent.click(
+      within(frame).getByRole("button", {
+        name: "Show less in typescript code",
+      }),
+    );
+    await expect(
+      within(frame).getByRole("button", {
+        name: "Show 40 more lines in typescript code",
+      }),
+    ).toBeVisible();
+    await expect(area).toHaveTextContent(
+      "Keep this setting in the same module.",
+    );
+  }}>{#snippet template()}<Fixture scenario="fenced-code" />{/snippet}</Story
 >
 
 <Story

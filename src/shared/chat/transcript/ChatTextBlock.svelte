@@ -11,6 +11,7 @@
   import { middleFoldKey } from "./middle-fold.js";
   import { registerReader } from "./reader-registry.js";
   import { replyIndicator } from "./reply-indicator.js";
+  import type { ReaderSource } from "./reader-source.js";
   import "./text-reader.css";
   let {
     block,
@@ -21,6 +22,8 @@
     reply = false,
     fileView = false,
     initialLine,
+    source,
+    showActions = true,
   }: {
     block: TranscriptBlock;
     state: TranscriptController;
@@ -30,6 +33,8 @@
     reply?: boolean;
     fileView?: boolean;
     initialLine?: number;
+    source?: ReaderSource;
+    showActions?: boolean;
   } = $props();
   let editor: MiraCodeEditorHandle;
   let view = $state<EditorView>();
@@ -38,7 +43,7 @@
   const reader = new Compartment();
   let configured = "";
   const extensions = untrack(() => [
-    reader.of(readingExtensions(block, comments, contexts, fileView)),
+    reader.of(readingExtensions(block, comments, contexts, fileView, source)),
     replyPrefix.of(reply ? replyIndicator : []),
   ]);
   onMount(() => {
@@ -69,7 +74,32 @@
     void tick().then(() => {
       if (disposed) return;
       view = editor.getView() ?? undefined;
-      release = registerReader(comments.readers, id, reveal);
+      if (source) {
+        const original = source;
+        const embedded = {
+          from: original.from,
+          to: original.to,
+          revision: original.block.revision,
+          reveal: (from: number, to: number, scroll: boolean) => {
+            view?.dispatch({
+              selection: {
+                anchor: from - original.from,
+                head: to - original.from,
+              },
+              scrollIntoView: scroll,
+            });
+            editor.focus();
+          },
+        };
+        const readers =
+          comments.embeddedReaders.get(original.block.id) ?? new Set();
+        readers.add(embedded);
+        comments.embeddedReaders.set(original.block.id, readers);
+        release = () => {
+          readers.delete(embedded);
+          if (!readers.size) comments.embeddedReaders.delete(original.block.id);
+        };
+      } else release = registerReader(comments.readers, id, reveal);
     });
     return () => {
       disposed = true;
@@ -120,6 +150,7 @@
             comments,
             contexts,
             fileView,
+            source,
           ),
         ),
         filter: false,
@@ -139,11 +170,14 @@
     view?.dispatch({ effects: refreshComments.of(null) });
   });
   function comment() {
-    comments.open(
-      block,
-      comments.sourceSelections.get(block.id) ??
-        view?.state.selection.main ?? { from: 0, to: 0 },
-    );
+    const selection = source
+      ? (comments.sourceSelections.get(source.block.id) ?? {
+          from: source.from + (view?.state.selection.main.from ?? 0),
+          to: source.from + (view?.state.selection.main.to ?? 0),
+        })
+      : (comments.sourceSelections.get(block.id) ??
+        view?.state.selection.main ?? { from: 0, to: 0 });
+    comments.open(source?.block ?? block, selection);
   }
   $effect(() => {
     if (view && initialLine) {
@@ -182,11 +216,11 @@
       minHeight="0"
     />
   </div>
-  <ChatHoverActions
-    {block}
-    state={comments}
-    {reactionTarget}
-    {messageActions}
-    onComment={comment}
-  />
+  {#if showActions}<ChatHoverActions
+      {block}
+      state={comments}
+      {reactionTarget}
+      {messageActions}
+      onComment={comment}
+    />{/if}
 </div>
