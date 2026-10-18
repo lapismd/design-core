@@ -38,6 +38,12 @@
       preview.getBoundingClientRect().height -
         table.getBoundingClientRect().height,
     ).toBeLessThan(40);
+    await expect(
+      within(table)
+        .getByRole("cell", { name: "Research" })
+        .getBoundingClientRect().height,
+    ).toBeLessThan(48);
+    await expect(table.querySelector(".cm-gutters")).toBeNull();
     await waitFor(() => {
       expect(
         canvas.getByRole("textbox", { name: "typescript code" }),
@@ -46,6 +52,12 @@
     await expect(
       canvas.getByRole("textbox", { name: "typescript code" }),
     ).toHaveTextContent('const review = "weekly";');
+    await expect(
+      canvas
+        .getByRole("textbox", { name: "typescript code" })
+        .closest(".cm-editor")!
+        .querySelector(".cm-gutters"),
+    ).toBeNull();
     await expect(canvas.getByText("TypeScript", { exact: true })).toBeVisible();
     const content = canvasElement.querySelector<HTMLElement>(
       '[data-chat-item] [data-ui-component="avatar"] [data-ui-part="content"]',
@@ -89,10 +101,21 @@
     await userEvent.keyboard(
       "{Home}{Shift>}{End}{/Shift}{Control>}{Alt>}m{/Alt}{/Control}",
     );
-    const editors = await canvas.findAllByRole("textbox", {
-      name: "Comment on Implementation summary",
+    await waitFor(() =>
+      expect(
+        canvas.getAllByRole("group", {
+          name: "Inline comments on Implementation summary",
+        }),
+      ).toHaveLength(2),
+    );
+    const areas = canvas.getAllByRole("group", {
+      name: "Inline comments on Implementation summary",
     });
-    await userEvent.click(editors.at(-1)!);
+    await userEvent.click(
+      within(areas.at(-1)!).getByRole("textbox", {
+        name: "Comment on Implementation summary",
+      }),
+    );
     await userEvent.keyboard("Use this table cell as context.");
     const all = JSON.parse(
       canvas.getByTestId("transcript-result").getAttribute("data-anchors")!,

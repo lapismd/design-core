@@ -41,3 +41,18 @@ The built archive and Notes' cold browser acceptance are recorded in E-AI-039.
 Commands: `pnpm exec vitest run --project storybook src/shared/chat/transcript/Transcript.stories.svelte -t 'Markdown|CodeAnd'`;
 `pnpm exec vitest run --project unit src/shared/chat/transcript/rich-source.spec.ts src/shared/chat/transcript/controller.spec.ts src/shared/chat/transcript/comment-edit.spec.ts src/shared/chat/transcript/anchors.spec.ts`;
 `pnpm check:types`. Logs: `/tmp/lapis-ai-rich-reader-*`.
+
+Follow-up review found nested line gutters and 32px document-page padding in
+every table cell (102.7px single-line rows). Nested readers now explicitly omit
+gutters and set the public embedded-editor margin tokens on their own editor
+host. The rich geometry story asserts a single-line cell below 48px and no
+gutters in tables or code. The exact Markdown case passes; the complete
+Transcript family passes 25 interaction/axe cases after correcting the new
+comment story to target its inline comment group instead of the duplicate queue
+editor. Earlier global-editor and incorrect-region queries failed and remain
+recorded in Notes E-AI-039. Commands: `pnpm exec vitest run --project storybook
+src/shared/chat/transcript/Transcript.stories.svelte -t 'Markdown|Code and table'`
+(one pass/24 skipped; generated story names require the complete family), then
+`pnpm exec vitest run --project storybook
+src/shared/chat/transcript/Transcript.stories.svelte` (25 passes).
+Logs: `/tmp/lapis-ai-rich-final-{exact,family,types}.log`.

@@ -40,6 +40,10 @@
     Prec.highest(EditorView.editable.of(true)),
     EditorState.transactionFilter.of((tr) => (tr.docChanged ? [] : tr)),
     EditorView.contentAttributes.of({ "aria-readonly": "true" }),
+    EditorView.editorAttributes.of({
+      style:
+        "--mira-preview-padding: 0; --file-margins-x: 0px; --file-margins-y: 0px; --file-margins: 0px; --file-line-width: 100%;",
+    }),
     ...(language
       ? [
           fileCodeLanguage(
@@ -130,6 +134,7 @@
     value={text}
     {extensions}
     readonly
+    lineNumbers={false}
     ariaLabel={label}
     variant={language ? "code" : "document"}
     surface="frameless"

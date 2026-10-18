@@ -110,6 +110,8 @@ renderer formatting whitespace cannot create blank rows around tables.
 Rendered code and table cells MUST retain immutable cursor readers and exact
 UTF-16 comment selections, including repeated cell text. Code frames MUST show
 their language and use one background; nested readers cannot mutate captures.
+Embedded readers MUST omit line gutters and document-page padding so ordinary
+single-line table rows retain compact geometry.
 
 ### Acceptance details
 
