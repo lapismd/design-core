@@ -40,6 +40,10 @@ in list, folder and package modes. Eager rows split that space across their
 block margins; virtual row wrappers include it in their measured height so
 scroll offsets, continuation and keyboard navigation retain the same spacing.
 
+Default file-row accessible names retain the full path and every visible signed
+change count. Custom leading, label or meta snippets use their native text as
+the accessible name rather than an overriding path-only label.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`; hosts MAY provide public `FileListingDirectory` values before their children are loaded, and controlled disclosure MUST request expansion through `onDirectoryToggle` without performing I/O or inventing child files.

@@ -16,6 +16,7 @@
     getFilePathName,
     type FileTreeNode,
   } from "../core/file-tree.js";
+  import { formatDiffDelta } from "../file-change-stats/format-diff-delta.js";
   import FileChangeStats from "../file-change-stats/FileChangeStats.svelte";
   import { fileIconNameForPath } from "./file-icon.js";
   import { fileListingRows, type FileListingRow } from "./file-listing-rows.js";
@@ -211,7 +212,17 @@
     class:ui-diff-file-listing__row--selected={context.isSelected}
     data-ui-part="file-row"
     data-file-path={path}
-    aria-label={path}
+    aria-label={fileLeading || fileLabel || fileMeta
+      ? undefined
+      : [
+          path,
+          ...(file.additions && file.additions > 0
+            ? [formatDiffDelta(file.additions, "+")]
+            : []),
+          ...(file.deletions && file.deletions > 0
+            ? [formatDiffDelta(file.deletions, "-")]
+            : []),
+        ].join(" ")}
     aria-current={context.isSelected ? "true" : undefined}
     style={depth === undefined ? undefined : `--ui-diff-file-depth: ${depth}`}
     onclick={() => selectPath(path)}
