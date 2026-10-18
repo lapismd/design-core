@@ -407,12 +407,23 @@
     const footer = canvasElement.querySelector<HTMLElement>(
       ".ui-transcript-footer__body",
     )!;
+    const region = canvasElement.querySelector<HTMLElement>(
+      ".ui-transcript-body-reading-surface",
+    )!;
+    await expect(region.scrollHeight).toBeLessThanOrEqual(region.clientHeight);
+    const scrollport = region.querySelector<HTMLElement>(
+      ".ui-transcript-viewport > [data-ui-part='scroll-area-viewport']",
+    )!;
+    await expect(getComputedStyle(scrollport).overflowY).toMatch(/auto|scroll/);
+    scrollport.scrollTo({ top: 200 });
+    await waitFor(() => expect(scrollport.scrollTop).toBeGreaterThan(0));
     const before = footer.getBoundingClientRect().height;
     const toggle = canvas.getByRole("button", {
       name: /^Formatting\ options$/,
     });
     await userEvent.click(toggle);
     await expect(canvas.getByRole("button", { name: /^Bold$/ })).toBeVisible();
+    await expect(region.scrollHeight).toBeLessThanOrEqual(region.clientHeight);
     await expect(footer.getBoundingClientRect().height).toBe(before);
     await expect(
       canvas.getByRole("button", { name: "Hide formatting" }),

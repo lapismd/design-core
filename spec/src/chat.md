@@ -21,7 +21,9 @@ MarkdownComposer can expose its live formatting/emoji actions through a bound
 snippet for a fixed footer, removing the inline duplicate while retaining editor
 selection and releasing the snippet on teardown. The formatting strip follows jj-store: selected formatting trigger, close,
 separator and actions expand rightward on the same footer row. Overflow stays
-within the action strip on narrow surfaces; host controls and send remain
+within the action strip on narrow surfaces; the transcript clips reader
+overflow at its bounded scroll region so focus cannot scroll an outer workspace
+or displace its fixed footer. Host controls and send remain
 reachable without increasing footer height. Long queued messages use the
 compact fold row with a trailing divider.
 
