@@ -6,6 +6,8 @@
     ref = $bindable(null),
     class: className,
     children,
+    child,
+    role,
     scrollStrategy = "auto",
     ...restProps
   }: CommandPrimitive.ListProps & {
@@ -28,13 +30,21 @@
       data-slot="command-view-command-list"
       {...restProps}
     >
-      <CommandPrimitive.Viewport
-        data-ui-component="command-view"
-        data-ui-part="viewport"
-        data-slot="command-view-viewport"
-      >
-        {@render children?.()}
-      </CommandPrimitive.Viewport>
+      {#snippet child({ props })}
+        {#if child}
+          {@render child({ props: { ...props, role: role ?? props.role } })}
+        {:else}
+          <div {...props} role={role ?? "listbox"}>
+            <CommandPrimitive.Viewport
+              data-ui-component="command-view"
+              data-ui-part="viewport"
+              data-slot="command-view-viewport"
+            >
+              {@render children?.()}
+            </CommandPrimitive.Viewport>
+          </div>
+        {/if}
+      {/snippet}
     </CommandPrimitive.List>
   </ScrollArea>
 </div>

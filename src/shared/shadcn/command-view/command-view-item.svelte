@@ -5,6 +5,8 @@
     ref = $bindable(null),
     class: className,
     children,
+    child,
+    role,
     ...restProps
   }: CommandPrimitive.ItemProps = $props();
 </script>
@@ -17,5 +19,13 @@
   class={className}
   {...restProps}
 >
-  {@render children?.()}
+  {#snippet child({ props })}
+    {#if child}
+      {@render child({ props: { ...props, role: role ?? props.role } })}
+    {:else}
+      <div {...props} role={role ?? "option"}>
+        {@render children?.()}
+      </div>
+    {/if}
+  {/snippet}
 </CommandPrimitive.Item>
