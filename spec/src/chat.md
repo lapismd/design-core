@@ -112,6 +112,10 @@ UTF-16 comment selections, including repeated cell text. Code frames MUST show
 their language and use one background; nested readers cannot mutate captures.
 Embedded readers MUST omit line gutters and document-page padding so ordinary
 single-line table rows retain compact geometry.
+Table comments MUST appear between their referenced row and the following row,
+with unchanged source order and aligned column widths. Comment context MUST
+retain the complete captured row and its exact selection independently of the
+original source's later availability, using Mira's public table surface.
 
 ### Acceptance details
 

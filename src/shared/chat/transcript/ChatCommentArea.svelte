@@ -16,6 +16,7 @@
   import MarkdownContent from "../markdown-content/MarkdownContent.svelte";
   import ChatCommentDelivery from "./ChatCommentDelivery.svelte";
   import ChatCommentEditor from "./ChatCommentEditor.svelte";
+  import TableRowQuote from "./TableRowQuote.svelte";
   import type { TranscriptController } from "./comments.svelte.js";
   import "./comment-card.css";
   let {
@@ -79,7 +80,7 @@
 </script>
 
 {#if thread}
-  <section
+  <div
     class:ui-transcript-comment-context={source}
     class="ui-transcript-comment-area"
     data-chat-comment-area
@@ -102,7 +103,10 @@
           class="ui-transcript-comment-quote"
           data-chat-quote={thread.anchor.quote}
         >
-          {#if thread.sourceKind === "markdown" || thread.sourceKind === "context"}
+          {#if thread.anchor.tableContext}<TableRowQuote
+              context={thread.anchor.tableContext}
+            />
+          {:else if thread.sourceKind === "markdown" || thread.sourceKind === "context"}
             <MarkdownContent
               {...presentation?.markdown ?? state.props().markdown}
               content={thread.anchor.quote}
@@ -207,5 +211,5 @@
         {status}
         position="bottom"
       />{/if}
-  </section>
+  </div>
 {/if}

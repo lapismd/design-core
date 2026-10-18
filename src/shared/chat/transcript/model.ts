@@ -102,6 +102,8 @@ export interface TranscriptCommentAnchor {
   from: number;
   to: number;
   quote: string;
+  /** Immutable table row context, with offsets into its original Markdown snapshot. */
+  tableContext?: { markdown: string; from: number; to: number } | undefined;
 }
 /** Optimistic replacement identity supplied to the host, never inferred. */
 export interface TranscriptCommentEdit {

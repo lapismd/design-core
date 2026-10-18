@@ -3,6 +3,7 @@
   import MarkdownContent from "../markdown-content/MarkdownContent.svelte";
   import RichTableCell from "./RichTableCell.svelte";
   import RichCodeBlock from "./RichCodeBlock.svelte";
+  import RichTable from "./RichTable.svelte";
   import {
     richSourceContext,
     richSourceExtension,
@@ -38,6 +39,7 @@
     ...markdown?.components,
     pre: "div",
     code: RichCodeBlock,
+    table: RichTable,
     td: RichTableCell,
     th: RichTableCell,
   }}

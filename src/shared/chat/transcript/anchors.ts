@@ -1,4 +1,5 @@
 import type { TranscriptBlock, TranscriptCommentAnchor } from "./model.js";
+import { tableRowContext } from "./table-source.js";
 
 export function anchorKey(anchor: TranscriptCommentAnchor) {
   return JSON.stringify([
@@ -34,12 +35,17 @@ export function commentAnchor(
       to = end < 0 ? block.text.length : end;
     }
   }
+  const tableContext =
+    block.kind === "markdown"
+      ? tableRowContext(block.text, from, to)
+      : undefined;
   return {
     blockId: block.id,
     revision: block.revision,
     from,
     to,
     quote: block.text.slice(from, to),
+    ...(tableContext ? { tableContext } : {}),
   };
 }
 export function validAnchor(

@@ -108,11 +108,12 @@
         }),
       ).toHaveLength(2),
     );
-    const areas = canvas.getAllByRole("group", {
+    const tableArea = cell.closest(".ui-transcript-rich-table")!;
+    const area = within(tableArea).getByRole("group", {
       name: "Inline comments on Implementation summary",
     });
     await userEvent.click(
-      within(areas.at(-1)!).getByRole("textbox", {
+      within(area).getByRole("textbox", {
         name: "Comment on Implementation summary",
       }),
     );
@@ -121,6 +122,27 @@
       canvas.getByTestId("transcript-result").getAttribute("data-anchors")!,
     );
     await expect(all[1].quote).toBe("Read the note");
+    await expect(all[1].tableContext.markdown).toContain(
+      "**Research** | Read the note",
+    );
+    const richTable = tableArea;
+    await expect(richTable.querySelectorAll("table")).toHaveLength(2);
+    await expect(
+      richTable.querySelector(".ui-transcript-comment-highlight"),
+    ).toHaveTextContent("Read the note");
+    const parts = richTable.querySelector(".mira-table-reader")!.children;
+    await expect(parts[0]).toHaveTextContent("Research");
+    await expect(parts[1]).toHaveTextContent("Use this table cell as context.");
+    await expect(parts[2]).toHaveTextContent("Writing");
+    const queue = canvas.getByRole("group", { name: "Pending comments" });
+    const context = within(queue).getByRole("table", {
+      name: "Commented table row",
+    });
+    await expect(context).toHaveTextContent("Research");
+    await expect(context).not.toHaveTextContent("Writing");
+    await expect(
+      context.querySelector(".ui-transcript-comment-highlight"),
+    ).toHaveTextContent("Read the note");
     await expect(code).toHaveTextContent('const review = "weekly";');
     await expect(
       getComputedStyle(code.closest(".cm-editor")!).backgroundColor,

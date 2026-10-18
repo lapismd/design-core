@@ -42,3 +42,25 @@ it("rejects invalid non-integer ranges instead of accepting ambiguous offsets", 
     }),
   ).toBe(false);
 });
+it("retains a complete table row and exact Unicode selection as immutable context", () => {
+  const table = {
+    ...block,
+    text: "Before\n\n| Name | Role |\n| --- | --- |\n| café 👩🏽‍💻 | Designer |\n| café 👩🏽‍💻 | Developer |",
+  };
+  const from = table.text.lastIndexOf("café");
+  const anchor = commentAnchor(table, { from, to: from + "café 👩🏽‍💻".length });
+  expect(anchor.quote).toBe("café 👩🏽‍💻");
+  expect(anchor.tableContext!.markdown).toBe(
+    "| Name | Role |\n| --- | --- |\n| café 👩🏽‍💻 | Developer |",
+  );
+  expect(
+    anchor.tableContext!.markdown.slice(
+      anchor.tableContext!.from,
+      anchor.tableContext!.to,
+    ),
+  ).toBe(anchor.quote);
+  expect(
+    validAnchor({ ...table, revision: "v2", text: "Deleted table" }, anchor),
+  ).toBe(false);
+  expect(anchor.tableContext!.markdown).toContain("Developer");
+});

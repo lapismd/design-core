@@ -73,12 +73,14 @@ export function richSourceExtension(text: string, offset: number) {
         let index = 0;
         const visit = (node: Node) => {
           const range =
-            node.tagName === "code"
-              ? code
-              : (node.tagName === "td" || node.tagName === "th") &&
-                  renderedCells.length === cells.length
-                ? cells[index++]
-                : undefined;
+            node.tagName === "table"
+              ? { from: offset, to: offset + text.length }
+              : node.tagName === "code"
+                ? code
+                : (node.tagName === "td" || node.tagName === "th") &&
+                    renderedCells.length === cells.length
+                  ? cells[index++]
+                  : undefined;
           if (range)
             node.properties = {
               ...node.properties,

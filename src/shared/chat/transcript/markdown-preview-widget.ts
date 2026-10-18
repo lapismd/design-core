@@ -1,4 +1,4 @@
-import { WidgetType } from "@codemirror/view";
+import { WidgetType, type EditorView } from "@codemirror/view";
 import { mount, unmount } from "svelte";
 import MarkdownContent from "../markdown-content/MarkdownContent.svelte";
 import RichMarkdownPreview from "./RichMarkdownPreview.svelte";
@@ -7,6 +7,7 @@ import type { TranscriptProps } from "./model.js";
 
 /** Use Mira's safe reading renderer without replacing the captured source document. */
 export class TranscriptMarkdownPreview extends WidgetType {
+  private readonly observers = new WeakMap<HTMLElement, ResizeObserver>();
   private readonly mounted = new WeakMap<
     HTMLElement,
     ReturnType<typeof mount>
@@ -33,7 +34,7 @@ export class TranscriptMarkdownPreview extends WidgetType {
   get estimatedHeight() {
     return Math.max(60, this.text.split("\n").length * 30);
   }
-  toDOM() {
+  toDOM(view: EditorView) {
     const node = document.createElement("div");
     node.className = "ui-transcript-markdown-preview";
     node.contentEditable = "false";
@@ -58,9 +59,14 @@ export class TranscriptMarkdownPreview extends WidgetType {
             props: { ...this.markdown, content: this.text, fullWidth: true },
           }),
     );
+    const observer = new ResizeObserver(() => view.requestMeasure());
+    observer.observe(node);
+    this.observers.set(node, observer);
     return node;
   }
   destroy(node: HTMLElement) {
+    this.observers.get(node)?.disconnect();
+    this.observers.delete(node);
     const component = this.mounted.get(node);
     if (component) void unmount(component);
     this.mounted.delete(node);

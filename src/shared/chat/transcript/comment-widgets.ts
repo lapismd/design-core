@@ -11,6 +11,7 @@ import type { TranscriptController } from "./comments.svelte.js";
 import ChatCommentArea from "./ChatCommentArea.svelte";
 import { validAnchor } from "./anchors.js";
 import { richBlockRanges } from "./rich-source.js";
+import { tableSources } from "./table-source.js";
 
 const mounts = new WeakMap<HTMLElement, ReturnType<typeof mount>>();
 const observers = new WeakMap<HTMLElement, ResizeObserver>();
@@ -78,14 +79,26 @@ export function commentDecorations(
   state: TranscriptController,
   contexts: Map<unknown, unknown>,
 ): DecorationSet {
+  const tables = block.kind === "markdown" ? tableSources(block.text) : [];
+  const richRanges =
+    block.kind === "markdown" ? richBlockRanges(block.text) : [];
   const anchors = state.visibleThreads
-    .filter((t) => validAnchor(block, t.anchor))
+    .filter(
+      (t) =>
+        validAnchor(block, t.anchor) &&
+        !(
+          block.kind === "markdown" &&
+          tables.some(
+            (table) => t.anchor.from >= table.from && t.anchor.to <= table.to,
+          )
+        ),
+    )
     .map((t) => ({ anchor: t.anchor, threadId: t.id }));
   const ranges = anchors.map(({ anchor, threadId }) => {
     const newline = block.text.indexOf("\n", anchor.to);
     const rich =
       block.kind === "markdown"
-        ? richBlockRanges(block.text).find(
+        ? richRanges.find(
             (range) => anchor.from >= range.from && anchor.to <= range.to,
           )
         : undefined;
