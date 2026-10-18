@@ -9,6 +9,7 @@ import { PathLabel } from "./path-label.js";
 import { parser as markdownParser, Table } from "@lezer/markdown";
 import { TranscriptMarkdownPreview } from "./markdown-preview-widget.js";
 import type { TranscriptProps } from "./model.js";
+import type { RichSourceContext } from "./rich-source.js";
 
 /** Fixed reading decorations: selection never reveals Markdown source markers. */
 export function readingDecorations(
@@ -19,6 +20,7 @@ export function readingDecorations(
     paths?: readonly (readonly [string, string])[] | undefined;
     markdown?: TranscriptProps["markdown"];
     contexts?: Map<unknown, unknown>;
+    source?: RichSourceContext;
   } = {},
 ): {
   decorations: DecorationSet;
@@ -54,6 +56,8 @@ export function readingDecorations(
                 text.slice(node.from, node.to),
                 options.markdown,
                 options.contexts,
+                options.source,
+                node.from,
               ),
             }),
           });

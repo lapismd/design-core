@@ -34,6 +34,7 @@ export function readingExtensions(
           paths: comments.props().displayPaths?.(block),
           markdown: comments.props().markdown,
           contexts,
+          source: { block: { ...block }, comments },
         })
       : undefined;
   const referenceDecorations = Decoration.set(
@@ -164,6 +165,12 @@ export function readingExtensions(
         return true;
       },
       click(event) {
+        if (
+          !(event.target as Element)?.closest?.(
+            ".ui-transcript-markdown-preview",
+          )
+        )
+          comments.sourceSelections.delete(block.id);
         const link = (event.target as Element)?.closest?.<HTMLElement>(
           "[data-chat-link], [data-chat-file-link]",
         );

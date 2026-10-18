@@ -583,8 +583,11 @@
         >{inspectorShown
           ? "Close source inspector"
           : "Open source inspector"}</Button
-      >{/if}<output data-testid="transcript-result"
-      >{controller.error || result}</output
+      >{/if}<output
+      data-testid="transcript-result"
+      data-anchors={JSON.stringify(
+        controller.threads.map((thread) => thread.anchor),
+      )}>{controller.error || result}</output
     >
   </div>
   <div class="transcript-fixture-reader">

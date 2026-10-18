@@ -39,11 +39,14 @@
         table.getBoundingClientRect().height,
     ).toBeLessThan(40);
     await waitFor(() => {
-      expect(canvasElement.querySelectorAll("pre code")).toHaveLength(2);
+      expect(
+        canvas.getByRole("textbox", { name: "typescript code" }),
+      ).toBeVisible();
     });
-    await expect(canvasElement.querySelector("pre code")).toHaveTextContent(
-      'const review = "weekly";',
-    );
+    await expect(
+      canvas.getByRole("textbox", { name: "typescript code" }),
+    ).toHaveTextContent('const review = "weekly";');
+    await expect(canvas.getByText("TypeScript", { exact: true })).toBeVisible();
     const content = canvasElement.querySelector<HTMLElement>(
       '[data-chat-item] [data-ui-component="avatar"] [data-ui-part="content"]',
     )!;
@@ -57,6 +60,48 @@
     await expect(
       Math.abs((box.top + box.bottom - initials.top - initials.bottom) / 2),
     ).toBeLessThan(1);
+  }}>{#snippet template()}<Fixture scenario="table" />{/snippet}</Story
+>
+
+<Story
+  name="Code and table text comments"
+  play={async ({ canvas }) => {
+    const code = await canvas.findByRole("textbox", {
+      name: "typescript code",
+    });
+    await userEvent.click(code);
+    await userEvent.keyboard(
+      "{Home}{Shift>}{End}{/Shift}{Control>}{Alt>}m{/Alt}{/Control}",
+    );
+    const comment = await canvas.findByRole("textbox", {
+      name: "Comment on Implementation summary",
+    });
+    await userEvent.click(comment);
+    await userEvent.keyboard("Keep this code example.");
+    const anchors = JSON.parse(
+      canvas.getByTestId("transcript-result").getAttribute("data-anchors")!,
+    );
+    await expect(anchors[0].quote).toBe('const review = "weekly";');
+    const cell = within(
+      canvas.getByRole("cell", { name: "Read the note" }),
+    ).getByRole("textbox");
+    await userEvent.click(cell);
+    await userEvent.keyboard(
+      "{Home}{Shift>}{End}{/Shift}{Control>}{Alt>}m{/Alt}{/Control}",
+    );
+    const editors = await canvas.findAllByRole("textbox", {
+      name: "Comment on Implementation summary",
+    });
+    await userEvent.click(editors.at(-1)!);
+    await userEvent.keyboard("Use this table cell as context.");
+    const all = JSON.parse(
+      canvas.getByTestId("transcript-result").getAttribute("data-anchors")!,
+    );
+    await expect(all[1].quote).toBe("Read the note");
+    await expect(code).toHaveTextContent('const review = "weekly";');
+    await expect(
+      getComputedStyle(code.closest(".cm-editor")!).backgroundColor,
+    ).toBe("rgba(0, 0, 0, 0)");
   }}>{#snippet template()}<Fixture scenario="table" />{/snippet}</Story
 >
 

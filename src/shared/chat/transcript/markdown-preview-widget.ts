@@ -1,6 +1,8 @@
 import { WidgetType } from "@codemirror/view";
 import { mount, unmount } from "svelte";
 import MarkdownContent from "../markdown-content/MarkdownContent.svelte";
+import RichMarkdownPreview from "./RichMarkdownPreview.svelte";
+import type { RichSourceContext } from "./rich-source.js";
 import type { TranscriptProps } from "./model.js";
 
 /** Use Mira's safe reading renderer without replacing the captured source document. */
@@ -13,11 +15,20 @@ export class TranscriptMarkdownPreview extends WidgetType {
     readonly text: string,
     readonly markdown?: TranscriptProps["markdown"],
     readonly contexts?: Map<unknown, unknown>,
+    readonly source?: RichSourceContext,
+    readonly offset = 0,
   ) {
     super();
   }
   eq(other: TranscriptMarkdownPreview) {
-    return this.text === other.text && this.markdown === other.markdown;
+    return (
+      this.text === other.text &&
+      this.markdown === other.markdown &&
+      this.offset === other.offset &&
+      this.source?.block.revision === other.source?.block.revision &&
+      this.source?.block.text === other.source?.block.text &&
+      this.source?.comments === other.source?.comments
+    );
   }
   get estimatedHeight() {
     return Math.max(60, this.text.split("\n").length * 30);
@@ -26,13 +37,26 @@ export class TranscriptMarkdownPreview extends WidgetType {
     const node = document.createElement("div");
     node.className = "ui-transcript-markdown-preview";
     node.contentEditable = "false";
+    const options = {
+      target: node,
+      ...(this.contexts === undefined ? {} : { context: this.contexts }),
+    };
     this.mounted.set(
       node,
-      mount(MarkdownContent, {
-        target: node,
-        ...(this.contexts === undefined ? {} : { context: this.contexts }),
-        props: { ...this.markdown, content: this.text, fullWidth: true },
-      }),
+      this.source
+        ? mount(RichMarkdownPreview, {
+            ...options,
+            props: {
+              text: this.text,
+              offset: this.offset,
+              source: this.source,
+              ...(this.markdown ? { markdown: this.markdown } : {}),
+            },
+          })
+        : mount(MarkdownContent, {
+            ...options,
+            props: { ...this.markdown, content: this.text, fullWidth: true },
+          }),
     );
     return node;
   }

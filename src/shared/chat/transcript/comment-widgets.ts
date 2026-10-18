@@ -10,6 +10,7 @@ import type { TranscriptBlock } from "./model.js";
 import type { TranscriptController } from "./comments.svelte.js";
 import ChatCommentArea from "./ChatCommentArea.svelte";
 import { validAnchor } from "./anchors.js";
+import { richBlockRanges } from "./rich-source.js";
 
 const mounts = new WeakMap<HTMLElement, ReturnType<typeof mount>>();
 const observers = new WeakMap<HTMLElement, ResizeObserver>();
@@ -82,7 +83,13 @@ export function commentDecorations(
     .map((t) => ({ anchor: t.anchor, threadId: t.id }));
   const ranges = anchors.map(({ anchor, threadId }) => {
     const newline = block.text.indexOf("\n", anchor.to);
-    const position = newline < 0 ? block.text.length : newline;
+    const rich =
+      block.kind === "markdown"
+        ? richBlockRanges(block.text).find(
+            (range) => anchor.from >= range.from && anchor.to <= range.to,
+          )
+        : undefined;
+    const position = rich?.to ?? (newline < 0 ? block.text.length : newline);
     return Decoration.widget({
       block: true,
       side: 1,

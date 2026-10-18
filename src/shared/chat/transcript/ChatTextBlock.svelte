@@ -49,6 +49,16 @@
       anchor,
       scroll = false,
     ) => {
+      const embedded = [...(comments.embeddedReaders.get(id) ?? [])].find(
+        (reader) =>
+          reader.revision === block.revision &&
+          anchor.from >= reader.from &&
+          anchor.to <= reader.to,
+      );
+      if (validAnchor(block, anchor) && embedded) {
+        embedded.reveal(anchor.from, anchor.to, scroll);
+        return;
+      }
       if (validAnchor(block, anchor))
         view?.dispatch({
           selection: { anchor: anchor.from, head: anchor.to },
@@ -81,6 +91,7 @@
       fileView,
     ]);
     if (view && signature !== configured) {
+      comments.sourceSelections.delete(block.id);
       configured = signature;
       const previous = view.state.doc.toString(),
         next = block.text;
@@ -128,7 +139,11 @@
     view?.dispatch({ effects: refreshComments.of(null) });
   });
   function comment() {
-    comments.open(block, view?.state.selection.main ?? { from: 0, to: 0 });
+    comments.open(
+      block,
+      comments.sourceSelections.get(block.id) ??
+        view?.state.selection.main ?? { from: 0, to: 0 },
+    );
   }
   $effect(() => {
     if (view && initialLine) {

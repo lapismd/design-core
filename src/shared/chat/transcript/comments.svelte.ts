@@ -41,6 +41,16 @@ export class TranscriptController {
   highlightedThread = $state<string>();
   root: HTMLElement | null = null;
   focusMessage?: () => void;
+  sourceSelections = new Map<string, { from: number; to: number }>();
+  embeddedReaders = new Map<
+    string,
+    Set<{
+      from: number;
+      to: number;
+      revision: string;
+      reveal: (from: number, to: number, scroll: boolean) => void;
+    }>
+  >();
   selections = new Map<
     string,
     NonNullable<

@@ -150,6 +150,9 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 **Requirement.** The Segmented Control family MUST select one controlled option from a labelled keyboard-accessible segment group.
 
+Selected labels MUST use the semantic form foreground so selection text retains
+readable contrast on both light and dark selection backgrounds.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/forms`.

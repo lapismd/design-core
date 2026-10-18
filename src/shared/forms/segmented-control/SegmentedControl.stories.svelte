@@ -26,8 +26,11 @@
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Preview" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("preview");
+    await expect(
+      getComputedStyle(canvas.getByRole("button", { name: "Preview" })).color,
+    ).toBe(getComputedStyle(canvas.getByRole("status")).color);
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-2">
@@ -38,7 +41,7 @@
         ariaLabel="View mode"
         onChange={(next) => (value = next)}
       />
-      <output class="text-muted-foreground text-sm">{value}</output>
+      <output style="color:var(--ui-form-foreground)">{value}</output>
     </div>
   {/snippet}
 </Story>

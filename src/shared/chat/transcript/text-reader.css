@@ -9,8 +9,32 @@
 .ui-transcript-markdown-preview pre {
   white-space: pre;
 }
+.ui-transcript-rich-code {
+  background: var(--muted);
+  border-radius: var(--radius);
+  padding: 0.625rem 0.75rem;
+}
+.ui-transcript-rich-code-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted-foreground);
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.75rem;
+}
+.ui-transcript-rich-reader {
+  --mira-code-editor-background: transparent;
+  --mira-code-editor-foreground: var(--foreground);
+  --mira-code-editor-padding: 0;
+  --mira-code-editor-min-height: 0;
+  min-width: 0;
+}
+.ui-transcript-rich-reader[data-code="true"] .cm-scroller {
+  font-family: var(--font-mono, monospace);
+}
 .ui-transcript-text-block[data-kind="code"],
-.ui-transcript-text-block[data-kind="patch"] {
+.ui-transcript-text-block[data-kind="patch"],
+.ui-transcript-rich-code {
   --mira-code-editor-syntax-keyword: color-mix(
     in srgb,
     var(--mira-syntax-keyword, #7c3aed) 65%,

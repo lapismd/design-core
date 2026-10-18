@@ -107,6 +107,9 @@ Incomplete captures remain source content and fenced table examples remain
 literal code; reader widgets never write captured text.
 Embedded previews MUST reset the reader's whitespace-preserving layout so
 renderer formatting whitespace cannot create blank rows around tables.
+Rendered code and table cells MUST retain immutable cursor readers and exact
+UTF-16 comment selections, including repeated cell text. Code frames MUST show
+their language and use one background; nested readers cannot mutate captures.
 
 ### Acceptance details
 

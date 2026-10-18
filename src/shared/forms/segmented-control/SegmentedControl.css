@@ -76,5 +76,5 @@
 
 .cv-form-segmented button.active {
   background: var(--ui-form-selection);
-  color: var(--ui-form-accent);
+  color: var(--ui-form-foreground);
 }

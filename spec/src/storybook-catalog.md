@@ -1,5 +1,9 @@
 # Storybook catalog
 
+Transcript rich-reading coverage includes code/cell cursor selection and exact
+comment quotes through immutable nested readers. Segmented selection coverage
+retains readable semantic foregrounds in the consumer's light/dark review.
+
 Transcript table previews prebundle the declared Lezer Markdown parser in both
 dev and Vitest catalogs, avoiding a dependency reload during the first play.
 The focused proof is in `spec/records/2026-10-18-transcript-table-avatar.md`.
