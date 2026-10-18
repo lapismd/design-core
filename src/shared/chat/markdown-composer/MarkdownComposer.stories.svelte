@@ -89,6 +89,12 @@
 <Story
   name="Disabled"
   play={async ({ canvas }) => {
+    const editor = canvas.getByRole("textbox", { name: "Message" });
+    await expect(
+      getComputedStyle(
+        editor.closest('[data-ui-component="ai-chat-composer"]')!,
+      ).opacity,
+    ).toBe("1");
     await expect(
       canvas.getByRole("button", { name: "Send message" }),
     ).toBeDisabled();

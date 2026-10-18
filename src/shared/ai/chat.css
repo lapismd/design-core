@@ -621,7 +621,7 @@
 [data-ui-component="ai-chat-composer"][data-disabled="true"]:not(
     [data-stop-shown="true"]
   ):not([data-interactive-drawer-when-disabled="true"]) {
-  opacity: 0.6;
+  opacity: var(--ui-ai-chat-composer-disabled-opacity, 0.6);
   pointer-events: none;
 }
 
@@ -640,7 +640,7 @@
     [data-stop-shown="true"]
   )
   > [data-ui-part="body"] {
-  opacity: 0.6;
+  opacity: var(--ui-ai-chat-composer-disabled-opacity, 0.6);
   pointer-events: none;
 }
 

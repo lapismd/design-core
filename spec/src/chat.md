@@ -19,7 +19,12 @@ The full-conversation example retains multiline Enter in either view.
 
 MarkdownComposer can expose its live formatting/emoji actions through a bound
 snippet for a fixed footer, removing the inline duplicate while retaining editor
-selection and releasing the snippet on teardown. The formatting strip follows jj-store: selected formatting trigger, close,
+selection and releasing the snippet on teardown. Read-only composer content
+and avatars retain full opacity; disabled action controls keep their own state
+styles without reducing the readable draft below text-contrast requirements.
+Generic Composer retains its default disabled opacity of 0.6 through the public
+`--ui-ai-chat-composer-disabled-opacity` token; MarkdownComposer sets it to 1.
+The formatting strip follows jj-store: selected formatting trigger, close,
 separator and actions expand rightward on the same footer row. Overflow stays
 within the action strip on narrow surfaces; the transcript clips reader
 overflow at its bounded scroll region so focus cannot scroll an outer workspace

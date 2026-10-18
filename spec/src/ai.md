@@ -2,6 +2,11 @@
 
 AI presentation contracts remain provider-neutral and leave transport, model selection, persistence, and product policy downstream. Historical implementation and visual-comparison evidence lives under `spec/records/`; this chapter remains authoritative.
 
+Composer disabled surfaces use the public
+`--ui-ai-chat-composer-disabled-opacity` token (default `0.6`). Read-only
+MarkdownComposer sets it to `1` to preserve readable drafts and avatars while
+retaining disabled control semantics (DC-AI-009, DC-CHAT-002).
+
 ## Public surface coverage
 
 | Surface                 | Public boundary                        | Requirement |
