@@ -93,7 +93,11 @@
 
   function clamp(bounds: WorkspaceWindowBounds): WorkspaceWindowBounds {
     const rootWidth = boundsRoot?.clientWidth ?? window.innerWidth;
-    const rootHeight = boundsRoot?.clientHeight ?? window.innerHeight;
+    const footerHeight =
+      boundsRoot?.querySelector<HTMLElement>("[data-workspace-status-bar]")
+        ?.offsetHeight ?? 0;
+    const rootHeight =
+      (boundsRoot?.clientHeight ?? window.innerHeight) - footerHeight;
     const width = Math.max(
       280,
       Math.min(bounds.width, Math.max(280, rootWidth)),

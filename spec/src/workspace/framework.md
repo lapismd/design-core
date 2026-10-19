@@ -84,7 +84,7 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 - The public boundary is `@lapismd/design-core/workspace/app-shell`.
 - Built-in Appearance settings MUST persist one inherited scrollbar visibility value across the main shell, imperative views, and popouts; valid values are `scroll`, `hover`, and `always`, with `scroll` as the default.
 - Built-in dock-opening commands and the default-on tab title-bar preference MUST follow DC-WS-060 and DC-WS-061.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Default and explicit desktop composition MUST reserve a full-width footer track beneath ribbon, sidebars and content; floating panes MUST stay above that track and omitting the footer MUST reclaim its space.
 
 ## DC-WS-004 — Workspace demo
 

@@ -7,6 +7,7 @@ export {
   notificationsPlugin,
   NOTIFICATIONS_PLUGIN_ID,
   NOTIFICATION_STATUS_ITEM_ID,
+  NOTIFICATION_ACTIVITY_ITEM_ID,
   TOGGLE_NOTIFICATION_CENTER_COMMAND_ID,
 } from "./notifications-plugin.js";
 export type * from "./types.js";

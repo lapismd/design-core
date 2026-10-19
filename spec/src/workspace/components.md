@@ -82,13 +82,13 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ## DC-WS-045 — Bottom Panel status clearance
 
-**Requirement.** The Bottom Panel view container MUST pad its block-end by `--ui-workspace-status-height` so the last hosted row remains visible above the status bar.
+**Requirement.** The Bottom Panel MUST fit above the App Shell status footer without status-specific padding or spacer rows in hosted views.
 
 ### Acceptance details
 
 - The public boundary remains `@lapismd/design-core/workspace/bottom-panel`.
-- A `workspace-view-host` inside `.ui-workspace-bottom-panel__content` MUST set `padding-block-end` to `var(--ui-workspace-status-height)`.
-- The catalog MUST assert that computed padding on the hosted view container.
+- The shell MUST reserve footer space across every bottom-panel alignment.
+- The catalog MUST assert non-overlapping bounds and last-row reachability without status-specific hosted-view padding.
 
 ## DC-WS-010 — Command Palette
 
@@ -296,7 +296,8 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/ribbon`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The default left App Shell ribbon MUST offer Settings in its bottom actions, opening the existing settings dialog while retaining the sidebar Settings action.
+- The catalog MUST demonstrate settings access while the left sidebar is collapsed.
 
 ## DC-WS-020 — Settings
 
@@ -468,12 +469,14 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ## DC-WS-028 — Status Bar
 
-**Requirement.** The Status Bar family MUST compose registered status content and actions into a stable landmark.
+**Requirement.** The Status Bar MUST provide a full-width, fixed-height footer with left, centered and right contribution regions. Activity text MUST NOT change footer geometry or displace side contributions.
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/status-bar`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The public boundary is `@lapismd/design-core/workspace/status-bar`; the default height MUST remain 1.5rem and centered width MUST default to 24rem through public tokens.
+- The centre MUST retain its width while idle and truncate long text; its midpoint MUST match the application midpoint.
+- Side overflow MUST preserve registry order, retain higher-priority items first and keep hidden contributions accessible through keyboard-operable popovers before reducing the centre.
+- Resizing and overflow MUST retain custom control identity and mount lifetime; the desktop footer MUST NOT introduce mobile chrome.
 
 ## DC-WS-029 — Status Item
 
@@ -482,7 +485,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/status-item`.
-- A custom `mount(host)` MAY own controls and CSS instead of built-in chrome; its returned disposer MUST run on replacement/removal with the owner providing accessible controls and resource cleanup.
+- A custom `mount(host)` MAY own controls and CSS instead of built-in chrome; its returned disposer MUST run on replacement/removal, including while overflowed, with the owner providing accessible controls and resource cleanup.
 - An action's accessible name MUST contain its visible label or segments together with its tooltip context.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 

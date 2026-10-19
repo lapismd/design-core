@@ -434,7 +434,7 @@ describe("problemsPlugin", () => {
     await app.dispose();
   });
 
-  it("exposes a status item that reveals or creates Problems without opening on count changes", async () => {
+  it("toggles the bottom panel through status without recreating Problems or opening on count changes", async () => {
     const app = new AppShellController({ plugins: [problemsPlugin()] });
     await app.start();
 
@@ -442,7 +442,7 @@ describe("problemsPlugin", () => {
       (entry) => entry.id === PROBLEMS_STATUS_ITEM_ID,
     );
     expect(item).toMatchObject({
-      align: "right",
+      align: "left",
       priority: 480,
       icon: "circle-alert",
       label: "0",
@@ -463,6 +463,13 @@ describe("problemsPlugin", () => {
     await updated?.onSelect?.();
     expect(app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)).toHaveLength(1);
     expect(app.renderer.layout.bottom.open).toBe(true);
+    const [leaf] = app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE);
+    await updated?.onSelect?.();
+    expect(app.renderer.layout.bottom.open).toBe(false);
+    expect(app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)).toEqual([leaf]);
+    await updated?.onSelect?.();
+    expect(app.renderer.layout.bottom.open).toBe(true);
+    expect(app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)).toEqual([leaf]);
     await app.dispose();
   });
 

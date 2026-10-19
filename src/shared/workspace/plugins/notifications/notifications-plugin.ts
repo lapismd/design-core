@@ -17,6 +17,7 @@ export const NOTIFICATIONS_PLUGIN_ID = "notifications";
 export const TOGGLE_NOTIFICATION_CENTER_COMMAND_ID =
   "plugin-notifications:toggle-center";
 export const NOTIFICATION_STATUS_ITEM_ID = "notifications:status";
+export const NOTIFICATION_ACTIVITY_ITEM_ID = "notifications:activity";
 
 class NotificationsAppShellPlugin extends AppShellPlugin<NotificationsPluginRuntimeOptions> {
   readonly #presentation = new NotificationPresentationState();
@@ -48,9 +49,10 @@ class NotificationsAppShellPlugin extends AppShellPlugin<NotificationsPluginRunt
       const sync = () => this.#syncStatusItem();
       const ref = this.app.notifications.on("changed", sync);
       this.register(() => this.app.notifications.offref(ref));
-      this.register(() =>
-        this.app.status.removeItem(NOTIFICATION_STATUS_ITEM_ID),
-      );
+      this.register(() => {
+        this.app.status.removeItem(NOTIFICATION_STATUS_ITEM_ID);
+        this.app.status.removeItem(NOTIFICATION_ACTIVITY_ITEM_ID);
+      });
       sync();
     }
     this.register(() => this.#presentation.close());
@@ -62,20 +64,28 @@ class NotificationsAppShellPlugin extends AppShellPlugin<NotificationsPluginRunt
       this.app.notifications.activeProgress,
     );
     this.app.status.addItem(this.#createStatusItem(state));
+    if (state.hasProgress) {
+      this.app.status.addItem({
+        id: NOTIFICATION_ACTIVITY_ITEM_ID,
+        align: "center",
+        priority: 0,
+        icon: "loader-circle",
+        busy: true,
+        label: state.progressLabel,
+        tooltip: state.progressTooltip,
+        onSelect: () => this.#presentation.toggle(),
+      });
+    } else this.app.status.removeItem(NOTIFICATION_ACTIVITY_ITEM_ID);
   }
 
   #createStatusItem(state: NotificationStatusState) {
-    const tooltip = state.hasProgress
-      ? state.progressTooltip
-      : state.historyTooltip;
     return {
       id: NOTIFICATION_STATUS_ITEM_ID,
       align: "right" as const,
-      priority: 500,
-      icon: state.hasProgress ? ("loader-circle" as const) : ("bell" as const),
-      busy: state.hasProgress,
-      label: state.hasProgress ? state.progressLabel : state.unreadText,
-      tooltip,
+      priority: 10000,
+      icon: "bell" as const,
+      label: state.unreadText,
+      tooltip: state.historyTooltip,
       onSelect: () => this.#presentation.toggle(),
     };
   }

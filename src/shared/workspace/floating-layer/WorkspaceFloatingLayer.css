@@ -1,7 +1,7 @@
 .ui-workspace-floating-layer {
-  position: fixed;
+  position: absolute;
   z-index: calc(var(--ui-workspace-overlay-z-index) - 5);
-  inset: 0;
+  inset: 0 0 var(--ui-workspace-status-reserved-height, 0px);
   pointer-events: none;
 }
 

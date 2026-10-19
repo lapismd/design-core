@@ -189,16 +189,10 @@
     await expect(viewHost).not.toBeNull();
     await expect(panelContent).not.toBeNull();
     await expect(bottomPanel).not.toBeNull();
-    const statusHeight = getComputedStyle(viewHost!).getPropertyValue(
-      "--ui-workspace-status-height",
+    expect(getComputedStyle(viewHost!).paddingBottom).toBe("0px");
+    expect(viewHost!.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+      panelContent!.getBoundingClientRect().bottom,
     );
-    const statusProbe = canvasElement.ownerDocument.createElement("div");
-    statusProbe.style.height = statusHeight;
-    viewHost!.append(statusProbe);
-    expect(getComputedStyle(viewHost!).paddingBottom).toBe(
-      getComputedStyle(statusProbe).height,
-    );
-    statusProbe.remove();
     expect(getComputedStyle(viewHost!).backgroundColor).toBe(
       getComputedStyle(panelContent!).backgroundColor,
     );

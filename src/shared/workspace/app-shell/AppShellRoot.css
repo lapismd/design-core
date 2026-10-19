@@ -1,4 +1,5 @@
 .ui-app-shell {
+  --ui-workspace-status-reserved-height: 0px;
   position: relative;
   isolation: isolate;
   display: flex;
@@ -98,4 +99,37 @@
 .ui-app-shell *::before,
 .ui-app-shell *::after {
   box-sizing: border-box;
+}
+
+/* The footer is a shell track shared by standard and explicit composition. */
+.ui-app-shell:has(> [data-workspace-status-bar]) {
+  --ui-workspace-status-reserved-height: var(--ui-workspace-status-height);
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+.ui-app-shell > [data-workspace-ribbon] {
+  grid-column: 1;
+  grid-row: 1;
+}
+.ui-app-shell > [data-app-shell-sidebar="left"] {
+  grid-column: 2;
+  grid-row: 1;
+  border-bottom: 0;
+}
+.ui-app-shell > .ui-app-shell__main {
+  grid-column: 3;
+  grid-row: 1;
+}
+.ui-app-shell > [data-app-shell-sidebar="right"] {
+  grid-column: 4;
+  grid-row: 1;
+}
+.ui-app-shell > .ui-app-shell__desktop-layout {
+  grid-column: 2 / 5;
+  grid-row: 1;
+}
+.ui-app-shell > [data-workspace-status-bar] {
+  grid-column: 1 / -1;
+  grid-row: 2;
 }
