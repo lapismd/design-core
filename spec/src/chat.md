@@ -129,6 +129,9 @@ original source's later availability, using Mira's public table surface.
 Fenced code MUST use the captured code/patch reader's syntax, inline line
 comments and middle-fold controls. Mapping a fenced body into its captured
 Markdown MUST preserve the original anchor identity and UTF-16 selection.
+Initially collapsed tool groups MUST reveal their captured child tools when
+opened in either conversation view, including with an externally owned
+TranscriptController. Inner tool disclosures MUST remain independently usable.
 
 ### Acceptance details
 
