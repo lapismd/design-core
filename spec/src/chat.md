@@ -173,6 +173,9 @@ Long tool titles MUST fit within the transcript without widening adjacent prose
 or hiding disclosure controls. Host-supplied captured tool paths MUST keep their
 title on one truncated line and expose the exact path through a shadcn tooltip
 on hover or keyboard focus in both views.
+Transcripts with a fixed footer MUST fade the trailing scroll edge into the host
+background while more content remains below. The fade MUST sit above any pinned
+Classic composer, ignore pointer input and disappear at the end of content.
 
 Host-marked error or warning notices MUST remain inline with a tinted semantic
 surface and circular warning icon. Captured text stays immutable, and trailing

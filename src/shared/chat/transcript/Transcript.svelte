@@ -28,6 +28,7 @@
   import ChatCollapsedComments from "./ChatCollapsedComments.svelte";
   import ReactionBar from "../../ai/experimental/reaction-bar/ReactionBar.svelte";
   import ChatNavigation from "./ChatNavigation.svelte";
+  import ChatScrollFade from "./ChatScrollFade.svelte";
   import ChatCommentArea from "./ChatCommentArea.svelte";
   import ChatReplyContext from "./ChatReplyContext.svelte";
   import ChatContent from "./ChatContent.svelte";
@@ -119,6 +120,7 @@
     },
   });
   let root = $state<HTMLElement | null>(null);
+  let composerRoot = $state<HTMLDivElement | null>(null);
   let previousSignature = "";
   let composing = $state(false);
   let renderedView = $state<"document" | "classic">("document");
@@ -410,6 +412,7 @@
               />{/each}
           </aside>{/if}
         {#if composer}<div
+            bind:this={composerRoot}
             class="ui-transcript-document-composer"
             data-transcript-composer
           >
@@ -419,6 +422,10 @@
           </div>{/if}
       </div>
     </ScrollArea>
+    {#if footer}<ChatScrollFade
+        viewport={root}
+        pinnedComposer={classicComposerFixed ? composerRoot : null}
+      />{/if}
     {#if navigation}<ChatNavigation
         {items}
         root={root ?? undefined}

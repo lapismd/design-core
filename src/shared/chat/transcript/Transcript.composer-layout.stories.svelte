@@ -5,7 +5,7 @@
   import TranscriptFooter from "./TranscriptFooter.svelte";
   import ComposerStatusBanner from "../../ai/composer/ComposerStatusBanner.svelte";
   import type { TranscriptItem } from "./model.js";
-  import { expect, userEvent, within } from "storybook/test";
+  import { expect, userEvent, within, waitFor } from "storybook/test";
   import { Button } from "../../shadcn/button/index.js";
   import * as Tooltip from "../../shadcn/tooltip/index.js";
   import RotateCcwIcon from "@lucide/svelte/icons/rotate-ccw";
@@ -49,7 +49,72 @@
 <script lang="ts">
   let draft = $state("");
   let retries = $state(0);
+  let fadeView = $state<"document" | "classic">("document");
 </script>
+
+<Story
+  name="Fading history above fixed footer"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    for (const mode of ["Document", "Classic"]) {
+      await userEvent.click(canvas.getByRole("button", { name: mode }));
+      const viewport = canvasElement.querySelector<HTMLElement>(
+        '.ui-transcript-viewport > [data-ui-part="scroll-area-viewport"]',
+      )!;
+      await waitFor(() =>
+        expect(viewport.scrollHeight).toBeGreaterThan(
+          viewport.clientHeight + 100,
+        ),
+      );
+      viewport.scrollTo({ top: viewport.scrollHeight / 2 });
+      const fade = canvasElement.querySelector<HTMLElement>(
+        ".ui-transcript-scroll-fade",
+      );
+      await waitFor(() => expect(fade).toHaveAttribute("data-visible", "true"));
+      expect(getComputedStyle(fade!).pointerEvents).toBe("none");
+      expect(getComputedStyle(fade!).backgroundImage).toContain(
+        "linear-gradient",
+      );
+      const boundary = canvasElement.querySelector<HTMLElement>(
+        mode === "Classic"
+          ? "[data-transcript-composer]"
+          : ".ui-transcript-body-footer",
+      )!;
+      expect(fade!.getBoundingClientRect().bottom).toBeCloseTo(
+        boundary.getBoundingClientRect().top,
+        0,
+      );
+      viewport.scrollTo({ top: viewport.scrollHeight });
+      await waitFor(() =>
+        expect(fade).toHaveAttribute("data-visible", "false"),
+      );
+    }
+  }}
+>
+  {#snippet template(args)}
+    <div style="height:36rem;display:flex;flex-direction:column">
+      <div>
+        <Button onclick={() => (fadeView = "document")}>Document</Button>
+        <Button onclick={() => (fadeView = "classic")}>Classic</Button>
+      </div>
+      <Transcript {...args} view={fadeView}>
+        {#snippet composer(view)}
+          <MarkdownComposer
+            bind:value={draft}
+            presentation={view === "classic" ? "framed" : "document"}
+            showHint={false}
+            showSendButton={false}
+            submitOnEnter={false}
+            onSubmit={() => {}}
+          />
+        {/snippet}
+        {#snippet footer()}<div style="padding:0.25rem 1rem">
+            Ctrl/⌘+Enter to send
+          </div>{/snippet}
+      </Transcript>
+    </div>
+  {/snippet}
+</Story>
 
 <Story
   name="Inline interrupted turn"

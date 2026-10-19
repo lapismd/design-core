@@ -634,3 +634,5 @@ DC-CHAT-006 constrained tool-title wrapping is covered by
 gates and In progress status remain unchanged.
 The path-only single-line refinement and exact hover/focus tooltip are recorded
 in `spec/records/2026-10-19-truncated-tool-paths.md`.
+The fixed-footer scroll-edge fade in both views is covered by
+`spec/records/2026-10-19-transcript-footer-fade.md`.
