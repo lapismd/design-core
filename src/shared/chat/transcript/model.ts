@@ -47,6 +47,8 @@ export interface TranscriptBlock {
   lineNumbered?: boolean | undefined;
   commentable?: boolean | undefined;
   wholeSection?: boolean | undefined;
+  /** Host content may opt out of the default custom-block frame and inset. */
+  surface?: "framed" | "plain" | undefined;
 }
 export interface TranscriptTool {
   id: string;

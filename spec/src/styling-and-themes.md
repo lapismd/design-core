@@ -6,6 +6,9 @@ cards and fold controls. The frame adds no second body inset.
 
 Design Core styling is native CSS driven by semantic tokens. Themes and consumers may customize documented tokens without depending on private DOM selectors. Diff surfaces read `--ui-diff-*` defaults from `src/shared/diff/diff.tokens.css`.
 
+Transcript plain custom blocks omit the wrapper border and inset through the
+public block surface option (DC-CHAT-006); hosts own result rendering.
+
 Composer Drawer uses native CSS to keep collapsed summaries compact while
 retaining its overlap beneath the rounded Composer body (DC-AI-011).
 

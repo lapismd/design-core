@@ -42,6 +42,7 @@
       <section
         class="ui-transcript-custom"
         data-kind={block.kind}
+        data-surface={block.surface ?? "framed"}
         role="group"
         aria-label={block.label}
         use:customInteraction={{ block, state }}
@@ -88,7 +89,8 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
   }
-  .ui-transcript-custom[data-kind="context"] {
+  .ui-transcript-custom[data-kind="context"],
+  .ui-transcript-custom[data-surface="plain"] {
     padding: 0;
     border: 0;
   }

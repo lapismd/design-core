@@ -120,6 +120,10 @@ the instruction in their own fixed row; the default hint remains visible.
 
 ## DC-CHAT-006 — Transcript and history edge
 
+Hosts MAY request `surface="plain"` on a custom block to omit its default
+border and padding while preserving exact text, comments and host interaction.
+Other custom blocks retain their frame.
+
 **Requirement.** Transcript MUST present immutable host-owned conversations in document and classic views, preserving jj-store reference geometry, exact source text and reader identity during streaming and history loading.
 
 Reader links MUST retain foreground contrast on light/dark host surfaces and an
