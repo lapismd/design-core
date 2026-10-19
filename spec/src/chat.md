@@ -169,6 +169,8 @@ the host inspector while a separate chevron expands or collapses the source,
 retaining syntax highlighting, middle-fold controls and shared exact anchors.
 Hosts MAY set `--ui-transcript-body-footer-border` to omit the fixed footer's
 separator; its default remains the shared border.
+Long tool titles and file paths MUST wrap within the available transcript width
+in both views without widening adjacent prose or hiding disclosure controls.
 
 Host-marked error or warning notices MUST remain inline with a tinted semantic
 surface and circular warning icon. Captured text stays immutable, and trailing

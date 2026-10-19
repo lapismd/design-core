@@ -235,6 +235,7 @@
     background: transparent;
     color: var(--muted-foreground);
     text-align: start;
+    white-space: normal;
     font-family: var(--font-sans, system-ui);
     font-size: var(--ui-transcript-tool-font-size, 0.8125rem);
     line-height: 1.5;
@@ -249,6 +250,7 @@
     outline-offset: 2px;
   }
   :global(.ui-transcript-tool-trigger span:not(.sr-only)) {
+    min-width: 0;
     overflow-wrap: anywhere;
   }
   :global(.ui-transcript-tool-trigger svg) {

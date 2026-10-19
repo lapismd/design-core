@@ -23,6 +23,78 @@
       ],
     },
   ];
+  const wrappingItems: TranscriptItem[] = ["user", "assistant"].map((role) => ({
+    id: `wrapping-${role}`,
+    kind: "message",
+    role: role as "user" | "assistant",
+    label: role,
+    author: { id: role, name: role },
+    blocks: [
+      {
+        id: `wrapping-${role}/body`,
+        revision: "1",
+        kind: "markdown",
+        label: role,
+        text:
+          "Review the complete set of workspace notes and explain which decisions still need supporting evidence. ".repeat(
+            8,
+          ) +
+          "\n\n" +
+          "captured-context-".repeat(25),
+        commentable: false,
+      },
+    ],
+  }));
+  const capturedPath =
+    "/Users/reviewer/code/lapismd/lapis-desktop-history/.local/demo-review/Repository Review/.agents/skills/lapis-notes/" +
+    "workspace-history-and-conversation-review-with-supporting-evidence-".repeat(
+      4,
+    ) +
+    "SKILL.md";
+  wrappingItems.splice(1, 0, {
+    id: "wrapping-tool",
+    kind: "tools",
+    label: "Captured file read",
+    blocks: [],
+    tools: [
+      {
+        id: "wrapping-tool/read",
+        revision: "1",
+        title: `Read file '${capturedPath}'`,
+        status: "complete",
+        raw: capturedPath,
+        detailPlacement: "sidebar",
+        blocks: [],
+      },
+    ],
+  });
+  async function assertWrapping(element: HTMLElement) {
+    await waitFor(() =>
+      expect(element.querySelectorAll("[data-chat-reader]")).toHaveLength(2),
+    );
+    for (const reader of element.querySelectorAll<HTMLElement>(
+      "[data-chat-reader]",
+    )) {
+      const line = reader.querySelector<HTMLElement>(".cm-line")!;
+      await waitFor(() =>
+        expect(line.getBoundingClientRect().height).toBeGreaterThan(
+          parseFloat(getComputedStyle(line).lineHeight) * 2,
+        ),
+      );
+      expect(reader.scrollWidth).toBeLessThanOrEqual(reader.clientWidth + 1);
+      expect(reader.getBoundingClientRect().right).toBeLessThanOrEqual(
+        element
+          .querySelector<HTMLElement>("[data-reader-frame]")!
+          .getBoundingClientRect().right + 1,
+      );
+    }
+    const trigger = element.querySelector<HTMLElement>(
+      ".ui-transcript-tool-trigger",
+    )!;
+    expect(trigger.scrollWidth).toBeLessThanOrEqual(trigger.clientWidth + 1);
+    const heading = trigger.parentElement!;
+    expect(heading.scrollWidth).toBeLessThanOrEqual(heading.clientWidth + 1);
+  }
   const { Story } = defineMeta({
     title: "Chat/Transcript",
     component: Transcript,
@@ -179,3 +251,28 @@
     ).toBeNull();
   }}
 />
+
+<Story
+  name="Narrow document prose"
+  args={{ view: "document", items: wrappingItems, onInspectTool: () => {} }}
+  play={({ canvasElement }) => assertWrapping(canvasElement)}
+>
+  {#snippet template(args)}<div
+      data-reader-frame
+      style="width:320px;height:600px"
+    >
+      <Transcript {...args} />
+    </div>{/snippet}
+</Story>
+<Story
+  name="Narrow classic prose"
+  args={{ view: "classic", items: wrappingItems, onInspectTool: () => {} }}
+  play={({ canvasElement }) => assertWrapping(canvasElement)}
+>
+  {#snippet template(args)}<div
+      data-reader-frame
+      style="width:320px;height:600px"
+    >
+      <Transcript {...args} />
+    </div>{/snippet}
+</Story>

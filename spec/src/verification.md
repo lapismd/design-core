@@ -628,3 +628,7 @@ separate.
 DC-WS-028 and DC-CHAT-010 follow-up: rounded host footer clearance and immutable
 XML message readers use the focused source/consumer evidence in
 `spec/records/2026-10-19-rounded-footer-and-xml-readers.md`.
+
+DC-CHAT-006 constrained tool-title wrapping is covered by
+`spec/records/2026-10-19-transcript-long-tool-titles.md`; original completion
+gates and In progress status remain unchanged.
