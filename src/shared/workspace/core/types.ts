@@ -242,7 +242,7 @@ export interface WorkspaceStatusItem {
    * The owner supplies accessible controls, styling and resource lifetime.
    */
   mount?: (host: HTMLElement) => () => void;
-  align?: "left" | "right";
+  align?: "left" | "center" | "right";
   priority?: number;
   label?: string;
   segments?: string[];

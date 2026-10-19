@@ -1,13 +1,14 @@
 .ui-workspace-status-item {
   display: inline-flex;
   min-width: max-content;
-  min-height: 1.125rem;
+  height: 1.25rem;
+  min-height: 1.25rem;
   flex: 0 0 auto;
   align-items: center;
   gap: 0.25rem;
   border: 0;
   border-radius: var(--ui-workspace-radius-small);
-  padding: 0.1875rem 0.25rem;
+  padding: 0.125rem 0.25rem;
   color: inherit;
   background: transparent;
   font: inherit;

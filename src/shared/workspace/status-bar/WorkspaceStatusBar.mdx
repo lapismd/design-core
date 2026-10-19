@@ -5,9 +5,11 @@ import * as Stories from "./WorkspaceStatusBar.stories.svelte";
 
 # Workspace status bar
 
-The status bar renders controller contributions in the compact fixed
-bottom-right Lapis surface. Applications can omit or replace the surface while
-retaining the same status registry.
+The status bar renders controller contributions in a dedicated full-width footer
+with left, bounded center and right regions. The center retains its width while
+idle; long activity labels truncate without moving side contributions. Lower
+priority side entries remain available in overflow popovers. App Shell reserves
+space beneath its desktop content, including the ribbon and both sidebars.
 
 <Canvas of={Stories.LeftAndRightContributions} />
 

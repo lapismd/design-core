@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import type { WorkspaceSide } from "../core/types.js";
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
@@ -7,9 +8,12 @@
   let {
     controller,
     side = "left",
+    bottomActions,
   }: {
     controller: WorkspaceShellController;
     side?: WorkspaceSide;
+    /** Additional shell-owned actions after registered bottom contributions. */
+    bottomActions?: Snippet;
   } = $props();
 
   let items = $derived(
@@ -85,5 +89,6 @@
         <WorkspaceIcon name={item.icon} />
       </button>
     {/each}
+    {@render bottomActions?.()}
   </nav>
 </aside>

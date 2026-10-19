@@ -189,18 +189,6 @@
   min-height: 0;
 }
 
-.ui-workspace-sidebar-group__status-safe-area {
-  display: none;
-}
-
-.ui-app-shell:has([data-workspace-status-bar])
-  .ui-workspace-sidebar-group__status-safe-area {
-  display: block;
-  height: calc(var(--ui-workspace-status-height) + 0.25rem);
-  flex: 0 0 calc(var(--ui-workspace-status-height) + 0.25rem);
-  background: var(--ui-workspace-panel);
-}
-
 .ui-workspace-sidebar-group__empty {
   display: flex;
   height: 100%;

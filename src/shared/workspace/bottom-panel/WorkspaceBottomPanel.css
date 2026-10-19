@@ -184,7 +184,7 @@
 }
 
 .ui-workspace-bottom-panel__content [data-ui-component="workspace-view-host"] {
-  padding-block-end: var(--ui-workspace-status-height);
+  padding-block-end: 0;
 }
 
 .ui-workspace-bottom-panel__drop-target {

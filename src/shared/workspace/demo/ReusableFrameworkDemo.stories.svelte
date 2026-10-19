@@ -84,15 +84,11 @@
     );
     const expandLinks = canvas.getByRole("button", { name: "Expand Links" });
     const statusBar = canvas.getByLabelText("Workspace status");
-    const statusSafeArea = canvasElement.querySelector<HTMLElement>(
-      '[data-ui-part="status-safe-area"]',
-    );
-    await expect(statusSafeArea).toBeInTheDocument();
-    await expect(getComputedStyle(statusSafeArea!).display).toBe("block");
     await waitFor(() =>
-      expect(expandLinks.getBoundingClientRect().bottom).toBeLessThanOrEqual(
-        statusBar.getBoundingClientRect().top,
-      ),
+      // Paneforge distributes fractional CSS pixels between collapsed groups.
+      expect(
+        Math.floor(expandLinks.getBoundingClientRect().bottom),
+      ).toBeLessThanOrEqual(Math.ceil(statusBar.getBoundingClientRect().top)),
     );
     await userEvent.click(expandLinks);
     await expect(
@@ -296,9 +292,24 @@
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(pluginLifecycle.app.ready).toBe(true));
     const documentCanvas = within(canvasElement.ownerDocument.body);
-    const pluginsButton = canvas.getByRole("button", {
-      name: "Manage demo plugin · Plugins",
-    });
+    const pluginAction = async () => {
+      await waitFor(() =>
+        expect(canvas.getByLabelText("Workspace status")).toBeVisible(),
+      );
+      if (
+        !canvas.queryByRole("button", { name: "Manage demo plugin · Plugins" })
+      ) {
+        await userEvent.click(
+          await canvas.findByRole("button", {
+            name: "More right status items",
+          }),
+        );
+      }
+      return documentCanvas.findByRole("button", {
+        name: "Manage demo plugin · Plugins",
+      });
+    };
+    const pluginsButton = await pluginAction();
     await userEvent.click(pluginsButton);
     await userEvent.click(
       documentCanvas.getByRole("menuitem", {
@@ -312,9 +323,7 @@
     await waitFor(() =>
       expect(pluginsButton).toHaveAttribute("aria-expanded", "false"),
     );
-    const enabledPluginsButton = canvas.getByRole("button", {
-      name: "Manage demo plugin · Plugins",
-    });
+    const enabledPluginsButton = await pluginAction();
     await waitFor(() =>
       expect(getComputedStyle(enabledPluginsButton).pointerEvents).toBe("auto"),
     );

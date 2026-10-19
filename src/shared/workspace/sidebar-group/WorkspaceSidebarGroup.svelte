@@ -323,13 +323,7 @@
         {/key}
       {/if}
     </div>
-    {#if side === "right" && lastPanelCollapsed}
-      <div
-        class="ui-workspace-sidebar-group__status-safe-area"
-        data-ui-part="status-safe-area"
-        aria-hidden="true"
-      ></div>
-    {/if}
+    {#if side === "right" && lastPanelCollapsed}{/if}
   {:else}
     <div class="ui-workspace-sidebar-group__empty">
       <WorkspaceIcon name="panel-top-open" />

@@ -111,15 +111,29 @@ export class ProblemsPlugin extends AppShellPlugin<ProblemsPluginOptions> {
     const count = this.#controller.diagnostics.size;
     this.app.status.addItem({
       id: PROBLEMS_STATUS_ITEM_ID,
-      align: "right",
+      align: "left",
       priority: 480,
       icon: this.options?.icon ?? "circle-alert",
       label: String(count),
       tooltip: `${count} ${count === 1 ? "problem" : "problems"}`,
-      onSelect: () => {
-        this.showProblems();
-      },
+      onSelect: () => this.toggleBottomPanel(),
     });
+  }
+
+  private toggleBottomPanel(): void {
+    const renderer = this.app.renderer;
+    const open = !renderer.layout.bottom.open;
+    renderer.setDockOpen("bottom", open);
+    if (!open) return;
+    const leaf = this.ensureProblemsLeaf(true);
+    const location = leaf && findWorkspaceTab(renderer.layout, leaf.id);
+    if (
+      leaf &&
+      location &&
+      workspaceNodeContains(renderer.layout.bottom.root, location.pane.id)
+    ) {
+      this.app.workspace.revealLeaf(leaf);
+    }
   }
 
   showProblems(): boolean {

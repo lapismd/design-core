@@ -3,6 +3,7 @@ import { AppShellController } from "../../core/app-shell-controller.svelte.js";
 import {
   NOTIFICATIONS_PLUGIN_ID,
   NOTIFICATION_STATUS_ITEM_ID,
+  NOTIFICATION_ACTIVITY_ITEM_ID,
   TOGGLE_NOTIFICATION_CENTER_COMMAND_ID,
   notificationsPlugin,
 } from "./notifications-plugin.js";
@@ -49,6 +50,40 @@ describe("notificationsPlugin", () => {
     expect(
       app.status.items.some((item) => item.id === NOTIFICATION_STATUS_ITEM_ID),
     ).toBe(false);
+    await app.dispose();
+  });
+
+  it("keeps activity centered and the bell available through completion and disable", async () => {
+    const app = new AppShellController({ plugins: [notificationsPlugin()] });
+    await app.start();
+    const bell = () =>
+      app.status.items.find((item) => item.id === NOTIFICATION_STATUS_ITEM_ID);
+    const activity = () =>
+      app.status.items.find(
+        (item) => item.id === NOTIFICATION_ACTIVITY_ITEM_ID,
+      );
+    expect(bell()).toMatchObject({ align: "right", icon: "bell" });
+    expect(activity()).toBeUndefined();
+    const task = app.notifications.createProgress({
+      id: "test-task",
+      title: "Indexing notes",
+      location: "status",
+    });
+    expect(activity()).toMatchObject({
+      align: "center",
+      label: "Indexing notes",
+    });
+    task.complete();
+    expect(activity()).toBeUndefined();
+    expect(bell()).toBeDefined();
+    app.notifications.createProgress({
+      id: "second-task",
+      title: "Fetching history",
+      location: "status",
+    });
+    await app.plugins.disable(NOTIFICATIONS_PLUGIN_ID);
+    expect(activity()).toBeUndefined();
+    expect(bell()).toBeUndefined();
     await app.dispose();
   });
 
