@@ -117,6 +117,9 @@ the instruction in their own fixed row; the default hint remains visible.
 
 **Requirement.** Transcript MUST present immutable host-owned conversations in document and classic views, preserving jj-store reference geometry, exact source text and reader identity during streaming and history loading.
 
+Reader links MUST retain foreground contrast on light/dark host surfaces and an
+underline, independently of the primary fill colour. Routing remains host-owned.
+
 GFM tables and complete fenced code blocks MUST render through the existing safe
 Markdown reader while keeping the original captured source and offsets.
 Incomplete captures remain source content and fenced table examples remain
