@@ -61,27 +61,56 @@
   <div class="ui-transcript-tool-item">
     <span class="sr-only" id={statusId(tool)}>{statusLabel(tool)}</span>
     {#if tool.detailPlacement === "sidebar" && onInspectTool}
-      <div class="ui-transcript-tool-heading">
-        <Button
-          variant="ghost"
-          class="ui-transcript-tool-trigger"
-          aria-label={`Show details for ${tool.title}`}
-          aria-describedby={statusId(tool)}
-          onclick={(event) => onInspectTool?.(tool, event.currentTarget)}
-        >
-          {#if tool.status === "error"}<CircleAlertIcon
-              size={14}
-            />{:else if tool.status === "running"}<LoaderCircleIcon
-              size={14}
-            />{:else}<Icon />{/if}<span>{tool.title}</span><ChatDisclosureIcon
-          />
-        </Button>
-        {@render rawToggle(tool)}
-      </div>
-      <ChatCollapsedComments
-        {state}
-        blocks={[...tool.blocks, rawToolBlock(tool)]}
-      />
+      <Collapsible.Root
+        open={expanded(tool.id)}
+        onOpenChange={(open) => (state.disclosures[tool.id] = open)}
+      >
+        <div class="ui-transcript-tool-heading">
+          <Button
+            variant="ghost"
+            class="ui-transcript-tool-trigger"
+            aria-label={`Show details for ${tool.title}`}
+            aria-describedby={statusId(tool)}
+            onclick={(event) => onInspectTool?.(tool, event.currentTarget)}
+          >
+            {#if tool.status === "error"}<CircleAlertIcon
+                size={14}
+              />{:else if tool.status === "running"}<LoaderCircleIcon
+                size={14}
+              />{:else}<Icon />{/if}<span>{tool.title}</span
+            >{#if !tool.inlineBlocks?.length}<ChatDisclosureIcon />{/if}
+          </Button>
+          {#if tool.inlineBlocks?.length}
+            <Collapsible.Trigger
+              class="ui-transcript-tool-inline-trigger"
+              aria-label={`${expanded(tool.id) ? "Hide" : "Show"} contents for ${tool.title}`}
+              ><ChatDisclosureIcon /></Collapsible.Trigger
+            >
+          {/if}
+          {@render rawToggle(tool)}
+        </div>
+        {#if tool.inlineBlocks?.length}
+          <Collapsible.Content
+            class="ui-transcript-tool-detail"
+            aria-label={`Captured contents for ${tool.title}`}
+          >
+            {#if expanded(tool.id)}<ChatToolBlocks
+                blocks={tool.inlineBlocks}
+                {state}
+                {customBlock}
+              />{/if}
+          </Collapsible.Content>
+        {/if}
+      </Collapsible.Root>
+      {#if !tool.inlineBlocks?.length || !expanded(tool.id)}
+        <ChatCollapsedComments
+          {state}
+          blocks={[...tool.blocks, rawToolBlock(tool)]}
+        />
+      {:else}<ChatCollapsedComments
+          {state}
+          blocks={[rawToolBlock(tool)]}
+        />{/if}
     {:else}
       <Collapsible.Root
         open={expanded(tool.id, item.defaultExpanded && calls.length === 1)}
@@ -165,6 +194,28 @@
     display: flex;
     align-items: center;
     gap: 0.35rem;
+  }
+  :global(.ui-transcript-tool-inline-trigger) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    min-width: var(--ui-transcript-tool-row-height, 1.5rem);
+    min-height: var(--ui-transcript-tool-row-height, 1.5rem);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--muted-foreground);
+    cursor: pointer;
+  }
+  :global(.ui-transcript-tool-inline-trigger:hover) {
+    background: var(--muted);
+    color: var(--foreground);
+  }
+  :global(.ui-transcript-tool-inline-trigger:focus-visible) {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
   :global(.ui-transcript-tool-trigger) {
     display: flex;

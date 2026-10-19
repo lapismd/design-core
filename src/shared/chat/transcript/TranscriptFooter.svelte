@@ -17,6 +17,7 @@
     onSend,
     onStop,
     status,
+    showStatus = true,
     statusPosition = "top",
     actions,
     workspace,
@@ -69,7 +70,7 @@
   class={["ui-transcript-footer", className].filter(Boolean).join(" ")}
   data-ui-component="transcript-footer"
 >
-  {#if feedback && statusPosition === "top"}<ComposerStatusBanner
+  {#if showStatus && feedback && statusPosition === "top"}<ComposerStatusBanner
       status={feedback}
       position="top"
     />{/if}
@@ -109,7 +110,7 @@
         />{/if}</Button
     >
   </div>
-  {#if feedback && statusPosition === "bottom"}<ComposerStatusBanner
+  {#if showStatus && feedback && statusPosition === "bottom"}<ComposerStatusBanner
       status={feedback}
       position="bottom"
     />{/if}

@@ -1,7 +1,8 @@
 <script lang="ts">
   import MarkdownComposer from "./MarkdownComposer.svelte";
   import type { MarkdownComposerTrigger } from "./composer-suggestions.js";
-  let { slow = false }: { slow?: boolean } = $props();
+  let { slow = false, narrow = false }: { slow?: boolean; narrow?: boolean } =
+    $props();
   let shown = $state(true),
     requests = $state(0),
     aborts = $state(0);
@@ -50,8 +51,15 @@
             label: "Summarize",
             description: "Insert a request",
           },
+          {
+            id: "help",
+            label: "/help",
+            description:
+              "App · Show available commands grouped by App, Actions, Skills, and Current Agent.",
+          },
         ].filter((i) => i.label.toLowerCase().includes(query.toLowerCase())),
-      onSelect: () => "Please summarize this discussion. ",
+      onSelect: (item) =>
+        item.id === "help" ? "/help " : "Please summarize this discussion. ",
     },
   ];
 </script>
@@ -59,7 +67,7 @@
 <button type="button" onclick={() => (shown = !shown)}>Toggle composer</button>
 <p data-testid="suggestion-requests">{requests}</p>
 <p data-testid="suggestion-aborts">{aborts}</p>
-<div style="max-width:34rem">
+<div style:max-width={narrow ? "16rem" : "34rem"}>
   {#if shown}
     <MarkdownComposer
       bind:value

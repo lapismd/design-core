@@ -34,6 +34,10 @@
   padding-block: calc(var(--_status-padding) + var(--_status-radius))
     var(--_status-padding);
 }
+[data-ui-component="composer-status-banner"][data-position="standalone"] {
+  border-radius: var(--_status-radius);
+  padding-block: var(--_status-padding);
+}
 [data-ui-component="composer-status-banner"][data-status="warning"] {
   --_status-tone: var(--chart-4);
 }

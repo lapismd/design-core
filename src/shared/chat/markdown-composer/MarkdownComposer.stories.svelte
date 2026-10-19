@@ -166,3 +166,16 @@
     },
   }}>{#snippet template()}<SuggestionsFixture slow />{/snippet}</Story
 >
+
+<Story
+  name="Wrapped command descriptions"
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "Type /help to review a wrapped command description in a narrow composer.",
+      },
+      source: { code: SuggestionsSource, language: "tsx", type: "code" },
+    },
+  }}>{#snippet template()}<SuggestionsFixture narrow />{/snippet}</Story
+>

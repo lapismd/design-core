@@ -40,6 +40,7 @@ currentColor, reduced-motion preferences and Button focus semantics.
 - Consumers may override documented semantic tokens without depending on private selectors.
 - Workspace view tokens MUST expose resolved primary and secondary backgrounds so movable views can preserve contrast without placement selectors.
 - Styling validation must distinguish source ownership from Storybook-only presentation.
+- Expanded inline formatting MUST scroll inside its own action row without widening the page or displacing the send control.
 
 ## DC-CSS-002 — Design tokens
 

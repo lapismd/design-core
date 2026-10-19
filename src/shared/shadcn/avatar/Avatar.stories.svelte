@@ -189,7 +189,7 @@
   }}
   play={async ({ canvas }) => {
     await expect(
-      canvas.getByRole("button", { name: "About Alex Morgan" }),
+      canvas.getByRole("button", { name: "About Alex Morgan, AM" }),
     ).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Author cards" }));
     await expect(
@@ -197,7 +197,7 @@
     ).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Author cards" }));
     await expect(
-      canvas.getByRole("button", { name: "About Alex Morgan" }),
+      canvas.getByRole("button", { name: "About Alex Morgan, AM" }),
     ).toBeVisible();
   }}
 >

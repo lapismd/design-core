@@ -1,4 +1,6 @@
 .ui-composer-suggestions {
+  box-sizing: border-box;
+  width: min(26rem, calc(100vw - 2rem));
   max-width: min(26rem, calc(100vw - 2rem));
   border: 1px solid var(--border);
   border-radius: 0.75rem;
@@ -7,21 +9,40 @@
   box-shadow: var(--shadow-md);
   font-family: var(--font-sans, system-ui);
 }
-.ui-composer-suggestions li {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.cm-tooltip.ui-composer-suggestions.cm-tooltip-autocomplete > ul {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+}
+.cm-tooltip.ui-composer-suggestions.cm-tooltip-autocomplete > ul > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 0.125rem 0.5rem;
   padding: 0.5rem 0.625rem;
   min-height: 2.5rem;
   font-size: 0.875rem;
+  white-space: normal;
+}
+.cm-tooltip.ui-composer-suggestions.cm-tooltip-autocomplete
+  > ul
+  > li:has(.ui-composer-suggestions__icon) {
+  grid-template-columns: 2rem minmax(0, 1fr);
 }
 .ui-composer-suggestions li[aria-selected] {
   background: var(--accent);
   color: var(--accent-foreground);
 }
-.ui-composer-suggestions .cm-completionLabel {
-  flex: 1;
+.cm-tooltip.ui-composer-suggestions .cm-completionLabel,
+.cm-tooltip.ui-composer-suggestions .cm-completionDetail {
+  grid-column: -2 / -1;
   min-width: 0;
+  margin: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.ui-composer-suggestions .cm-completionLabel {
+  font-weight: 500;
 }
 .ui-composer-suggestions .cm-completionDetail {
   color: var(--muted-foreground);
@@ -29,6 +50,8 @@
   font-size: 0.75rem;
 }
 .ui-composer-suggestions__icon {
+  grid-column: 1;
+  grid-row: 1 / span 2;
   display: inline-flex;
   flex: none;
   align-items: center;

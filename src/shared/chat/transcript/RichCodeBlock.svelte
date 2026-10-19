@@ -28,7 +28,9 @@
           ...context.block,
           id: `${context.block.id}/fence/${from}`,
           text: context.block.text.slice(from, to),
-          kind: "code" as const,
+          kind: /^(diff|patch)$/i.test(language)
+            ? ("patch" as const)
+            : ("code" as const),
           path: `source.${({ typescript: "ts", javascript: "js", markdown: "md", bash: "sh" } as Record<string, string>)[language] ?? language}`,
           label: `${language} code`,
         }

@@ -67,6 +67,9 @@ compact fold row with a trailing divider.
 
 **Requirement.** MarkdownComposer MUST compose the existing Composer shell and public Mira editor APIs with controlled drafts and host-owned submission intent.
 
+Hosts MAY omit the inline keyboard hint with `showHint=false` when they render
+the instruction in their own fixed row; the default hint remains visible.
+
 ### Acceptance details
 
 - The component MUST support framed and document presentations with left-aligned editor content, top reply quotes, form serialization, contextual content, host actions, disabled/busy state and bottom formatting actions with accessible tooltips; document presentation uses a transparent prose surface, a host-supplied avatar vertically centred beside the first draft line and a tall writing area.
@@ -129,9 +132,29 @@ original source's later availability, using Mira's public table surface.
 Fenced code MUST use the captured code/patch reader's syntax, inline line
 comments and middle-fold controls. Mapping a fenced body into its captured
 Markdown MUST preserve the original anchor identity and UTF-16 selection.
+Fences labelled `diff` or `patch` MUST use the existing patch reader so additions,
+deletions and hunk headers retain their distinct presentation.
 Initially collapsed tool groups MUST reveal their captured child tools when
 opened in either conversation view, including with an externally owned
 TranscriptController. Inner tool disclosures MUST remain independently usable.
+Hosts MAY opt into a fixed Classic composer through `classicComposerPlacement`.
+The composer, pending comments and queued messages MUST stay adjacent to the
+footer as history scrolls, without remounting the editor or changing Document
+placement. The default Classic placement remains inline.
+Captured GFM task lists MUST render checked and unchecked read-only checkboxes,
+including nested and ordered tasks. Their original markers and UTF-16 comment
+offsets MUST remain unchanged; inline and fenced examples stay literal.
+Checked and unchecked task controls MUST share consistent vertical alignment
+with their text and MUST NOT alter row geometry according to checkbox state.
+Inspectable tools MAY supply an inline source projection. Their title MUST open
+the host inspector while a separate chevron expands or collapses the source,
+retaining syntax highlighting, middle-fold controls and shared exact anchors.
+Hosts MAY set `--ui-transcript-body-footer-border` to omit the fixed footer's
+separator; its default remains the shared border.
+
+Host-marked error or warning notices MUST remain inline with a tinted semantic
+surface and circular warning icon. Captured text stays immutable, and trailing
+metadata actions request an explicit host retry without dispatching implicitly.
 
 ### Acceptance details
 
@@ -167,6 +190,11 @@ Hosts setting `canComment` to false MUST omit comment actions, including empty h
 ## DC-CHAT-009 — Transcript footer, queued messages and reactions
 
 **Requirement.** Transcript MUST offer host-neutral queued-message and fixed-footer presentation matching jj-store, alongside controlled message reactions.
+
+Hosts MAY set `TranscriptFooter.showStatus=false` when they render the same
+feedback beside a fixed send hint. `ComposerStatusBanner.position="standalone"`
+MUST round every corner without negative margins or overlap with adjacent controls.
+The default attached footer status remains unchanged.
 
 ### Acceptance details
 
@@ -213,7 +241,7 @@ Hosts setting `canComment` to false MUST omit comment actions, including empty h
 
 ### Acceptance details
 
-- Suggestions MUST retain existing ComposerTrigger search and insertion contracts with keyboard navigation, selection replacement and host-supplied labels.
+- Suggestions MUST retain existing ComposerTrigger search and insertion contracts with keyboard navigation, selection replacement and host-supplied labels; each label occupies the first row, with its description wrapping beneath it without shrinking the label to zero width or overlapping it.
 - Aborted, stale, disabled or disposed searches MUST never replace newer results or mutate the retained draft.
 - IME composition and escaped inline or fenced code MUST not trigger unintended insertion or message submission.
 - Completion handling MUST claim Enter only for a registered trigger query; Shift+Enter and ordinary document newlines MUST retain their existing editing behavior.

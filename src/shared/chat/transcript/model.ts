@@ -60,6 +60,9 @@ export interface TranscriptTool {
   raw: string;
   commentable?: boolean | undefined;
   detailPlacement?: "inline" | "sidebar" | undefined;
+  /** Optional inline source preview beside a separately inspectable title.
+   * Projections retain the same block IDs, revisions and exact text as blocks. */
+  inlineBlocks?: readonly TranscriptBlock[] | undefined;
 }
 export interface TranscriptTurn {
   id: string;
@@ -75,6 +78,8 @@ export interface TranscriptItem {
   /** Captured application context shown before this message, separate from authored text. */
   sentContext?: SentContextData | undefined;
   kind: "message" | "tools" | "context" | "reasoning" | "handoff";
+  /** Inline captured status; metadataSupplement supplies any explicit host action. */
+  notice?: "error" | "warning" | undefined;
   label: string;
   icon?: Component | undefined;
   role?: "user" | "assistant" | undefined;
@@ -262,6 +267,8 @@ export interface TranscriptFooterProps extends HTMLAttributes<HTMLDivElement> {
   onSend?: (() => void | Promise<void>) | undefined;
   onStop?: (() => void | Promise<void>) | undefined;
   status?: ComposerStatus | undefined;
+  /** Hide only the banner when the host renders status in a separate fixed region. */
+  showStatus?: boolean | undefined;
   statusPosition?: "top" | "bottom" | undefined;
   actions?: Snippet | undefined;
   workspace?: Snippet | undefined;
@@ -285,6 +292,8 @@ export interface TranscriptProps extends TranscriptHost {
   reactions?: Readonly<Record<string, readonly Reaction[]>> | undefined;
   /** Receives the applied view so the host can adapt one retained composer. */
   composer?: Snippet<["document" | "classic"]> | undefined;
+  /** Pin the retained Classic composer above the footer while history scrolls. */
+  classicComposerPlacement?: "inline" | "fixed" | undefined;
   footer?: Snippet | undefined;
   label?: string | undefined;
   logLabel?: string | undefined;

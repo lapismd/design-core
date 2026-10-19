@@ -32,6 +32,7 @@
   import ChatReplyContext from "./ChatReplyContext.svelte";
   import ChatContent from "./ChatContent.svelte";
   import ChatTools from "./ChatTools.svelte";
+  import ChatNotice from "./ChatNotice.svelte";
   import { TranscriptController } from "./comments.svelte.js";
   import type { TranscriptProps } from "./model.js";
   import { rawToolBlock } from "./tool-blocks.js";
@@ -45,6 +46,7 @@
     authorPopover,
     onReact,
     composer,
+    classicComposerPlacement = "inline",
     footer,
     label = "Agent chat body",
     customBlock,
@@ -120,6 +122,23 @@
   let previousSignature = "";
   let composing = $state(false);
   let renderedView = $state<"document" | "classic">("document");
+  let viewportHeight = $state(0);
+  const classicComposerFixed = $derived(
+    !!composer &&
+      renderedView === "classic" &&
+      classicComposerPlacement === "fixed",
+  );
+  $effect(() => {
+    const viewport = root;
+    if (!viewport || !classicComposerFixed) return;
+    const measure = () => {
+      viewportHeight = viewport.clientHeight;
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  });
   $effect(() => {
     if (!composing) renderedView = view;
   });
@@ -204,6 +223,7 @@
   class="ui-transcript-body-reading-surface"
   data-ui-component="transcript"
   data-conversation-view={renderedView}
+  data-classic-composer-placement={classicComposerPlacement}
   oncompositionstartcapture={() => (composing = true)}
   oncompositionendcapture={() => (composing = false)}
 >
@@ -216,165 +236,188 @@
       data-comment-target={comments.active?.anchor.blockId}
       data-composing={!!composer}
     >
-      {#if loading}<HistoryEdge state="loading" />{/if}
-      {#if !loading && history && history !== "empty"}<HistoryEdge
-          state={history}
-          onLoad={onLoadHistory}
-        />{/if}
-      {@render beforeItems?.()}
       <div
-        role="log"
-        aria-label={logLabel}
-        aria-live="polite"
-        aria-busy={loading || history === "loading"}
+        class="ui-transcript-composer-flow"
+        data-fixed={classicComposerFixed}
+        style:min-height={classicComposerFixed
+          ? `${viewportHeight}px`
+          : undefined}
       >
-        <ol class="ui-transcript-document">
-          {#each items as item (item.id)}
-            <li data-chat-item={item.id} data-kind={item.kind} tabindex="-1">
-              {#if item.dayLabel}<SystemMessage variant="divider"
-                  >{item.dayLabel}</SystemMessage
-                >{/if}
-              {#if item.commentBatchId}<ChatCommentBatch
-                  state={comments}
-                  batchId={item.commentBatchId}
-                />{/if}
-              {#if item.replyContext}<div
-                  class="ui-transcript-document-inset ui-transcript-reply-context"
-                >
-                  <ChatReplyContext state={comments} {item} />
-                </div>{/if}
-              {#if item.kind === "message" && item.blocks.length}
-                {#if item.sentContext}<div class="ui-transcript-document-inset">
-                    <SentContext
-                      {...item.sentContext}
-                      markdown={hostOptions.markdown ??
-                        comments.props().markdown}
-                    />
-                  </div>{/if}
-                <Message
-                  sender="assistant"
-                  density="balanced"
-                  class="ui-transcript-message"
-                  data-role={item.role}
-                  data-message-id={item.id}
-                  aria-label={item.author
-                    ? `Message from ${item.author.name}`
-                    : item.label}
-                >
-                  {#snippet avatar()}<div class="ui-transcript-message-avatar">
-                      {#if item.author}<TranscriptAvatar
-                          member={item.author}
-                          size={renderedView === "classic"
-                            ? "medium"
-                            : "xsmall"}
-                          decorative
-                        />{/if}
-                    </div>{/snippet}
-                  {#snippet name()}{#if renderedView === "classic"}<span
-                        class="ui-transcript-message-author"
-                        >{item.author?.name ?? item.role ?? item.label}</span
-                      >{#if item.author?.role}<span
-                          class="ui-transcript-message-role"
-                          >{item.author.role}</span
-                        >{/if}{/if}{/snippet}
-                  <div class="ui-transcript-message-content">
-                    <span class="sr-only">{item.author?.name ?? item.role}</span
-                    ><ChatContent
-                      blocks={item.blocks}
-                      state={comments}
-                      reactionTarget={item.id}
-                      {messageActions}
-                      reply={item.role === "assistant" && !!item.replyContext}
-                      {customBlock}
-                    />
-                    {@render itemSupplement?.(item)}
-                    <TranscriptMessageMetadata
-                      {item}
-                      {onOpenThread}
-                      supplement={itemMetadata}
-                    />
-                    {@render reactionBar(item)}
-                  </div>
-                </Message>
-              {:else if item.kind === "tools"}<div
-                  class="ui-transcript-document-inset"
-                >
-                  <ChatTools
-                    {item}
+        {#if loading}<HistoryEdge state="loading" />{/if}
+        {#if !loading && history && history !== "empty"}<HistoryEdge
+            state={history}
+            onLoad={onLoadHistory}
+          />{/if}
+        {@render beforeItems?.()}
+        <div
+          role="log"
+          aria-label={logLabel}
+          aria-live="polite"
+          aria-busy={loading || history === "loading"}
+        >
+          <ol class="ui-transcript-document">
+            {#each items as item (item.id)}
+              <li data-chat-item={item.id} data-kind={item.kind} tabindex="-1">
+                {#if item.dayLabel}<SystemMessage variant="divider"
+                    >{item.dayLabel}</SystemMessage
+                  >{/if}
+                {#if item.commentBatchId}<ChatCommentBatch
                     state={comments}
-                    {customBlock}
-                    onInspectTool={hostOptions.onInspectTool}
-                  />
-                </div>
-              {:else if item.kind !== "message"}
-                {@const Icon =
-                  item.icon ??
-                  (item.kind === "reasoning"
-                    ? LightbulbIcon
-                    : item.kind === "handoff"
-                      ? BotIcon
-                      : FileTextIcon)}
-                <div class="ui-transcript-document-inset">
-                  <Collapsible.Root
-                    open={comments.disclosures[item.id] ??
-                      item.defaultExpanded ??
-                      false}
-                    onOpenChange={(open) =>
-                      (comments.disclosures[item.id] = open)}
+                    batchId={item.commentBatchId}
+                  />{/if}
+                {#if item.replyContext}<div
+                    class="ui-transcript-document-inset ui-transcript-reply-context"
                   >
-                    <Collapsible.Trigger class="ui-transcript-context-trigger"
-                      ><Icon aria-hidden="true" /><span>{item.label}</span
-                      ><ChatDisclosureIcon /></Collapsible.Trigger
+                    <ChatReplyContext state={comments} {item} />
+                  </div>{/if}
+                {#if item.kind === "message" && item.blocks.length}
+                  {#if item.sentContext}<div
+                      class="ui-transcript-document-inset"
                     >
-                    <Collapsible.Content
-                      >{#if comments.disclosures[item.id] ?? item.defaultExpanded ?? false}<ChatContent
-                          blocks={item.blocks}
-                          state={comments}
-                          reactionTarget={item.id}
-                          {messageActions}
-                          {customBlock}
-                        />{/if}</Collapsible.Content
-                    >
-                  </Collapsible.Root>
-                  {#if !(comments.disclosures[item.id] ?? item.defaultExpanded ?? false)}<ChatCollapsedComments
+                      <SentContext
+                        {...item.sentContext}
+                        markdown={hostOptions.markdown ??
+                          comments.props().markdown}
+                      />
+                    </div>{/if}
+                  <Message
+                    sender="assistant"
+                    density="balanced"
+                    class="ui-transcript-message"
+                    data-role={item.role}
+                    data-message-id={item.id}
+                    aria-label={item.author
+                      ? `Message from ${item.author.name}`
+                      : item.label}
+                  >
+                    {#snippet avatar()}<div
+                        class="ui-transcript-message-avatar"
+                      >
+                        {#if item.author}<TranscriptAvatar
+                            member={item.author}
+                            size={renderedView === "classic"
+                              ? "medium"
+                              : "xsmall"}
+                            decorative
+                          />{/if}
+                      </div>{/snippet}
+                    {#snippet name()}{#if renderedView === "classic"}<span
+                          class="ui-transcript-message-author"
+                          >{item.author?.name ?? item.role ?? item.label}</span
+                        >{#if item.author?.role}<span
+                            class="ui-transcript-message-role"
+                            >{item.author.role}</span
+                          >{/if}{/if}{/snippet}
+                    <div class="ui-transcript-message-content">
+                      <span class="sr-only"
+                        >{item.author?.name ?? item.role}</span
+                      ><ChatContent
+                        blocks={item.blocks}
+                        state={comments}
+                        reactionTarget={item.id}
+                        {messageActions}
+                        reply={item.role === "assistant" && !!item.replyContext}
+                        {customBlock}
+                      />
+                      {@render itemSupplement?.(item)}
+                      <TranscriptMessageMetadata
+                        {item}
+                        {onOpenThread}
+                        supplement={itemMetadata}
+                      />
+                      {@render reactionBar(item)}
+                    </div>
+                  </Message>
+                {:else if item.notice}<div class="ui-transcript-document-inset">
+                    <ChatNotice
+                      {item}
                       state={comments}
-                      blocks={item.blocks}
-                    />{/if}
-                </div>
-              {/if}
-              {#if item.kind !== "message"}{@render itemSupplement?.(
-                  item,
-                )}{@render itemMetadata?.(item)}{@render reactionBar(item)}{/if}
-            </li>
-          {/each}
-        </ol>
-      </div>
-      {#if afterItems}<div class="ui-transcript-transcript-activity">
-          {@render afterItems()}
-        </div>{/if}
-      {#if !items.length && !loading && history !== "loading"}
-        {#if emptyState}{@render emptyState()}{:else}
-          <HistoryEdge state="empty" />
+                      {customBlock}
+                      actions={itemMetadata}
+                    />
+                  </div>
+                {:else if item.kind === "tools"}<div
+                    class="ui-transcript-document-inset"
+                  >
+                    <ChatTools
+                      {item}
+                      state={comments}
+                      {customBlock}
+                      onInspectTool={hostOptions.onInspectTool}
+                    />
+                  </div>
+                {:else if item.kind !== "message"}
+                  {@const Icon =
+                    item.icon ??
+                    (item.kind === "reasoning"
+                      ? LightbulbIcon
+                      : item.kind === "handoff"
+                        ? BotIcon
+                        : FileTextIcon)}
+                  <div class="ui-transcript-document-inset">
+                    <Collapsible.Root
+                      open={comments.disclosures[item.id] ??
+                        item.defaultExpanded ??
+                        false}
+                      onOpenChange={(open) =>
+                        (comments.disclosures[item.id] = open)}
+                    >
+                      <Collapsible.Trigger class="ui-transcript-context-trigger"
+                        ><Icon aria-hidden="true" /><span>{item.label}</span
+                        ><ChatDisclosureIcon /></Collapsible.Trigger
+                      >
+                      <Collapsible.Content
+                        >{#if comments.disclosures[item.id] ?? item.defaultExpanded ?? false}<ChatContent
+                            blocks={item.blocks}
+                            state={comments}
+                            reactionTarget={item.id}
+                            {messageActions}
+                            {customBlock}
+                          />{/if}</Collapsible.Content
+                      >
+                    </Collapsible.Root>
+                    {#if !(comments.disclosures[item.id] ?? item.defaultExpanded ?? false)}<ChatCollapsedComments
+                        state={comments}
+                        blocks={item.blocks}
+                      />{/if}
+                  </div>
+                {/if}
+                {#if item.kind !== "message"}{@render itemSupplement?.(
+                    item,
+                  )}{#if !item.notice}{@render itemMetadata?.(
+                      item,
+                    )}{/if}{@render reactionBar(item)}{/if}
+              </li>
+            {/each}
+          </ol>
+        </div>
+        {#if afterItems}<div class="ui-transcript-transcript-activity">
+            {@render afterItems()}
+          </div>{/if}
+        {#if !items.length && !loading && history !== "loading"}
+          {#if emptyState}{@render emptyState()}{:else}
+            <HistoryEdge state="empty" />
+          {/if}
         {/if}
-      {/if}
-      {#if stale.length}<aside
-          class="ui-transcript-stale"
-          aria-label="Comments on unavailable content"
-        >
-          {#each stale as thread (thread.id)}<ChatCommentArea
-              state={comments}
-              threadId={thread.id}
-              placement="history"
-            />{/each}
-        </aside>{/if}
-      {#if composer}<div
-          class="ui-transcript-document-composer"
-          data-transcript-composer
-        >
-          {@render queuedMessages?.()}
-          <ChatCommentBatch state={comments} />
-          {@render composer(renderedView)}
-        </div>{/if}
+        {#if stale.length}<aside
+            class="ui-transcript-stale"
+            aria-label="Comments on unavailable content"
+          >
+            {#each stale as thread (thread.id)}<ChatCommentArea
+                state={comments}
+                threadId={thread.id}
+                placement="history"
+              />{/each}
+          </aside>{/if}
+        {#if composer}<div
+            class="ui-transcript-document-composer"
+            data-transcript-composer
+          >
+            {@render queuedMessages?.()}
+            <ChatCommentBatch state={comments} />
+            {@render composer(renderedView)}
+          </div>{/if}
+      </div>
     </ScrollArea>
     {#if navigation}<ChatNavigation
         {items}

@@ -9,6 +9,12 @@
 .ui-transcript-markdown-preview pre {
   white-space: pre;
 }
+.ui-transcript-task-marker {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-inline-end: 0.375rem;
+}
 .ui-transcript-rich-code {
   background: var(--muted);
   border-radius: var(--radius);

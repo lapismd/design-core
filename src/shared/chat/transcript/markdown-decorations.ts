@@ -4,9 +4,11 @@ import {
   getAtxHeadingMarkerRange,
   getMarkdownLinkTextRange,
   getIndentLineLayout,
+  getTaskMarkerRange,
 } from "@lapismd/mira/codemirror";
 import { PathLabel } from "./path-label.js";
-import { parser as markdownParser, Table } from "@lezer/markdown";
+import { parser as markdownParser, Table, TaskList } from "@lezer/markdown";
+import { TranscriptTaskCheckbox } from "./task-checkbox.js";
 import { TranscriptMarkdownPreview } from "./markdown-preview-widget.js";
 import type { TranscriptProps } from "./model.js";
 import type { RichSourceContext } from "./rich-source.js";
@@ -29,7 +31,7 @@ export function readingDecorations(
   const marks: { from: number; to: number; value: Decoration }[] = [];
   const hidden: { from: number; to: number; decorated?: boolean }[] = [];
   markdownParser
-    .configure([Table])
+    .configure([Table, TaskList])
     .parse(text)
     .iterate({
       enter(node) {
@@ -63,6 +65,33 @@ export function readingDecorations(
           });
           hidden.push({ from: node.from, to: node.to, decorated: true });
           return false;
+        }
+        if (name === "ListMark") {
+          const marker = node.node.parent
+            ?.getChild("Task")
+            ?.getChild("TaskMarker");
+          const from = text.lastIndexOf("\n", node.from - 1) + 1;
+          const end = text.indexOf("\n", node.to);
+          const line = text.slice(from, end < 0 ? undefined : end);
+          const task = marker ? getTaskMarkerRange(line, from) : null;
+          if (task && marker?.from === task.checkboxStart) {
+            marks.push({
+              from: task.markerStart,
+              to: task.markerEnd,
+              value: Decoration.replace({
+                widget: new TranscriptTaskCheckbox(
+                  /^[xX]$/u.test(task.taskValue),
+                  text.slice(task.markerEnd, end < 0 ? undefined : end),
+                ),
+              }),
+            });
+            hidden.push({
+              from: task.markerStart,
+              to: task.markerEnd,
+              decorated: true,
+            });
+            return false;
+          }
         }
         if (
           name === "ListMark" &&

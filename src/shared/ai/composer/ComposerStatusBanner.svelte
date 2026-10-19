@@ -7,7 +7,11 @@
   let {
     status,
     position = "top",
-  }: { status: ComposerStatus; position?: "top" | "bottom" } = $props();
+  }: {
+    status: ComposerStatus;
+    /** Standalone keeps all corners rounded without overlapping adjacent controls. */
+    position?: "top" | "bottom" | "standalone";
+  } = $props();
 </script>
 
 <div

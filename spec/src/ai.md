@@ -127,7 +127,7 @@ content retains its shared size, typography and centered alignment.
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract; reusable ComposerStatusBanner MUST preserve the existing curved attached top/bottom treatment with error, warning, info and success semantics.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract; reusable ComposerStatusBanner MUST preserve the existing curved attached top/bottom treatment with error, warning, info and success semantics, and support standalone placement with every corner rounded and no negative overlap margin for separately owned fixed status regions.
 - When `disabled` and `isStopShown` are both true, the stop control MUST remain pointer-interactive while input, send, and other body actions stay blocked.
 - `clearOnSubmit` MUST default to the existing clear behavior and allow hosts such as MarkdownComposer to retain the controlled draft after submission intent.
 

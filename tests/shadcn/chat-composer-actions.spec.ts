@@ -217,6 +217,9 @@ test("presentation changes preserve reader identity and selection for formatting
   await editor.press("ControlOrMeta+a");
   await editor.pressSequentially("Draft a **shared** message.");
   await page.getByRole("button", { name: "Select first word" }).click();
+  await page
+    .getByRole("button", { name: "Hide formatting", exact: true })
+    .click();
   await page.getByRole("button", { name: "Add emoji" }).click();
   await page
     .getByRole("button", { name: "React with fire", exact: true })

@@ -21,9 +21,30 @@
   margin: 0 auto;
   padding: 0.25rem 2.75rem 1rem 1rem;
 }
+.ui-transcript-composer-flow {
+  display: contents;
+}
+.ui-transcript-composer-flow[data-fixed="true"] {
+  display: flex;
+  flex-direction: column;
+}
+.ui-transcript-composer-flow[data-fixed="true"] .ui-transcript-document {
+  box-sizing: border-box;
+  width: 100%;
+}
+.ui-transcript-body-reading-surface[data-conversation-view="classic"][data-classic-composer-placement="fixed"]
+  .ui-transcript-document-composer {
+  box-sizing: border-box;
+  width: 100%;
+  margin-block-start: auto;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  background: var(--background);
+}
 .ui-transcript-body-footer {
   background: var(--background);
-  border-top: 1px solid var(--border);
+  border-top: var(--ui-transcript-body-footer-border, 1px solid var(--border));
 }
 .ui-transcript-viewport {
   --ui-chat-markdown-padding: 0;

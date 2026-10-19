@@ -28,7 +28,10 @@ test("full conversation avatars and reply groups use optional shared author card
       .first();
     const label = (await participant.getAttribute("aria-label"))!;
     await participant.hover();
-    const card = page.getByRole("group", { name: label, exact: true });
+    const card = page.getByRole("group", {
+      name: label.replace(/, [^,]+$/u, ""),
+      exact: true,
+    });
     await expect(
       card.locator('[data-ui-component="author-card"]'),
     ).toBeVisible();

@@ -53,6 +53,8 @@ export type MarkdownComposerProps = Omit<
   submitLabel?: string;
   /** Omit the inline send control when a fixed TranscriptFooter owns sending. */
   showSendButton?: boolean;
+  /** Omit the inline keyboard hint when the host supplies a fixed hint row. */
+  showHint?: boolean;
   /** Defaults to Enter in framed mode and modifier+Enter in document mode. */
   submitOnEnter?: boolean;
   formattingOpen?: boolean;

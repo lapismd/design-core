@@ -129,6 +129,8 @@ Data and feedback primitives communicate state without taking ownership of consu
 - Popover dismissal MUST restore trigger focus and viewport-bounded content MUST use shared ScrollArea with inherited semantic tokens.
 - Compact trigger sizing MUST NOT shrink the identity avatar inside the author details surface; accessible trigger names MUST include visible initials or emoji fallbacks alongside the supplied author label.
 
+- The participant story MUST retain the unchanged name `About Alex Morgan, AM` for `Alex Morgan` with its visible `AM` fallback, including after switching custom participant rendering.
+
 ## DC-SHA-059 — Reference Chip
 
 **Requirement.** ReferenceChip MUST compose compact icon or avatar references with Badge presentation and host-owned navigation or actions.

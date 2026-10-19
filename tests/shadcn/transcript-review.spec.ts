@@ -96,10 +96,12 @@ test("footer actions and controls stay outside the transcript scroll body", asyn
   await expect(page.getByTestId("transcript-result")).toHaveText(
     "Host context action requested",
   );
-  await page.getByRole("button", { name: "Choose model", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Choose model: Balanced model", exact: true })
+    .click();
   await page.getByRole("menuitem", { name: "Fast model", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "Choose model", exact: true }),
+    page.getByRole("button", { name: "Choose model: Fast model", exact: true }),
   ).toHaveText("Fast model");
 });
 
@@ -268,7 +270,7 @@ test("external controllers retain message reaction callbacks and author popover 
   await custom.click();
   await expect(custom).toHaveCount(0);
   const author = page
-    .getByRole("button", { name: "About Alex Morgan", exact: true })
+    .getByRole("button", { name: "About Alex Morgan, AM", exact: true })
     .first();
   await author.focus();
   await page.keyboard.press("Enter");

@@ -58,6 +58,7 @@
     status,
     submitLabel = "Send message",
     showSendButton = true,
+    showHint = true,
     submitOnEnter,
     formattingOpen = $bindable(false),
     dockActions = false,
@@ -436,9 +437,9 @@
       {/snippet}
     </Composer>
   </Tooltip.Provider>
-  <span class="ui-markdown-composer__hint"
-    >{enterSubmits
-      ? "Shift+Enter for a new line"
-      : "Ctrl/⌘+Enter to send"}</span
-  >
+  {#if showHint}<span class="ui-markdown-composer__hint"
+      >{enterSubmits
+        ? "Shift+Enter for a new line"
+        : "Ctrl/⌘+Enter to send"}</span
+    >{/if}
 </div>
