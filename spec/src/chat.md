@@ -144,6 +144,8 @@ TranscriptController. Inner tool disclosures MUST remain independently usable.
 
 **Requirement.** TranscriptController MUST keep caller-owned comment state attached to exact block IDs, revisions, UTF-16 ranges and quotes without editing captured text or relocating stale anchors.
 
+Custom-section annotation handlers MUST ignore input already handled by a nested editor, retaining each typed or pasted character exactly once.
+
 ### Acceptance details
 
 - Selection, keyboard, typing, paste and IME MUST create equivalent exact anchors; multiple comments and whole-section anchors MUST retain drafts through folding and raw/rich transitions, and collapsed files/tools/sections MUST show only the last nonempty current root comment per anchored discussion, with earlier comments restored on expansion and agent responses retained in their linked messages.

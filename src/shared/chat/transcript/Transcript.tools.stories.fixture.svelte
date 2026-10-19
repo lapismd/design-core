@@ -6,7 +6,10 @@
   import { untrack } from "svelte";
 
   let view = $state<"document" | "classic">("document");
-  let { dynamic = false }: { dynamic?: boolean } = $props();
+  let {
+    dynamic = false,
+    custom = false,
+  }: { dynamic?: boolean; custom?: boolean } = $props();
   const captured: TranscriptItem[] = [
     {
       id: "tool-group",
@@ -24,7 +27,7 @@
             {
               id: "read/body",
               revision: "1",
-              kind: "code",
+              kind: untrack(() => (custom ? "custom" : "code")),
               label: "Read result",
               text: "A captured file read",
             },

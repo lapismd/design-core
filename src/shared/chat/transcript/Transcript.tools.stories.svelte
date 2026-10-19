@@ -46,6 +46,31 @@
 </Story>
 
 <Story
+  name="Pastes once into a tool comment"
+  play={async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Expand Tool activity" }),
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Show details for Read source" }),
+    );
+    await userEvent.click(
+      await canvas.findByRole("button", { name: "Comment on Read result" }),
+    );
+    const editor = await canvas.findByRole("textbox", {
+      name: "Comment on Read result",
+    });
+    await userEvent.click(editor);
+    await userEvent.paste("Pasted exactly once");
+    await expect(editor.textContent).toBe("Pasted exactly once");
+    await userEvent.click(canvas.getByRole("button", { name: /^Classic$/ }));
+    await expect(editor.textContent).toBe("Pasted exactly once");
+  }}
+>
+  {#snippet template()}<Fixture custom />{/snippet}
+</Story>
+
+<Story
   name="Opens a group after a second tool arrives"
   play={async ({ canvas }) => {
     await expect(

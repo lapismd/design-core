@@ -14,7 +14,7 @@ export function customInteraction(
     target instanceof Element &&
     !!target.closest(`${PREVIEW_INTERACTIVE_SELECTOR},a,[role='link']`);
   const keydown = (event: KeyboardEvent) => {
-    if (interactive(event.target)) return;
+    if (event.defaultPrevented || interactive(event.target)) return;
     if (event.key === "m" && (event.metaKey || event.ctrlKey) && event.altKey) {
       event.preventDefault();
       open();
@@ -29,7 +29,7 @@ export function customInteraction(
     }
   };
   const paste = (event: ClipboardEvent) => {
-    if (interactive(event.target)) return;
+    if (event.defaultPrevented || interactive(event.target)) return;
     const text = event.clipboardData?.getData("text/plain");
     if (text) {
       event.preventDefault();
