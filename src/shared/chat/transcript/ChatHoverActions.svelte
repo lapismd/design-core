@@ -26,47 +26,50 @@
     reactionContext,
   );
   const reactions = $derived(inherited ?? state.props());
+  const commentsEnabled = $derived(state.props().canComment !== false);
+  const visible = $derived(
+    commentsEnabled ||
+      !!(reactionTarget && (reactions.onReact || messageActions)),
+  );
 </script>
 
-<div
-  class="ui-transcript-text-actions"
-  role="group"
-  aria-label={`Actions for ${block.label}`}
->
-  {#if reactionTarget && reactions.onReact}
-    <EmojiPicker
-      customEmojis={reactions.customEmojis ?? []}
-      disabled={reactions.reactionsDisabled ?? false}
-      {...reactions.reactionEmojis === undefined
-        ? {}
-        : { emojis: reactions.reactionEmojis }}
-      triggerLabel={`Add reaction to ${block.label}`}
-      presets={reactions.reactionOptions ?? []}
-      onSelect={(emoji, custom) =>
-        reactions.onReact?.(
-          reactionTarget!,
-          emoji,
-          custom ??
-            reactions.customEmojis?.find(
-              (item) =>
-                item.id === emoji ||
-                item.shortcode === emoji ||
-                `:${item.shortcode}:` === emoji,
-            ),
-        )}
-    />
-  {/if}
-  <Button
-    variant="ghost"
-    size="sm"
-    aria-label={`Comment on ${block.label}`}
-    disabled={block.commentable === false || state.props().canComment === false}
-    title={state.props().canComment === false
-      ? (state.props().commentUnavailable ?? "Commenting is unavailable")
-      : block.commentable === false
-        ? "Waiting for an exact published source"
-        : undefined}
-    onclick={onComment}><MessageCircleIcon size={14} /> Comment</Button
+{#if visible}<div
+    class="ui-transcript-text-actions"
+    role="group"
+    aria-label={`Actions for ${block.label}`}
   >
-  {#if reactionTarget}{@render messageActions?.(reactionTarget)}{/if}
-</div>
+    {#if reactionTarget && reactions.onReact}
+      <EmojiPicker
+        customEmojis={reactions.customEmojis ?? []}
+        disabled={reactions.reactionsDisabled ?? false}
+        {...reactions.reactionEmojis === undefined
+          ? {}
+          : { emojis: reactions.reactionEmojis }}
+        triggerLabel={`Add reaction to ${block.label}`}
+        presets={reactions.reactionOptions ?? []}
+        onSelect={(emoji, custom) =>
+          reactions.onReact?.(
+            reactionTarget!,
+            emoji,
+            custom ??
+              reactions.customEmojis?.find(
+                (item) =>
+                  item.id === emoji ||
+                  item.shortcode === emoji ||
+                  `:${item.shortcode}:` === emoji,
+              ),
+          )}
+      />
+    {/if}
+    {#if commentsEnabled}<Button
+        variant="ghost"
+        size="sm"
+        aria-label={`Comment on ${block.label}`}
+        disabled={block.commentable === false}
+        title={block.commentable === false
+          ? "Waiting for an exact published source"
+          : undefined}
+        onclick={onComment}><MessageCircleIcon size={14} /> Comment</Button
+      >{/if}
+    {#if reactionTarget}{@render messageActions?.(reactionTarget)}{/if}
+  </div>{/if}

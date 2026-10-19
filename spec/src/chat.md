@@ -145,6 +145,7 @@ TranscriptController. Inner tool disclosures MUST remain independently usable.
 **Requirement.** TranscriptController MUST keep caller-owned comment state attached to exact block IDs, revisions, UTF-16 ranges and quotes without editing captured text or relocating stale anchors.
 
 Custom-section annotation handlers MUST ignore input already handled by a nested editor, retaining each typed or pasted character exactly once.
+Hosts setting `canComment` to false MUST omit comment actions, including empty hover-action surfaces, while preserving existing comments and independent reaction or host actions. Commentable hosts MUST retain the disabled waiting-for-source action for unpublished blocks.
 
 ### Acceptance details
 
