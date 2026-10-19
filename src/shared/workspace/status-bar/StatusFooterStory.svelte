@@ -195,7 +195,7 @@
   </div>
   <div
     class="footer-story-frame"
-    class:rounded-window={safeArea}
+    class:footer-story-rounded-window={safeArea}
     style:width={narrow ? "620px" : "100%"}
   >
     <AppShell.Root controller={app} {theme}>
@@ -229,7 +229,7 @@
     min-height: 0;
     max-width: 100%;
   }
-  .rounded-window {
+  .footer-story-rounded-window {
     --ui-workspace-safe-area-inline-start: 8px;
     --ui-workspace-safe-area-inline-end: 12px;
     --ui-workspace-safe-area-block-end: 4px;
