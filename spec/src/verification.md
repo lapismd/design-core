@@ -632,3 +632,5 @@ XML message readers use the focused source/consumer evidence in
 DC-CHAT-006 constrained tool-title wrapping is covered by
 `spec/records/2026-10-19-transcript-long-tool-titles.md`; original completion
 gates and In progress status remain unchanged.
+The path-only single-line refinement and exact hover/focus tooltip are recorded
+in `spec/records/2026-10-19-truncated-tool-paths.md`.

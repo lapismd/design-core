@@ -54,6 +54,8 @@ export interface TranscriptTool {
   id: string;
   revision: string;
   title: string;
+  /** Captured target path: truncate the title and reveal this exact path in a tooltip. */
+  path?: string | undefined;
   /** Explicit presentation icon; provider/tool-name guessing belongs to adapters. */
   icon?: Component | undefined;
   status: "complete" | "error" | "running" | "unknown";

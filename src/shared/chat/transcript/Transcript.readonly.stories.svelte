@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import { promptElementsExtension } from "../prompt-context/prompt-elements-extension.js";
   import Transcript from "./Transcript.svelte";
   import type { TranscriptItem } from "./model.js";
@@ -61,6 +61,7 @@
         id: "wrapping-tool/read",
         revision: "1",
         title: `Read file '${capturedPath}'`,
+        path: capturedPath,
         status: "complete",
         raw: capturedPath,
         detailPlacement: "sidebar",
@@ -94,6 +95,22 @@
     expect(trigger.scrollWidth).toBeLessThanOrEqual(trigger.clientWidth + 1);
     const heading = trigger.parentElement!;
     expect(heading.scrollWidth).toBeLessThanOrEqual(heading.clientWidth + 1);
+    const title = trigger.querySelector<HTMLElement>("span")!;
+    expect(title.clientWidth).toBeGreaterThan(40);
+    expect(title.getBoundingClientRect().height).toBeLessThanOrEqual(
+      parseFloat(getComputedStyle(title).lineHeight) + 1,
+    );
+    expect(title.scrollWidth).toBeGreaterThan(title.clientWidth);
+    await userEvent.hover(trigger);
+    await expect(
+      within(element.ownerDocument.body).findByRole("tooltip"),
+    ).resolves.toHaveTextContent(capturedPath);
+    await userEvent.unhover(trigger);
+    trigger.focus();
+    await expect(
+      within(element.ownerDocument.body).findByRole("tooltip"),
+    ).resolves.toHaveTextContent(capturedPath);
+    trigger.blur();
   }
   const { Story } = defineMeta({
     title: "Chat/Transcript",
