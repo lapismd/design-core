@@ -72,6 +72,8 @@
     reply,
     onCancelReply,
     context,
+    drawer,
+    interactiveDrawerWhenDisabled = false,
     avatar,
     additionalActions,
     class: className,
@@ -365,6 +367,11 @@
   {/if}
 {/snippet}
 
+{#snippet composerDrawer()}
+  {@render drawer?.()}
+  {@render replyPreview()}
+{/snippet}
+
 <div
   bind:this={ref}
   {...restProps}
@@ -382,13 +389,14 @@
     <Composer
       bind:value
       disabled={blocked}
+      {interactiveDrawerWhenDisabled}
       clearOnSubmit={false}
       elevation="none"
       isStopShown={busy && Boolean(onStop)}
       {...status === undefined ? {} : { status }}
       statusPosition="top"
       onSubmit={submit}
-      {...reply ? { drawer: replyPreview } : {}}
+      {...drawer || reply ? { drawer: composerDrawer } : {}}
       {...context === undefined ? {} : { headerContext: context }}
     >
       {#snippet input()}

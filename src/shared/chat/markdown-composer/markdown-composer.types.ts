@@ -74,6 +74,10 @@ export type MarkdownComposerProps = Omit<
   reply?: MarkdownComposerReply;
   /** Requests cancellation without changing the reply or draft internally. */
   onCancelReply?: () => void;
+  /** Supplementary host content, layered behind the framed composer body. */
+  drawer?: Snippet;
+  /** Keep host drawer controls usable while editing and submission are blocked. */
+  interactiveDrawerWhenDisabled?: boolean;
   /** Additional header context; use reply for the quoted message drawer. */
   context?: Snippet;
   /** Optional document-mode avatar; the host owns identity and presentation. */

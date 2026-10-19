@@ -160,7 +160,7 @@ content retains its shared size, typography and centered alignment.
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
-- A consumer MAY keep the drawer interactive while the disabled composer body blocks input and send except the stop control when `isStopShown` is true.
+- A collapsed drawer MUST expose a compact summary above the overlapping rounded composer body without reserving expanded-content height; consumers MAY keep the drawer interactive while the disabled composer body blocks input and send except the stop control when `isStopShown` is true.
 - File chips and lettered feedback options MUST use distinct rest and hover attachment fill tokens plus the compact radius: chips stay darker than the drawer at rest, focused remove controls expose their interactive paint, and selected feedback paint stays distinct from the drawer.
 
 ## DC-AI-012 — Send Button

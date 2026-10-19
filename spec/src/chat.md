@@ -70,6 +70,11 @@ compact fold row with a trailing divider.
 
 **Requirement.** MarkdownComposer MUST compose the existing Composer shell and public Mira editor APIs with controlled drafts and host-owned submission intent.
 
+Hosts MAY supply a supplementary `drawer` snippet inside the Composer shell;
+`interactiveDrawerWhenDisabled` keeps its controls usable while editing and
+submission remain blocked. Reply context and host drawer content compose without
+remounting the editor or changing the draft.
+
 Hosts MAY omit the inline keyboard hint with `showHint=false` when they render
 the instruction in their own fixed row; the default hint remains visible.
 
