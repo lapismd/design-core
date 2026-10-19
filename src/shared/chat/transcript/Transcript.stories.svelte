@@ -90,6 +90,13 @@
     });
     await userEvent.click(comment);
     await userEvent.keyboard("Keep this code example.");
+    const single = canvas.getByRole("button", {
+      name: "Collapse 1 comment (pending)",
+    });
+    expect(single).toHaveTextContent("1 comment");
+    expect(single.getAttribute("aria-label")).toContain(
+      single.textContent!.trim(),
+    );
     const anchors = JSON.parse(
       canvas.getByTestId("transcript-result").getAttribute("data-anchors")!,
     );
@@ -135,6 +142,11 @@
     await expect(parts[1]).toHaveTextContent("Use this table cell as context.");
     await expect(parts[2]).toHaveTextContent("Writing");
     const queue = canvas.getByRole("group", { name: "Pending comments" });
+    expect(
+      within(queue).getByRole("button", {
+        name: "Collapse 2 comments (pending)",
+      }),
+    ).toHaveTextContent("2 comments");
     const context = within(queue).getByRole("table", {
       name: "Commented table row",
     });

@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect } from "storybook/test";
+  import { expect, userEvent, waitFor } from "storybook/test";
   import Transcript from "./Transcript.svelte";
   import type { TranscriptItem } from "./model.js";
   const items: TranscriptItem[] = [
@@ -102,5 +102,42 @@
     await expect(
       canvas.queryByRole("group", { name: /^Actions for/ }),
     ).toBeNull();
+  }}
+/>
+
+<Story
+  name="Classic prompts retain their highlighted surface"
+  args={{
+    view: "classic",
+    items: [
+      {
+        ...items[0],
+        id: "prompt",
+        role: "user",
+        author: { id: "user", name: "You" },
+        blocks: [
+          {
+            ...items[0].blocks[0],
+            id: "prompt/body",
+            text: "Explain the captured changes.",
+          },
+        ],
+      },
+      items[0],
+    ],
+  }}
+  play={async ({ canvas }) => {
+    const prompt = await canvas.findByRole("article", {
+      name: "Message from You",
+    });
+    const answer = canvas.getByRole("article", { name: "Message from Codex" });
+    const background = getComputedStyle(prompt).backgroundColor;
+    expect(background).not.toBe("rgba(0, 0, 0, 0)");
+    expect(background).not.toBe(getComputedStyle(answer).backgroundColor);
+    await userEvent.hover(prompt);
+    await waitFor(() =>
+      expect(getComputedStyle(prompt).backgroundColor).toBe(background),
+    );
+    expect(getComputedStyle(prompt).color).not.toBe(background);
   }}
 />

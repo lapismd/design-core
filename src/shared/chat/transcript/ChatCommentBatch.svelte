@@ -23,6 +23,9 @@
   const ids = $derived([...new Set(entries.map((e) => e.thread.id))]);
   const key = $derived(`batch:${batchId ?? "pending"}`);
   const open = $derived(state.disclosures[key] ?? !batchId);
+  const countLabel = $derived(
+    `${entries.length} ${entries.length === 1 ? "comment" : "comments"}`,
+  );
 </script>
 
 {#if entries.length}
@@ -44,12 +47,9 @@
         />
         <Collapsible.Trigger
           class="ui-transcript-context-trigger"
-          aria-label={`${open ? "Collapse" : "Expand"} ${entries.length} ${batchId ? "sent" : "pending"} comments`}
+          aria-label={`${open ? "Collapse" : "Expand"} ${countLabel} (${batchId ? "sent" : "pending"})`}
         >
-          <span
-            >{entries.length}
-            {entries.length === 1 ? "comment" : "comments"}</span
-          ><ChatDisclosureIcon />
+          <span>{countLabel}</span><ChatDisclosureIcon />
         </Collapsible.Trigger>
       </div>
       <Collapsible.Content>

@@ -9,6 +9,9 @@ including ToolCallDetail, RichToolCallDetail and their normalized presentation t
 
 Classic presentation uses the shared Message primitive with an author/role header,
 larger avatar and hover surface while retaining the document's mounted readers.
+Classic user prompts retain a rounded primary-tinted surface, including on hover
+and keyboard focus; assistant messages keep the ordinary hover treatment.
+Document presentation does not acquire the Classic prompt background.
 Optional metadata includes edited state, reply participants/count and a host reply
 callback, with display timestamps separate from valid machine-readable dates.
 Reply contexts have one padded outer border around the quote and comment list.
@@ -186,6 +189,7 @@ Hosts setting `canComment` to false MUST omit comment actions, including empty h
 - Mixed and comments-only submissions MUST preserve exact snapshots and newer edits; only explicit acknowledgement MAY mark submitted entries delivered or clear the corresponding message.
 - Rejection and unknown outcomes MUST retain drafts and request identity; an absent outcome MUST never count as delivery.
 - Source, queue and reply navigation MUST expose named keyboard/touch targets, reveal disclosures and retain discussion state and opener focus.
+- Queue disclosure names MUST include the visible singular/plural comment count verbatim, followed by sent/pending context.
 
 ## DC-CHAT-009 — Transcript footer, queued messages and reactions
 

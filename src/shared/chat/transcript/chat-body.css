@@ -222,6 +222,9 @@
   .ui-transcript-message:is(:hover, :focus-within) {
   background: color-mix(in srgb, var(--foreground) 4%, transparent);
 }
+[data-conversation-view="classic"] .ui-transcript-message[data-role="user"] {
+  background: color-mix(in srgb, var(--primary) 12%, var(--background));
+}
 [data-conversation-view="classic"] .ui-transcript-message-avatar {
   transform: none;
   padding-block-start: 0;
