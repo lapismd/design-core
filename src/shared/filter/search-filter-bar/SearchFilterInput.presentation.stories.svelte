@@ -3,6 +3,7 @@
   import { expect, userEvent, waitFor, within } from "storybook/test";
   import { Input } from "../../shadcn/input/index.js";
   import SearchFilterInput from "./SearchFilterInput.svelte";
+  import SearchFilterDynamicSyntaxHarness from "./SearchFilterDynamicSyntaxHarness.svelte";
   import type { SearchFilterSyntax } from "./search-filter-syntax.js";
 
   const { Story } = defineMeta({
@@ -36,6 +37,26 @@
 <script lang="ts">
   let query = $state("path:");
 </script>
+
+<Story
+  name="Focused asynchronous syntax refresh"
+  tags={["visual-pending", "test"]}
+  play={async ({ canvas, canvasElement }) => {
+    await userEvent.click(
+      canvas.getByRole("searchbox", { name: "Dynamic vault search" }),
+    );
+    await canvas.findByText("Catalog refreshed");
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+    const page = within(canvasElement.ownerDocument.body);
+    await expect(
+      await page.findByRole("option", { name: /^path/ }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}<SearchFilterDynamicSyntaxHarness />{/snippet}
+</Story>
 
 <Story
   name="Shadcn input focus parity"
