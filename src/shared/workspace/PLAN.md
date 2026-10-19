@@ -1073,3 +1073,8 @@ including retained view state after returning from a sidebar. Source types,
 broad matrices in favour of focused desktop archive acceptance. Evidence:
 `spec/records/2026-10-19-footer-sidebar-seam.md` and
 `spec/records/2026-10-19-main-body-tab-destination.md`.
+
+2026-10-19 follow-up: host-configurable footer safe-area tokens preserve native
+rounded-window clearance and the centred status region. Source/consumer proof
+is recorded in `spec/records/2026-10-19-rounded-footer-and-xml-readers.md`;
+original native/release/visual gates remain unchanged.

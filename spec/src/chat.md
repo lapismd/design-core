@@ -241,7 +241,7 @@ The default attached footer status remains unchanged.
 
 - Arbitrary tag names and attributes MUST remain escaped display text, with nested safe Markdown, compact single-line sections and accessible disclosures; source tags MUST NOT execute HTML, scripts or host commands.
 - Inline/fenced code, malformed or excessively nested elements MUST retain their original text without guessed hidden boundaries, while UTF-16 offsets, Unicode and document references remain intact.
-- The extension MUST compose with host-owned Markdown hooks in standalone previews and Transcript context blocks, retaining the exact captured text and anchors independently of rendering; the catalog MUST expose a direct recorded XML/Markdown example and keep that context discoverable in the full transcript.
+- The extension MUST compose with host-owned Markdown hooks in standalone previews, Transcript context blocks and captured Markdown readers, retaining the exact captured text and anchors independently of rendering; the catalog MUST expose a direct recorded XML/Markdown example and keep that context discoverable in the full transcript.
 
 ## DC-CHAT-011 — Sent-context disclosure
 

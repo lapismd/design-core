@@ -624,3 +624,7 @@ records two failing-before/passing-after regressions, the passing complete
 nonvisual package gate and unchanged packed-consumer workflow acceptance.
 Publication, registry-resolved consumer acceptance and visual approval remain
 separate.
+
+DC-WS-028 and DC-CHAT-010 follow-up: rounded host footer clearance and immutable
+XML message readers use the focused source/consumer evidence in
+`spec/records/2026-10-19-rounded-footer-and-xml-readers.md`.

@@ -12,7 +12,7 @@ import { middleDecorations } from "./middle-fold.js";
 import { patchLines } from "./patch-lines.js";
 import { chatCaret } from "./chat-caret.js";
 import { numberedCodeGutter } from "./numbered-code-gutter.js";
-import type { TranscriptBlock } from "./model.js";
+import type { TranscriptBlock, TranscriptProps } from "./model.js";
 import type { TranscriptController } from "./comments.svelte.js";
 import type { ReaderSource } from "./reader-source.js";
 
@@ -23,6 +23,7 @@ export function readingExtensions(
   contexts: Map<unknown, unknown>,
   fileView = false,
   source?: ReaderSource,
+  markdown?: TranscriptProps["markdown"],
 ) {
   const references =
     block.kind === "markdown"
@@ -34,7 +35,7 @@ export function readingExtensions(
           fileLink: (destination) =>
             !!comments.props().resolveFileLink?.(block, destination),
           paths: comments.props().displayPaths?.(block),
-          markdown: comments.props().markdown,
+          markdown: markdown ?? comments.props().markdown,
           contexts,
           source: { block: { ...block }, comments },
         })

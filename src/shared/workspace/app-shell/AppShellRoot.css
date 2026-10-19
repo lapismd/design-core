@@ -103,7 +103,9 @@
 
 /* The footer is a shell track shared by standard and explicit composition. */
 .ui-app-shell:has(> [data-workspace-status-bar]) {
-  --ui-workspace-status-reserved-height: var(--ui-workspace-status-height);
+  --ui-workspace-status-reserved-height: calc(
+    var(--ui-workspace-status-height) + var(--ui-workspace-safe-area-block-end)
+  );
   display: grid;
   grid-template-columns: auto auto minmax(0, 1fr) auto;
   grid-template-rows: minmax(0, 1fr) auto;

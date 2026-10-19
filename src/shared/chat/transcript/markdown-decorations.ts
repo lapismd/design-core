@@ -6,6 +6,8 @@ import {
   getIndentLineLayout,
   getTaskMarkerRange,
 } from "@lapismd/mira/codemirror";
+import { promptElementsExtension } from "../prompt-context/prompt-elements-extension.js";
+import { promptPreviewRanges } from "./prompt-preview-ranges.js";
 import { PathLabel } from "./path-label.js";
 import { parser as markdownParser, Table, TaskList } from "@lezer/markdown";
 import { TranscriptTaskCheckbox } from "./task-checkbox.js";
@@ -30,12 +32,36 @@ export function readingDecorations(
 } {
   const marks: { from: number; to: number; value: Decoration }[] = [];
   const hidden: { from: number; to: number; decorated?: boolean }[] = [];
+  const prompts = options.markdown?.extensions?.some(
+    (extension) => extension.name === promptElementsExtension.name,
+  )
+    ? promptPreviewRanges(text)
+    : [];
+  for (const range of prompts) {
+    marks.push({
+      ...range,
+      value: Decoration.replace({
+        block: true,
+        widget: new TranscriptMarkdownPreview(
+          text.slice(range.from, range.to),
+          options.markdown,
+          options.contexts,
+          options.source,
+          range.from,
+        ),
+      }),
+    });
+    hidden.push({ ...range, decorated: true });
+  }
   markdownParser
     .configure([Table, TaskList])
     .parse(text)
     .iterate({
       enter(node) {
-        if (ignored.some((r) => node.from >= r.from && node.to <= r.to))
+        if (
+          prompts.some((r) => node.from >= r.from && node.to <= r.to) ||
+          ignored.some((r) => node.from >= r.from && node.to <= r.to)
+        )
           return false;
         const name = node.name;
         const completeCode =

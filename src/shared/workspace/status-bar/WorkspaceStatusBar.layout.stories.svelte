@@ -192,3 +192,46 @@
 >
   {#snippet template()}<StatusFooterStory manual={true} />{/snippet}
 </Story>
+
+<Story
+  name="Rounded window safe area"
+  play={async ({ canvas, canvasElement }) => {
+    const footer = canvas.getByLabelText("Workspace status");
+    const root = canvasElement.querySelector<HTMLElement>(
+      "[data-app-shell-root]",
+    )!;
+    await waitFor(() =>
+      expect(root).toHaveAttribute("data-app-shell-ready", "true"),
+    );
+    const bounds = footer.getBoundingClientRect();
+    expect(bounds.height).toBe(28);
+    expect(bounds.width).toBeCloseTo(root.getBoundingClientRect().width, 0);
+    const center = footer
+      .querySelector<HTMLElement>('[data-ui-part="center"]')!
+      .getBoundingClientRect();
+    expect(center.left + center.width / 2).toBeCloseTo(
+      bounds.left + bounds.width / 2,
+      0,
+    );
+    for (const side of ["left", "right"]) {
+      const region = footer.querySelector<HTMLElement>(
+        `[data-ui-part="${side}"]`,
+      )!;
+      for (const control of within(region).getAllByRole("button")) {
+        const edge = control.getBoundingClientRect();
+        expect(edge.left).toBeGreaterThanOrEqual(bounds.left + 12);
+        expect(edge.right).toBeLessThanOrEqual(bounds.right - 12);
+        expect(edge.bottom).toBeLessThanOrEqual(bounds.bottom - 4);
+      }
+    }
+    expect(
+      root
+        .querySelector<HTMLElement>(
+          '[data-ui-component="app-shell-desktop-layout"]',
+        )!
+        .getBoundingClientRect().bottom,
+    ).toBeCloseTo(bounds.top, 0);
+  }}
+>
+  {#snippet template()}<StatusFooterStory safeArea={true} />{/snippet}
+</Story>

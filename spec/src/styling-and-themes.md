@@ -314,3 +314,10 @@ AuthorCard's default md trigger uses `--ui-author-card-avatar-size` (2.25rem),
 matching jj-store's 36px author identity; other sizes retain Avatar dimensions.
 AvatarGroup defaults to 32px and its overflow count follows the chosen size,
 unless `--ui-avatar-group-overflow-size` is supplied.
+
+Workspace footer safe-area tokens (DC-WS-028) default to `0px`:
+`--ui-workspace-safe-area-inline-start`, `--ui-workspace-safe-area-inline-end`
+and `--ui-workspace-safe-area-block-end`. The larger inline inset protects both
+edges without shifting the centre. The bottom inset adds to the footer track,
+retaining the full-width background and ordinary content height. Hosts own
+platform/window values; plugins need no clearance padding.

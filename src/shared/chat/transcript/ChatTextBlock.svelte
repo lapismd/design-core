@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getAllContexts, onMount, tick, untrack } from "svelte";
+  import { getAllContexts, getContext, onMount, tick, untrack } from "svelte";
   import { MiraCodeEditor, type MiraCodeEditorHandle } from "@lapismd/mira";
   import { Compartment } from "@codemirror/state";
   import ChatHoverActions from "./ChatHoverActions.svelte";
@@ -12,6 +12,10 @@
   import { registerReader } from "./reader-registry.js";
   import { replyIndicator } from "./reply-indicator.js";
   import type { ReaderSource } from "./reader-source.js";
+  import {
+    presentationContext,
+    type TranscriptPresentationContext,
+  } from "./presentation-context.js";
   import "./text-reader.css";
   let {
     block,
@@ -39,11 +43,19 @@
   let editor: MiraCodeEditorHandle;
   let view = $state<EditorView>();
   const contexts = getAllContexts();
+  const presentation = getContext<TranscriptPresentationContext | undefined>(
+    presentationContext,
+  );
+  const markdown = $derived(
+    presentation?.markdown ?? comments.props().markdown,
+  );
   const replyPrefix = new Compartment();
   const reader = new Compartment();
   let configured = "";
   const extensions = untrack(() => [
-    reader.of(readingExtensions(block, comments, contexts, fileView, source)),
+    reader.of(
+      readingExtensions(block, comments, contexts, fileView, source, markdown),
+    ),
     replyPrefix.of(reply ? replyIndicator : []),
   ]);
   onMount(() => {
@@ -151,6 +163,7 @@
             contexts,
             fileView,
             source,
+            markdown,
           ),
         ),
         filter: false,

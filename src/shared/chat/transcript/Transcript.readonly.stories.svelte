@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor } from "storybook/test";
+  import { promptElementsExtension } from "../prompt-context/prompt-elements-extension.js";
   import Transcript from "./Transcript.svelte";
   import type { TranscriptItem } from "./model.js";
   const items: TranscriptItem[] = [
@@ -139,5 +140,42 @@
       expect(getComputedStyle(prompt).backgroundColor).toBe(background),
     );
     expect(getComputedStyle(prompt).color).not.toBe(background);
+  }}
+/>
+
+<Story
+  name="Read-only XML message context"
+  args={{
+    markdown: { extensions: [promptElementsExtension] },
+    items: [
+      {
+        ...items[0]!,
+        blocks: [
+          {
+            ...items[0]!.blocks[0]!,
+            text: "<environment_context>\n## Captured workspace\n\nKeep **this exact context**.\n</environment_context>\n\nThe authored request remains outside.\n\n```xml\n<literal />\n```",
+          },
+        ],
+      },
+    ],
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    const context = await canvas.findByRole("button", {
+      name: "<environment_context>",
+    });
+    await userEvent.click(context);
+    await expect(
+      canvas.getByRole("heading", { name: "Captured workspace" }),
+    ).toBeVisible();
+    await expect(canvas.getByText("this exact context")).toBeVisible();
+    await expect(
+      canvas.getByText("The authored request remains outside."),
+    ).toBeVisible();
+    await expect(
+      canvasElement.querySelector('[data-chat-reader="captured/body"]'),
+    ).toHaveAttribute("aria-readonly", "true");
+    await expect(
+      canvas.queryByRole("button", { name: "<literal />" }),
+    ).toBeNull();
   }}
 />

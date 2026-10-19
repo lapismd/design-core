@@ -9,12 +9,25 @@
     )
     minmax(0, 1fr);
   width: 100%;
-  height: var(--ui-workspace-status-height);
+  height: calc(
+    var(--ui-workspace-status-height) + var(--ui-workspace-safe-area-block-end)
+  );
   min-width: 0;
-  flex: 0 0 var(--ui-workspace-status-height);
+  flex: 0 0
+    calc(
+      var(--ui-workspace-status-height) +
+        var(--ui-workspace-safe-area-block-end)
+    );
   align-items: center;
   border-block-start: 1px solid var(--ui-workspace-border);
-  padding-inline: 0.25rem;
+  padding-inline: calc(
+    0.25rem +
+      max(
+        var(--ui-workspace-safe-area-inline-start),
+        var(--ui-workspace-safe-area-inline-end)
+      )
+  );
+  padding-block-end: var(--ui-workspace-safe-area-block-end);
   color: var(--ui-workspace-muted-foreground);
   background: var(--ui-workspace-status-background, var(--ui-workspace-panel));
   font-size: 0.75rem;

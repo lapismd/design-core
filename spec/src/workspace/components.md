@@ -469,12 +469,12 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ## DC-WS-028 — Status Bar
 
-**Requirement.** The Status Bar MUST provide a full-width, fixed-height footer with left, centered and right contribution regions. Activity text MUST NOT change footer geometry or displace side contributions.
+**Requirement.** The Status Bar MUST provide a full-width, fixed-height footer with left, centered and right contribution regions. Activity text MUST NOT change footer geometry or displace side contributions. Host-supplied safe-area insets MUST protect edge controls while keeping the background full width.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/status-bar`; the default height MUST remain 1.5rem and centered width MUST default to 24rem through public tokens.
-- The centre MUST retain its width while idle and truncate long text; its midpoint MUST match the application midpoint.
+- The centre MUST retain its width while idle and truncate long text; its midpoint MUST match the application midpoint, including with unequal inline safe-area insets.
 - Side overflow MUST preserve registry order, retain higher-priority items first and keep hidden contributions accessible through keyboard-operable popovers before reducing the centre.
 - Resizing and overflow MUST retain custom control identity and mount lifetime; the desktop footer MUST NOT introduce mobile chrome.
 

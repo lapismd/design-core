@@ -10,7 +10,8 @@
   let {
     manual = false,
     review = false,
-  }: { manual?: boolean; review?: boolean } = $props();
+    safeArea = false,
+  }: { manual?: boolean; review?: boolean; safeArea?: boolean } = $props();
   const app = new AppShellController({
     plugins: [notificationsPlugin(), problemsPlugin()],
   });
@@ -192,7 +193,11 @@
       >{mounts} mounts / {disposals} disposals / {clicks} clicks</output
     >
   </div>
-  <div class="footer-story-frame" style:width={narrow ? "620px" : "100%"}>
+  <div
+    class="footer-story-frame"
+    class:rounded-window={safeArea}
+    style:width={narrow ? "620px" : "100%"}
+  >
     <AppShell.Root controller={app} {theme}>
       {#if manual}
         <AppShell.Ribbon />
@@ -223,6 +228,13 @@
     flex: 1 1 auto;
     min-height: 0;
     max-width: 100%;
+  }
+  .rounded-window {
+    --ui-workspace-safe-area-inline-start: 8px;
+    --ui-workspace-safe-area-inline-end: 12px;
+    --ui-workspace-safe-area-block-end: 4px;
+    border-radius: 12px;
+    overflow: hidden;
   }
   .footer-story-controls {
     display: flex;
