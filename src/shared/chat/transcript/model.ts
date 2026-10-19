@@ -279,6 +279,10 @@ export interface TranscriptFooterProps extends HTMLAttributes<HTMLDivElement> {
   controls?: Snippet | undefined;
 }
 export interface TranscriptProps extends TranscriptHost {
+  /** Opt into shared viewport-aware recovery in either presentation. */
+  scrollButton?: boolean | undefined;
+  /** Actual host activity, used only for the recovery control's running glyph. */
+  busy?: boolean | undefined;
   authorPopover?: TranscriptAuthorPopover | undefined;
   /** Controlled presentation of the same items/readers; applied after active IME composition. */
   view?: "document" | "classic" | undefined;

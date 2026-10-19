@@ -68,6 +68,7 @@ retaining disabled control semantics (DC-AI-009, DC-CHAT-002).
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The control MUST render inside the transcript `scroll-shell`, not in the composer dock.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Host-controlled `isRunning` MUST replace the down icon with three bouncing dots while retaining the scroll action and an accessible running label; reduced motion MUST stop the animation.
 
 ## DC-AI-004 — Message List
 

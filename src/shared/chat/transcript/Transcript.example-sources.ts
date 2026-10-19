@@ -6,7 +6,7 @@ export const Basic = `<script lang="ts">
   }));
 </script>
 <div style="height: 36rem">
-  <Transcript {items} commentState={controller}>
+  <Transcript {items} commentState={controller} scrollButton busy={false}>
     {#snippet composer()}<MarkdownComposer bind:value={controller.message} presentation="document" showSendButton={false} onSubmit={() => { void controller.send(); }} />{/snippet}
     {#snippet footer()}<TranscriptFooter state={controller} />{/snippet}
   </Transcript>

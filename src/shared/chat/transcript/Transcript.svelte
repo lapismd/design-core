@@ -28,6 +28,7 @@
   import ChatCollapsedComments from "./ChatCollapsedComments.svelte";
   import ReactionBar from "../../ai/experimental/reaction-bar/ReactionBar.svelte";
   import ChatNavigation from "./ChatNavigation.svelte";
+  import ChatScrollRecovery from "./ChatScrollRecovery.svelte";
   import ChatScrollFade from "./ChatScrollFade.svelte";
   import ChatCommentArea from "./ChatCommentArea.svelte";
   import ChatReplyContext from "./ChatReplyContext.svelte";
@@ -57,6 +58,8 @@
     history,
     onLoadHistory,
     navigation = true,
+    scrollButton = false,
+    busy = false,
     emptyState,
     beforeItems,
     queuedMessages,
@@ -425,6 +428,12 @@
     {#if footer}<ChatScrollFade
         viewport={root}
         pinnedComposer={classicComposerFixed ? composerRoot : null}
+      />{/if}
+    {#if scrollButton}<ChatScrollRecovery
+        viewport={root}
+        pinnedComposer={classicComposerFixed ? composerRoot : null}
+        running={busy}
+        followingAllowed={!comments.active}
       />{/if}
     {#if navigation}<ChatNavigation
         {items}
