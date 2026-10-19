@@ -36,7 +36,7 @@
       description: { story: "Idle plain search pill." },
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <SearchFilterBar value="" placeholder="Search..." />
@@ -60,7 +60,7 @@
       description: { story: "Populated plain search value." },
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <SearchFilterBar value="design system" placeholder="Search..." />
@@ -86,7 +86,7 @@
       },
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <SearchFilterBar
@@ -182,7 +182,7 @@
       expect(remaining).toHaveLength(1);
     });
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div class="max-w-2xl">
