@@ -1061,3 +1061,15 @@ audit pass. Fresh pointer lanes pass 16 workspace, 11 shell and 151 shared-contr
 cases; one Chromium case is intentionally covered by WebKit. API qualification
 is committed; desktop archive handoff is tracked by E-CATALOG-009 in lapis-desktop.
 No native or prior milestone is promoted. Evidence: `spec/records/2026-10-19-workspace-status-footer.md`.
+
+## 2026-10-19 — Main-workspace review follow-ups
+
+The footer now owns the single lower sidebar boundary in the standard desktop
+layout. The shared pane menu adds Main body for sidebar tabs, retaining Main
+window for popups and disabling the current destination. Exact regression
+coverage passes four menu unit cases and eleven tab/footer browser cases,
+including retained view state after returning from a sidebar. Source types,
+836 units and three repaired overlay/drawer cases pass; the user deferred new
+broad matrices in favour of focused desktop archive acceptance. Evidence:
+`spec/records/2026-10-19-footer-sidebar-seam.md` and
+`spec/records/2026-10-19-main-body-tab-destination.md`.

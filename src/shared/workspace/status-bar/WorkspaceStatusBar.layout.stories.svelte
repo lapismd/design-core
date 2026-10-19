@@ -40,6 +40,7 @@
     await waitFor(() =>
       expect(canvas.getByRole("button", { name: "notes-vault" })).toBeVisible(),
     );
+    await canvasElement.ownerDocument.fonts.ready;
     const repository = canvas
       .getByRole("button", { name: "notes-vault" })
       .getBoundingClientRect();
@@ -86,6 +87,18 @@
     );
     await waitFor(() => expect(centre.querySelector("button")).toBeNull());
     expect(centre.getBoundingClientRect().width).toBe(384);
+    await userEvent.click(
+      canvas.getByRole("button", { name: /^Open left sidebar$/ }),
+    );
+    const sidebar = root.querySelector<HTMLElement>(
+      '[data-app-shell-sidebar="left"]',
+    )!;
+    expect(getComputedStyle(sidebar).borderBottomWidth).toBe("0px");
+    expect(sidebar.getBoundingClientRect().bottom).toBeCloseTo(
+      footer.getBoundingClientRect().top,
+      0,
+    );
+    expect(getComputedStyle(footer).borderTopWidth).toBe("1px");
   }}
 >
   {#snippet template()}<StatusFooterStory />{/snippet}

@@ -75,6 +75,9 @@ Hosts MAY supply a supplementary `drawer` snippet inside the Composer shell;
 submission remain blocked. Reply context and host drawer content compose without
 remounting the editor or changing the draft.
 
+Catalog collapse assertions await the closed drawer layout while retaining
+their existing geometry bounds and deadlines.
+
 Hosts MAY omit the inline keyboard hint with `showHint=false` when they render
 the instruction in their own fixed row; the default hint remains visible.
 

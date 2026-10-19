@@ -695,12 +695,13 @@ describe("WorkspaceShellController", () => {
         entry.kind === "item" ? [entry.title, entry.icon, entry.disabled] : [],
       ),
     ).toEqual([
+      ["Main body", "panel-top", true],
       ["Left Sidebar", "panel-left", false],
       ["Right Sidebar", "panel-right", false],
       ["Bottom Sidebar", "panel-bottom", false],
     ]);
 
-    const left = destinations[0];
+    const left = destinations.find((entry) => entry.title === "Left Sidebar");
     expect(left?.kind).toBe("item");
     if (left?.kind !== "item") return;
     left.callback?.();
@@ -723,6 +724,7 @@ describe("WorkspaceShellController", () => {
           entry.kind === "item" ? [entry.title, entry.disabled] : [],
         ),
     ).toEqual([
+      ["Main body", false],
       ["Left Sidebar", true],
       ["Right Sidebar", false],
       ["Bottom Sidebar", false],
@@ -734,6 +736,49 @@ describe("WorkspaceShellController", () => {
     );
     expect(controller.layout.bottom.open).toBe(true);
   });
+
+  it.each(["left", "right", "bottom"] as const)(
+    "returns a %s sidebar tab to the main body through its pane menu",
+    (position) => {
+      const controller = new WorkspaceShellController({
+        layout: splitLayout(),
+      });
+      controller.selectTab("second");
+      expect(controller.moveTabToDock("first", position)).toBe(true);
+      const moveTo = controller
+        .createPaneMenu("first")
+        .entries.find(
+          (entry) => entry.kind === "submenu" && entry.title === "Move to",
+        );
+      expect(moveTo?.kind).toBe("submenu");
+      if (moveTo?.kind !== "submenu") return;
+      const main = moveTo.menu.entries.find(
+        (entry) => entry.kind === "item" && entry.title === "Main body",
+      );
+      expect(main).toMatchObject({
+        kind: "item",
+        icon: "panel-top",
+        disabled: false,
+      });
+      if (main?.kind !== "item") return;
+      main.callback?.();
+      expect(findWorkspaceTab(controller.layout, "first")?.pane.id).toBe(
+        "second-pane",
+      );
+      expect(controller.layout.active).toEqual({
+        hostId: "root",
+        paneId: "second-pane",
+        tabId: "first",
+      });
+      expect(
+        findWorkspacePane(
+          controller.layout,
+          controller.layout[position].root.id,
+        )?.items,
+      ).toHaveLength(0);
+      expect(controller.moveTabToMain("first")).toBe(false);
+    },
+  );
 
   it("reports load and save failures while retaining usable state", async () => {
     const errors: string[] = [];

@@ -84,7 +84,7 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 - The public boundary is `@lapismd/design-core/workspace/app-shell`.
 - Built-in Appearance settings MUST persist one inherited scrollbar visibility value across the main shell, imperative views, and popouts; valid values are `scroll`, `hover`, and `always`, with `scroll` as the default.
 - Built-in dock-opening commands and the default-on tab title-bar preference MUST follow DC-WS-060 and DC-WS-061.
-- Default and explicit desktop composition MUST reserve a full-width footer track beneath ribbon, sidebars and content; floating panes MUST stay above that track and omitting the footer MUST reclaim its space.
+- Default and explicit desktop composition MUST reserve a full-width footer track beneath ribbon, sidebars and content, with the footer supplying their sole horizontal boundary; floating panes MUST stay above that track and omitting the footer MUST reclaim its space.
 
 ## DC-WS-004 — Workspace demo
 
@@ -179,14 +179,14 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 
 ## DC-WS-041 — Pane menu Move to
 
-**Requirement.** The shared pane menu MUST offer a Move to submenu, marked with the `move` icon, that relocates the current tab into the left sidebar, right sidebar, or bottom sidebar and opens that dock.
+**Requirement.** The shared pane menu MUST offer a Move to submenu, marked with the `move` icon, that relocates the current tab into the main body or a sidebar and activates it.
 
 ### Acceptance details
 
-- Move to MUST use the `move` icon, and its items MUST be Left Sidebar, Right Sidebar, and Bottom Sidebar with `panel-left`, `panel-right`, and `panel-bottom`.
-- Selecting a destination MUST move the tab into that dock's tabs pane, activate it, and open the dock.
+- Move to MUST offer Main body with `panel-top` for root-window tabs, followed by Left Sidebar, Right Sidebar, and Bottom Sidebar with `panel-left`, `panel-right`, and `panel-bottom`; popup tabs retain Main window under DC-WS-076.
+- Main body MUST return a sidebar tab to the last valid main pane, falling back to the first main pane; sidebar destinations MUST open that dock and select the moved tab.
 - The destination that already contains the tab MUST be disabled.
-- Controller tests MUST cover a successful dock move, and the Workspace Tabs pane-menu story MUST expose the submenu labels and icons.
+- Controller tests MUST cover moves into and out of each dock, and the Workspace Tabs pane-menu story MUST expose destination labels, icons and unavailable current destinations.
 
 ## Host window-controls geometry
 

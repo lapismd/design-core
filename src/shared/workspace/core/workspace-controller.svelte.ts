@@ -1009,7 +1009,8 @@ export class WorkspaceShellController {
 
   moveTabToMain(tabId: string): boolean {
     const location = findWorkspaceTab(this.layout, tabId);
-    if (!location || location.hostId === "root") return false;
+    if (!location || workspaceNodeContains(this.layout.main, location.pane.id))
+      return false;
     let first: WorkspaceTabsNode | null = null;
     let remembered: WorkspaceTabsNode | null = null;
     walkWorkspaceTabs(this.layout.main, (pane) => {
@@ -1222,15 +1223,19 @@ export class WorkspaceShellController {
             "Move to",
             (submenu) => {
               const currentDock = this.#dockForPane(location.pane.id);
-              if (location.hostId !== "root")
-                submenu.addItem((item) =>
-                  item
-                    .setTitle("Main window")
-                    .setIcon("panel-top")
-                    .onClick(() => {
-                      this.moveTabToMain(tabId);
-                    }),
-                );
+              submenu.addItem((item) =>
+                item
+                  .setTitle(
+                    location.hostId === "root" ? "Main body" : "Main window",
+                  )
+                  .setIcon("panel-top")
+                  .setDisabled(
+                    workspaceNodeContains(this.layout.main, location.pane.id),
+                  )
+                  .onClick(() => {
+                    this.moveTabToMain(tabId);
+                  }),
+              );
               for (const destination of [
                 {
                   position: "left" as const,

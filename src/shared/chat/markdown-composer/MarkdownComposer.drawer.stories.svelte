@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, waitFor } from "storybook/test";
   import MarkdownComposer from "./MarkdownComposer.svelte";
   import ComposerDrawer from "../../ai/composer-drawer/ComposerDrawer.svelte";
   import { Button } from "../../shadcn/button/index.js";
@@ -42,9 +42,11 @@
       parseFloat(getComputedStyle(body).borderTopLeftRadius),
     ).toBeGreaterThan(0);
     await userEvent.click(collapse);
-    expect(
-      body.getBoundingClientRect().top - drawer.getBoundingClientRect().top,
-    ).toBeLessThanOrEqual(36);
+    await waitFor(() =>
+      expect(
+        body.getBoundingClientRect().top - drawer.getBoundingClientRect().top,
+      ).toBeLessThanOrEqual(36),
+    );
     await userEvent.click(
       canvas.getByRole("button", { name: "Expand Attachments" }),
     );

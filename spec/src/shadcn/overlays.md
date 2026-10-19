@@ -67,6 +67,9 @@ Overlay primitives preserve accessible labelling, focus management, dismissal, p
 
 **Requirement.** The Dropdown Menu family MUST present keyboard-accessible actions, groups, nested items, checks, radios, and shortcuts.
 
+Catalog action examples await complete menu closure and release of body pointer
+suppression before ending the interaction.
+
 ### Acceptance details
 
 - Family styling MUST be hosted by the required Content part so action-only consumers retain the menu surface, item layout, and interaction states without importing optional checkbox or radio parts.

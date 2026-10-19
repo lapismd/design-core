@@ -333,12 +333,20 @@
         .querySelector(".lucide-picture-in-picture-2"),
     ).not.toBeNull();
     await userEvent.hover(moveTo);
-    for (const name of ["Left Sidebar", "Right Sidebar", "Bottom Sidebar"]) {
+    for (const name of [
+      "Main body",
+      "Left Sidebar",
+      "Right Sidebar",
+      "Bottom Sidebar",
+    ]) {
       await expect(page.getByRole("menuitem", { name })).toBeVisible();
     }
     await expect(
       page.getByRole("menuitem", { name: "Left Sidebar" }).querySelector("svg"),
     ).not.toBeNull();
+    await expect(
+      page.getByRole("menuitem", { name: "Main body" }),
+    ).toHaveAttribute("aria-disabled", "true");
     await userEvent.keyboard("{Escape}");
 
     const referenceMenu = canvas.getByRole("button", {
