@@ -159,6 +159,7 @@
             "var(--_composer-caret-color, var(--mira-foreground))",
           marginInlineStart: "0",
         },
+        "&.cm-focused": { outline: "none" },
         ".cm-gutters": { display: "none" },
       }),
       Prec.highest(

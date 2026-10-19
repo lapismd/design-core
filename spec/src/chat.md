@@ -81,6 +81,9 @@ their existing geometry bounds and deadlines.
 Hosts MAY omit the inline keyboard hint with `showHint=false` when they render
 the instruction in their own fixed row; the default hint remains visible.
 
+Editor focus MUST keep the resting shell border and omit its focus shadow and
+editor outline in both presentations; the caret and toolbar focus cues remain.
+
 ### Acceptance details
 
 - The component MUST support framed and document presentations with left-aligned editor content, top reply quotes, form serialization, contextual content, host actions, disabled/busy state and bottom formatting actions with accessible tooltips; document presentation uses a transparent prose surface, a host-supplied avatar vertically centred beside the first draft line and a tall writing area.

@@ -22,6 +22,15 @@
     await waitFor(() =>
       expect(canvas.getByRole("textbox", { name: "Message" })).toBeVisible(),
     );
+    const editor = canvas.getByRole("textbox", { name: "Message" });
+    const body = editor.closest('[data-ui-part="body"]')!;
+    const border = getComputedStyle(body).borderColor;
+    await userEvent.click(editor);
+    await waitFor(() => expect(getComputedStyle(body).boxShadow).toBe("none"));
+    expect(getComputedStyle(body).borderColor).toBe(border);
+    expect(getComputedStyle(editor.closest(".cm-editor")!).outlineStyle).toBe(
+      "none",
+    );
     await userEvent.click(
       canvas.getByRole("button", { name: "Select first word" }),
     );
@@ -53,6 +62,14 @@
     docs: { source: { code: sources.Document, language: "tsx", type: "code" } },
   }}
   play={async ({ canvas }) => {
+    const editor = canvas.getByRole("textbox", { name: "Message" });
+    await userEvent.click(editor);
+    expect(
+      getComputedStyle(editor.closest('[data-ui-part="body"]')!).boxShadow,
+    ).toBe("none");
+    expect(getComputedStyle(editor.closest(".cm-editor")!).outlineStyle).toBe(
+      "none",
+    );
     const preview = canvas.getByRole("group", { name: "Replying to Sam" });
     await expect(preview).toHaveTextContent(
       "Please share the project update before Friday.",

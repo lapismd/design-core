@@ -8,6 +8,17 @@
   width: 100%;
   color: var(--foreground);
 }
+/* The editor caret identifies focus; keep the shell's resting border. */
+.ui-markdown-composer
+  > [data-ui-component="ai-chat-composer"]
+  > [data-ui-part="body"]:focus-within {
+  box-shadow: none;
+}
+.ui-markdown-composer[data-presentation="framed"]
+  > [data-ui-component="ai-chat-composer"]
+  > [data-ui-part="body"]:focus-within {
+  border-color: var(--border);
+}
 .ui-markdown-composer__input-row {
   min-width: 0;
 }
