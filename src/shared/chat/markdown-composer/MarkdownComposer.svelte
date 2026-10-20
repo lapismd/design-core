@@ -186,13 +186,23 @@
               !event.ctrlKey &&
               !event.metaKey &&
               !event.altKey &&
-              event.key === "Enter" &&
+              (event.key === "Enter" || event.key === "Tab") &&
               composerTriggerQuery(
                 editor.state,
                 triggers.map((trigger) => trigger.character),
               ) &&
               completionStatus(editor.state) !== null
             ) {
+              if (event.key === "Tab") {
+                if (
+                  blocked ||
+                  completionStatus(editor.state) !== "active" ||
+                  !acceptCompletion(editor)
+                )
+                  return false;
+                event.preventDefault();
+                return true;
+              }
               if (completionStatus(editor.state) === "active" && !blocked)
                 acceptCompletion(editor);
               event.preventDefault();

@@ -176,6 +176,29 @@
   }}>{#snippet template()}<SuggestionsFixture />{/snippet}</Story
 >
 <Story
+  name="Tab accepts selected suggestion"
+  parameters={{
+    docs: {
+      source: { code: SuggestionsSource, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const input = canvas.getByRole("textbox", { name: /^Message$/ });
+    await userEvent.click(input);
+    await userEvent.keyboard("@");
+    await within(document.body).findByRole("option", { name: /Lee Taylor/ });
+    await userEvent.keyboard("{ArrowDown}{Tab}");
+    await waitFor(() =>
+      expect(canvas.getByTestId("suggestion-value")).toHaveTextContent(
+        "@Lee Taylor",
+      ),
+    );
+    await expect(canvas.getByTestId("suggestion-sent")).toHaveTextContent("");
+    expect(input.contains(document.activeElement)).toBe(true);
+  }}>{#snippet template()}<SuggestionsFixture />{/snippet}</Story
+>
+
+<Story
   name="Clipped composer suggestions"
   parameters={{
     docs: {
