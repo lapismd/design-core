@@ -204,6 +204,8 @@ under DC-WS-069.
 
 - Transfer MUST retain the registered view identity.
 - Returning the last popup tab MUST dispose its empty host once.
+- Live JSON layout changes MUST retain existing popup handles and their tabs.
+- JSON MUST NOT create unowned popup hosts; cold restoration MUST omit popups.
 
 ## DC-WS-077 — Guarded removal
 

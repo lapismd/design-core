@@ -357,16 +357,23 @@ function bottomPanelFromJson(
   };
 }
 
-function windowFromJson(value: unknown): WorkspaceWindow | null {
+function windowFromJson(
+  value: unknown,
+  livePopouts?: ReadonlySet<string>,
+): WorkspaceWindow | null {
   const input = record(value);
   if (!input || input.type !== "floating") return null;
-  if (input.mode === "popout") return null;
+  if (
+    input.mode === "popout" &&
+    !(typeof input.id === "string" && livePopouts?.has(input.id))
+  )
+    return null;
   const root = nodeFromJson({ ...input, type: "split" });
   if (!root) return null;
   const displayState = input.displayState;
   return {
     id: string(input.id, createWorkspaceId("window")),
-    mode: "floating",
+    mode: input.mode === "popout" ? "popout" : "floating",
     state:
       displayState === "collapsed" ||
       displayState === "minimized" ||
@@ -401,20 +408,60 @@ export function workspaceLayoutFromJson(
   value: unknown,
   fallback: WorkspaceLayout = createDefaultWorkspaceLayout(),
 ): WorkspaceLayout {
-  if (!isWorkspaceJson(value)) return normalizeWorkspaceLayout(value, fallback);
+  return parseWorkspaceLayout(value, fallback);
+}
+
+/** @internal Live projection cannot create a new native host from JSON. */
+export function workspaceLiveLayoutFromJson(
+  value: unknown,
+  current: WorkspaceLayout,
+): WorkspaceLayout {
+  return parseWorkspaceLayout(
+    value,
+    current,
+    new Set(
+      current.windows
+        .filter((win) => win.mode === "popout")
+        .map((win) => win.id),
+    ),
+  );
+}
+
+function admitPopouts(
+  layout: WorkspaceLayout,
+  live?: ReadonlySet<string>,
+): WorkspaceLayout {
+  const windows = layout.windows.filter(
+    (win) => win.mode !== "popout" || live?.has(win.id),
+  );
+  return windows.length === layout.windows.length
+    ? layout
+    : normalizeWorkspaceLayout({ ...layout, windows });
+}
+
+function parseWorkspaceLayout(
+  value: unknown,
+  fallback: WorkspaceLayout,
+  livePopouts?: ReadonlySet<string>,
+): WorkspaceLayout {
+  if (!isWorkspaceJson(value))
+    return admitPopouts(normalizeWorkspaceLayout(value, fallback), livePopouts);
   const main = nodeFromJson(value.main) ?? fallback.main;
   const windows = (value.floating ?? [])
-    .map(windowFromJson)
+    .map((window) => windowFromJson(window, livePopouts))
     .filter((window): window is WorkspaceWindow => Boolean(window));
-  const layout = normalizeWorkspaceLayout({
-    version: 3,
-    main,
-    left: sidedockFromJson(value.left, fallback.left),
-    right: sidedockFromJson(value.right, fallback.right),
-    bottom: bottomPanelFromJson(value.bottom, fallback.bottom),
-    windows,
-    active: { hostId: "root", paneId: null, tabId: value.active ?? null },
-  });
+  const layout = admitPopouts(
+    normalizeWorkspaceLayout({
+      version: 3,
+      main,
+      left: sidedockFromJson(value.left, fallback.left),
+      right: sidedockFromJson(value.right, fallback.right),
+      bottom: bottomPanelFromJson(value.bottom, fallback.bottom),
+      windows,
+      active: { hostId: "root", paneId: null, tabId: value.active ?? null },
+    }),
+    livePopouts,
+  );
   if (value.active) {
     const active = findWorkspaceTab(layout, value.active);
     if (active) {

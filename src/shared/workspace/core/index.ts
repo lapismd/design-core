@@ -16,6 +16,18 @@ export * from "./serializable.js";
 export * from "./types.js";
 export * from "./view-registry.js";
 export * from "./workspace-controller.svelte.js";
-export * from "./workspace-json.js";
+export {
+  isWorkspaceJson,
+  workspaceLayoutFromJson,
+  workspaceLayoutToJson,
+  type WorkspaceLeafJson,
+  type WorkspaceSidebarGroupJson,
+  type WorkspaceTabsJson,
+  type WorkspaceSplitJson,
+  type WorkspaceSidedockJson,
+  type WorkspaceBottomPanelJson,
+  type WorkspaceFloatingJson,
+  type WorkspaceJson,
+} from "./workspace-json.js";
 export * from "./workspace-menu.js";
 export * from "./workspace-view.js";

@@ -19,7 +19,7 @@ import type {
 import type { WorkspaceEventRef } from "./event-dispatcher.js";
 import type { WorkspaceShellController } from "./workspace-controller.svelte.js";
 import {
-  workspaceLayoutFromJson,
+  workspaceLiveLayoutFromJson,
   workspaceLayoutToJson,
   type WorkspaceJson,
 } from "./workspace-json.js";
@@ -417,7 +417,7 @@ export class AppWorkspace {
     event: WorkspaceLayoutChangeEvent = { source: "layout-replace" },
   ): void {
     this.renderer.changeLayout(
-      workspaceLayoutFromJson(value, this.renderer.layout),
+      workspaceLiveLayoutFromJson(value, this.renderer.layout),
       event,
     );
   }

@@ -2,6 +2,10 @@
 
 Filter contracts separate query language, reusable search chrome, and consumer query execution.
 
+Dynamic syntax examples provide field descriptions before and after refreshing
+values, retaining the typed suggestion contract without changing focus or query
+text.
+
 ## Public surface coverage
 
 | Surface                  | Public boundary                            | Requirement   |

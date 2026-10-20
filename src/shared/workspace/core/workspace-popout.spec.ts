@@ -6,6 +6,11 @@ import {
   findWorkspaceTab,
 } from "./layout.js";
 import { WorkspaceShellController } from "./workspace-controller.svelte.js";
+import { AppWorkspace } from "./app-workspace.js";
+import {
+  workspaceLayoutFromJson,
+  workspaceLayoutToJson,
+} from "./workspace-json.js";
 
 function fixture() {
   const layout = createDefaultWorkspaceLayout();
@@ -30,6 +35,48 @@ function fixture() {
 }
 
 describe("session popout transfers", () => {
+  it.each(["canonical", "legacy"])(
+    "retains owned popup handles through a live %s layout change and guarded close",
+    async (encoding) => {
+      const { controller, open, close } = fixture();
+      const popup = controller.popoutTab("note")!;
+      const handle = controller.getPopoutHandle(popup.id);
+      const value =
+        encoding === "canonical"
+          ? workspaceLayoutToJson(controller.layout)
+          : controller.layout;
+      new AppWorkspace(controller).changeLayout(value);
+      expect(findWorkspaceTab(controller.layout, "note")?.hostId).toBe(
+        popup.id,
+      );
+      expect(controller.getPopoutHandle(popup.id)).toBe(handle);
+      expect(open).toHaveBeenCalledTimes(1);
+      expect(workspaceLayoutFromJson(value, controller.layout).windows).toEqual(
+        [],
+      );
+      controller.setCloseGuard(async () => {
+        throw new Error("Unsaved note");
+      });
+      await expect(controller.requestCloseWindow(popup.id)).rejects.toThrow(
+        "Unsaved note",
+      );
+      expect(close).not.toHaveBeenCalled();
+      controller.setCloseGuard(async (_ids, remove) => remove());
+      expect(await controller.requestCloseWindow(popup.id)).toBe(true);
+      expect(close).toHaveBeenCalledTimes(1);
+    },
+  );
+
+  it("a live change cannot invent a popup window from serialized data", () => {
+    const { controller, open } = fixture();
+    const popup = controller.popoutTab("note")!;
+    const json = workspaceLayoutToJson(controller.layout);
+    json.floating!.push({ ...json.floating![0]!, id: "unowned-popup" });
+    new AppWorkspace(controller).changeLayout(json);
+    expect(controller.layout.windows.map((win) => win.id)).toEqual([popup.id]);
+    expect(open).toHaveBeenCalledTimes(1);
+  });
+
   it("emits only the final transfer with exactly one copy of the note", () => {
     const { controller } = fixture();
     const snapshots: string[][] = [];

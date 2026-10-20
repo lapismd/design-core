@@ -5,7 +5,13 @@
   let refreshed = $state(false);
   let timer: ReturnType<typeof setTimeout>;
   let syntax = $state<SearchFilterSyntax>({
-    fields: [{ name: "path", operators: [":"] }],
+    fields: [
+      {
+        name: "path",
+        description: "Filter by vault-relative path.",
+        operators: [":"],
+      },
+    ],
   });
   onDestroy(() => clearTimeout(timer));
   function refresh() {
@@ -13,7 +19,12 @@
     timer = setTimeout(() => {
       syntax = {
         fields: [
-          { name: "path", operators: [":"], values: ["Notes/Welcome.md"] },
+          {
+            name: "path",
+            description: "Filter by vault-relative path.",
+            operators: [":"],
+            values: ["Notes/Welcome.md"],
+          },
         ],
       };
       refreshed = true;
