@@ -308,3 +308,7 @@ wrapper/keyboard behavior.
 - Formatted views MUST cover shell command/stdout/stderr in one panel with recorded exit state, file reads, complete patches or old/new diffs, and search locations; file navigation MUST use host callbacks; a maximize control MUST fill the page with the same view and restore focus/state on Escape or restore.
 - Raw MUST retain the exact host-serialized payload, or exact generic input/output/error strings, without envelope unwrapping; both modes MUST retain host-reported partial, redacted and truncated notices; missing paths, incomplete diffs and unavailable output MUST NOT invent facts.
 - Text payloads MUST use public Code Block copy/wrapping/bounded-height presentation and diffs MUST compose public FileDiff; native CSS and catalog examples MUST cover each tool type and raw/formatted switching; one-line legacy errors MAY remain on the summary row.
+
+The chat v0 review uses the existing SystemMessage and RelativeTime primitives
+for label-only recorded facts. AI public types, composer ownership and error
+presentation are unchanged; DC-CHAT-006 owns the transcript composition.

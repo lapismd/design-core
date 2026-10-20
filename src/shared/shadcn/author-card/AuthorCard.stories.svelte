@@ -45,7 +45,7 @@
   name="Mention hover card"
   play={async ({ canvas }) => {
     await userEvent.hover(
-      canvas.getByRole("button", { name: "About Alex Morgan, AM" }),
+      canvas.getByRole("button", { name: "About AM Alex Morgan" }),
     );
     await within(document.body).findByRole("group", {
       name: "About Alex Morgan",

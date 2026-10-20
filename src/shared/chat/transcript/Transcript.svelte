@@ -35,6 +35,7 @@
   import ChatContent from "./ChatContent.svelte";
   import ChatTools from "./ChatTools.svelte";
   import ChatNotice from "./ChatNotice.svelte";
+  import ChatSystemMessage from "./ChatSystemMessage.svelte";
   import { TranscriptController } from "./comments.svelte.js";
   import type { TranscriptProps } from "./model.js";
   import { rawToolBlock } from "./tool-blocks.js";
@@ -333,6 +334,8 @@
                       {@render reactionBar(item)}
                     </div>
                   </Message>
+                {:else if item.kind === "context" && item.notice !== "error" && !item.blocks.length}
+                  <ChatSystemMessage {item} />
                 {:else if item.notice}<div class="ui-transcript-document-inset">
                     <ChatNotice
                       {item}

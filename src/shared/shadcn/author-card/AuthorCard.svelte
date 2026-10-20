@@ -30,6 +30,8 @@
     const base = label ?? `About ${author.name}`;
     const fallback =
       author.emoji || author.initials || avatarInitials(author.name);
+    if (trigger === "mention" && fallback && base.endsWith(author.name))
+      return `${base.slice(0, -author.name.length)}${fallback} ${author.name}`;
     return fallback &&
       !base
         .toLocaleLowerCase()
@@ -44,7 +46,7 @@
     {...avatarIdentityProps(author)}
     {size}
     decorative
-  />{#if trigger === "mention"}<span>{author.name}</span>{/if}{/snippet}
+  />{#if trigger === "mention"}<span> {author.name}</span>{/if}{/snippet}
 {#snippet content()}
   <ScrollArea
     scrollStrategy="styled"

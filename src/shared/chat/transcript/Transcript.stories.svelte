@@ -21,6 +21,39 @@
   });
 </script>
 
+<Story name="Centered system messages">
+  {#snippet template()}
+    <Transcript
+      items={[
+        {
+          id: "started",
+          kind: "context",
+          label: "Recorded session state: active",
+          blocks: [],
+          createdAt: "2026-10-20T10:10:00Z",
+        },
+        {
+          id: "gap",
+          kind: "context",
+          label: "Capture gap: 11–13",
+          notice: "warning",
+          blocks: [],
+          createdAt: "2026-10-20T10:12:00Z",
+        },
+        {
+          id: "ended",
+          kind: "context",
+          label: "Recorded session state: idle",
+          blocks: [],
+          createdAt: "2026-10-20T10:15:00Z",
+        },
+      ]}
+      canComment={false}
+      reactionsDisabled
+    />
+  {/snippet}
+</Story>
+
 <Story
   name="Markdown tables and centered avatars"
   play={async ({ canvas, canvasElement }) => {

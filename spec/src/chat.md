@@ -17,6 +17,11 @@ callback, with display timestamps separate from valid machine-readable dates.
 Reply contexts have one padded outer border around the quote and comment list.
 Jump to end focuses the enabled composer when present, otherwise the last item.
 The full-conversation example retains multiline Enter in either view.
+Label-only context items (no blocks and no error severity) use the shared
+SystemMessage divider: centered status text and icon on a tinted background
+between two horizontal separators in both views. Host timestamps use the shared
+RelativeTime component underneath, including its full-date tooltip;
+warnings retain their tone, without a disclosure, duplicate body or avatar.
 
 ### Composition notes
 

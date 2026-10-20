@@ -123,6 +123,9 @@ Data and feedback primitives communicate state without taking ownership of consu
 
 **Requirement.** AuthorCard MUST present host-owned identity details and actions through shared accessible hover or popover surfaces.
 
+Mention trigger names retain visible fallback initials before the author name,
+matching visible text order when avatar images are unavailable.
+
 ### Acceptance details
 
 - Avatar and mention triggers MUST retain supplied labels, shape, presence, details and disabled actions without resolving profiles or executing application routes.
