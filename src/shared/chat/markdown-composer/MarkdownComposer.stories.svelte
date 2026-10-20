@@ -176,6 +176,42 @@
   }}>{#snippet template()}<SuggestionsFixture />{/snippet}</Story
 >
 <Story
+  name="Clipped composer suggestions"
+  parameters={{
+    docs: {
+      source: { code: SuggestionsSource, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const input = canvas.getByRole("textbox", { name: /^Message$/ });
+    await userEvent.click(input);
+    await userEvent.keyboard("@al");
+    const option = await within(document.body).findByRole("option", {
+      name: /Alex Morgan/,
+    });
+    await waitFor(() => {
+      const box = option.getBoundingClientRect();
+      expect(box.width).toBeGreaterThan(0);
+      expect(box.top).toBeGreaterThanOrEqual(0);
+      expect(
+        document
+          .elementFromPoint(box.left + box.width / 2, box.top + box.height / 2)
+          ?.closest('[role="option"]'),
+      ).toBe(option);
+    });
+    expect(input.closest(".cm-editor")!.contains(option)).toBe(false);
+    await userEvent.click(option);
+    await expect(canvas.getByTestId("suggestion-value")).toHaveTextContent(
+      "@Alex Morgan",
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Toggle composer" }),
+    );
+    expect(document.querySelector(".ui-composer-suggestions")).toBeNull();
+  }}>{#snippet template()}<SuggestionsFixture clipped />{/snippet}</Story
+>
+
+<Story
   name="Asynchronous suggestion replacement"
   parameters={{
     docs: {

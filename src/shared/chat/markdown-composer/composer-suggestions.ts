@@ -6,7 +6,12 @@ import {
 } from "@codemirror/autocomplete";
 import { syntaxTree } from "@codemirror/language";
 import type { EditorState } from "@codemirror/state";
-import { ViewPlugin, type EditorView, type ViewUpdate } from "@codemirror/view";
+import {
+  tooltips,
+  ViewPlugin,
+  type EditorView,
+  type ViewUpdate,
+} from "@codemirror/view";
 import type { MiraExtension } from "@lapismd/mira/extensions";
 import type { ComposerTrigger, ComposerTriggerItem } from "../../ai/types.js";
 import {
@@ -159,6 +164,9 @@ export function composerSuggestions(options: {
     name: "design-core-composer-suggestions",
     codeMirror: () => [
       mounts,
+      // Fixed tooltips inside clipped/contained editors are clipped in WKWebView.
+      // CodeMirror owns this themed portal's positioning and teardown.
+      tooltips({ parent: document.body }),
       autocompletion({
         override: [source],
         activateOnTypingDelay: 75,

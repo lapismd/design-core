@@ -1,8 +1,11 @@
 <script lang="ts">
   import MarkdownComposer from "./MarkdownComposer.svelte";
   import type { MarkdownComposerTrigger } from "./composer-suggestions.js";
-  let { slow = false, narrow = false }: { slow?: boolean; narrow?: boolean } =
-    $props();
+  let {
+    slow = false,
+    narrow = false,
+    clipped = false,
+  }: { slow?: boolean; narrow?: boolean; clipped?: boolean } = $props();
   let shown = $state(true),
     requests = $state(0),
     aborts = $state(0);
@@ -67,7 +70,7 @@
 <button type="button" onclick={() => (shown = !shown)}>Toggle composer</button>
 <p data-testid="suggestion-requests">{requests}</p>
 <p data-testid="suggestion-aborts">{aborts}</p>
-<div style:max-width={narrow ? "16rem" : "34rem"}>
+<div class:clipped style:max-width={narrow ? "16rem" : "34rem"}>
   {#if shown}
     <MarkdownComposer
       bind:value
@@ -78,3 +81,12 @@
 </div>
 <p data-testid="suggestion-value">{value}</p>
 <p data-testid="suggestion-sent">{sent}</p>
+
+<style>
+  .clipped {
+    margin-block-start: 12rem;
+    height: 5rem;
+    overflow: clip;
+    transform: translateZ(0);
+  }
+</style>

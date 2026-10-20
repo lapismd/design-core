@@ -283,7 +283,7 @@ The default attached footer status remains unchanged.
 ### Acceptance details
 
 - Suggestions MUST retain existing ComposerTrigger search and insertion contracts with keyboard navigation, selection replacement and host-supplied labels; each label occupies the first row, with its description wrapping beneath it without shrinking the label to zero width or overlapping it.
-- Aborted, stale, disabled or disposed searches MUST never replace newer results or mutate the retained draft.
+- Completion tooltips MUST mount outside clipped editor ancestors in the owner document, remain pointer-selectable in Chromium and WebKit, and be removed on teardown, with aborted, stale, disabled or disposed searches unable to replace newer results or mutate the retained draft.
 - IME composition and escaped inline or fenced code MUST not trigger unintended insertion or message submission.
 - Completion handling MUST claim Enter only for a registered trigger query; Shift+Enter and ordinary document newlines MUST retain their existing editing behavior.
 
