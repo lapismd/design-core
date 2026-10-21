@@ -42,7 +42,7 @@ rollback, Deno retirement or later release waves.
 ## Publication qualification
 
 [Release workflow 39667451267](https://github.com/lapismd/design-core/actions/runs/39667451267)
-passes all six stages, including hosted source/package checks, protected trusted
+passes all five jobs, including hosted source/package checks, protected trusted
 npm publication, clean registry installation and signature/provenance verification,
 then public GitHub release creation. Exact-main CI `39667451520` also passes all
 eleven required checks. Hosted release units pass 859/859 across 137 files.
