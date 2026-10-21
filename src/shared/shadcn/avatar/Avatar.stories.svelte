@@ -15,7 +15,7 @@
     ReplyIndicator,
     AuthorCards,
   } from "./AvatarGroup.example-sources.js";
-  import { Basic } from "./Avatar.example-sources.js";
+  import { Basic, Contrast } from "./Avatar.example-sources.js";
   const groupSizes = ["xs", "sm", "md", "lg", "xl", "2xl", "3xl"] as const;
   const groupPeople = [
     {
@@ -89,6 +89,39 @@
   }}
 />
 <Story name="Decorative" args={{ emoji: "🎉", decorative: true }} />
+
+<Story
+  name="Custom background contrast"
+  parameters={{
+    docs: { source: { code: Contrast, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas }) => {
+    for (const [name, expected] of [
+      ["Purple profile", "rgb(255, 255, 255)"],
+      ["Light profile", "rgb(0, 0, 0)"],
+      ["Dark profile", "rgb(255, 255, 255)"],
+      ["Host foreground", "rgb(255, 255, 0)"],
+    ]) {
+      const content = canvas
+        .getByRole("img", { name })
+        .querySelector('[data-ui-part="content"]')!;
+      expect(getComputedStyle(content).color).toBe(expected);
+    }
+  }}
+>
+  {#snippet template()}
+    <div style="display:flex;gap:1rem;align-items:center">
+      <Avatar name="Purple profile" background="#6e56cf" size="sm" />
+      <Avatar name="Light profile" background="#ffffff" size="sm" />
+      <Avatar name="Dark profile" background="#000000" size="2xl" />
+      <Avatar
+        name="Host foreground"
+        background="#000"
+        style="--ui-avatar-foreground:#ffff00"
+      />
+    </div>
+  {/snippet}
+</Story>
 
 <Story
   name="Participant groups"

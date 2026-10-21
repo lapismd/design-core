@@ -33,7 +33,10 @@
   overflow: hidden;
   border-radius: 50%;
   background: var(--ui-avatar-background, var(--muted));
-  color: var(--ui-avatar-foreground, var(--foreground));
+  color: var(
+    --ui-avatar-foreground,
+    var(--_avatar-contrast, var(--foreground))
+  );
   font-weight: 600;
   font-size: calc(var(--_avatar-size) * 0.42);
 }

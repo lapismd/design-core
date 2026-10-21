@@ -11,6 +11,10 @@ Choose `circle` or `rounded`, and `xs`, `sm`, `md`, `lg`, `xl`, `2xl` or `3xl`. 
 Public tokens: `--ui-avatar-size`, `--ui-avatar-radius`, `--ui-avatar-background`,
 `--ui-avatar-foreground`, `--ui-avatar-online` and `--ui-avatar-away`.
 
+Solid three- or six-digit hex `background` values automatically select readable
+black or white initials. `--ui-avatar-foreground` takes precedence. Other CSS
+background values retain the theme foreground; supply that token when needed.
+
 ## Avatar groups
 
 `AvatarGroup` composes ordered `AvatarIdentity` records (`id`, `name`, optional

@@ -110,7 +110,7 @@ Data and feedback primitives communicate state without taking ownership of consu
 
 ## DC-SHA-056 — Avatar
 
-**Requirement.** Avatar MUST present host-owned images, emoji or initials with optional presence and circle or rounded shapes.
+**Requirement.** Avatar MUST present host-owned images, emoji or initials with optional presence and circle or rounded shapes. Initials on an opaque three- or six-digit hex background MUST choose black or white with at least 4.5:1 contrast unless the host supplies `--ui-avatar-foreground`; other backgrounds retain theme foreground semantics.
 
 ### Acceptance details
 
