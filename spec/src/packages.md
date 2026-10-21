@@ -19,7 +19,7 @@ The focused `shadcn/tag-list` family exports TagList and its item/props types.
 Strict source consumers cover the same existing wildcard export boundary.
 
 The app-component promotion batch adds the Chat entry point and qualifies
-published Mira `~0.0.5`.
+published Mira `~0.1.0`, including its public TableReader contract.
 The Chat entry point also exports MarkdownComposer, MessageActions and the
 shared ReactionBar while retaining existing AI compatibility imports. CommentComposer
 and its neutral source, props and focus/selection handle are also exported from Chat.
@@ -191,7 +191,7 @@ and workspace audits remain unchanged.
 - Governance, quality, unit, static Storybook, Storybook interaction, Workspace pointer, Shell pointer, Shadcn pointer, and AI browser lanes must run independently.
 - Cacheable lanes must use the signed Turbo cache contract and publish cache summaries.
 - Full and production dependency audits must run after every nonvisual lane succeeds.
-- Visual comparison must remain outside the blocking graph, and maintained Node.js 24-compatible actions must be used.
+- CI must not run screenshot comparison; explicit local visual scripts remain available, and maintained Node.js 24-compatible actions must be used.
 
 ## Community component boundaries
 

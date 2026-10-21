@@ -1,5 +1,10 @@
 # Tooling
 
+Release qualification uses published Mira 0.1.0 and Visual Delta 0.0.9 with
+Playwright 1.62.1. Maintained CI workflows run functional, interaction,
+accessibility and package checks; no CI workflow runs screenshot comparison.
+Explicit local visual commands retain their existing approval boundary.
+
 The File Path Input catalog includes copy-pasteable public usage and host-injected chooser fixtures; the Settings unit/file catalog verifies the declarative path without native filesystem dependencies.
 
 The packed consumer checks complete ToolCalls disclosure metadata, decorative busy
