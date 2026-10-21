@@ -1,5 +1,58 @@
 # @lapismd/design-core
 
+## 0.6.0
+
+### Minor Changes
+
+- [`c7c042f`](https://github.com/lapismd/design-core/commit/c7c042f24e54ca8af7b03da938cbd00cba33b218) Thanks [@stevejuma](https://github.com/stevejuma)! - Add avatar groups, author cards, reference chips, link previews, spoilers, relative timestamps, exact unit-aware numeric inputs, Markdown composer suggestions and nested thread presentation using host-owned data and callbacks.
+
+- [`b7473b0`](https://github.com/lapismd/design-core/commit/b7473b04c29eb4d9102c3eda1b79917ef0882ac3) Thanks [@stevejuma](https://github.com/stevejuma)! - Add shared Transcript, HistoryEdge, exact-anchor comment coordination and comment
+  queue/reply navigation with jj-store presentation and host-owned delivery.
+
+- [`a007abd`](https://github.com/lapismd/design-core/commit/a007abd0fd8c50957cb868f7872c45246a753df3) Thanks [@stevejuma](https://github.com/stevejuma)! - Add host-owned transcript footer, queued-message presentation, XML prompt context, sent-context disclosures, reactions and author popovers with shared status banners and tighter Markdown parity.
+
+### Patch Changes
+
+- [`fd2a327`](https://github.com/lapismd/design-core/commit/fd2a327f65c7177d7aa82acbe7ec6f7e2e504af8) Thanks [@stevejuma](https://github.com/stevejuma)! - Use compact shared AvatarGroup presentation beside Transcript reply links,
+  retain participant tooltips and hover stacking, and document all supported sizes.
+  Keep reply underlines on the count text and use a consistent compact rhythm for
+  transcript tool and file disclosures.
+
+  Allow AuthorCard member composition in AvatarGroup and reuse optional shared
+  AuthorCards for all Transcript identities, with configurable hover/click behavior.
+
+- [`a57a38e`](https://github.com/lapismd/design-core/commit/a57a38e24c0f79a5702e2666b5e35041d6babdf4) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep default syntax highlighting and small error-status labels readable in dark mode while preserving explicit syntax themes. Retain complete visible tool-disclosure labels and accessible execution status in the 0.5 package.
+
+  Retain readable tool-failure text and deletion counts on Lapis light and dark surfaces.
+
+- [`714f487`](https://github.com/lapismd/design-core/commit/714f487764b35d550b36255711c3c28b4b6b3fc6) Thanks [@stevejuma](https://github.com/stevejuma)! - Await admitted App Shell plugin transitions and persistence before stopping plugins, and expose a host flush boundary.
+
+- [`bb8b341`](https://github.com/lapismd/design-core/commit/bb8b34103902f45f26e2a752a5c38beae951427a) Thanks [@stevejuma](https://github.com/stevejuma)! - Surround the FilePathInput path and Browse button with one shared focus ring,
+  including keyboard navigation, invalid fields and forced-colors presentation.
+
+- [`f4b01a3`](https://github.com/lapismd/design-core/commit/f4b01a3c0415bb59f88b669698ec079f2e66b26a) Thanks [@stevejuma](https://github.com/stevejuma)! - Use PanelToggleIcon in Workspace, AppShell, Sidebar and mobile visibility controls,
+  preserving controller behavior and each surface's sizing. Sidebar.Trigger accepts
+  an optional left/right side.
+
+- [`9a6bfa1`](https://github.com/lapismd/design-core/commit/9a6bfa196e698a693227ab718c0468e82204e6d0) Thanks [@stevejuma](https://github.com/stevejuma)! - Indent expanded XML prompt-context bodies beyond their parent tag labels, keeping
+  nested Markdown and child sections visually inside their owning element.
+
+- [`068a97b`](https://github.com/lapismd/design-core/commit/068a97b0ad90250444fbb5e31390712ddc429ef4) Thanks [@stevejuma](https://github.com/stevejuma)! - Align root Markdown in prompt context with the top-level XML tag labels without
+  adding extra indentation to nested bodies.
+
+- [`f81d890`](https://github.com/lapismd/design-core/commit/f81d8909b17962eb57b42c98dcbc2ba775a42b3c) Thanks [@stevejuma](https://github.com/stevejuma)! - Consume published Mira 0.1 with table readers, refresh Visual Delta readiness tooling, and update patched Storybook/Vite development tools. Keep screenshot comparison outside CI.
+
+- [`b3fb5ea`](https://github.com/lapismd/design-core/commit/b3fb5ea7cf2556e8eea35da2eb00dd1a4465806f) Thanks [@stevejuma](https://github.com/stevejuma)! - Match search focus borders and rings to shadcn Input and stack sans-serif suggestion labels above descriptions.
+
+- [`187194b`](https://github.com/lapismd/design-core/commit/187194b3a6c6f2502712c44d79e377205e0a367b) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep closed AppShell sidebars out of the layout when consumer visibility is restored after Settings navigation.
+
+- [`e0ca382`](https://github.com/lapismd/design-core/commit/e0ca382fd43f0dd32f131c3fedfa3269e999dba5) Thanks [@stevejuma](https://github.com/stevejuma)! - Restore compact Workspace tab hit targets so selection, native dragging and
+  insertion remain stable while hovering menu and close controls.
+
+- [`fd2a327`](https://github.com/lapismd/design-core/commit/fd2a327f65c7177d7aa82acbe7ec6f7e2e504af8) Thanks [@stevejuma](https://github.com/stevejuma)! - Use the shared PanelToggle's default button styling and hover/focus behavior for
+  Workspace sidebar and bottom-panel controls. Keep standard icons fixed at 16px
+  when expanded and preserve controller actions, labels, hints and drag exclusions.
+
 ## 0.5.1
 
 ### Patch Changes

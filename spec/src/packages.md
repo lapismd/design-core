@@ -1,5 +1,9 @@
 # Package exports
 
+Version 0.6.0 consumes the consolidated transcript, footer and presentation
+Changesets through the normal release-version command. Existing public import
+paths remain available; package publication still requires the verified archive.
+
 The additive `./forms/file-path-input` export and Forms barrel expose FilePathInput and its props; Workspace Settings exports quantity and filePicker metadata without changing existing persisted field kinds.
 
 The clean archive consumer exercises reconciled ToolCalls disclosure names and

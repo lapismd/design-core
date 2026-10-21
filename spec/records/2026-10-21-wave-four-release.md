@@ -73,3 +73,13 @@ No consumer application is restarted and no archived workspace is removed.
 The final pre-commit spec check also maps the revised editor-boundary test to
 DC-FORM-033. Its owning editor chapter now records the qualified 0.1.0 minimum;
 the first attempt failed that missing-chapter gate, then the exact check reruns.
+
+## Versioned candidate
+
+The final preparation spec and release-config checks pass. Preparation source
+`f81d8909b179` is committed and pushed on `codex/wave-four-design-core`, with no
+main update or publication. `pnpm release:version` consumes all 15 Changesets
+and generates 0.6.0 plus its changelog. No published version is edited manually.
+The command uses existing GitHub authentication without writing a credential
+to the checkout. The versioned spec/config checks pass and the exact 0.6.0
+archive qualification is running before publication.
