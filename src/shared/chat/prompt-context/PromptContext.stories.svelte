@@ -2,7 +2,9 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor } from "storybook/test";
   import PromptContext from "./PromptContext.svelte";
-  import { Basic } from "./PromptContext.example-sources.js";
+  import MarkdownContent from "../markdown-content/MarkdownContent.svelte";
+  import { promptElementsExtension } from "./prompt-elements-extension.js";
+  import { Basic, Extension } from "./PromptContext.example-sources.js";
   import recording from "../transcript/reference/capture.stories.fixture.json";
   import { byteSlice } from "../transcript/reference/offsets.stories.fixture.js";
   const response = recording.records.find(
@@ -15,7 +17,7 @@
     responseRange.end,
   );
   const content =
-    '<acp_context source="host">\n## Workspace\n\nCaptured context with **Markdown**, not live instructions.\n\n<file path="src/settings.ts" />\n\n<references>\n- [Settings](#settings)\n- Retain exact source\n</references>\n</acp_context>\n\n<command name="review">Queued by the host</command>';
+    'Root context before the sections.\n\n<acp_context source="host">\n## Workspace\n\nCaptured context with **Markdown**, not live instructions.\n\n<file path="src/settings.ts" />\n\n<references>\n- [Settings](#settings)\n- Retain exact source\n</references>\n</acp_context>\n\n## Agent instructions\n\nRoot context between the sections.\n\n- Keep the original source.\n\n<command name="review">Queued by the host</command>\n\nRoot context after the sections.';
   const { Story } = defineMeta({
     title: "Chat/Prompt Context",
     component: PromptContext,
@@ -72,6 +74,25 @@
       })
       .querySelector(".ui-prompt-context-tag")!;
     const heading = canvas.getByRole("heading", { name: "Workspace" });
+    for (const text of [
+      "Root context before the sections.",
+      "Agent instructions",
+      "Root context between the sections.",
+      "Root context after the sections.",
+    ]) {
+      await waitFor(() =>
+        expect(
+          Math.abs(
+            canvas.getByText(text, { exact: true }).getBoundingClientRect()
+              .left - parentTag.getBoundingClientRect().left,
+          ),
+        ).toBeLessThan(1),
+      );
+    }
+    await expect(
+      canvas.getByText("Keep the original source.").getBoundingClientRect()
+        .left,
+    ).toBeGreaterThan(parentTag.getBoundingClientRect().left);
     await waitFor(() =>
       expect(heading.getBoundingClientRect().left).toBeGreaterThan(
         parentTag.getBoundingClientRect().left,
@@ -91,6 +112,32 @@
     });
   }}
 />
+<Story
+  name="Markdown extension without XML"
+  parameters={{
+    docs: { source: { code: Extension, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    const preview = canvasElement.querySelector(
+      '[data-ui-component="chat-markdown"]',
+    )!;
+    const origin = preview.getBoundingClientRect().left;
+    for (const text of ["Root heading", "Root prose without XML."]) {
+      const inset =
+        canvas.getByText(text, { exact: true }).getBoundingClientRect().left -
+        origin;
+      expect(inset).toBeGreaterThanOrEqual(32);
+      expect(inset).toBeLessThan(41);
+    }
+  }}
+>
+  {#snippet template()}
+    <MarkdownContent
+      content={"## Root heading\n\nRoot prose without XML."}
+      extensions={[promptElementsExtension]}
+    />
+  {/snippet}
+</Story>
 <Story
   name="Literal and malformed input"
   args={{

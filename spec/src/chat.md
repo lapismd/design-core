@@ -269,7 +269,7 @@ empty or pending active drafts omit Queue. Idle Send availability is unchanged.
 
 - Arbitrary tag names and attributes MUST remain escaped display text, with nested safe Markdown, compact single-line sections and accessible disclosures; source tags MUST NOT execute HTML, scripts or host commands.
 - Inline/fenced code, malformed or excessively nested elements MUST retain their original text without guessed hidden boundaries, while UTF-16 offsets, Unicode and document references remain intact.
-- Expanded element bodies MUST begin beyond their parent tag label using logical inline padding, with each nested body retaining a visible indentation step.
+- Root Markdown MUST align with top-level tag labels using logical inline padding, while expanded element bodies MUST begin beyond their parent tag label, with each nested body retaining a visible indentation step.
 - The extension MUST compose with host-owned Markdown hooks in standalone previews, Transcript context blocks and captured Markdown readers, retaining the exact captured text and anchors independently of rendering; the catalog MUST expose a direct recorded XML/Markdown example and keep that context discoverable in the full transcript.
 
 ## DC-CHAT-011 — Sent-context disclosure

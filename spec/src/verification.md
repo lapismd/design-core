@@ -4,6 +4,8 @@ DC-CHAT-010 body and nested Markdown indentation is covered by
 [prompt-context geometry](../records/2026-10-21-prompt-context-indent.md).
 Source and compatible Desktop archive acceptance retain separate evidence;
 the existing Partial status and broader qualification gaps remain unchanged.
+Root prose alignment, including the standalone extension without XML, is covered
+by [root context indentation](../records/2026-10-21-prompt-context-root-indent.md).
 
 This matrix records one current evidence status for every canonical requirement. `Implemented` means the current behavior has source or scenario evidence; it does not claim exhaustive automated coverage. `Partial` marks incomplete evidence. `In progress` marks governance introduced by this migration but not yet enforced.
 

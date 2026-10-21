@@ -295,6 +295,8 @@ success use semantic tokens. `--ui-composer-status-radius`,
 Composer's existing radius and padding tokens. PromptContext owns its escaped
 XML tag/disclosure styling and delegates safe Markdown to Mira's public extension
 API; tag syntax uses the public `--ui-code-syntax-*` colours and host fonts.
+Root Markdown uses the same logical inset as top-level XML labels, while
+expanded bodies retain their separate nested indentation.
 
 Default code syntax colors ship as ordinary CSS with light root defaults and
 readable dark defaults inside `.dark`. CodeBlock span/range highlights,

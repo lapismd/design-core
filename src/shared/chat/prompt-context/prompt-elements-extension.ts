@@ -1,11 +1,13 @@
 // Adapted from jj-store 2a479c74; Apache-2.0, LapisMD contributors.
 import { defineMiraExtension } from "@lapismd/mira/extensions";
 import PromptElement from "./PromptElement.svelte";
+import "./prompt-context.css";
 import {
   PROMPT_ELEMENT_MARKER,
   remarkPromptElements,
 } from "./remark-prompt-elements.js";
 type Node = {
+  type?: string;
   tagName?: string;
   properties?: Record<string, unknown>;
   children?: Node[];
@@ -46,6 +48,19 @@ function rehypePromptElements() {
       node.children?.forEach(visit);
     }
     visit(tree);
+    // Give only root prose the tag-label inset. Nested Markdown already lives
+    // inside PromptElement's indented body and must not receive another inset.
+    if (tree.children)
+      tree.children = tree.children.map((node) =>
+        node.type === "element" && node.tagName !== "sharedpromptelement"
+          ? {
+              type: "element",
+              tagName: "div",
+              properties: { className: ["ui-prompt-context-root-text"] },
+              children: [node],
+            }
+          : node,
+      );
   };
 }
 
