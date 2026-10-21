@@ -1,11 +1,19 @@
 # Specification governance
 
+The `forms/file-path-input` family maps to Forms Inputs, and its public export/catalog mappings select DC-FORM-049; declarative Settings composition maps to DC-WS-082.
+
+Panel visibility integration is governed by DC-SHA-053, DC-SHA-040 and DC-SHELL-003. The governed pointer examples cover the same native shared icon inside Workspace, AppShell, Sidebar and mobile controls; preview metadata stays visual-pending.
+
 App component promotion batch registers Responsive Tabs (DC-SHA-055), Avatar
 (DC-SHA-056), Avatar Picker (DC-FORM-047), Topbar (DC-SHELL-004), and Chat
 MarkdownContent (DC-CHAT-001), with one verification row per requirement.
 Chat additionally registers MarkdownComposer (DC-CHAT-002), MessageActions
 (DC-CHAT-003) and Reactions (DC-CHAT-004) in the same public-surface matrix.
 CommentComposer (DC-CHAT-005) adds captured-source comment presentation there.
+Transcript/HistoryEdge (DC-CHAT-006), exact comments (DC-CHAT-007), and the
+comment queue/navigation (DC-CHAT-008) extend that same host-neutral boundary.
+Transcript footer/message queue/reactions (DC-CHAT-009) and safe XML prompt
+context (DC-CHAT-010) use the same canonical Chat chapter and verification map.
 
 Specification governance keeps requirements discoverable, mapped, validated, and changed before or with protected implementation, including same-change verification evidence for expanded public component families.
 
@@ -166,3 +174,7 @@ Published CLI script arguments are passed directly through pnpm without an extra
 - Agents must not vendor dependency source, mutate dependency `node_modules`, or add checkout-specific paths.
 - Dependency source fixes must be made in the owning repository and consumed through a released package version.
 - Agent testing guidance MUST distinguish compiler warnings from fatal browser runtime diagnostics and require owning-source fixes or published dependency repairs.
+
+## Community component boundaries
+
+Community presentation families map to shadcn/data-and-feedback; QuantityInput maps to forms/inputs and composer suggestions and ThreadPanel map to Chat.

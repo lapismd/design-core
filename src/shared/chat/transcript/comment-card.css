@@ -1,0 +1,135 @@
+.ui-transcript-comment-area {
+  min-width: 0;
+  white-space: normal;
+  --_transcript-comment-size: var(
+    --ui-transcript-comment-font-size,
+    var(--conversation-prose-size, var(--ui-transcript-font-size, 0.875rem))
+  );
+  font-family: var(--_transcript-font, var(--font-sans, system-ui));
+  font-size: var(--_transcript-comment-size);
+  color: var(--_transcript-foreground, var(--foreground));
+  --ui-comment-composer-font-size: var(--_transcript-comment-size);
+  --ui-composer-status-radius: var(--radius);
+  isolation: isolate;
+}
+.ui-transcript-comment-context {
+  border-radius: var(--radius);
+}
+.ui-transcript-comment-quote {
+  margin: 0 0 0.5rem;
+  font-size: inherit;
+  line-height: var(--ui-transcript-markdown-line-height, 1.55);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 8rem;
+  overflow: auto;
+}
+.ui-transcript-comment-quote :is(p, code) {
+  color: inherit;
+  background: color-mix(in srgb, var(--primary) 15%, transparent);
+  border-radius: 3px;
+}
+.ui-transcript-comment-quote > code {
+  font: inherit;
+}
+.ui-transcript-comment-quote > [data-ui-component="chat-markdown"] {
+  white-space: normal;
+}
+.ui-transcript-comment-surface {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  border-radius: var(--radius);
+}
+.ui-transcript-comment-context:has(
+    > [data-ui-component="composer-status-banner"]
+  ) {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.ui-transcript-comment-context > .ui-transcript-comment-surface {
+  padding: 0.5rem;
+  background: var(--muted);
+  border: 1px solid var(--border);
+}
+.ui-transcript-comment-list {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-inline-start: 2px solid var(--primary);
+  border-radius: var(--radius);
+  background: var(--background);
+}
+.ui-transcript-comment-card {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  font-size: inherit;
+  line-height: 1.5;
+}
+.ui-transcript-comment-content {
+  flex: 1;
+  min-width: 0;
+}
+.ui-transcript-comment-content p {
+  margin-block: 0;
+}
+.ui-transcript-comment-links {
+  display: flex;
+  gap: 0.125rem;
+  opacity: 0;
+}
+.ui-transcript-comment-card:hover .ui-transcript-comment-links,
+.ui-transcript-comment-card:focus-within .ui-transcript-comment-links {
+  opacity: 1;
+}
+.ui-transcript-comment-complete {
+  color: var(--ui-diff-stat-added, var(--success, #16a34a));
+  display: inline-flex;
+  align-items: center;
+  height: 1.5rem;
+}
+.ui-transcript-comment-card:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.ui-transcript-comment-status,
+.ui-transcript-comment-unavailable {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+.ui-transcript-comment-status {
+  padding-block: 0.25rem;
+}
+.ui-transcript-comment-widget {
+  padding-block: 0.5rem;
+}
+@media (hover: none) {
+  .ui-transcript-comment-links {
+    opacity: 1;
+  }
+}
+
+.ui-transcript-comment-quote p {
+  margin: 0;
+  display: inline;
+}
+
+.ui-transcript-comment-delivered-icon {
+  display: inline-flex;
+  color: var(--ui-diff-stat-added, var(--success, #16a34a));
+}
+.ui-transcript-comment-jump-icon {
+  display: none;
+}
+.ui-transcript-comment-reply-action:is(:hover, :focus-visible)
+  .ui-transcript-comment-delivered-icon {
+  display: none;
+}
+.ui-transcript-comment-reply-action:is(:hover, :focus-visible)
+  .ui-transcript-comment-jump-icon {
+  display: inline-flex;
+}

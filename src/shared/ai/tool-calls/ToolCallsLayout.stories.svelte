@@ -28,7 +28,9 @@
         root.parentElement!.getBoundingClientRect().width,
         0,
       );
-    const group = canvas.getByRole("button", { name: "Expand 2 tool calls" });
+    const group = canvas.getByRole("button", {
+      name: `Expand ${longName} edit 2 tool calls`,
+    });
     expect(
       group.querySelector('[data-ui-part="chevron"]')!.getBoundingClientRect()
         .width,

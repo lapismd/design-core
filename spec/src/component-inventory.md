@@ -46,6 +46,8 @@ exists; its contract and research provenance live in
 horizontal column cascades (Miller-column style) with an AppShell-like
 controller, compound Header/Toggle/Body/Item parts, and injected width/collapse
 persistence; it is not registry-backed.
+Prefer `PanelToggleIcon` for sidebar visibility icons, `PanelToggle` for a standalone controlled button, and the existing Workspace/AppShell toggle when controller integration is needed.
+
 `panel-toggle` is a project-authored Layout family composing the public Button
 with a shared standard or compact panel icon. It accepts controlled expanded
 state, left/right/top/bottom orientation and custom content, and supplies Column
@@ -264,3 +266,33 @@ and hosts own drafts, delivery, action policy and reaction persistence.
 
 CommentComposer is shared Chat presentation for compact inline drafts and
 captured-source reply cards. Hosts own comment IDs, anchors, queues and delivery.
+
+Transcript, HistoryEdge and CommentQueue are shared Chat presentation. The optional
+TranscriptController is owned by the host so state survives presentation teardown;
+it coordinates exact anchors and snapshots but never executes or persists work.
+
+TranscriptFooter and MessageQueue are parts of the Transcript family. They present
+host-owned send/stop intent and queued submission data, without runtime or durable
+queue policy. ComposerStatusBanner is part of the existing Composer family and
+shares its attached status presentation with transcript comments.
+
+PromptContext is shared Chat presentation for XML-style ACP/prompt context. Its
+Mira preview extension never resolves application entities or executes context.
+
+SentContext is shared Chat presentation for the compact sent/prepared/queued/failed/
+unknown application-context disclosure. It composes PromptContext and raw CodeBlock
+inside shared ScrollArea, independently or before Transcript message content.
+Hosts normalize payload schemas and receipts; captured context never implies delivery.
+
+## Community presentation additions
+
+AvatarGroup extends the existing Shadcn Avatar family. AuthorCard, ReferenceChip,
+LinkPreview, Spoiler and RelativeTime are project-authored Shadcn families with
+component-owned native CSS and host-owned display data. QuantityInput is a Forms
+input with exact unit conversion. MarkdownComposer trigger suggestions extend
+the existing Chat family; ThreadPanel adds nested human discussion presentation.
+These families contain no Community identities, repository models or transport.
+
+FilePathInput is a shared Forms primitive adapted from JJ Store, with optional
+host-owned file selection and no filesystem authority. Workspace Settings may
+compose it and QuantityInput as first-party declarative inputs.

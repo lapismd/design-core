@@ -1,11 +1,18 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, within } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
 
   import { Button } from "../button/index.js";
   import * as DropdownMenu from "./index.js";
   import CopyIcon from "@lucide/svelte/icons/copy";
   import PencilIcon from "@lucide/svelte/icons/pencil";
+
+  async function expectMenuClosed() {
+    await waitFor(() => {
+      expect(within(document.body).queryByRole("menu")).toBeNull();
+      expect(getComputedStyle(document.body).pointerEvents).not.toBe("none");
+    });
+  }
 
   const { Story } = defineMeta({
     title: "Shadcn/Overlays/Dropdown Menu",
@@ -40,6 +47,7 @@
     await expect(getComputedStyle(settings).display).toBe("flex");
     await userEvent.click(settings);
     await expect(canvas.getByRole("status")).toHaveTextContent("Settings");
+    await expectMenuClosed();
   }}
 >
   {#snippet template()}
@@ -99,6 +107,7 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Message copied",
     );
+    await expectMenuClosed();
   }}
 >
   {#snippet template()}

@@ -75,7 +75,7 @@
     await userEvent.type(input, "design");
     await expect(canvas.getByRole("status")).toHaveTextContent("design");
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -117,7 +117,7 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div class="max-w-xl">
@@ -193,7 +193,7 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div class="max-w-2xl">

@@ -185,6 +185,12 @@
   });
 
   $effect(() => {
+    // Restoring consumer visibility must not reveal a controller-closed panel.
+    void hiddenProp;
+    if (ref && !mobileMode) untrack(() => controller.syncPanelProjections());
+  });
+
+  $effect(() => {
     const element = ref;
     const root = controller.mobile.getRootElement();
     const main = controller.mobile.getMainElement();

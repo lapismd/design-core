@@ -365,9 +365,6 @@
       [data-ui-component="dropdown-menu"][data-ui-part="dropdown-menu-sub-content"][data-side="top"] {
         --tw-enter-translate-y: calc(2 * var(--spacing));
       }
-      [data-ui-component="dropdown-menu"][data-ui-part="dropdown-menu-item"][data-variant="destructive"] {
-        color: var(--destructive);
-      }
       [data-ui-component="dropdown-menu"][data-ui-part="dropdown-menu-item"][data-variant="destructive"]:focus {
         background-color: var(--destructive);
       }
@@ -379,9 +376,6 @@
             transparent
           );
         }
-      }
-      [data-ui-component="dropdown-menu"][data-ui-part="dropdown-menu-item"][data-variant="destructive"]:focus {
-        color: var(--destructive);
       }
       [data-ui-component="dropdown-menu"][data-ui-part="dropdown-menu-item"]:is(
           :global(.dark) *
@@ -570,7 +564,11 @@
           [data-ui-component="dropdown-menu"][data-ui-part="dropdown-menu-item"][data-variant="destructive"]
             > *
         ):is(svg) {
-        color: var(--destructive);
+        color: color-mix(
+          in oklab,
+          var(--destructive) 60%,
+          var(--ui-dropdown-menu-foreground) 40%
+        );
       }
     }
     @property --tw-animation-delay {
@@ -734,5 +732,15 @@
       syntax: "*";
       inherits: false;
     }
+  }
+  /* Component semantics outrank editor dependencies' unlayered slot resets. */
+  :global(
+      [data-ui-component="dropdown-menu"][data-ui-part="dropdown-menu-item"][data-variant="destructive"]
+    ) {
+    color: color-mix(
+      in oklab,
+      var(--destructive) 60%,
+      var(--ui-dropdown-menu-foreground) 40%
+    );
   }
 </style>

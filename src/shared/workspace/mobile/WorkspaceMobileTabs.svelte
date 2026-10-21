@@ -82,7 +82,7 @@
     <button
       type="button"
       class="ui-workspace-mobile-tabs__action-trigger"
-      aria-label={`Open tab actions (${tabs.length})`}
+      aria-label={`Open tab actions: ${tabs.length}`}
       onclick={() => (actionsOpen = true)}
     >
       <WorkspaceIcon name="square-stack" />

@@ -355,6 +355,8 @@
     editor?.dispatch({
       effects: autocompleteCompartment.reconfigure(autocompleteExtension()),
     });
+    // A catalog refresh can cancel completion while its first request is pending.
+    if (editor?.hasFocus) scheduleAutocomplete(editor);
   });
 
   $effect(() => {

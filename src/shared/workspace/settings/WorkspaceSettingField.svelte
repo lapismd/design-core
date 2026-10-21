@@ -1,5 +1,7 @@
 <script lang="ts">
   import { PasswordInput } from "@lapismd/design-core/forms";
+  import { FilePathInput } from "../../forms/file-path-input/index.js";
+  import WorkspaceSettingQuantity from "./WorkspaceSettingQuantity.svelte";
   import * as Alert from "@lapismd/design-core/shadcn/alert";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { Input } from "@lapismd/design-core/shadcn/input";
@@ -98,6 +100,7 @@
   function controlKind() {
     if (field.type === "boolean") return "toggle";
     if (field.type === "number" || field.type === "integer") {
+      if (field.quantity) return "quantity";
       return field.minimum !== undefined && field.maximum !== undefined
         ? "range"
         : "number";
@@ -221,6 +224,20 @@
           disabled={controlDisabled}
           onCheckedChange={(checked) => void controller.set(field.id, checked)}
         />
+      {:else if field.type === "string" && field.filePicker}
+        <FilePathInput
+          id={`setting-${field.id}`}
+          label={field.title}
+          value={String(value ?? "")}
+          placeholder={field.placeholder}
+          maxLength={field.maxLength}
+          disabled={controlDisabled || busy}
+          invalid={Boolean(error)}
+          onBrowse={field.filePicker.browse}
+          onBrowseError={field.filePicker.onError}
+          browseLabel={field.filePicker.label}
+          onValueChange={(next) => void controller.set(field.id, next)}
+        />
       {:else if field.type === "string" && field.presentation === "icon"}
         <WorkspaceIconPicker
           id={`setting-${field.id}`}
@@ -282,6 +299,8 @@
           oninput={(event) =>
             void controller.set(field.id, event.currentTarget.value)}
         />
+      {:else if (field.type === "number" || field.type === "integer") && field.quantity}
+        <WorkspaceSettingQuantity {controller} {field} />
       {:else if (field.type === "number" || field.type === "integer") && field.minimum !== undefined && field.maximum !== undefined}
         <div class="ui-workspace-setting-range">
           <Slider

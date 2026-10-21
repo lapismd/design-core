@@ -1,0 +1,217 @@
+<script lang="ts">
+  import TranscriptAvatar from "./TranscriptAvatar.svelte";
+  import MessageCircleIcon from "@lucide/svelte/icons/message-circle";
+  import type { TranscriptNavigationTurn } from "./navigation-turns.js";
+  let {
+    turn: preview,
+    index: previewIndex,
+    bookmarked,
+    maxHeight,
+    onNavigate,
+    onBookmark,
+  }: {
+    turn: TranscriptNavigationTurn;
+    index: number;
+    bookmarked: boolean;
+    maxHeight: number;
+    onNavigate: () => void;
+    onBookmark: () => void;
+  } = $props();
+  function dateLabel(time: number) {
+    const seconds = Math.floor(Math.max(0, Date.now() - time) / 1000);
+    const unit =
+      seconds < 60
+        ? "second"
+        : seconds < 3600
+          ? "minute"
+          : seconds < 86400
+            ? "hour"
+            : "day";
+    const duration =
+      unit === "second"
+        ? seconds
+        : Math.floor(
+            seconds / (unit === "minute" ? 60 : unit === "hour" ? 3600 : 86400),
+          );
+    return `${new Intl.RelativeTimeFormat(undefined, { numeric: "auto" }).format(-duration, unit)} (${new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(time)})`;
+  }
+</script>
+
+<section
+  class="ui-transcript-turn-popover"
+  role="group"
+  aria-label={preview.commentsOnly ? "Comment summary" : "Turn summary"}
+  style:max-height={`${maxHeight}px`}
+>
+  <button
+    class="ui-transcript-turn-content"
+    type="button"
+    aria-label={preview.pending
+      ? "Go to pending comments"
+      : `Scroll to turn ${previewIndex + 1}`}
+    onclick={onNavigate}
+  >
+    <span class="ui-transcript-turn-prompt">{preview.prompt}</span>
+    {#if !preview.commentsOnly}
+      <span class="ui-transcript-turn-summary-heading">Turn Summary</span>
+      <span class="ui-transcript-turn-summary">{preview.summary}</span>
+      {#if preview.comments.length}<span class="ui-transcript-turn-summary"
+          >Comments: {preview.comments
+            .map(({ comment }) => comment.text)
+            .join("; ")}</span
+        >{/if}
+    {/if}
+  </button>
+  <div class="ui-transcript-turn-metadata">
+    <div class="chat-turn-author">
+      <TranscriptAvatar
+        member={preview.comments[0]?.comment.author ?? {
+          id: `turn:${preview.author}`,
+          name: preview.author,
+          initials: preview.author.slice(0, 2).toUpperCase(),
+        }}
+        size="inline"
+        decorative
+      />{preview.author}
+    </div>
+    {#if preview.agentName || preview.modelLabel}<div>
+        ⌘ <span>{preview.modelLabel ?? preview.agentName}</span>
+      </div>{/if}
+    {#if preview.comments.length}<div>
+        <MessageCircleIcon size={16} aria-hidden="true" />
+        <span
+          >{preview.comments.length}
+          {preview.comments.length === 1
+            ? "comment"
+            : "comments"}{preview.pending ? " · Pending" : ""}</span
+        >
+      </div>{/if}
+    {#if preview.additions || preview.deletions}<div
+        aria-label={`${preview.additions} captured lines added, ${preview.deletions} captured lines removed`}
+      >
+        ± <span class="ui-transcript-turn-additions"
+          >+{preview.additions.toLocaleString()}</span
+        ><span class="ui-transcript-turn-deletions"
+          >−{preview.deletions.toLocaleString()}</span
+        >
+      </div>{/if}
+    {#if preview.createdAt !== undefined}<div>
+        ◷ <time datetime={new Date(preview.createdAt).toISOString()}
+          >{dateLabel(preview.createdAt)}</time
+        >
+      </div>{/if}
+  </div>
+  <footer>
+    <button
+      type="button"
+      aria-label={preview.pending
+        ? "Bookmark pending comments"
+        : `Bookmark turn ${previewIndex + 1}`}
+      aria-pressed={bookmarked}
+      onclick={onBookmark}
+      >{bookmarked ? "★" : "☆"} ⌘ / Ctrl + click to bookmark</button
+    >
+    <span>⌥ / Alt + scroll by marker</span>
+  </footer>
+</section>
+
+<style>
+  .ui-transcript-turn-popover {
+    position: absolute;
+    right: calc(100% - 2px);
+    top: 50%;
+    transform: translateY(-50%);
+    width: min(22rem, 75vw);
+    overflow: auto;
+    padding: 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--muted);
+    color: var(--foreground);
+    box-shadow: 0 6px 22px #0002;
+    font-size: 0.85rem;
+  }
+  .ui-transcript-turn-content {
+    display: grid;
+    gap: 0.65rem;
+    border: 0;
+    padding: 0;
+    width: 100%;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .ui-transcript-turn-prompt {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+  }
+  .ui-transcript-turn-summary-heading {
+    border-top: 1px solid var(--border);
+    padding-top: 0.65rem;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+  }
+  .ui-transcript-turn-summary {
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+  .ui-transcript-turn-content:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .ui-transcript-turn-metadata {
+    display: grid;
+    gap: 0.65rem;
+    margin-top: 0.8rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted-foreground);
+  }
+  .ui-transcript-turn-metadata > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: 1.5;
+  }
+  .ui-transcript-turn-additions {
+    color: #15803d;
+  }
+  .ui-transcript-turn-deletions {
+    color: #b91c1c;
+  }
+  :global(.dark) .ui-transcript-turn-deletions {
+    color: #fca5a5;
+  }
+  :global(.dark) .ui-transcript-turn-additions {
+    color: #86efac;
+  }
+  footer {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+  footer button {
+    border: 0;
+    border-radius: var(--radius);
+    padding: 0.25rem 0;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+  }
+  footer button:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+</style>

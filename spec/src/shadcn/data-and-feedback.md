@@ -16,6 +16,12 @@ Data and feedback primitives communicate state without taking ownership of consu
 | Avatar   | `@lapismd/design-core/shadcn/avatar`   | DC-SHA-056  |
 | Tag List | `@lapismd/design-core/shadcn/tag-list` | DC-SHA-057  |
 
+| Author Card | `@lapismd/design-core/shadcn/author-card` | DC-SHA-058 |
+| Reference Chip | `@lapismd/design-core/shadcn/reference-chip` | DC-SHA-059 |
+| Link Preview | `@lapismd/design-core/shadcn/link-preview` | DC-SHA-060 |
+| Spoiler | `@lapismd/design-core/shadcn/spoiler` | DC-SHA-061 |
+| Relative Time | `@lapismd/design-core/shadcn/relative-time` | DC-SHA-062 |
+
 ## DC-SHA-057 — Tag List
 
 **Requirement.** Tag List MUST present ordered, host-owned tags in one compact responsive row, composing existing Badge/Button, Tooltip, Popover and ScrollArea primitives.
@@ -104,9 +110,64 @@ Data and feedback primitives communicate state without taking ownership of consu
 
 ## DC-SHA-056 — Avatar
 
-**Requirement.** Avatar MUST present host-owned images, emoji or initials with optional presence and circle or rounded shapes.
+**Requirement.** Avatar MUST present host-owned images, emoji or initials with optional presence and circle or rounded shapes. Initials on an opaque three- or six-digit hex background MUST choose black or white with at least 4.5:1 contrast unless the host supplies `--ui-avatar-foreground`; other backgrounds retain theme foreground semantics.
 
 ### Acceptance details
 
-- The public family MUST provide named and decorative presentations with image-failure fallback and token-driven sizing, including larger `2xl` and `3xl` presentations for editable profile avatars.
+- The public family MUST provide named and decorative image presentations with image-failure fallback and token-driven sizing, including larger `2xl` and `3xl` presentations for editable profile avatars; decorative images retain `role="img"` and `aria-hidden="true"` so their initials are not mistaken for a surrounding control's visible text label.
 - Presence MUST remain available through an accessible label rather than color alone.
+- AvatarGroup MUST default to 32px avatars and preserve supplied identity order, overlapping circle or rounded shapes, full accessible names including visible initials or emoji fallbacks and optional host-selected overflow limits, with hovered or focused participants raised above their neighbours.
+- Groups MUST support every Avatar size, size overflow indicators consistently and accept optional custom member content for shared AuthorCard triggers without nested buttons or tooltips.
+
+## DC-SHA-058 — Author Card
+
+**Requirement.** AuthorCard MUST present host-owned identity details and actions through shared accessible hover or popover surfaces.
+
+Mention trigger names retain visible fallback initials before the author name,
+matching visible text order when avatar images are unavailable.
+
+### Acceptance details
+
+- Avatar and mention triggers MUST retain supplied labels, shape, presence, details and disabled actions without resolving profiles or executing application routes.
+- Popover dismissal MUST restore trigger focus and viewport-bounded content MUST use shared ScrollArea with inherited semantic tokens.
+- Compact trigger sizing MUST NOT shrink the identity avatar inside the author details surface; accessible trigger names MUST include visible initials or emoji fallbacks alongside the supplied author label.
+
+- The participant story MUST retain the unchanged name `About Alex Morgan, AM` for `Alex Morgan` with its visible `AM` fallback, including after switching custom participant rendering.
+
+## DC-SHA-059 — Reference Chip
+
+**Requirement.** ReferenceChip MUST compose compact icon or avatar references with Badge presentation and host-owned navigation or actions.
+
+### Acceptance details
+
+- Full labels and descriptions MUST remain available through accessible tooltips while long inline labels truncate without changing supplied text, and trigger names MUST include visible avatar fallbacks before the label.
+- Optional removal MUST be a separate labelled button and disabled references MUST never navigate or invoke callbacks.
+
+## DC-SHA-060 — Link Preview
+
+**Requirement.** LinkPreview MUST present supplied link data in inline, compact and rich layouts without fetching metadata.
+
+### Acceptance details
+
+- Unsafe protocols MUST remain noninteractive while safe links retain their destination, accessible name and keyboard focus.
+- Labels, descriptions, optional media and semantic tokens MUST support narrow containers without application-specific URL classification, and link names MUST include all rendered text in reading order.
+
+## DC-SHA-061 — Spoiler
+
+**Requirement.** Spoiler MUST provide keyboard-accessible controlled conceal and reveal presentation for inline noninteractive content.
+
+### Acceptance details
+
+- Concealed content MUST be hidden from assistive technology and revealed content MUST retain its original text.
+- The optional Chat spoilerExtension MUST compose safe post-parse Mira rendering for inline delimiters while leaving code and captured source text intact.
+- Particle presentation MUST respect reduced motion and clean up animation frames, observers and listeners on teardown.
+
+## DC-SHA-062 — Relative Time
+
+**Requirement.** RelativeTime MUST present valid dates with relative text and an exact localized date tooltip using an optional supplied clock.
+
+### Acceptance details
+
+- Invalid dates MUST retain a readable fallback and never throw during rendering.
+- Live updates MUST stop on disposal while supplied clocks, locale and absolute-date thresholds remain deterministic.
+- Interactive accessible names MUST contain the visible date text together with the exact date or host-supplied context label.

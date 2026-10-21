@@ -8,7 +8,7 @@ export type MessageBubbleGroup = "first" | "middle" | "last";
 export type MessageStatus = "sending" | "sent" | "delivered" | "read" | "error";
 
 export type ComposerStatus = {
-  type: "error" | "warning";
+  type: "error" | "warning" | "info" | "success";
   message?: string;
 };
 

@@ -132,6 +132,8 @@ function validateValue(
     if (typeof value !== "number" || !Number.isFinite(value)) {
       return "Expected a finite number";
     }
+    if (field.quantity && !Number.isSafeInteger(value))
+      return "Enter a safe whole number.";
     if (field.type === "integer" && !Number.isInteger(value)) {
       return "Expected an integer";
     }

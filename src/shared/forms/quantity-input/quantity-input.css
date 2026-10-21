@@ -1,0 +1,147 @@
+.ui-quantity-input__controls {
+  display: grid;
+  gap: 0.5rem;
+  width: min(var(--ui-quantity-input-width, 18rem), 100%);
+  min-width: 0;
+}
+[data-ui-component="quantity-input"][data-layout="control"]
+  .ui-quantity-input__controls {
+  width: 100%;
+}
+.ui-quantity-input__entry {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ui-quantity-input__input {
+  flex: 1 1 12rem;
+  max-width: 15.5rem;
+}
+.ui-quantity-input__input input {
+  min-width: 0;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+.ui-quantity-input__unit[data-slot] {
+  align-self: stretch;
+  flex: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  border-inline-start: 1px solid var(--input);
+  background: color-mix(in srgb, var(--primary) 7%, var(--background));
+  border-radius: 0 calc(var(--radius) * 0.8) calc(var(--radius) * 0.8) 0;
+}
+.ui-quantity-input__unit-trigger[data-slot] {
+  height: 100%;
+  min-width: 4.5rem;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--primary);
+}
+.ui-quantity-input__unit [data-slot="input-group-text"] {
+  padding-inline: 0.75rem;
+  font-size: 0.8rem;
+}
+.ui-quantity-input__default,
+.ui-quantity-input__state,
+.ui-quantity-input__error,
+.ui-quantity-input__range {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+.ui-quantity-input__state {
+  text-align: end;
+  overflow-wrap: anywhere;
+}
+.ui-quantity-input__state:empty {
+  display: none;
+}
+.ui-quantity-input__range {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.ui-quantity-input__range span {
+  min-width: 0;
+  max-width: calc(50% - 0.25rem);
+  overflow-wrap: anywhere;
+}
+.ui-quantity-input__range span:last-child {
+  text-align: end;
+}
+.ui-quantity-input__error {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--destructive);
+}
+.ui-quantity-input__error svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+.ui-quantity-input[data-density="compact"] {
+  padding-block: 0.5rem;
+}
+.ui-quantity-input__input:focus-within {
+  outline: none;
+  border-color: var(--input);
+  box-shadow: 0 0 0 3px
+    color-mix(
+      in srgb,
+      var(--ui-quantity-input-ring, var(--ring)) 50%,
+      transparent
+    );
+}
+@media (max-width: 40rem) {
+  .ui-quantity-input__controls {
+    width: 100%;
+  }
+  .ui-quantity-input__input {
+    max-width: none;
+  }
+}
+
+.ui-quantity-input__reset[data-ui-part] {
+  align-self: stretch;
+  height: auto;
+  width: 2rem;
+  border-inline-start: 1px solid var(--input);
+  border-radius: 0 calc(var(--radius) * 0.8) calc(var(--radius) * 0.8) 0;
+  background: var(--background);
+}
+.ui-quantity-input__unit:has(.ui-quantity-input__reset)
+  .ui-quantity-input__unit-trigger {
+  border-radius: 0;
+}
+
+.ui-quantity-input__input:has([aria-invalid="true"]) {
+  --ui-quantity-input-ring: var(--destructive);
+}
+.ui-quantity-input__input :is(input, button):focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.ui-quantity-input__unit-trigger[data-slot]:hover:not(:disabled),
+.ui-quantity-input__reset[data-ui-part]:hover:not(:disabled) {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.ui-quantity-input[data-slot] {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+@media (max-width: 40rem) {
+  .ui-quantity-input[data-slot] {
+    flex-direction: column;
+  }
+}

@@ -1,15 +1,15 @@
 <script lang="ts">
-  import "./WorkspaceBottomPanel.css";
+  import { PanelToggle } from "../../shadcn/panel-toggle/index.js";
 
   let {
     label,
     onSelect,
-    size = "default",
     expanded = false,
     "data-desktop-drag-region": desktopDragRegion = "false",
   }: {
     label?: string;
     onSelect: (event: MouseEvent) => void;
+    /** Legacy density hint; both values now use the shared PanelToggle defaults. */
     size?: "small" | "default";
     expanded?: boolean;
     "data-desktop-drag-region"?: string;
@@ -20,16 +20,17 @@
   );
 </script>
 
-<button
+<PanelToggle
   class="ui-workspace-bottom-panel-toggle"
-  data-ui-component="workspace-bottom-panel-toggle"
+  data-ui-part="workspace-bottom-panel-toggle"
   data-desktop-drag-region={desktopDragRegion}
-  data-size={size}
+  side="bottom"
+  {expanded}
+  iconVariant="standard"
   data-state={expanded ? "expanded" : "collapsed"}
   data-workspace-bottom-panel-toggle
   type="button"
   aria-label={resolvedLabel}
-  aria-expanded={expanded}
   title={resolvedLabel}
   data-hint-target="bottom-panel-toggle"
   data-hint-group="panel"
@@ -37,32 +38,4 @@
   data-hint-target-id="bottom-panel:toggle"
   data-hint-label={resolvedLabel}
   onclick={onSelect}
->
-  <svg
-    class="ui-workspace-bottom-panel-toggle__icon"
-    data-ui-part="icon"
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
-  >
-    <!-- Dedicated bottom-panel geometry keeps the sidebar icon's landscape frame. -->
-    <rect x="1" y="2" width="22" height="20" rx="4"></rect>
-    <rect
-      x="5"
-      y={expanded ? "14" : "17"}
-      width="14"
-      height={expanded ? "5" : "2"}
-      rx={expanded ? "2" : "1"}
-      fill="currentColor"
-      data-ui-part="indicator"
-      class="ui-workspace-bottom-panel-toggle__indicator"
-    ></rect>
-  </svg>
-</button>
+/>

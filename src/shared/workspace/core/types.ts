@@ -237,7 +237,12 @@ export interface WorkspaceRibbonItem {
 
 export interface WorkspaceStatusItem {
   id: string;
-  align?: "left" | "right";
+  /** Own custom controls in this host; cleanup runs on replacement or removal.
+   * Custom content takes precedence over the built-in button/menu presentation.
+   * The owner supplies accessible controls, styling and resource lifetime.
+   */
+  mount?: (host: HTMLElement) => () => void;
+  align?: "left" | "center" | "right";
   priority?: number;
   label?: string;
   segments?: string[];
@@ -265,6 +270,8 @@ export interface WorkspacePopoutHandle {
   focus(): void;
   close(): void;
   onClose(listener: () => void): () => void;
+  /** Cancel native close until the owner has admitted removal. */
+  onCloseRequest?(listener: () => Promise<boolean>): () => void;
 }
 
 export interface WorkspacePopoutHost {

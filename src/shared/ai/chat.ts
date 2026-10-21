@@ -6,6 +6,7 @@ export { default as MessageBubble } from "./message-bubble/MessageBubble.svelte"
 export { default as MessageMetadata } from "./message-metadata/MessageMetadata.svelte";
 export { default as SystemMessage } from "./system-message/SystemMessage.svelte";
 export { default as Composer } from "./composer/Composer.svelte";
+export { default as ComposerStatusBanner } from "./composer/ComposerStatusBanner.svelte";
 export { default as ComposerInput } from "./composer-input/ComposerInput.svelte";
 export { default as ComposerDrawer } from "./composer-drawer/ComposerDrawer.svelte";
 export { default as SendButton } from "./send-button/SendButton.svelte";

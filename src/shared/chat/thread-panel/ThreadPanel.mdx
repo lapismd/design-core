@@ -1,0 +1,13 @@
+import { Meta, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./ThreadPanel.stories.svelte";
+import { Basic } from "./ThreadPanel.example-sources.js";
+
+<Meta of={Stories} />
+
+# ThreadPanel
+
+Supply unique message IDs, explicit parentId values and host-owned display authors. `value` and `replyToId` are controlled/bindable. `onSubmit` receives an immutable ID/text/parentId snapshot and never clears the draft internally; only the host acknowledges or clears it. A rejected promise retains the draft and shows attached feedback. Message actions, reactions, author actions, Markdown hooks, history and custom footer content remain host supplied. Generic tree projection preserves input sibling order, retains missing parents/cycles once and caps visual indentation. Use a bounded parent height. Thread geometry uses `--ui-thread-indent-limit` (13.5rem, 4.5rem on narrow layouts) and standard semantic colours.
+
+<Source code={Basic} language="tsx" />
+
+Adapted from jj-store 3be80ad2104f, Apache-2.0, LapisMD contributors. See PROVENANCE.md.

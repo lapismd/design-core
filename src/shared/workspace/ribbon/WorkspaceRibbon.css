@@ -61,7 +61,7 @@
 
 .ui-workspace-ribbon__actions--bottom {
   margin-block-start: auto;
-  padding-block-end: calc(var(--ui-workspace-status-height) + 0.25rem);
+  padding-block-end: 0.25rem;
 }
 
 .ui-workspace-ribbon__action {

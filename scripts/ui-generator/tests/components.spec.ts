@@ -143,10 +143,15 @@ Hello
       listComponents(packageRoot, { layer: "chat" }).map((entry) => entry.id),
     ).toEqual([
       "comment-composer",
+      "history-edge",
       "markdown-composer",
       "markdown-content",
       "message-actions",
+      "prompt-context",
       "reactions",
+      "sent-context",
+      "thread-panel",
+      "transcript",
     ]);
   });
 

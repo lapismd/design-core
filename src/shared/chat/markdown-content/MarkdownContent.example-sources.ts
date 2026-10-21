@@ -12,3 +12,8 @@ export const Hooks = `<script lang="ts">
 </script>
 <MarkdownContent content="[Issue 42](https://example.test/issues/42)" {extensions} fullWidth
   linkResolver={({ href }) => href} assetResolver={({ src }) => src} />`;
+
+export const Spoilers = `<script lang="ts">
+  import { MarkdownContent, spoilerExtension } from "@lapismd/design-core/chat";
+</script>
+<MarkdownContent content="The answer is ||forty-two||." extensions={[spoilerExtension]} />`;

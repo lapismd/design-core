@@ -230,11 +230,31 @@
     controller.closeTab(backgroundTabId);
     controller.selectTab("welcome");
 
+    const separatorOpacity = (name: RegExp) => {
+      const header = canvas
+        .getByRole("button", { name })
+        .closest(".ui-workspace-tab");
+      const inner = header?.querySelector<HTMLElement>(
+        ".ui-workspace-tab__inner",
+      );
+      return inner ? getComputedStyle(inner, "::after").opacity : "";
+    };
+    await waitFor(() => {
+      expect(separatorOpacity(/^Welcome\.md$/)).toBe("0");
+      expect(separatorOpacity(/^Today\.md$/)).toBe("1");
+      expect(separatorOpacity(/^Tasks\.md$/)).toBe("1");
+    });
+
     const tab = canvas.getByRole("button", {
       name: /^Today\.md$/,
     });
     await expect(getComputedStyle(tab).cursor).toBe("pointer");
     await userEvent.click(tab);
+    await waitFor(() => {
+      expect(separatorOpacity(/^Welcome\.md$/)).toBe("0");
+      expect(separatorOpacity(/^Today\.md$/)).toBe("0");
+      expect(separatorOpacity(/^Tasks\.md$/)).toBe("1");
+    });
     await expect(tab).toHaveAttribute("aria-pressed", "true");
     await userEvent.click(
       canvas
@@ -307,13 +327,26 @@
     }
     const moveTo = page.getByRole("menuitem", { name: /^Move to$/ });
     await expect(moveTo.querySelector("svg")).not.toBeNull();
+    await expect(
+      page
+        .getByRole("menuitem", { name: "Open in new window" })
+        .querySelector(".lucide-picture-in-picture-2"),
+    ).not.toBeNull();
     await userEvent.hover(moveTo);
-    for (const name of ["Left Sidebar", "Right Sidebar", "Bottom Sidebar"]) {
+    for (const name of [
+      "Main body",
+      "Left Sidebar",
+      "Right Sidebar",
+      "Bottom Sidebar",
+    ]) {
       await expect(page.getByRole("menuitem", { name })).toBeVisible();
     }
     await expect(
       page.getByRole("menuitem", { name: "Left Sidebar" }).querySelector("svg"),
     ).not.toBeNull();
+    await expect(
+      page.getByRole("menuitem", { name: "Main body" }),
+    ).toHaveAttribute("aria-disabled", "true");
     await userEvent.keyboard("{Escape}");
 
     const referenceMenu = canvas.getByRole("button", {
@@ -493,6 +526,47 @@
     await expect(maximize.getBoundingClientRect().right).toBeLessThanOrEqual(
       options.getBoundingClientRect().left,
     );
+
+    const frame = canvasElement.querySelector<HTMLElement>(
+      ".ui-workspace-tabs-story-frame",
+    )!;
+    const tabsRoot =
+      canvasElement.querySelector<HTMLElement>(".ui-workspace-tabs")!;
+    const title = active!.querySelector<HTMLElement>(
+      ".ui-workspace-tab__title",
+    )!;
+    const previousWidth = frame.style.width;
+    frame.style.width = "16rem";
+    tabsRoot.style.setProperty("--ui-workspace-tab-width", "2.5rem");
+    try {
+      const inactiveIcon = canvasElement.querySelector<HTMLElement>(
+        '.ui-workspace-tab:not([data-active="true"]) .ui-workspace-tab__icon',
+      );
+      await waitFor(() => {
+        expect(title.getBoundingClientRect().width).toBe(0);
+        expect(getComputedStyle(icon!).display).toBe("none");
+        expect(getComputedStyle(close!).visibility).toBe("visible");
+        expect(close!.getBoundingClientRect().width).toBeGreaterThan(0);
+        expect(inactiveIcon).not.toBeNull();
+        expect(getComputedStyle(inactiveIcon!).display).not.toBe("none");
+        expect(inactiveIcon!.getBoundingClientRect().width).toBeGreaterThan(0);
+      });
+
+      // Keep the label collapsed while leaving room for the actual tab hit
+      // target. Native drag, selection and context menus use this button.
+      tabsRoot.style.setProperty("--ui-workspace-tab-width", "5rem");
+      await waitFor(() => {
+        expect(title.getBoundingClientRect().width).toBe(0);
+        for (const trigger of canvasElement.querySelectorAll<HTMLElement>(
+          "[data-workspace-tab-title-trigger]",
+        )) {
+          expect(trigger.getBoundingClientRect().width).toBeGreaterThan(0);
+        }
+      });
+    } finally {
+      frame.style.width = previousWidth;
+      tabsRoot.style.removeProperty("--ui-workspace-tab-width");
+    }
   }}
   parameters={{
     visualDelta: {

@@ -40,6 +40,10 @@ in list, folder and package modes. Eager rows split that space across their
 block margins; virtual row wrappers include it in their measured height so
 scroll offsets, continuation and keyboard navigation retain the same spacing.
 
+Default file-row accessible names retain the full path and every visible signed
+change count. Custom leading, label or meta snippets use their native text as
+the accessible name rather than an overriding path-only label.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`; hosts MAY provide public `FileListingDirectory` values before their children are loaded, and controlled disclosure MUST request expansion through `onDirectoryToggle` without performing I/O or inventing child files.
@@ -51,7 +55,7 @@ scroll offsets, continuation and keyboard navigation retain the same spacing.
 
 **Requirement.** The File Diff family MUST render unified or split textual changes from two texts or a unified patch without owning comments or version-control transport.
 
-Highlighted additions/removals MUST retain readable syntax foreground on row and intraline washes through `--ui-diff-changed-syntax-foreground` (default `--foreground`), while unchanged rows retain normal syntax colors.
+Highlighted additions/removals MUST retain readable syntax foreground on row and intraline washes through `--ui-diff-changed-syntax-foreground` (default `--foreground`), while unchanged rows retain readable normal syntax colors in both light and dark modes.
 
 ### Acceptance details
 

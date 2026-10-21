@@ -311,7 +311,7 @@
         variant="ghost"
         class="ui-avatar-picker__trigger"
         {disabled}
-        aria-label={label}
+        aria-label={`${label}: ${fallbackInitials}`}
         aria-expanded={open}
         onclick={() => (open = true)}
       >
@@ -327,7 +327,7 @@
             variant="ghost"
             class="ui-avatar-picker__trigger"
             {disabled}
-            aria-label={label}
+            aria-label={`${label}: ${fallbackInitials}`}
           >
             {@render avatarTrigger()}
           </Button>

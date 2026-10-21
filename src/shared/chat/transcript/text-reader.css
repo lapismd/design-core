@@ -1,0 +1,358 @@
+.ui-transcript-text-block {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+}
+.ui-transcript-markdown-preview {
+  white-space: normal;
+}
+.ui-transcript-markdown-preview pre {
+  white-space: pre;
+}
+.ui-transcript-task-marker {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-inline-end: 0.375rem;
+}
+.ui-transcript-rich-code {
+  background: var(--muted);
+  border-radius: var(--radius);
+  padding: 0;
+}
+.ui-transcript-rich-code-heading {
+  padding: 0.375rem 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted-foreground);
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.75rem;
+}
+.ui-transcript-rich-reader {
+  --mira-code-editor-background: transparent;
+  --mira-code-editor-foreground: var(--foreground);
+  --mira-code-editor-padding: 0;
+  --mira-code-editor-min-height: 0;
+  min-width: 0;
+}
+.ui-transcript-rich-reader[data-code="true"] .cm-scroller {
+  font-family: var(--font-mono, monospace);
+}
+.ui-transcript-text-block[data-kind="code"],
+.ui-transcript-text-block[data-kind="patch"],
+.ui-transcript-rich-code {
+  --mira-code-editor-syntax-keyword: color-mix(
+    in srgb,
+    var(--mira-syntax-keyword, #7c3aed) 65%,
+    var(--foreground)
+  );
+  --mira-code-editor-syntax-string: color-mix(
+    in srgb,
+    var(--mira-syntax-string, #0f766e) 65%,
+    var(--foreground)
+  );
+  --mira-code-editor-syntax-number: color-mix(
+    in srgb,
+    var(--mira-syntax-number, #b45309) 65%,
+    var(--foreground)
+  );
+  --mira-code-editor-syntax-variable: color-mix(
+    in srgb,
+    var(--mira-syntax-variable, #0b6fcb) 65%,
+    var(--foreground)
+  );
+  --mira-code-editor-syntax-property: color-mix(
+    in srgb,
+    var(--mira-syntax-property, #9a3412) 65%,
+    var(--foreground)
+  );
+  --mira-code-editor-syntax-type: color-mix(
+    in srgb,
+    var(--mira-syntax-type, #8b3a94) 65%,
+    var(--foreground)
+  );
+  --mira-code-editor-syntax-comment: color-mix(
+    in srgb,
+    var(--mira-syntax-comment, #697386) 65%,
+    var(--foreground)
+  );
+  --mira-code-editor-syntax-operator: color-mix(
+    in srgb,
+    var(--mira-syntax-operator, #475569) 65%,
+    var(--foreground)
+  );
+  --mira-code-editor-syntax-link: color-mix(
+    in srgb,
+    var(--mira-syntax-link, #0b6fcb) 65%,
+    var(--foreground)
+  );
+  --mira-code-editor-syntax-heading: color-mix(
+    in srgb,
+    var(--mira-syntax-heading, #8b3a94) 65%,
+    var(--foreground)
+  );
+  background: var(--muted);
+  border-radius: var(--radius);
+  overflow: visible;
+}
+.ui-transcript-text-block [data-ui-part="capture-heading"] {
+  padding: 0.5rem 0.75rem;
+  color: var(--muted-foreground);
+  background: var(--muted);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+}
+.ui-transcript-text-actions {
+  position: absolute;
+  right: 0;
+  top: -0.5rem;
+  z-index: 2;
+  border-radius: var(--radius);
+  background: var(--muted);
+  border: 1px solid var(--border);
+  padding: 0.125rem;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+}
+.ui-transcript-text-block:hover .ui-transcript-text-actions,
+.ui-transcript-text-block:focus-within .ui-transcript-text-actions,
+.ui-transcript-custom:hover .ui-transcript-text-actions,
+.ui-transcript-custom:focus-within .ui-transcript-text-actions,
+.ui-transcript-text-actions:has([aria-expanded="true"]) {
+  opacity: 1;
+}
+.ui-transcript-text-actions button:hover,
+.ui-transcript-text-actions button:focus-visible {
+  background: var(--background);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+.ui-transcript-custom[data-kind="context"] > .ui-transcript-text-actions {
+  /* Prompt disclosures start on the first line; keep actions above that hit area. */
+  top: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+.ui-transcript-custom[data-kind="context"]:hover > .ui-transcript-text-actions,
+.ui-transcript-custom[data-kind="context"]:focus-within
+  > .ui-transcript-text-actions,
+.ui-transcript-custom[data-kind="context"]
+  > .ui-transcript-text-actions:has([aria-expanded="true"]) {
+  pointer-events: auto;
+}
+.ui-transcript-text-reader .cm-editor:not([data-comment-editor] *) {
+  background: transparent;
+  color: var(--_transcript-foreground, var(--foreground));
+  outline: none;
+}
+.ui-transcript-text-reader {
+  --mira-font-sans: var(
+    --_transcript-font,
+    var(--font-sans, ui-sans-serif, system-ui, sans-serif)
+  );
+  --file-line-width: 100%;
+  --file-margins-x: 0px;
+  --file-margins-y: 0px;
+  --mira-editor-padding: 0px;
+  --mira-code-editor-background: transparent;
+  --mira-code-editor-foreground: var(
+    --_transcript-foreground,
+    var(--foreground)
+  );
+  --mira-code-editor-min-height: 0;
+  --mira-code-editor-padding: 0;
+}
+.ui-transcript-text-reader .cm-scroller:not([data-comment-editor] *) {
+  overflow: visible;
+  font-family: var(--_transcript-font, var(--font-sans, system-ui));
+  line-height: 1.65;
+}
+.ui-transcript-text-reader .cm-content:not([data-comment-editor] *) {
+  padding: 0;
+  cursor: text;
+}
+.ui-transcript-text-reader .cm-line:not([data-comment-editor] *) {
+  padding: 0;
+}
+.ui-transcript-text-block:is([data-kind="code"], [data-kind="patch"])
+  .cm-scroller:not([data-comment-editor] *) {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+}
+.ui-transcript-text-block[data-kind="markdown"] .ui-transcript-text-reader {
+  --mira-code-editor-font-size: var(--conversation-prose-size, 0.875rem);
+}
+.ui-transcript-text-block[data-kind="code"]
+  .cm-content:not([data-comment-editor] *) {
+  padding: 0.75rem;
+}
+.ui-transcript-text-reader .cm-gutters:has(.ui-transcript-capture-gutter) {
+  background: transparent;
+  border: 0;
+}
+.ui-transcript-capture-gutter {
+  padding-inline-start: 0.75rem;
+  color: var(--muted-foreground);
+  user-select: none;
+}
+.ui-transcript-capture-gutter .cm-gutterElement {
+  min-width: 2ch;
+  text-align: right;
+}
+.ui-transcript-text-block[data-kind="patch"]
+  .cm-line:not([data-comment-editor] *) {
+  padding-inline: 0.75rem;
+}
+.ui-transcript-text-block[data-kind="patch"]
+  .cm-content:not([data-comment-editor] *) {
+  padding-block: 0.5rem;
+}
+.ui-transcript-middle-fold {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-block: 0.25rem;
+}
+.ui-transcript-middle-fold button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--foreground) 8%, var(--muted));
+  color: var(--foreground);
+  font-family: var(--font-sans, system-ui);
+  font-size: 0.75rem;
+  padding: 0.15rem 0.35rem;
+  cursor: pointer;
+}
+.ui-transcript-middle-fold button:hover {
+  background: color-mix(in srgb, var(--foreground) 14%, var(--muted));
+}
+.ui-transcript-middle-fold button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.ui-transcript-middle-fold > span {
+  flex: 1;
+  border-top: 1px solid var(--border);
+}
+.ui-transcript-text-reader .cm-focused {
+  outline: none;
+}
+.ui-transcript-text-reader .ui-transcript-strong {
+  font-weight: 650;
+}
+.ui-transcript-reply-indicator {
+  display: inline-flex;
+  width: 1rem;
+  height: 1rem;
+  margin-inline-end: 0.5rem;
+  vertical-align: -0.125em;
+  color: var(--muted-foreground);
+  user-select: none;
+}
+.ui-transcript-text-reader .ui-transcript-emphasis {
+  font-style: italic;
+}
+.ui-transcript-text-reader .ui-transcript-strike {
+  text-decoration: line-through;
+}
+.ui-transcript-text-reader .ui-transcript-heading {
+  font-weight: 650;
+  line-height: 1.5;
+}
+.ui-transcript-text-reader .ui-transcript-heading-1 {
+  font-size: 1.5em;
+}
+.ui-transcript-text-reader .ui-transcript-heading-2 {
+  font-size: 1.3em;
+}
+.ui-transcript-text-reader .ui-transcript-heading-3 {
+  font-size: 1.15em;
+}
+.ui-transcript-text-reader .ui-transcript-inline-code {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.9em;
+  background: var(--muted);
+  border-radius: 3px;
+}
+.ui-transcript-text-reader .ui-transcript-link {
+  color: var(--foreground);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.ui-transcript-text-reader .ui-transcript-link:focus-visible {
+  outline: 2px solid var(--ring);
+}
+.ui-transcript-text-reader .ui-transcript-comment-highlight {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
+}
+.ui-transcript-text-reader .ui-transcript-comment-highlight-active {
+  background: color-mix(in srgb, var(--primary) 26%, transparent);
+  border-bottom: 2px solid var(--primary);
+}
+.ui-transcript-text-reader .ui-transcript-patch-addition {
+  background: var(
+    --ui-diff-added-background,
+    color-mix(in srgb, var(--success, #16a34a) 16%, transparent)
+  );
+  box-shadow: inset 3px 0 var(--ui-diff-stat-added, var(--success, #16a34a));
+}
+.ui-transcript-text-reader .ui-transcript-patch-deletion {
+  background: var(
+    --ui-diff-removed-background,
+    color-mix(in srgb, var(--destructive) 14%, transparent)
+  );
+  box-shadow: inset 3px 0 var(--destructive);
+}
+.ui-transcript-text-reader .ui-transcript-patch-hunk {
+  color: var(--muted-foreground);
+  background: var(--muted);
+}
+.ui-transcript-text-reader .cm-selectionBackground {
+  background: color-mix(in srgb, var(--primary) 22%, transparent) !important;
+}
+.ui-transcript-text-reader
+  .cm-content:not([data-comment-editor] *):focus-visible {
+  outline: none;
+}
+@media (hover: none) {
+  .ui-transcript-text-actions {
+    opacity: 1;
+  }
+  .ui-transcript-custom[data-kind="context"] > .ui-transcript-text-actions {
+    pointer-events: auto;
+  }
+}
+
+/* Workspace source retains exact comment anchors with a plain numbered reader. */
+.ui-transcript-text-block[data-file-view] {
+  background: transparent;
+  border-radius: 0;
+}
+.ui-transcript-text-block[data-file-view]
+  .cm-content:not([data-comment-editor] *) {
+  padding: 0 0.5rem;
+}
+.ui-transcript-text-block[data-file-view] .cm-gutters {
+  border: 0;
+}
+
+/* Tinted source ranges own contrast, including nested syntax tokens. */
+.ui-transcript-text-reader
+  :is(
+    .ui-transcript-comment-highlight,
+    .ui-transcript-patch-addition,
+    .ui-transcript-patch-deletion
+  )
+  span {
+  color: inherit;
+}

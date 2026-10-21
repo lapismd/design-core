@@ -1050,3 +1050,31 @@ The migration is complete only when:
 - target checks pass;
 - a human has reviewed the Visual Delta matrix;
 - the source package is removed through a separate Lapis Changeyard change.
+
+## 2026-10-19 — Full-width footer qualification
+
+Design approved: shell footer track, three contribution regions, fixed centre,
+state-preserving side overflow, persistent notification bell, Problems dock
+toggle and bottom-ribbon Settings (sidebar Settings retained). Source types,
+833 unit tests, 865 Storybook interaction/axe cases, static build and metadata
+audit pass. Fresh pointer lanes pass 16 workspace, 11 shell and 151 shared-control
+cases; one Chromium case is intentionally covered by WebKit. API qualification
+is committed; desktop archive handoff is tracked by E-CATALOG-009 in lapis-desktop.
+No native or prior milestone is promoted. Evidence: `spec/records/2026-10-19-workspace-status-footer.md`.
+
+## 2026-10-19 — Main-workspace review follow-ups
+
+The footer now owns the single lower sidebar boundary in the standard desktop
+layout. The shared pane menu adds Main body for sidebar tabs, retaining Main
+window for popups and disabling the current destination. Exact regression
+coverage passes four menu unit cases and eleven tab/footer browser cases,
+including retained view state after returning from a sidebar. Source types,
+836 units and three repaired overlay/drawer cases pass; the user deferred new
+broad matrices in favour of focused desktop archive acceptance. Evidence:
+`spec/records/2026-10-19-footer-sidebar-seam.md` and
+`spec/records/2026-10-19-main-body-tab-destination.md`.
+
+2026-10-19 follow-up: host-configurable footer safe-area tokens preserve native
+rounded-window clearance and the centred status region. Source/consumer proof
+is recorded in `spec/records/2026-10-19-rounded-footer-and-xml-readers.md`;
+original native/release/visual gates remain unchanged.

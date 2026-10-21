@@ -1,5 +1,20 @@
 # Architecture
 
+Release 0.6.0 qualification consumes registry Mira `~0.1.0` and Visual Delta `0.0.9`,
+without temporary archive resolution. Catalog tooling uses patched Storybook
+10.6.3 and Vite 6.4.5 ranges. CI remains nonvisual; screenshot comparison is an
+explicit local command only.
+The Drawer runtime pins the already qualified `vaul-svelte@1.0.0-next.7` preview
+instead of its floating `next` tag; its resolved runtime graph is unchanged.
+
+Settings composes the generic Forms QuantityInput, FilePathInput and PasswordInput through an explicit internal boundary; native file selection, import policy and authoritative values stay in the consuming host.
+
+The Chat layer composes host-owned transcript snapshots, footer/queue/reaction
+presentation and optional author details. PromptContext adds inert XML-style
+preview syntax through Mira's public extension API and a declared CodeMirror XML
+language dependency. Runtime/session state, authorization, durable delivery and
+profile routes stay in consumer adapters; reference recordings are catalog-only.
+
 Chat is a host-neutral presentation layer composing Mira public preview APIs.
 Generic responsive navigation and avatar presentation remain in Shadcn; avatar
 editing remains in Forms. AppShell.Topbar is above the bounded Root and receives
@@ -92,9 +107,9 @@ workspace graphs, while packed consumers audit their own dependency resolution.
 ## DC-ARCH-006 — External consumption
 
 Public archive acceptance audits the installed production graph independently
-of local overrides. The recorded KaTeX exception under DC-PKG-009 is limited
-to Design Core 0.3.0 and its preparation manifest; subsequent releases cannot
-inherit that risk acceptance.
+of local overrides. The recorded user-approved KaTeX exception under DC-PKG-009
+is advisory-specific across package releases until upstream math ranges are
+patched; every other finding remains blocking and complete evidence is retained.
 
 **Requirement.** Independent first-party plugins MUST consume Design Core through its public versioned package boundary without repository source aliases or sibling workspace membership.
 
@@ -115,3 +130,7 @@ inherit that risk acceptance.
 - CI and non-CI executions must not share cache keys.
 - VCS-dependent governance and registry-dependent dependency audits must remain uncached, while post-publication registry checks may use bounded visibility retries for eventual npm propagation.
 - Remote cache credentials must come from ignored local environment files or CI secrets and must never be logged.
+
+## Community component boundaries
+
+Community presentation additions remain source-owned generic families with no runtime or consumer imports; the focused Forms quantity entry point shares the existing Forms implementation.

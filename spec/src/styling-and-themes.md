@@ -1,6 +1,19 @@
 # Styling and themes
 
+Prompt Context uses logical inline body padding beyond the parent disclosure
+label to make XML and nested Markdown hierarchy visible (DC-CHAT-010).
+
+Transcript fenced code reuses captured-reader spacing: one shared code frame,
+a padded language/copy header and the existing code-body inset, inline comment
+cards and fold controls. The frame adds no second body inset.
+
 Design Core styling is native CSS driven by semantic tokens. Themes and consumers may customize documented tokens without depending on private DOM selectors. Diff surfaces read `--ui-diff-*` defaults from `src/shared/diff/diff.tokens.css`.
+
+Transcript plain custom blocks omit the wrapper border and inset through the
+public block surface option (DC-CHAT-006); hosts own result rendering.
+
+Composer Drawer uses native CSS to keep collapsed summaries compact while
+retaining its overlap beneath the rounded Composer body (DC-AI-011).
 
 File Listing exposes `--ui-diff-file-listing-row-gap` (default `2px`) for
 separation between eager and virtualized rows.
@@ -36,6 +49,7 @@ currentColor, reduced-motion preferences and Button focus semantics.
 - Consumers may override documented semantic tokens without depending on private selectors.
 - Workspace view tokens MUST expose resolved primary and secondary backgrounds so movable views can preserve contrast without placement selectors.
 - Styling validation must distinguish source ownership from Storybook-only presentation.
+- Expanded inline formatting MUST scroll inside its own action row without widening the page or displacing the send control.
 
 ## DC-CSS-002 — Design tokens
 
@@ -66,6 +80,8 @@ currentColor, reduced-motion preferences and Button focus semantics.
 
 - Consumers may override documented semantic tokens without depending on private selectors.
 - Styling validation must distinguish source ownership from Storybook-only presentation.
+- Small tool-failure text, destructive menu actions and deletion counts MUST retain at least 4.5:1 contrast on Lapis light and dark surfaces, using existing destructive and foreground semantics that remain effective beside generic dependency slot styles.
+- Transcript links MUST use foreground semantics and underlines so a primary fill colour cannot reduce text contrast on dark surfaces.
 
 ## DC-CSS-005 — No utility leakage
 
@@ -247,3 +263,66 @@ CommentComposer owns its compact card and captured-source quote styles through
 CodeMirror APIs, and the shared ScrollArea for bounded source quotes.
 Its source quote follows Mira's body size (default 14px) and its draft uses 1rem;
 both inherit the host sans font, with separate quote/editor typography tokens.
+
+Transcript retains the jj-store reference geometry using native family-owned CSS,
+private `ui-transcript-*` classes and public `--ui-transcript-max-width` (62rem),
+`--ui-transcript-font-size` (0.875rem) and `--ui-transcript-line-height` (1.65).
+Avatars use a 24px column and an 8px content gap. Host fonts and semantic colors
+remain inherited; captured code/patch typography stays separate from prose.
+Rendered transcript Markdown, standalone comment queues and rootless inspectors
+share `--ui-transcript-markdown-padding` (0),
+`--ui-transcript-markdown-font-size` (1em),
+`--ui-transcript-markdown-line-height` (1.55) and
+`--ui-transcript-paragraph-spacing` (0.45rem). These compose the public Markdown
+tokens without adding Mira's document inset or a second comment-editor card.
+`--ui-transcript-foreground` binds the host palette before Mira reader scopes;
+`--ui-transcript-comment-font-size` defaults to the surrounding transcript prose
+size (`--ui-transcript-font-size`, 0.875rem) for rendered comments, quotes and
+comment editors, and
+`--ui-transcript-list-spacing` defaults to 0 for compact quoted lists.
+`--ui-transcript-tool-row-gap` defaults to 0.25rem. Tool/group icons come from
+explicit host components; errors and running states retain their status icons.
+TranscriptFooter exposes `--ui-transcript-footer-gap` (0.75rem) and
+`--ui-transcript-footer-padding` (0.5rem 0.75rem); MessageQueue exposes
+`--ui-transcript-queue-opacity` (0.7). Optional author popovers use the shared
+Popover and ScrollArea, retaining host-owned details/actions and focus restoration.
+
+ComposerStatusBanner owns the existing attached curved status treatment for
+Composer, transcript comments and the fixed footer. Error, warning, info and
+success use semantic tokens. `--ui-composer-status-radius`,
+`--ui-composer-status-padding`, `--ui-composer-status-background` and
+`--ui-composer-status-foreground` allow host composition; defaults preserve
+Composer's existing radius and padding tokens. PromptContext owns its escaped
+XML tag/disclosure styling and delegates safe Markdown to Mira's public extension
+API; tag syntax uses the public `--ui-code-syntax-*` colours and host fonts.
+Root Markdown uses the same logical inset as top-level XML labels, while
+expanded bodies retain their separate nested indentation.
+
+Default code syntax colors ship as ordinary CSS with light root defaults and
+readable dark defaults inside `.dark`. CodeBlock span/range highlights,
+unchanged diff context and contextual syntax share these tokens. Explicit
+syntax themes and host token overrides retain ownership of their palette;
+changed diff rows keep their separate readable-foreground contract.
+
+Dark Message Metadata error text mixes the existing destructive and foreground
+semantics for readable small status labels on conversation and muted surfaces.
+Its status label and icon remain the error indication; the light palette and
+the theme's destructive background color retain their existing roles.
+
+Community presentation additions use native component-owned CSS. Public tokens
+use --ui-avatar-group-_, --ui-author-card-_, --ui-reference-chip-_,
+--ui-link-preview-_, --ui-spoiler-_, --ui-relative-time-_, --ui-quantity-input-_
+and --ui-thread-_ prefixes; defaults retain jj-store geometry and semantic
+colours. Composer suggestions use the public CodeMirror completion surface.
+
+AuthorCard's default md trigger uses `--ui-author-card-avatar-size` (2.25rem),
+matching jj-store's 36px author identity; other sizes retain Avatar dimensions.
+AvatarGroup defaults to 32px and its overflow count follows the chosen size,
+unless `--ui-avatar-group-overflow-size` is supplied.
+
+Workspace footer safe-area tokens (DC-WS-028) default to `0px`:
+`--ui-workspace-safe-area-inline-start`, `--ui-workspace-safe-area-inline-end`
+and `--ui-workspace-safe-area-block-end`. The larger inline inset protects both
+edges without shifting the centre. The bottom inset adds to the footer track,
+retaining the full-width background and ordinary content height. Hosts own
+platform/window values; plugins need no clearance padding.

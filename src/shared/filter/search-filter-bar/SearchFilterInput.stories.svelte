@@ -30,6 +30,19 @@
   });
 
   const syntax = createDemoLedgerFilterSyntax();
+
+  async function expectStackedSuggestion(option: HTMLElement) {
+    const label = option.querySelector(".cm-completionLabel")!;
+    const detail = option.querySelector(".cm-completionDetail")!;
+    const styles = option.ownerDocument.defaultView!.getComputedStyle(option);
+    await expect(styles.fontFamily).not.toMatch(/monospace/i);
+    await expect(detail.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+      label.getBoundingClientRect().bottom,
+    );
+    await expect(detail.getBoundingClientRect().left).toBe(
+      label.getBoundingClientRect().left,
+    );
+  }
 </script>
 
 <script lang="ts">
@@ -48,9 +61,15 @@
     await waitFor(() =>
       expect(page.getByRole("option", { name: /account/i })).toBeVisible(),
     );
+    await expectStackedSuggestion(
+      page.getByRole("option", { name: /account/i }),
+    );
     await userEvent.type(searchbox, "payee ");
     await waitFor(() =>
       expect(page.getByRole("option", { name: /matches/i })).toBeVisible(),
+    );
+    await expectStackedSuggestion(
+      page.getByRole("option", { name: /matches/i }),
     );
     const portal = canvasElement.ownerDocument.querySelector(
       '[data-ui-component="search-filter-bar-tooltip-layer"]',

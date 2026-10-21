@@ -150,6 +150,11 @@ export class WorkspaceShellController {
   #pendingSaveEvent: WorkspaceLayoutChangeEvent | null = null;
   #saveChain: Promise<void> = Promise.resolve();
   #hydrating = false;
+  readonly #popoutDisposers = new Map<string, () => void>();
+  readonly #hostTabs = new Map<string, string>();
+  #lastMainPaneId: string | null = null;
+  #closeGuard: ((ids: string[], remove: () => void) => Promise<void>) | null =
+    null;
   #popoutHost: WorkspacePopoutHost | null = null;
   readonly #popoutHandles = new Map<string, WorkspacePopoutHandle>();
 
@@ -383,7 +388,35 @@ export class WorkspaceShellController {
     return this.addTab(paneId, tab, this.activateNewTabs);
   }
 
+  setCloseGuard(
+    guard: ((ids: string[], remove: () => void) => Promise<void>) | null,
+  ): void {
+    this.#closeGuard = guard;
+  }
+
+  async requestCloseTab(tabId: string): Promise<boolean> {
+    const hostId = findWorkspaceTab(this.layout, tabId)?.hostId;
+    if (!hostId) return false;
+    let closed = false;
+    const remove = () => {
+      if (findWorkspaceTab(this.layout, tabId)?.hostId === hostId)
+        closed = this.#closeTabNow(tabId);
+    };
+    if (this.#closeGuard) await this.#closeGuard([tabId], remove);
+    else remove();
+    return closed;
+  }
+
   closeTab(tabId: string): boolean {
+    if (!this.#closeGuard) return this.#closeTabNow(tabId);
+    if (!findWorkspaceTab(this.layout, tabId)) return false;
+    void this.requestCloseTab(tabId).catch((error) =>
+      this.#events.trigger("persistence-error", { operation: "save", error }),
+    );
+    return true;
+  }
+
+  #closeTabNow(tabId: string): boolean {
     const location = findWorkspaceTab(this.layout, tabId);
     if (!location || location.tab.closable === false) return false;
     this.clearFocusModeForTab(tabId);
@@ -904,6 +937,7 @@ export class WorkspaceShellController {
     tab: WorkspaceTab,
     mode: WorkspaceWindowMode = "floating",
     bounds: Partial<WorkspaceWindowBounds> = {},
+    beforeCommit?: () => void,
   ): WorkspaceWindow | null {
     const workspaceWindow: WorkspaceWindow = {
       id: createWorkspaceId("window"),
@@ -920,6 +954,7 @@ export class WorkspaceShellController {
     if (mode === "popout" && !this.#openPopout(workspaceWindow, tab.title)) {
       return null;
     }
+    beforeCommit?.();
     this.layout.windows.push(workspaceWindow);
     this.layout.active = {
       hostId: workspaceWindow.id,
@@ -964,14 +999,28 @@ export class WorkspaceShellController {
     const location = findWorkspaceTab(this.layout, tabId);
     if (!location) return null;
     const tab = location.tab;
-    const workspaceWindow = this.openWindow(tab, "popout");
-    if (workspaceWindow) {
-      const sourcePaneId = location.pane.id;
+    return this.openWindow(tab, "popout", {}, () => {
+      this.clearFocusModeForTab(tabId);
       this.#detachTab(location);
-      this.#pruneEmptyPane(location.hostId, sourcePaneId);
+      this.#pruneEmptyPane(location.hostId, location.pane.id);
       this.#pruneEmptyWindow(location.hostId);
-    }
-    return workspaceWindow;
+    });
+  }
+
+  moveTabToMain(tabId: string): boolean {
+    const location = findWorkspaceTab(this.layout, tabId);
+    if (!location || workspaceNodeContains(this.layout.main, location.pane.id))
+      return false;
+    let first: WorkspaceTabsNode | null = null;
+    let remembered: WorkspaceTabsNode | null = null;
+    walkWorkspaceTabs(this.layout.main, (pane) => {
+      first ??= pane;
+      if (pane.id === this.#lastMainPaneId) remembered = pane;
+    });
+    const target = remembered ?? first;
+    return target
+      ? this.dropTab(tabId, (target as WorkspaceTabsNode).id, "center")
+      : false;
   }
 
   setWindowBounds(
@@ -1002,6 +1051,28 @@ export class WorkspaceShellController {
     return true;
   }
 
+  activateHost(hostId: string): void {
+    const remembered = this.#hostTabs.get(hostId);
+    if (
+      remembered &&
+      findWorkspaceTab(this.layout, remembered)?.hostId === hostId
+    ) {
+      this.selectTab(remembered);
+      return;
+    }
+    const root =
+      hostId === "root" ? this.layout.main : this.#window(hostId)?.root;
+    if (!root) return;
+    let id: string | undefined;
+    walkWorkspaceTabs(root, (pane) => {
+      const item =
+        pane.items.find((item) => item.id === pane.activeItemId) ??
+        pane.items[0];
+      id ??= item?.kind === "tab" ? item.id : item?.tabs[0]?.id;
+    });
+    if (id) this.selectTab(id);
+  }
+
   focusWindow(windowId: string): boolean {
     const workspaceWindow = this.#window(windowId);
     if (!workspaceWindow) return false;
@@ -1026,14 +1097,55 @@ export class WorkspaceShellController {
     return true;
   }
 
+  async requestCloseWindow(windowId: string): Promise<boolean> {
+    const win = this.#window(windowId);
+    if (!win) return false;
+    const ids: string[] = [];
+    walkWorkspaceTabs(win.root, (pane) =>
+      pane.items.forEach((item) =>
+        ids.push(
+          ...(item.kind === "tab" ? [item.id] : item.tabs.map((tab) => tab.id)),
+        ),
+      ),
+    );
+    let closed = false;
+    const remove = () => {
+      const current: string[] = [];
+      const live = this.#window(windowId);
+      if (!live) return;
+      walkWorkspaceTabs(live.root, (pane) =>
+        pane.items.forEach((item) =>
+          current.push(
+            ...(item.kind === "tab"
+              ? [item.id]
+              : item.tabs.map((tab) => tab.id)),
+          ),
+        ),
+      );
+      if (current.join("\0") === ids.join("\0"))
+        closed = this.#closeWindowNow(windowId);
+    };
+    if (this.#closeGuard) await this.#closeGuard(ids, remove);
+    else remove();
+    return closed;
+  }
+
   closeWindow(windowId: string): boolean {
+    if (!this.#closeGuard) return this.#closeWindowNow(windowId);
+    if (!this.#window(windowId)) return false;
+    void this.requestCloseWindow(windowId).catch((error) =>
+      this.#events.trigger("persistence-error", { operation: "save", error }),
+    );
+    return true;
+  }
+
+  #closeWindowNow(windowId: string): boolean {
     const index = this.layout.windows.findIndex(
       (workspaceWindow) => workspaceWindow.id === windowId,
     );
     if (index < 0) return false;
     this.layout.windows.splice(index, 1);
-    this.#popoutHandles.get(windowId)?.close();
-    this.#popoutHandles.delete(windowId);
+    this.#releasePopout(windowId);
     if (this.layout.active.hostId === windowId) this.#activateFallback();
     this.#commit({ source: "window-close", id: windowId });
     return true;
@@ -1054,7 +1166,7 @@ export class WorkspaceShellController {
     collect(workspaceWindow.root);
     target.items.push(...tabs);
     target.activeItemId = tabs.at(-1)?.id ?? target.activeItemId;
-    this.closeWindow(windowId);
+    this.#closeWindowNow(windowId);
     if (tabs.length) this.selectTab(tabs.at(-1)!.id);
     return true;
   }
@@ -1111,6 +1223,19 @@ export class WorkspaceShellController {
             "Move to",
             (submenu) => {
               const currentDock = this.#dockForPane(location.pane.id);
+              submenu.addItem((item) =>
+                item
+                  .setTitle(
+                    location.hostId === "root" ? "Main body" : "Main window",
+                  )
+                  .setIcon("panel-top")
+                  .setDisabled(
+                    workspaceNodeContains(this.layout.main, location.pane.id),
+                  )
+                  .onClick(() => {
+                    this.moveTabToMain(tabId);
+                  }),
+              );
               for (const destination of [
                 {
                   position: "left" as const,
@@ -1152,7 +1277,7 @@ export class WorkspaceShellController {
           .addItem((item) =>
             item
               .setTitle("Open in new window")
-              .setIcon("panel-top-open")
+              .setIcon("picture-in-picture-2")
               .setDisabled(!this.#popoutHost)
               .onClick(() => {
                 this.popoutTab(tabId);
@@ -1228,8 +1353,7 @@ export class WorkspaceShellController {
 
   destroy(): void {
     if (this.#saveTimer) clearTimeout(this.#saveTimer);
-    for (const handle of this.#popoutHandles.values()) handle.close();
-    this.#popoutHandles.clear();
+    for (const id of this.#popoutHandles.keys()) this.#releasePopout(id);
     this.#events.clear();
   }
 
@@ -1241,12 +1365,15 @@ export class WorkspaceShellController {
   #activateTab(tabId: string): boolean {
     const location = findWorkspaceTab(this.layout, tabId);
     if (!location) return false;
+    this.#hostTabs.set(location.hostId, tabId);
     location.pane.activeItemId = location.item.id;
     this.layout.active = {
       hostId: location.hostId,
       paneId: location.pane.id,
       tabId,
     };
+    if (workspaceNodeContains(this.layout.main, location.pane.id))
+      this.#lastMainPaneId = location.pane.id;
     if (location.hostId !== "root") this.#bringWindowToFront(location.hostId);
     this.#events.trigger("active-tab-change", location.tab);
     if (
@@ -1281,8 +1408,7 @@ export class WorkspaceShellController {
           );
     if (hasTabs(workspaceWindow.root)) return;
     this.layout.windows.splice(index, 1);
-    this.#popoutHandles.get(hostId)?.close();
-    this.#popoutHandles.delete(hostId);
+    this.#releasePopout(hostId);
   }
 
   #pruneEmptyPane(hostId: string, paneId: string): void {
@@ -1492,17 +1618,47 @@ export class WorkspaceShellController {
     this.layout.windows.push(workspaceWindow);
   }
 
-  #openPopout(workspaceWindow: WorkspaceWindow, title: string): boolean {
-    const handle = this.#popoutHost?.open({
-      id: workspaceWindow.id,
-      title,
-      bounds: workspaceWindow.bounds,
+  #firstMainPane(): WorkspaceTabsNode | null {
+    let first: WorkspaceTabsNode | null = null;
+    walkWorkspaceTabs(this.layout.main, (pane) => {
+      first ??= pane;
     });
+    return first;
+  }
+
+  #releasePopout(id: string): void {
+    const handle = this.#popoutHandles.get(id);
+    this.#popoutHandles.delete(id);
+    this.#popoutDisposers.get(id)?.();
+    this.#popoutDisposers.delete(id);
+    handle?.close();
+  }
+
+  #openPopout(workspaceWindow: WorkspaceWindow, title: string): boolean {
+    let handle: WorkspacePopoutHandle | null | undefined;
+    try {
+      handle = this.#popoutHost?.open({
+        id: workspaceWindow.id,
+        title,
+        bounds: workspaceWindow.bounds,
+      });
+    } catch {
+      return false;
+    }
     if (!handle) return false;
     this.#popoutHandles.set(workspaceWindow.id, handle);
-    handle.onClose(() => {
-      if (this.#window(workspaceWindow.id))
-        this.closeWindow(workspaceWindow.id);
+    const detachRequest = handle.onCloseRequest?.(() =>
+      this.requestCloseWindow(workspaceWindow.id),
+    );
+    const detachClose = handle.onClose(() => {
+      // A host that disappears without admission cannot discard its live views.
+      const target = this.#firstMainPane();
+      if (this.#window(workspaceWindow.id) && target)
+        this.dockWindow(workspaceWindow.id, target.id);
+    });
+    this.#popoutDisposers.set(workspaceWindow.id, () => {
+      detachRequest?.();
+      detachClose();
     });
     return true;
   }

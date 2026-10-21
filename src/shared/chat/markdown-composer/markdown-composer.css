@@ -1,4 +1,5 @@
 .ui-markdown-composer {
+  --ui-ai-chat-composer-disabled-opacity: 1;
   --_composer-font-family: var(
     --ui-markdown-composer-font-family,
     var(--font-sans, system-ui)
@@ -6,6 +7,17 @@
   min-width: 0;
   width: 100%;
   color: var(--foreground);
+}
+/* The editor caret identifies focus; keep the shell's resting border. */
+.ui-markdown-composer
+  > [data-ui-component="ai-chat-composer"]
+  > [data-ui-part="body"]:focus-within {
+  box-shadow: none;
+}
+.ui-markdown-composer[data-presentation="framed"]
+  > [data-ui-component="ai-chat-composer"]
+  > [data-ui-part="body"]:focus-within {
+  border-color: var(--border);
 }
 .ui-markdown-composer__input-row {
   min-width: 0;
@@ -82,9 +94,15 @@
 .ui-markdown-composer__actions {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.125rem;
   min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ui-markdown-composer[data-actions-docked="true"][data-send-hidden="true"]
+  [data-ui-part="footer"] {
+  display: none;
 }
 .ui-markdown-composer [data-ui-part="footer"] {
   align-items: flex-end;
@@ -175,4 +193,12 @@
     > [data-ui-part="body"] {
     border-color: CanvasText;
   }
+}
+
+.ui-markdown-composer__actions > * {
+  flex-shrink: 0;
+}
+.ui-markdown-composer__separator {
+  height: 1.25rem;
+  margin-inline: 0.25rem;
 }

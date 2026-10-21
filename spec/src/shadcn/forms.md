@@ -71,6 +71,12 @@ the search input can mount before selectable results are available.
 Root forwards Command filter and value props. It does not expose a separate
 bits-ui command API bindable.
 
+List, Group and Item MUST honor their existing HTML `role` and custom `child`
+attributes while retaining filtering, refs and keyboard selection. Hosts with
+interactive controls inside results use grid/rowgroup/row/gridcell semantics
+and declare `aria-haspopup="grid"` on Input. Default results retain listbox and
+option semantics; custom-child hosts own the corresponding native markup.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/command-view`, and an empty filtered result MUST remain a disabled option so the listbox retains its required child semantics.

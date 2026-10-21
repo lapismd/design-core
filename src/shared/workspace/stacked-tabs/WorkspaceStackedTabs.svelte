@@ -4,7 +4,8 @@
   import Plus from "@lucide/svelte/icons/plus";
   import Close from "@lucide/svelte/icons/x";
   import { ContextMenu, DropdownMenu } from "bits-ui";
-  import { onMount } from "svelte";
+  import { disableOverlayPortalContextKey } from "../../../lib/overlay-portal-context.js";
+  import { getContext, onMount } from "svelte";
   import type {
     WorkspaceSide,
     WorkspaceNode,
@@ -31,10 +32,14 @@
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import "./WorkspaceStackedTabs.css";
 
+  const disablePortals =
+    getContext<boolean | undefined>(disableOverlayPortalContextKey) ?? false;
+
   let {
     controller,
     pane,
     hostId = "root",
+    nativeControls = false,
     drag,
     sidebarToggleSides = [],
     showBottomPanelToggle = false,
@@ -43,6 +48,7 @@
     controller: WorkspaceShellController;
     pane: WorkspaceTabsNode;
     hostId?: string;
+    nativeControls?: boolean;
     drag?: WorkspaceDragState;
     sidebarToggleSides?: WorkspaceSide[];
     showBottomPanelToggle?: boolean;
@@ -178,6 +184,7 @@
   data-workspace-pane-id={pane.id}
   data-workspace-host-id={hostId}
   data-workspace-pane-presentation="stacked"
+  data-workspace-native-controls={nativeControls ? "true" : undefined}
   data-workspace-focus-mode={isFocusMode ? "true" : undefined}
   aria-label={`Workspace pane ${pane.id}`}
   ondragenter={(event) => event.preventDefault()}
@@ -255,7 +262,7 @@
         >
           <ChevronDown aria-hidden="true" />
         </DropdownMenu.Trigger>
-        <DropdownMenu.Portal>
+        <DropdownMenu.Portal disabled={disablePortals}>
           <DropdownMenu.Content
             align="end"
             sideOffset={4}
@@ -371,7 +378,7 @@
                   >
                     <WorkspaceIcon name={item.icon ?? tab.icon ?? "file"} />
                   </DropdownMenu.Trigger>
-                  <DropdownMenu.Portal>
+                  <DropdownMenu.Portal disabled={disablePortals}>
                     <DropdownMenu.Content
                       class="ui-workspace-menu__content"
                       data-ui-component="workspace-menu"
@@ -445,7 +452,7 @@
           </WorkspaceTabsMove>
         </div>
         {#if menu}
-          <ContextMenu.Portal>
+          <ContextMenu.Portal disabled={disablePortals}>
             <ContextMenu.Content
               class="ui-workspace-menu__content"
               data-ui-component="workspace-menu"

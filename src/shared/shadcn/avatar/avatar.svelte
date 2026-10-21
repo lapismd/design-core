@@ -1,5 +1,6 @@
 <script lang="ts">
   import { avatarInitials, type AvatarProps } from "./avatar.types.js";
+  import { avatarContrast } from "./avatar-contrast.js";
   import "./avatar.css";
   let {
     src,
@@ -24,11 +25,15 @@
   data-ui-component="avatar"
   data-shape={shape}
   data-size={size}
-  role={decorative ? undefined : "img"}
+  role="img"
   aria-label={decorative ? undefined : label}
   aria-hidden={decorative || undefined}
 >
-  <span data-ui-part="content" style:background-color={background}>
+  <span
+    data-ui-part="content"
+    style:background-color={background}
+    style:--_avatar-contrast={avatarContrast(background)}
+  >
     {#if src && src !== failed}<img
         {src}
         alt=""

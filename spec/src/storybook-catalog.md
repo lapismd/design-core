@@ -1,5 +1,13 @@
 # Storybook catalog
 
+Transcript rich-reading coverage includes code/cell cursor selection and exact
+comment quotes through immutable nested readers. Segmented selection coverage
+retains readable semantic foregrounds in the consumer's light/dark review.
+
+Transcript table previews prebundle the declared Lezer Markdown parser in both
+dev and Vitest catalogs, avoiding a dependency reload during the first play.
+The focused proof is in `spec/records/2026-10-18-transcript-table-avatar.md`.
+
 The component promotion batch adds review-pending catalogs for Responsive Tabs,
 Avatar, Avatar Picker, AppShell top-bar composition, and Chat/Markdown Content.
 Each demonstrates public host-owned contracts through copyable examples.
@@ -67,7 +75,7 @@ lazy library mounts; the search input alone does not prove grid readiness.
 - Svelte runtime diagnostics, including `derived_inert`, MUST fail browser tests during rendering, interactions, and teardown through retained diagnostics checked after each story and final suite cleanup, even when cleanup catches the immediately thrown error.
 - Storybook documentation must link or derive from the owning source instead of copying normative contracts.
 - Storybook host addons must resolve from published or repository-owned package boundaries rather than a removed private workspace package.
-- Browser suites MUST prepare the dev catalog and Vitest from the same explicit runtime, icon and parser dependency list and await compiled shared client entries with settled static imports before starting interaction readiness clocks.
+- Browser suites MUST prepare the dev catalog and Vitest from the same explicit runtime, icon and parser dependency list and await compiled shared client entries, including Workspace AppShell, with settled static imports before starting interaction readiness clocks.
 
 ## DC-CAT-005 — Specification mirrors
 
@@ -88,6 +96,7 @@ lazy library mounts; the search input alone does not prove grid readiness.
 - Public components must use public package imports and include the state or composition needed to reproduce the scenario.
 - Public reference fixtures may accept typed snippets for bounded consumer-owned content while retaining Design Core ownership of the surrounding composition and styling.
 - Show Code must not present a story-only demo, harness, fixture, story surface, or inferred story args as consumer API.
+- Dark syntax examples MUST show their own mode without changing the surrounding Docs page's selected mode.
 
 ## DC-CAT-007 — Explicit source
 

@@ -291,7 +291,7 @@ Time:        1.8s`;
   name="Expands call details"
   play={async ({ canvas }) => {
     const trigger = canvas.getByRole("button", {
-      name: "Show details for Read file",
+      name: "Show details for Read file release-notes.md 42 ms",
     });
     await expect(
       trigger.querySelector('[data-ui-part="detail-chevron"]'),
@@ -313,7 +313,7 @@ Time:        1.8s`;
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     {#snippet readDetail()}
@@ -352,7 +352,7 @@ Time:        1.8s`;
   name="Collapsed summary"
   play={async ({ canvas }) => {
     const trigger = canvas.getByRole("button", {
-      name: "Expand 2 tool calls",
+      name: "Expand Read source 2 tool calls",
     });
     await expect(
       trigger.querySelector('[data-ui-part="chevron"]'),
@@ -373,7 +373,7 @@ Time:        1.8s`;
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <ToolCalls

@@ -38,3 +38,13 @@ Workspace plugins extend controllers and presentation through explicit registrat
 - Controlled callbacks MUST expose dismissal, actions and timer pause/resume while hosts retain lifetime and persistence ownership.
 - Each record MUST announce once and distinguish severity with icons and theme colors.
 - The optional portal MUST retain modal keyboard access without stealing focus, anchor the stack at the bottom end of the viewport away from header controls and remove detached DOM on teardown.
+
+## DC-WS-081 — Stable notification status placement
+
+**Requirement.** Notification activity MUST occupy the bounded centre status region while a persistent right-side bell opens the same notification panel. Completion MUST clear activity without moving other regions.
+
+### Acceptance details
+
+- Existing primary-task selection, progress, cancellation, unread state and toast behavior MUST be retained.
+- Activity and bell actions MUST open the existing panel, anchored above the bell.
+- Disabling the plugin MUST remove both contributions and its subscriptions.

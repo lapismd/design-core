@@ -2,6 +2,11 @@
 
 AI presentation contracts remain provider-neutral and leave transport, model selection, persistence, and product policy downstream. Historical implementation and visual-comparison evidence lives under `spec/records/`; this chapter remains authoritative.
 
+Composer disabled surfaces use the public
+`--ui-ai-chat-composer-disabled-opacity` token (default `0.6`). Read-only
+MarkdownComposer sets it to `1` to preserve readable drafts and avatars while
+retaining disabled control semantics (DC-AI-009, DC-CHAT-002).
+
 ## Public surface coverage
 
 | Surface                 | Public boundary                        | Requirement |
@@ -31,6 +36,12 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 | Unread Divider          | `@lapismd/design-core/ai/experimental` | DC-AI-021   |
 | Conversation            | Storybook composition                  | DC-AI-022   |
 | AI Overview             | Documentation surface                  | DC-AI-023   |
+
+### Chat v0 presentation review
+
+The chat v0 review uses the existing SystemMessage and RelativeTime primitives
+for label-only recorded facts. AI public types, composer ownership and error
+presentation are unchanged; DC-CHAT-006 owns the transcript composition.
 
 ## DC-AI-001 — Shared AI invariants
 
@@ -63,6 +74,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The control MUST render inside the transcript `scroll-shell`, not in the composer dock.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Host-controlled `isRunning` MUST replace the down icon with three bouncing dots while retaining the scroll action and an accessible running label; reduced motion MUST stop the animation.
 
 ## DC-AI-004 — Message List
 
@@ -78,6 +90,9 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 ## DC-AI-005 — Message
 
 **Requirement.** The Message family MUST compose role-aware message content, metadata, actions, and tool presentation.
+
+Message layout selectors MUST target their own direct parts so nested Avatar
+content retains its shared size, typography and centered alignment.
 
 ### Acceptance details
 
@@ -101,6 +116,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Error-status text MUST retain at least 4.5:1 contrast on the Lapis conversation and muted surfaces in dark mode, using existing semantic foreground colors without changing status meaning.
 
 ## DC-AI-008 — System Message
 
@@ -118,7 +134,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract; reusable ComposerStatusBanner MUST preserve the existing curved attached top/bottom treatment with error, warning, info and success semantics, and support standalone placement with every corner rounded and no negative overlap margin for separately owned fixed status regions.
 - When `disabled` and `isStopShown` are both true, the stop control MUST remain pointer-interactive while input, send, and other body actions stay blocked.
 - `clearOnSubmit` MUST default to the existing clear behavior and allow hosts such as MarkdownComposer to retain the controlled draft after submission intent.
 
@@ -151,7 +167,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
-- A consumer MAY keep the drawer interactive while the disabled composer body blocks input and send except the stop control when `isStopShown` is true.
+- A collapsed drawer MUST expose a compact summary above the overlapping rounded composer body without reserving expanded-content height; consumers MAY keep the drawer interactive while the disabled composer body blocks input and send except the stop control when `isStopShown` is true.
 - File chips and lettered feedback options MUST use distinct rest and hover attachment fill tokens plus the compact radius: chips stay darker than the drawer at rest, focused remove controls expose their interactive paint, and selected feedback paint stays distinct from the drawer.
 
 ## DC-AI-012 — Send Button
@@ -185,14 +201,20 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ## DC-AI-015 — Tool Calls
 
-**Requirement.** The Tool Calls family MUST present tool invocation status, arguments, results, and disclosure without executing tools.
+**Requirement.** The Tool Calls family MUST present tool invocation status, arguments, results, and disclosure accessibly without executing tools.
+
+Call and collapsed-group disclosure names include their complete visible labels,
+including node, target, change counts, custom statistics and duration when
+present; execution status is an accessible description. Per-component IDs keep
+repeated call identities independent without changing the flex layout or
+wrapper/keyboard behavior.
 
 ### Acceptance details
 
 - `--ui-ai-chat-tool-width` MUST allow container-relative sizing with a default of `min(100%, 42rem)`; `--ui-ai-chat-tool-trigger-padding-inline` MUST inset single and grouped trigger contents inside their hit/hover surface without moving the icon on hover; its default is zero.
 - The optional `callWrapper?: Snippet<[ToolCallItem, Snippet]>` MUST compose each call’s existing presentation inside its list item, outside disclosure buttons; without it, rendering remains unchanged and grouped calls expose wrappers only when expanded.
 - Tool-call disclosure indicators MUST retain their fixed size beside long titles, point right while closed and down while open for both grouped calls and individual call details, and single-call rendering MUST remain safe under unchecked-index consumer semantics.
-- Pending and running calls MUST render the public Spinner as a rotating busy indicator; an explicit `unknown` execution status MUST show a static status-unavailable indicator, preserve observed details, and MUST NOT imply failure or completion.
+- Pending and running calls MUST render the public Spinner as a rotating decorative busy indicator with `aria-hidden="true"` while retaining their accessible status text; an explicit `unknown` execution status MUST show a static status-unavailable indicator, preserve observed details, and MUST NOT imply failure or completion.
 
 ## DC-AI-016 — Dictation Button
 
@@ -220,7 +242,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/ai/experimental`.
+- The public boundary is `@lapismd/design-core/ai/experimental`; reaction names MUST retain their visible count alongside supplied participant context.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - The experimental import MUST remain compatible with the shared Chat reaction implementation and neutral custom-emoji model defined by DC-CHAT-004.
 - Optional emoji choices MUST be omitted rather than forwarded as explicit `undefined` values.

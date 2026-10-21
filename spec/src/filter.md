@@ -2,6 +2,10 @@
 
 Filter contracts separate query language, reusable search chrome, and consumer query execution.
 
+Dynamic syntax examples provide field descriptions before and after refreshing
+values, retaining the typed suggestion contract without changing focus or query
+text.
+
 ## Public surface coverage
 
 | Surface                  | Public boundary                            | Requirement   |
@@ -20,7 +24,7 @@ Filter contracts separate query language, reusable search chrome, and consumer q
 ### Acceptance details
 
 - The public boundary is Filter layer.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract, and filter-edit controls MUST include visible field, operator and value text in their accessible names.
 
 ## DC-FILTER-002 — Filter query language
 
@@ -38,10 +42,10 @@ Filter contracts separate query language, reusable search chrome, and consumer q
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/filter`; its `SearchFilterInput` MUST expose the same plain and CodeMirror lifecycle in compact rows without bar chrome, and the focused `SearchFilterBar.svelte` source export MUST type-check for strict consumers that enable exact optional properties and unchecked indexed access.
+- The public boundary is `@lapismd/design-core/filter`; its `SearchFilterInput` MUST expose the same plain and CodeMirror lifecycle in compact rows without bar chrome, and the focused `SearchFilterBar.svelte` source export MUST type-check for strict consumers that enable exact optional properties and unchecked indexed access, and default resting borders and focused transparent borders with a 3px neutral theme ring MUST match the shadcn Input tokens, including ancestor overrides.
 - Search surfaces with small enumerated facets beneath the query MUST use forms `FilterCommandPicker` selectors by default; parallel button sets are reserved for true mode or action switching.
 - Expandable search-syntax guidance MUST use a Lucide disclosure icon whose orientation reflects the native disclosure state.
-- The catalog MUST prove filter-query completion tooltips portal into the owner document, escape search-surface clipping, remain hit-testable above adjacent content, use a compact 18rem viewport-bounded default width, and wrap labels and details inside each row.
+- The catalog MUST prove filter-query completion tooltips portal into the owner document, escape search-surface clipping, remain hit-testable above adjacent content, use a compact 18rem viewport-bounded default width, and use the sans font with labels above wrapping descriptions in one column, matching composer command suggestions, while asynchronous syntax refresh during focused startup MUST restart eligible pending completion without changing query text or moving focus.
 
 ## DC-FILTER-004 — Power Search
 

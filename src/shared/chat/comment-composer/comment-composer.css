@@ -111,3 +111,10 @@
     border-inline-start-color: Highlight;
   }
 }
+
+.ui-comment-composer[data-presentation="bare"] .ui-comment-composer__card {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}

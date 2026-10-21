@@ -1,4 +1,6 @@
 <script module lang="ts">
+  import SuggestionsFixture from "./Suggestions.stories.fixture.svelte";
+  import { Basic as SuggestionsSource } from "./Suggestions.example-sources.js";
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor, within } from "storybook/test";
   import MarkdownComposer from "./MarkdownComposer.svelte";
@@ -19,6 +21,15 @@
   play={async ({ canvas }) => {
     await waitFor(() =>
       expect(canvas.getByRole("textbox", { name: "Message" })).toBeVisible(),
+    );
+    const editor = canvas.getByRole("textbox", { name: "Message" });
+    const body = editor.closest('[data-ui-part="body"]')!;
+    const border = getComputedStyle(body).borderColor;
+    await userEvent.click(editor);
+    await waitFor(() => expect(getComputedStyle(body).boxShadow).toBe("none"));
+    expect(getComputedStyle(body).borderColor).toBe(border);
+    expect(getComputedStyle(editor.closest(".cm-editor")!).outlineStyle).toBe(
+      "none",
     );
     await userEvent.click(
       canvas.getByRole("button", { name: "Select first word" }),
@@ -51,6 +62,14 @@
     docs: { source: { code: sources.Document, language: "tsx", type: "code" } },
   }}
   play={async ({ canvas }) => {
+    const editor = canvas.getByRole("textbox", { name: "Message" });
+    await userEvent.click(editor);
+    expect(
+      getComputedStyle(editor.closest('[data-ui-part="body"]')!).boxShadow,
+    ).toBe("none");
+    expect(getComputedStyle(editor.closest(".cm-editor")!).outlineStyle).toBe(
+      "none",
+    );
     const preview = canvas.getByRole("group", { name: "Replying to Sam" });
     await expect(preview).toHaveTextContent(
       "Please share the project update before Friday.",
@@ -87,6 +106,12 @@
 <Story
   name="Disabled"
   play={async ({ canvas }) => {
+    const editor = canvas.getByRole("textbox", { name: "Message" });
+    await expect(
+      getComputedStyle(
+        editor.closest('[data-ui-component="ai-chat-composer"]')!,
+      ).opacity,
+    ).toBe("1");
     await expect(
       canvas.getByRole("button", { name: "Send message" }),
     ).toBeDisabled();
@@ -125,4 +150,108 @@
       "Draft a **shared** message.",
     );
   }}>{#snippet template()}<Fixture scenario="form" />{/snippet}</Story
+>
+
+<Story
+  name="Mention and command suggestions"
+  parameters={{
+    docs: {
+      source: { code: SuggestionsSource, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const input = canvas.getByRole("textbox", { name: /^Message$/ });
+    await userEvent.click(input);
+    await userEvent.keyboard("@al");
+    await waitFor(() =>
+      expect(document.querySelector('[role="option"]')).not.toBeNull(),
+    );
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() =>
+      expect(canvas.getByTestId("suggestion-value")).toHaveTextContent(
+        "@Alex Morgan",
+      ),
+    );
+    await expect(canvas.getByTestId("suggestion-sent")).toHaveTextContent("");
+  }}>{#snippet template()}<SuggestionsFixture />{/snippet}</Story
+>
+<Story
+  name="Tab accepts selected suggestion"
+  parameters={{
+    docs: {
+      source: { code: SuggestionsSource, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const input = canvas.getByRole("textbox", { name: /^Message$/ });
+    await userEvent.click(input);
+    await userEvent.keyboard("@");
+    await within(document.body).findByRole("option", { name: /Lee Taylor/ });
+    await userEvent.keyboard("{ArrowDown}{Tab}");
+    await waitFor(() =>
+      expect(canvas.getByTestId("suggestion-value")).toHaveTextContent(
+        "@Lee Taylor",
+      ),
+    );
+    await expect(canvas.getByTestId("suggestion-sent")).toHaveTextContent("");
+    expect(input.contains(document.activeElement)).toBe(true);
+  }}>{#snippet template()}<SuggestionsFixture />{/snippet}</Story
+>
+
+<Story
+  name="Clipped composer suggestions"
+  parameters={{
+    docs: {
+      source: { code: SuggestionsSource, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const input = canvas.getByRole("textbox", { name: /^Message$/ });
+    await userEvent.click(input);
+    await userEvent.keyboard("@al");
+    const option = await within(document.body).findByRole("option", {
+      name: /Alex Morgan/,
+    });
+    await waitFor(() => {
+      const box = option.getBoundingClientRect();
+      expect(box.width).toBeGreaterThan(0);
+      expect(box.top).toBeGreaterThanOrEqual(0);
+      expect(
+        document
+          .elementFromPoint(box.left + box.width / 2, box.top + box.height / 2)
+          ?.closest('[role="option"]'),
+      ).toBe(option);
+    });
+    expect(input.closest(".cm-editor")!.contains(option)).toBe(false);
+    await userEvent.click(option);
+    await expect(canvas.getByTestId("suggestion-value")).toHaveTextContent(
+      "@Alex Morgan",
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Toggle composer" }),
+    );
+    expect(document.querySelector(".ui-composer-suggestions")).toBeNull();
+  }}>{#snippet template()}<SuggestionsFixture clipped />{/snippet}</Story
+>
+
+<Story
+  name="Asynchronous suggestion replacement"
+  parameters={{
+    docs: {
+      source: { code: SuggestionsSource, language: "tsx", type: "code" },
+    },
+  }}>{#snippet template()}<SuggestionsFixture slow />{/snippet}</Story
+>
+
+<Story
+  name="Wrapped command descriptions"
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "Type /help to review a wrapped command description in a narrow composer.",
+      },
+      source: { code: SuggestionsSource, language: "tsx", type: "code" },
+    },
+  }}>{#snippet template()}<SuggestionsFixture narrow />{/snippet}</Story
 >

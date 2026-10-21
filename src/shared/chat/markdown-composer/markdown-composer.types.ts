@@ -51,11 +51,21 @@ export type MarkdownComposerProps = Omit<
   onStop?: () => void;
   status?: ComposerStatus;
   submitLabel?: string;
+  /** Omit the inline send control when a fixed TranscriptFooter owns sending. */
+  showSendButton?: boolean;
+  /** Omit the inline keyboard hint when the host supplies a fixed hint row. */
+  showHint?: boolean;
   /** Defaults to Enter in framed mode and modifier+Enter in document mode. */
   submitOnEnter?: boolean;
   formattingOpen?: boolean;
+  /** Move document-mode actions into the host footer through documentActions. */
+  dockActions?: boolean;
+  /** Live toolbar snippet; bind and render once in the host footer. Cleared on teardown. */
+  documentActions?: Snippet | undefined;
   colorMode?: MiraColorMode;
   extensions?: readonly MiraExtension[];
+  /** Neutral @, #, slash or emoji suggestions; source cancellation is host-observable. */
+  triggers?: readonly import("./composer-suggestions.js").MarkdownComposerTrigger[];
   customEmojis?: readonly CustomEmoji[];
   emojis?: readonly EmojiOption[];
   /** Adapt custom emoji syntax without introducing application parsing here. */
@@ -64,6 +74,10 @@ export type MarkdownComposerProps = Omit<
   reply?: MarkdownComposerReply;
   /** Requests cancellation without changing the reply or draft internally. */
   onCancelReply?: () => void;
+  /** Supplementary host content, layered behind the framed composer body. */
+  drawer?: Snippet;
+  /** Keep host drawer controls usable while editing and submission are blocked. */
+  interactiveDrawerWhenDisabled?: boolean;
   /** Additional header context; use reply for the quoted message drawer. */
   context?: Snippet;
   /** Optional document-mode avatar; the host owns identity and presentation. */

@@ -1,5 +1,31 @@
 # Tooling
 
+Release qualification uses published Mira 0.1.0 and Visual Delta 0.0.9 with
+Playwright 1.62.1. Maintained CI workflows run functional, interaction,
+accessibility and package checks; no CI workflow runs screenshot comparison.
+Explicit local visual commands retain their existing approval boundary.
+
+The File Path Input catalog includes copy-pasteable public usage and host-injected chooser fixtures; the Settings unit/file catalog verifies the declarative path without native filesystem dependencies.
+
+The packed consumer checks complete ToolCalls disclosure metadata, decorative busy
+indicators and bundled CodeBlock keyword colors in light/dark development and
+production runs, without Tailwind tooling.
+AuthorCard checks retain exact fallback-inclusive trigger names under DC-SHA-058;
+the hover group and popover dialog keep their author-details names.
+Link Preview acceptance retains the complete rendered host and title name.
+
+The packed public-runtime fixture exercises acknowledged versioned comment edits
+and the docked MarkdownComposer toolbar across teardown/remount, alongside
+Transcript timestamps. These checks run in both themes and development/production
+consumers without Tailwind tooling; fixtures remain outside the published package.
+The same fixture checks compact AvatarGroup composition, aligned member/overflow
+sizing, participant tooltips and keyboard activation of the separate reply button
+without nested focus targets.
+The packed fixture also checks fixed default Workspace sidebar and bottom-panel
+button/icon dimensions in both states through their public family imports.
+
+Panel visibility consumer qualification covers Sidebar.Trigger side="right" and bare CommentComposer composition under strict optional-property typing. Browser evidence checks wrapper state, sizing, hints, keyboard activation, mobile dismissal and focus restoration through the public component compositions.
+
 The catalog discovers the project-authored TagList family and its public
 examples under `shadcn/tag-list`.
 
@@ -9,6 +35,9 @@ rendering or composer mounting cannot invalidate a running story through late de
 The offline component catalog includes the Chat layer alongside legacy AI, with
 public imports and colocated examples for MarkdownContent.
 It also discovers the CommentComposer presentation family and its public examples.
+PromptContext adds safe XML-style prompt presentation to the same Chat catalog;
+its recorded-session data and reference adapters are catalog-only `.stories.fixture.*`
+files and MUST remain outside consumer archives.
 
 `package:local` stages the normal source inventory, runs `svelte-package` with
 declarations, verifies every TypeScript and Svelte declaration exists, and writes an
@@ -96,8 +125,12 @@ The gate MUST retain diagnostics caught during component teardown and fail
 after the story or final suite cleanup instead of relying only on the
 immediately thrown error.
 The development catalog readiness probe MUST prepare representative client
-entries and await pending import requests before browser acceptance begins.
+entries, including the shared Workspace AppShell export graph, and await pending
+import requests before browser acceptance begins.
 Compilation failures return an unavailable response and allow a later retry.
+Workspace pointer acceptance MUST await the requested story's render and play
+completion before settling fonts or measuring drag targets, using the existing
+bounded framework-readiness window rather than a fixed startup delay.
 Development and Vitest hosts share explicit runtime and parser dependencies;
 catalog icon imports are discovered deterministically for prebundling.
 Emoji Mart is prebundled too, preventing a cold first-open dependency discovery
@@ -136,3 +169,14 @@ artifact, including when a reported finding fails the gate.
 - Static Storybook output must be restored from cache when its inputs are unchanged.
 - Cache reporting must distinguish remote hits, local hits, and executed tasks.
 - Focused tests must cover default concurrency, overrides, and cache-summary classification.
+
+## Transcript consumer qualification
+
+Packed-consumer acceptance mounts Transcript, HistoryEdge and CommentQueue through
+the public Chat entry point without Tailwind tooling. It verifies immutable readers,
+reference geometry, exact queued drafts across presentation teardown and explicit
+host acknowledgement in both cold development and production output.
+
+Community component discovery includes the ThreadPanel Chat family and the
+new Shadcn/Forms families through colocated docs and stories. Public archive
+runtime acceptance exercises their exported styles and controls without Tailwind.

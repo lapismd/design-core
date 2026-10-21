@@ -67,3 +67,5 @@ passes).
 ## Doctor
 
 `pnpm ui:doctor` checks the generator environment before a conversion.
+
+Prefer `PanelToggleIcon` for sidebar visibility icons, `PanelToggle` for a standalone controlled button, and the existing Workspace/AppShell toggle when controller integration is needed.

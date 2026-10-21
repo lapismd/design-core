@@ -184,7 +184,7 @@
 }
 
 .ui-workspace-bottom-panel__content [data-ui-component="workspace-view-host"] {
-  padding-block-end: var(--ui-workspace-status-height);
+  padding-block-end: 0;
 }
 
 .ui-workspace-bottom-panel__drop-target {
@@ -348,50 +348,6 @@
 
 .ui-workspace-bottom-panel-group__drop-indicator[data-position="right"] {
   right: 0;
-}
-
-.ui-workspace-bottom-panel-toggle {
-  display: inline-flex;
-  width: 2.25rem;
-  height: 1.75rem;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  border-radius: var(--ui-workspace-radius-small);
-  padding: 0 0.5rem;
-  color: var(--ui-workspace-foreground);
-  background: transparent;
-  cursor: pointer;
-}
-
-.ui-workspace-bottom-panel-toggle[data-size="small"] {
-  width: 2.25rem;
-  padding-inline: 0.625rem;
-}
-
-.ui-workspace-bottom-panel-toggle:hover {
-  color: var(--ui-workspace-panel-action-hover-foreground);
-  background: var(--ui-workspace-panel-action-hover-background);
-}
-
-.ui-workspace-bottom-panel-toggle:focus-visible {
-  outline: 2px solid var(--ui-workspace-focus-ring);
-  outline-offset: 1px;
-}
-
-.ui-workspace-bottom-panel-toggle__icon {
-  width: 1rem;
-  height: 1rem;
-  transition:
-    width 150ms ease,
-    height 150ms ease;
-}
-
-.ui-workspace-bottom-panel-toggle[data-state="expanded"]
-  .ui-workspace-bottom-panel-toggle__icon {
-  width: 1.25rem;
-  height: 1.25rem;
 }
 
 .ui-workspace-bottom-panel-group__empty {

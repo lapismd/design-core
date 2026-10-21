@@ -26,7 +26,7 @@
   name="Selects Today from the popover"
   tags={["skip-visual"]}
   play={async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Due date" }));
+    await userEvent.click(canvas.getByRole("button", { name: /^Due date: / }));
     const body = within(document.body);
     await userEvent.click(body.getByRole("button", { name: "Today" }));
     await expect(canvas.getByRole("status")).toHaveTextContent(
@@ -49,7 +49,7 @@
   tags={["skip-visual"]}
   play={async ({ canvas }) => {
     await userEvent.click(
-      canvas.getByRole("button", { name: "Settlement date" }),
+      canvas.getByRole("button", { name: /^Settlement date: / }),
     );
     const body = within(document.body);
     const when = body.getByRole("textbox", { name: "When" });

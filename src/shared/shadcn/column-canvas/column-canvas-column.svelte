@@ -727,7 +727,7 @@
           data-ui-component="column-canvas"
           data-ui-part="collapsed-trigger"
           data-panel-toggle
-          aria-label={`Expand ${resolvedTitle} column`}
+          aria-label={`Expand ${resolvedTitle} column${count === undefined ? "" : `: ${resolvedTitle} ${count}`}`}
           aria-expanded={previewed}
           title={count === undefined
             ? resolvedTitle

@@ -76,7 +76,9 @@
       {...reply === undefined ? {} : { reply }}
       onCancelReply={() => (reply = undefined)}
       {...status === undefined ? {} : { status }}
-      formattingOpen={scenario !== "document"}
+      formattingOpen={scenario === "framed" ||
+        scenario === "narrow" ||
+        scenario === "form"}
       {customEmojis}
       {...scenario === "custom" ? {} : { emojis: reactionChoices }}
     >

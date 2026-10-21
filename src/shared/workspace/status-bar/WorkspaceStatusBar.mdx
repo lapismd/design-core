@@ -5,9 +5,18 @@ import * as Stories from "./WorkspaceStatusBar.stories.svelte";
 
 # Workspace status bar
 
-The status bar renders controller contributions in the compact fixed
-bottom-right Lapis surface. Applications can omit or replace the surface while
-retaining the same status registry.
+The status bar renders controller contributions in a dedicated full-width footer
+with left, bounded center and right regions. The center retains its width while
+idle; long activity labels truncate without moving side contributions. Lower
+priority side entries remain available in overflow popovers. App Shell reserves
+space beneath its desktop content, including the ribbon and both sidebars.
+
+Hosts may set `--ui-workspace-safe-area-inline-start`,
+`--ui-workspace-safe-area-inline-end` and `--ui-workspace-safe-area-block-end`
+on a Workspace ancestor. Defaults are `0px`. The footer adds the larger inline
+inset to both edges so its centre stays aligned with the app; the block-end
+inset increases the footer track while retaining its 1.5rem content height.
+The shell background and separator still span the full window width.
 
 <Canvas of={Stories.LeftAndRightContributions} />
 

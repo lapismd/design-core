@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from "svelte";
   import { DropdownMenu } from "bits-ui";
   import type { WorkspaceStatusItem as WorkspaceStatusItemModel } from "../core/types.js";
   import { WorkspaceMenu } from "../core/workspace-menu.js";
@@ -7,13 +8,19 @@
   import "./WorkspaceStatusItem.css";
 
   let { item }: { item: WorkspaceStatusItemModel } = $props();
+  let host: HTMLDivElement | undefined = $state();
+  $effect(() => {
+    const mount = item.mount;
+    if (host && mount) return untrack(() => mount(host!));
+  });
   let open = $state(false);
   let menu = $state(new WorkspaceMenu());
   const accessibleName = $derived.by(() => {
     const context = item.tooltip ?? item.label ?? item.id;
     const visible = item.segments?.join(" ") ?? item.label ?? "";
-    return visible &&
-      !context.toLocaleLowerCase().includes(visible.toLocaleLowerCase())
+    const contextWords = ` ${context.toLocaleLowerCase().replace(/\s+/gu, " ")} `;
+    const visibleWords = ` ${visible.toLocaleLowerCase().replace(/\s+/gu, " ")} `;
+    return visible && !contextWords.includes(visibleWords)
       ? `${context} · ${visible}`
       : context;
   });
@@ -50,7 +57,14 @@
   {/if}
 {/snippet}
 
-{#if item.buildMenu}
+{#if item.mount}
+  <div
+    bind:this={host}
+    data-ui-component="workspace-status-item"
+    data-ui-part="custom"
+    data-status-bar-item-id={item.id}
+  ></div>
+{:else if item.buildMenu}
   <DropdownMenu.Root {open} onOpenChange={setOpen}>
     <DropdownMenu.Trigger
       class="ui-workspace-status-item"

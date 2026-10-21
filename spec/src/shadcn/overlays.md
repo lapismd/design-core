@@ -67,9 +67,12 @@ Overlay primitives preserve accessible labelling, focus management, dismissal, p
 
 **Requirement.** The Dropdown Menu family MUST present keyboard-accessible actions, groups, nested items, checks, radios, and shortcuts.
 
+Catalog action examples await complete menu closure and release of body pointer
+suppression before ending the interaction.
+
 ### Acceptance details
 
-- Family styling MUST be hosted by the required Content part so action-only consumers retain the menu surface, item layout, and interaction states without importing optional checkbox or radio parts.
+- Family styling MUST be hosted by the required Content part so action-only consumers retain the menu surface, item layout, and interaction states without importing optional checkbox or radio parts, while destructive text and icons MUST preserve semantic colouring with at least 4.5:1 normal-text contrast on light/dark menu surfaces even when an editor dependency supplies unlayered generic slot styles.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - Radio groups MUST provide a defined bindable value at the primitive boundary for exact optional-property consumers.
 - Submenu triggers MUST align leading icons with ordinary menu items, applying automatic leading margin only to the built-in trailing indicator.

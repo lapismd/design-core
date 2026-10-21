@@ -45,19 +45,19 @@
 
 <AppShell.Sidebar.Body class="ui-shell-story-files-body">
   <nav aria-label={`${projectName} files`}>
-    <button type="button" aria-label="Source folder">
+    <button type="button" aria-label="Source folder: src">
       <FolderIcon aria-hidden="true" />
       {#if !sidebar.collapsed}<span>src</span>{/if}
     </button>
-    <button type="button" aria-label="Shared folder">
+    <button type="button" aria-label="Shared folder: shared">
       <FolderIcon aria-hidden="true" />
       {#if !sidebar.collapsed}<span>shared</span>{/if}
     </button>
-    <button type="button" aria-label="App shell file">
+    <button type="button" aria-label="App shell file: AppShell.svelte">
       <FileCode2Icon aria-hidden="true" />
       {#if !sidebar.collapsed}<span>AppShell.svelte</span>{/if}
     </button>
-    <button type="button" aria-label="Project readme">
+    <button type="button" aria-label="Project readme: README.md">
       <FileTextIcon aria-hidden="true" />
       {#if !sidebar.collapsed}<span>README.md</span>{/if}
     </button>

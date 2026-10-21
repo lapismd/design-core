@@ -1,0 +1,248 @@
+import { RangeSetBuilder } from "@codemirror/state";
+import { Decoration, type DecorationSet } from "@codemirror/view";
+import {
+  getAtxHeadingMarkerRange,
+  getMarkdownLinkTextRange,
+  getIndentLineLayout,
+  getTaskMarkerRange,
+} from "@lapismd/mira/codemirror";
+import { promptElementsExtension } from "../prompt-context/prompt-elements-extension.js";
+import { promptPreviewRanges } from "./prompt-preview-ranges.js";
+import { PathLabel } from "./path-label.js";
+import { parser as markdownParser, Table, TaskList } from "@lezer/markdown";
+import { TranscriptTaskCheckbox } from "./task-checkbox.js";
+import { TranscriptMarkdownPreview } from "./markdown-preview-widget.js";
+import type { TranscriptProps } from "./model.js";
+import type { RichSourceContext } from "./rich-source.js";
+
+/** Fixed reading decorations: selection never reveals Markdown source markers. */
+export function readingDecorations(
+  text: string,
+  ignored: readonly { from: number; to: number }[] = [],
+  options: {
+    fileLink?: (destination: string) => boolean;
+    paths?: readonly (readonly [string, string])[] | undefined;
+    markdown?: TranscriptProps["markdown"];
+    contexts?: Map<unknown, unknown>;
+    source?: RichSourceContext;
+  } = {},
+): {
+  decorations: DecorationSet;
+  hidden: DecorationSet;
+} {
+  const marks: { from: number; to: number; value: Decoration }[] = [];
+  const hidden: { from: number; to: number; decorated?: boolean }[] = [];
+  const prompts = options.markdown?.extensions?.some(
+    (extension) => extension.name === promptElementsExtension.name,
+  )
+    ? promptPreviewRanges(text)
+    : [];
+  for (const range of prompts) {
+    marks.push({
+      ...range,
+      value: Decoration.replace({
+        block: true,
+        widget: new TranscriptMarkdownPreview(
+          text.slice(range.from, range.to),
+          options.markdown,
+          options.contexts,
+          options.source,
+          range.from,
+        ),
+      }),
+    });
+    hidden.push({ ...range, decorated: true });
+  }
+  markdownParser
+    .configure([Table, TaskList])
+    .parse(text)
+    .iterate({
+      enter(node) {
+        if (
+          prompts.some((r) => node.from >= r.from && node.to <= r.to) ||
+          ignored.some((r) => node.from >= r.from && node.to <= r.to)
+        )
+          return false;
+        const name = node.name;
+        const completeCode =
+          name === "FencedCode" &&
+          node.node.getChildren("CodeMark").length === 2;
+        if (name === "FencedCode" && !completeCode) return false;
+        if (name === "Table" || completeCode) {
+          if (
+            ignored.some(
+              (range) => node.from < range.to && node.to > range.from,
+            )
+          )
+            return false;
+          marks.push({
+            from: node.from,
+            to: node.to,
+            value: Decoration.replace({
+              block: true,
+              widget: new TranscriptMarkdownPreview(
+                text.slice(node.from, node.to),
+                options.markdown,
+                options.contexts,
+                options.source,
+                node.from,
+              ),
+            }),
+          });
+          hidden.push({ from: node.from, to: node.to, decorated: true });
+          return false;
+        }
+        if (name === "ListMark") {
+          const marker = node.node.parent
+            ?.getChild("Task")
+            ?.getChild("TaskMarker");
+          const from = text.lastIndexOf("\n", node.from - 1) + 1;
+          const end = text.indexOf("\n", node.to);
+          const line = text.slice(from, end < 0 ? undefined : end);
+          const task = marker ? getTaskMarkerRange(line, from) : null;
+          if (task && marker?.from === task.checkboxStart) {
+            marks.push({
+              from: task.markerStart,
+              to: task.markerEnd,
+              value: Decoration.replace({
+                widget: new TranscriptTaskCheckbox(
+                  /^[xX]$/u.test(task.taskValue),
+                  text.slice(task.markerEnd, end < 0 ? undefined : end),
+                ),
+              }),
+            });
+            hidden.push({
+              from: task.markerStart,
+              to: task.markerEnd,
+              decorated: true,
+            });
+            return false;
+          }
+        }
+        if (
+          name === "ListMark" &&
+          node.node.parent?.parent?.name === "BulletList"
+        ) {
+          const from = text.lastIndexOf("\n", node.from - 1) + 1;
+          const end = text.indexOf("\n", node.to);
+          const layout = getIndentLineLayout(
+            text.slice(from, end < 0 ? undefined : end),
+          );
+          if (layout?.listKind === "ul" && layout.markerTo !== undefined)
+            marks.push(
+              {
+                from: node.from,
+                to: from + layout.markerTo,
+                value: Decoration.mark({
+                  class: `cm-formatting-list cm-formatting-list-ul cm-formatting-list-bullet cm-list-${layout.depth}`,
+                }),
+              },
+              {
+                from: node.from,
+                to: node.to,
+                value: Decoration.mark({ class: "cm-meta" }),
+              },
+            );
+        }
+        if (
+          [
+            "HeaderMark",
+            "EmphasisMark",
+            "CodeMark",
+            "StrikethroughMark",
+          ].includes(name)
+        ) {
+          const heading =
+            name === "HeaderMark"
+              ? getAtxHeadingMarkerRange(text.slice(node.from), node.from)
+              : null;
+          hidden.push(heading ?? { from: node.from, to: node.to });
+        }
+        const className = /^ATXHeading/.test(name)
+          ? `ui-transcript-heading ui-transcript-heading-${name.at(-1)}`
+          : name === "StrongEmphasis"
+            ? "ui-transcript-strong"
+            : name === "Emphasis"
+              ? "ui-transcript-emphasis"
+              : name === "InlineCode"
+                ? "ui-transcript-inline-code"
+                : name === "Strikethrough"
+                  ? "ui-transcript-strike"
+                  : undefined;
+        if (className)
+          marks.push({
+            from: node.from,
+            to: node.to,
+            value: Decoration.mark({ class: className }),
+          });
+        if (name === "Link") {
+          const source = text.slice(node.from, node.to);
+          const url = node.node.getChild("URL");
+          const destination = url
+            ? text.slice(url.from, url.to).replace(/^<|>$/g, "")
+            : "";
+          const external = /^https?:\/\//i.test(destination);
+          const file = !external && options.fileLink?.(destination);
+          if (external || file) {
+            const range = getMarkdownLinkTextRange(source, node.from, node.to);
+            if (!range) return;
+            const { from: start, to: end } = range;
+            hidden.push(
+              { from: node.from, to: start },
+              { from: end, to: node.to },
+            );
+            marks.push({
+              from: start,
+              to: end,
+              value: Decoration.mark({
+                class: "ui-transcript-link",
+                attributes: {
+                  role: "link",
+                  tabindex: "0",
+                  [file ? "data-chat-file-link" : "data-chat-link"]:
+                    destination,
+                },
+              }),
+            });
+            return false;
+          }
+        }
+      },
+    });
+  const hiddenBuilder = new RangeSetBuilder<Decoration>();
+  for (const range of hidden.sort((a, b) => a.from - b.from)) {
+    if (range.to > range.from) {
+      const value = Decoration.replace({});
+      hiddenBuilder.add(range.from, range.to, value);
+      if (!range.decorated) marks.push({ ...range, value });
+    }
+  }
+  for (const [path, label] of [...(options.paths ?? [])].sort(
+    (a, b) => b[0].length - a[0].length,
+  )) {
+    if (!path) continue;
+    let from = text.indexOf(path);
+    while (from >= 0) {
+      const to = from + path.length;
+      if (
+        !hidden.some((range) => from < range.to && to > range.from) &&
+        !marks.some(
+          (mark) => mark.value.spec.widget && from < mark.to && to > mark.from,
+        )
+      )
+        marks.push({
+          from,
+          to,
+          value: Decoration.replace({ widget: new PathLabel(label) }),
+        });
+      from = text.indexOf(path, to);
+    }
+  }
+  return {
+    decorations: Decoration.set(
+      marks.map((m) => m.value.range(m.from, m.to)),
+      true,
+    ),
+    hidden: hiddenBuilder.finish(),
+  };
+}

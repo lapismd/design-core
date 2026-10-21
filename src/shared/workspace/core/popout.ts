@@ -10,26 +10,48 @@ export function createBrowserPopoutHost(): WorkspacePopoutHost {
       );
       if (!popup) return null;
       popup.document.title = title;
-      popup.document.documentElement.className =
-        document.documentElement.className;
-      for (const node of document.querySelectorAll(
-        'style,link[rel="stylesheet"]',
-      )) {
-        popup.document.head.append(node.cloneNode(true));
-      }
       const closeListeners = new Set<() => void>();
-      const onUnload = () => {
-        for (const listener of closeListeners) listener();
+      let requestClose: (() => Promise<boolean>) | undefined;
+      let admitted = false;
+      let pending = false;
+      const beforeUnload = (event: BeforeUnloadEvent) => {
+        if (admitted || !requestClose) return;
+        event.preventDefault();
+        event.returnValue = "";
+        if (pending) return;
+        pending = true;
+        void requestClose()
+          .catch(() => false)
+          .finally(() => {
+            pending = false;
+          });
       };
-      popup.addEventListener("beforeunload", onUnload, { once: true });
+      popup.addEventListener("beforeunload", beforeUnload);
+      popup.addEventListener(
+        "pagehide",
+        () => {
+          for (const listener of closeListeners) listener();
+          closeListeners.clear();
+        },
+        { once: true },
+      );
       const handle: WorkspacePopoutHandle = {
         window: popup,
         document: popup.document,
         focus: () => popup.focus(),
-        close: () => popup.close(),
+        close: () => {
+          admitted = true;
+          popup.close();
+        },
         onClose(listener) {
           closeListeners.add(listener);
           return () => closeListeners.delete(listener);
+        },
+        onCloseRequest(listener) {
+          requestClose = listener;
+          return () => {
+            if (requestClose === listener) requestClose = undefined;
+          };
         },
       };
       return handle;

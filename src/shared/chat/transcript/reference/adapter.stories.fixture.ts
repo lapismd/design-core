@@ -1,0 +1,259 @@
+// Adapted from jj-store 2a479c74; Apache-2.0, LapisMD contributors. Catalog only.
+import FileTextIcon from "@lucide/svelte/icons/file-text";
+import FilePenIcon from "@lucide/svelte/icons/file-pen";
+import TerminalIcon from "@lucide/svelte/icons/terminal";
+import SearchIcon from "@lucide/svelte/icons/search";
+import WrenchIcon from "@lucide/svelte/icons/wrench";
+import FolderIcon from "@lucide/svelte/icons/folder";
+import BotIcon from "@lucide/svelte/icons/bot";
+import type {
+  TranscriptBlock,
+  TranscriptItem,
+  TranscriptTool,
+} from "../model.js";
+import { byteSlice } from "./offsets.stories.fixture.js";
+import { capturedPatchBlocks } from "./patches.stories.fixture.js";
+import { markdownBlocks } from "./markdown-blocks.stories.fixture.js";
+
+import type { Span, DeltaChatFixture } from "./model.stories.fixture.js";
+export type { DeltaChatFixture } from "./model.stories.fixture.js";
+import { assignDeltaTurns } from "./turns.stories.fixture.js";
+import { referenceAgent as agent } from "./people.stories.fixture.js";
+const user = { id: "demo-user", name: "You", handle: "", initials: "YO" };
+
+export function deltaChatItems(fixture: DeltaChatFixture): TranscriptItem[] {
+  if (fixture.version !== 1 && fixture.version !== 2)
+    throw new Error("Unsupported Delta comparison fixture");
+  const revision = fixture.source.sha256;
+  const slice = (span?: Span) =>
+    span ? byteSlice(fixture.buffer, span.start, span.end).trim() : "";
+  const block = (
+    id: string,
+    label: string,
+    text: string,
+    kind: TranscriptBlock["kind"] = "markdown",
+    path?: string,
+  ): TranscriptBlock => ({ id, revision, label, text, kind, path });
+  const nodes: { start: number; item: TranscriptItem; group?: string }[] = [];
+  const occupied = fixture.records.flatMap((r) =>
+    r.end !== undefined && r.end > r.start
+      ? [{ start: r.start, end: r.end }]
+      : [],
+  );
+  for (const record of fixture.records) {
+    if (record.kind === "AssistantTurn") continue;
+    const content =
+      record.end === undefined
+        ? ""
+        : slice({ start: record.start, end: record.end });
+    if (record.kind === "User")
+      nodes.push({
+        start: record.start,
+        item: {
+          id: record.id,
+          kind: "message",
+          role: "user",
+          author: user,
+          label: "Message from You",
+          commentBatchId: record.commentBatchId,
+          blocks: markdownBlocks(
+            `${record.id}/text`,
+            revision,
+            "User message",
+            record.text ?? content,
+          ),
+        },
+      });
+    else if (record.kind === "Reply") {
+      nodes.push({
+        start: record.start,
+        item: {
+          id: record.id,
+          kind: "message",
+          role: "assistant",
+          author: agent,
+          label: "Recorded agent reply",
+          replyContext: record.replyContext,
+          blocks: markdownBlocks(
+            `${record.id}/text`,
+            revision,
+            "Agent reply",
+            record.text ?? "",
+          ),
+        },
+      });
+    } else if (record.kind === "ToolUse") {
+      let input: Record<string, unknown> = {};
+      try {
+        const parsed: unknown = JSON.parse(record.input ?? "{}");
+        if (parsed && typeof parsed === "object")
+          input = parsed as Record<string, unknown>;
+      } catch {
+        /* Retain opaque captured input. */
+      }
+      const title =
+        slice(record.layout?.meta_range) || record.name || "Tool call";
+      const blocks =
+        record.name === "apply_patch"
+          ? capturedPatchBlocks(record.input ?? "", record.id, revision)
+          : [];
+      if (!blocks.length) {
+        const path = typeof input.path === "string" ? input.path : undefined;
+        const output = record.output || slice(record.layout?.result_range);
+        const command =
+          typeof input.command === "string" ? `$ ${input.command}\n\n` : "";
+        blocks.push(
+          block(
+            `${record.id}/output`,
+            path ?? `${title} output`,
+            `${command}${output || "No output was captured."}`,
+            "code",
+            path,
+          ),
+        );
+        if (record.name === "read_file") blocks[0].lineNumbered = true;
+      }
+      const tool: TranscriptTool = {
+        id: record.id,
+        revision,
+        icon:
+          record.name === "read_file" || record.name === "read_tool_output"
+            ? FileTextIcon
+            : record.name === "apply_patch"
+              ? FilePenIcon
+              : record.name === "grep" || record.name === "search"
+                ? SearchIcon
+                : record.name === "terminal" ||
+                    record.name === "shell_command" ||
+                    record.name === "exec_command"
+                  ? TerminalIcon
+                  : record.name === "list_directory"
+                    ? FolderIcon
+                    : record.name === "spawn_subagent"
+                      ? BotIcon
+                      : WrenchIcon,
+        detailPlacement: record.name === "read_file" ? "sidebar" : "inline",
+        title,
+        status:
+          record.status === "Succeeded"
+            ? "complete"
+            : record.status === "Failed"
+              ? "error"
+              : "unknown",
+        blocks,
+        raw: JSON.stringify(
+          {
+            name: record.name,
+            input: record.input,
+            output: record.output,
+            status: record.status,
+          },
+          null,
+          2,
+        ),
+      };
+      const group = slice(record.layout?.action_group_title_range);
+      nodes.push({
+        start: record.start,
+        group,
+        item: {
+          id: `${record.id}/group`,
+          kind: "tools",
+          icon: WrenchIcon,
+          label: group || title,
+          blocks: [],
+          tools: [tool],
+          defaultExpanded: record.name === "apply_patch",
+        },
+      });
+    } else if (record.kind === "Thinking") {
+      nodes.push({
+        start: record.start,
+        item: {
+          id: record.id,
+          kind: "reasoning",
+          label: "Thought",
+          blocks: [
+            block(
+              `${record.id}/text`,
+              "Recorded thinking",
+              byteSlice(
+                fixture.buffer,
+                record.titleEnd!,
+                record.contentEnd!,
+              ).trim(),
+            ),
+          ],
+        },
+      });
+    } else if (
+      record.kind === "ExternalEdits" ||
+      record.kind === "AgentMessage"
+    ) {
+      const handoff = record.kind === "AgentMessage";
+      nodes.push({
+        start: record.start,
+        item: {
+          id: record.id,
+          kind: handoff ? "handoff" : "context",
+          defaultExpanded: handoff,
+          label: handoff
+            ? `Agent response · ${record.title}`
+            : slice(record.layout?.meta_range) || "External changes",
+          blocks: [
+            block(
+              `${record.id}/text`,
+              handoff ? "Returned agent response" : "External change context",
+              slice(record.layout?.result_range) || content,
+              handoff ? "context" : "code",
+            ),
+          ],
+        },
+      });
+    }
+  }
+  // Free intervals contain assistant prose. Never merge prose across tools.
+  let cursor =
+    fixture.records.find((r) => r.kind === "AssistantTurn")?.start ??
+    fixture.draftStart;
+  for (const span of [
+    ...occupied,
+    { start: fixture.draftStart, end: fixture.draftStart },
+  ].sort((a, b) => a.start - b.start)) {
+    if (span.start > cursor) {
+      const text = byteSlice(fixture.buffer, cursor, span.start).trim();
+      if (text)
+        nodes.push({
+          start: cursor,
+          item: {
+            id: `assistant-${cursor}`,
+            kind: "message",
+            role: "assistant",
+            author: agent,
+            label: "Message from Codex",
+            blocks: markdownBlocks(
+              `assistant-${cursor}/text`,
+              revision,
+              "Assistant message",
+              text,
+            ),
+          },
+        });
+    }
+    cursor = Math.max(cursor, span.end);
+  }
+  const result: TranscriptItem[] = [];
+  for (const node of nodes.sort((a, b) => a.start - b.start)) {
+    const previous = result.at(-1);
+    if (
+      node.item.kind === "tools" &&
+      previous?.kind === "tools" &&
+      !node.group &&
+      !node.item.defaultExpanded &&
+      !previous.defaultExpanded
+    ) {
+      previous.tools = [...(previous.tools ?? []), ...(node.item.tools ?? [])];
+    } else result.push(node.item);
+  }
+  return assignDeltaTurns(result, fixture);
+}

@@ -1,0 +1,68 @@
+.ui-sent-context {
+  --ui-chat-markdown-font-size: inherit;
+  --ui-chat-markdown-line-height: var(--ui-sent-context-line-height, 1.55);
+  --ui-chat-markdown-block-gap: var(--ui-sent-context-block-gap, 0.55rem);
+  --mira-link: var(--foreground);
+  margin-block: var(--ui-sent-context-margin, 0.5rem);
+  font-size: var(--ui-sent-context-font-size, 0.875rem);
+  min-width: 0;
+}
+.ui-sent-context__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.ui-sent-context__trigger {
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  height: auto;
+  min-height: 1.5rem;
+  text-align: start;
+}
+.ui-sent-context__trigger > svg {
+  flex-shrink: 0;
+}
+.ui-sent-context__trigger[aria-expanded="true"] > svg {
+  rotate: 90deg;
+}
+@media (hover: hover) {
+  .ui-sent-context__trigger:hover {
+    background: var(
+      --ui-sent-context-trigger-hover,
+      color-mix(in oklab, var(--secondary) 90%, var(--foreground))
+    );
+  }
+}
+.ui-sent-context__toggle {
+  opacity: 0;
+}
+.ui-sent-context__heading:hover .ui-sent-context__toggle,
+.ui-sent-context__heading:focus-within .ui-sent-context__toggle,
+.ui-sent-context__toggle[data-active="true"] {
+  opacity: 1;
+}
+@media (hover: none) {
+  .ui-sent-context__toggle {
+    opacity: 1;
+  }
+}
+.ui-sent-context__panel {
+  margin-top: 0.5rem;
+  padding: var(--ui-sent-context-padding, 0.75rem);
+  border-radius: var(--ui-sent-context-radius, 0.75rem);
+  background: var(--ui-sent-context-background, var(--muted));
+  min-width: 0;
+}
+.ui-sent-context__scroll [data-ui-part="scroll-area-viewport"] {
+  height: auto;
+  max-height: var(--ui-sent-context-max-height, 22.5rem);
+}
+.ui-sent-context__panel [hidden] {
+  display: none;
+}
+@media (forced-colors: active) {
+  .ui-sent-context__panel {
+    outline: 1px solid CanvasText;
+  }
+}

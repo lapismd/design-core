@@ -23,7 +23,7 @@
 <Story
   name="Selects an option"
   play={async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Status" }));
+    await userEvent.click(canvas.getByRole("button", { name: /^Status: / }));
     await userEvent.click(canvas.getByRole("option", { name: "Published" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("published");
   }}

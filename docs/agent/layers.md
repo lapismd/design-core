@@ -75,7 +75,9 @@ existing family already covers the need.
 - `shared/workspace` may import generic controls from `shared/shadcn` and may
   use headless Bits UI and Paneforge directly for workspace-specific geometry.
   It may later compose Diff through the public Diff barrel. It must not import
-  forms, filter, AI, or application-specific surfaces.
+  filter, AI, or application-specific surfaces. Settings may compose the generic
+  Forms QuantityInput, FilePathInput and PasswordInput; other Forms dependencies
+  remain excluded.
 
 ## Folder layout
 

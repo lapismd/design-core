@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
+  import { Basic } from "./LayoutScrollButton.example-sources.js";
   import LayoutScrollButton from "./LayoutScrollButton.svelte";
 
   const { Story } = defineMeta({
@@ -8,6 +9,7 @@
     component: LayoutScrollButton,
     parameters: {
       docs: {
+        source: { code: Basic, language: "tsx", type: "code" },
         description: {
           component:
             "Floating scroll-to-bottom button that appears when the user scrolls away from the latest messages. It fades in as a compact icon button and expands to show a label when new messages arrive. ChatLayout renders this by default: pass a custom element to the scrollButton prop to override, or null to hide it entirely.",
@@ -150,6 +152,31 @@
       <LayoutScrollButton isVisible={false} onClick={() => {}} />
     </div>
   {/snippet}
+</Story>
+
+<Story
+  name="Session running"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const button = canvas.getByRole("button", {
+      name: "Scroll to latest (session running)",
+    });
+    expect(
+      button.querySelectorAll('[data-ui-part="activity-dot"]'),
+    ).toHaveLength(3);
+    await userEvent.click(button);
+    expect(canvas.getByRole("status")).toHaveTextContent("Recovered");
+  }}
+>
+  {#snippet template()}<div data-story="scroll-button-frame">
+      <LayoutScrollButton
+        isVisible
+        isRunning
+        onClick={() => {
+          recovered = true;
+        }}
+      /><output>{recovered ? "Recovered" : "Waiting"}</output>
+    </div>{/snippet}
 </Story>
 
 <style>

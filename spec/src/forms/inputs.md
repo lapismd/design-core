@@ -25,6 +25,9 @@ Form inputs provide higher-level controlled editing patterns composed from share
 | Search Filter in a Form | Catalogued composition                                  | DC-FORM-020 |
 | Avatar Picker           | `@lapismd/design-core/forms` and `/forms/avatar-picker` | DC-FORM-047 |
 
+| File Path Input | `@lapismd/design-core/forms/file-path-input` | DC-FORM-049 |
+| Quantity Input | `@lapismd/design-core/forms/quantity-input` | DC-FORM-048 |
+
 ## DC-FORM-006 — Shared Forms invariants
 
 **Requirement.** Forms families MUST preserve accessible labelling, controlled value ownership, exact update types, token-driven focus and invalid states, and consumer-composable layout.
@@ -33,6 +36,7 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 - Display-only defaults must remain absent from authoritative values until the consumer edits the field.
 - Array and disclosure metadata must remain outside consumer values unless explicitly part of the configured schema.
+- Accessible trigger names MUST retain host context and the complete visible selected value, display unit or avatar fallback text.
 
 ## DC-FORM-007 — Autocomplete Input
 
@@ -148,6 +152,9 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 **Requirement.** The Segmented Control family MUST select one controlled option from a labelled keyboard-accessible segment group.
 
+Selected labels MUST use the semantic form foreground so selection text retains
+readable contrast on both light and dark selection backgrounds.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/forms`.
@@ -184,6 +191,9 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 Catalog emoji selection waits for the expected selectable emoji after the lazy
 library mounts, rather than treating its search input as grid readiness.
+The initials-only trigger uses Avatar's decorative image semantics while its
+host-supplied label and visible initials name the button (DC-SHA-056); upload, selection
+and persistence behavior are unchanged.
 
 **Requirement.** Avatar Picker MUST edit host-owned avatar values through image selection/drop, pasted URLs and emoji on a chosen background, using host-provided initials or name as the empty-image fallback.
 
@@ -193,3 +203,26 @@ library mounts, rather than treating its search input as grid readiness.
 - The editor MUST compose Avatar and inline EmojiPicker with image selection/drop, pasted URLs, emoji and background colour for every type including transparent images, host-provided initials/name fallback, shared styled ScrollArea popover overflow, disabled/pending/failed-upload presentation and local previews without an uploader.
 - A newer choice, external value change, disabling or disposal MUST invalidate stale asynchronous uploads without replacing the retained value, while hosts own uploading and persistence.
 - Public boundaries MUST include Forms and its focused `forms/avatar-picker` entry point, with custom emoji records using the shared neutral EmojiPicker model.
+
+## DC-FORM-048 — Quantity Input
+
+**Requirement.** QuantityInput MUST compose exact canonical integer values with supplied display units, optional reset and slider controls.
+
+### Acceptance details
+
+- Switching display units MUST never emit a canonical edit or silently round the retained value.
+- Empty, fractional, unsafe and out-of-range drafts MUST remain distinguishable and retain their input text with accessible validation.
+- Reset and optional sliders MUST retain bounds, keyboard focus and disabled or read-only behaviour without allocating unbounded step arrays.
+
+- Control-only composition MUST retain its accessible name and validation when a host supplies row labels.
+
+## DC-FORM-049 — File Path Input
+
+**Requirement.** FilePathInput MUST provide manual path entry and an optional host-owned native chooser without owning filesystem access or performing imports.
+
+### Acceptance details
+
+- Browse MUST run only on explicit activation, expose pending state and accept a path or cancellation without altering a retained path on cancellation.
+- New typing, external values, disabling, read-only state and disposal MUST fence stale chooser results; failure MUST preserve the value and report through a host callback or accessible fallback.
+- Without a chooser the path MUST remain manually editable; disabled and read-only fields MUST not launch selection or emit edits.
+- Focus in either the path or Browse action MUST surround the complete control with one shared ring, retaining invalid-state indication and visible focus in forced colors.

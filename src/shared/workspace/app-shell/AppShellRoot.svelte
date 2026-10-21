@@ -71,6 +71,13 @@
 
   onMount(() => {
     const document = root?.ownerDocument;
+    const focus = () => {
+      if (controller.commands.focusedHostId === "root") return;
+      controller.commands.focusedHostId = "root";
+      controller.renderer.activateHost("root");
+    };
+    document?.addEventListener("focusin", focus);
+    document?.defaultView?.addEventListener("focus", focus);
     const handleDocumentKeydown = (event: KeyboardEvent) => {
       if (!root || event.defaultPrevented) return;
       const target = event.target;
@@ -91,6 +98,8 @@
     if (autoStart) void controller.start();
     return () => {
       document?.removeEventListener("keydown", handleDocumentKeydown);
+      document?.removeEventListener("focusin", focus);
+      document?.defaultView?.removeEventListener("focus", focus);
       disposeSurface();
       drag.clear();
       if (disposeOnDestroy) void controller.dispose();
@@ -115,11 +124,12 @@
   {#if renderPopouts}
     <AppShellPopoutLayer
       host={popoutHost}
+      {appearanceStyle}
       theme={resolvedTheme}
       scrollbarVisibility={resolvedScrollbarVisibility}
     />
   {/if}
-  {#if renderOverlays && root}
+  {#if renderOverlays && root && controller.commands.focusedHostId === "root"}
     <AppShellOverlayLayer portalTarget={root} />
   {/if}
 </div>

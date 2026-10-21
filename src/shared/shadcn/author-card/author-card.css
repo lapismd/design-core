@@ -1,0 +1,77 @@
+.ui-author-card {
+  --ui-popover-width: var(--ui-author-card-width, 15rem);
+  --ui-hover-card-width: var(--ui-author-card-width, 15rem);
+  width: min(var(--ui-author-card-width, 15rem), calc(100vw - 2rem));
+  padding: 0;
+  border-radius: var(--ui-author-card-radius, 0.85rem);
+  color: var(--foreground);
+  background: var(--popover, var(--background));
+}
+.ui-author-card__body {
+  display: grid;
+  gap: 0.625rem;
+  padding: var(--ui-author-card-padding, 0.625rem);
+}
+.ui-author-card__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  vertical-align: middle;
+}
+.ui-author-card__trigger[data-trigger="mention"] {
+  border-radius: 999px;
+  padding: 0.1rem 0.35rem;
+  background: var(--muted);
+  font-size: 0.875em;
+}
+.ui-author-card__trigger:hover {
+  background: color-mix(in srgb, var(--foreground) 7%, transparent);
+}
+.ui-author-card__trigger:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.ui-author-card__trigger:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+.ui-author-card__identity {
+  display: flex;
+  gap: 0.625rem;
+  align-items: center;
+  min-width: 0;
+}
+.ui-author-card__identity span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ui-author-card__identity strong,
+.ui-author-card__identity small {
+  display: block;
+}
+.ui-author-card__identity small,
+.ui-author-card__role {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+.ui-author-card p {
+  margin: 0;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.ui-author-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.ui-author-card__trigger[data-size="md"] > [data-ui-component="avatar"] {
+  --ui-avatar-size: var(--ui-author-card-avatar-size, 2.25rem);
+}

@@ -1,0 +1,24 @@
+import { Meta, Canvas, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./PromptContext.stories.svelte";
+import { Basic } from "./PromptContext.example-sources";
+
+<Meta of={Stories} />
+
+# Prompt Context
+
+Inert, collapsible XML-style ACP context containing safe Markdown. Adapted from
+jj-store `2a479c74` under Apache-2.0. Tags and attributes are display data; they do
+not register tools, execute instructions or authorize file access. Malformed
+boundaries, fenced examples and inline code remain literal.
+
+<Source code={Basic} language="tsx" />
+<Canvas of={Stories.RecordedAgentContext} />
+<Canvas of={Stories.AcpContextAndNestedMarkdown} />
+
+Recorded agent context reuses the exact returned-agent XML and Markdown from
+jj-store's sanitized Delta session. Its full-transcript counterpart starts with
+the outer agent-response section open so the XML disclosure is visible.
+
+Use the exported `promptElementsExtension` in MarkdownContent or Transcript's
+`markdown.extensions` hook when composing a larger captured context. This changes
+the preview only; exact UTF-16 captured text and comment anchors remain untouched.

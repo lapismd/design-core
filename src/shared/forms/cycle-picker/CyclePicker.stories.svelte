@@ -43,7 +43,7 @@
   name="Cycles and reveals options"
   play={async ({ canvas }) => {
     const previous = canvas.getByRole("button", { name: "Previous Theme" });
-    const current = canvas.getByRole("button", { name: "Select Theme" });
+    const current = canvas.getByRole("button", { name: /^Select Theme: / });
     const next = canvas.getByRole("button", { name: "Next Theme" });
     await expect(
       getComputedStyle(previous.parentElement as HTMLElement).gap,
@@ -63,7 +63,9 @@
     await expect(getComputedStyle(label).textOverflow).toBe("ellipsis");
     await expect(label.scrollWidth).toBeGreaterThan(label.clientWidth);
     await expect(canvas.getByRole("status")).toHaveTextContent("opal");
-    await userEvent.click(canvas.getByRole("button", { name: "Select Theme" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: /^Select Theme: / }),
+    );
     await userEvent.click(canvas.getByRole("option", { name: "Classic" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("classic");
   }}

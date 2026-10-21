@@ -1,0 +1,75 @@
+.ui-reference-chip {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  max-width: 100%;
+  min-width: 0;
+  gap: 0.1rem;
+  font: inherit;
+}
+.ui-reference-chip__target {
+  display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  text-decoration: none;
+  font: inherit;
+  cursor: pointer;
+}
+.ui-reference-chip__target > [data-ui-component="badge"],
+.ui-reference-chip__target[data-ui-component="badge"] {
+  max-width: 100%;
+  min-width: 0;
+  height: auto;
+  border-radius: var(--ui-reference-chip-radius, 999px);
+  padding: var(--ui-reference-chip-padding, 0.12rem 0.4rem);
+  font-size: var(--ui-reference-chip-font-size, 0.875em);
+  line-height: 1.2;
+}
+.ui-reference-chip [data-ui-component="avatar"] {
+  --ui-avatar-size: 1em;
+}
+.ui-reference-chip__label {
+  max-width: var(--ui-reference-chip-max-width, 16rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ui-reference-chip svg {
+  width: 1em;
+  height: 1em;
+  flex: none;
+}
+.ui-reference-chip__target:hover {
+  filter: brightness(0.96);
+}
+.ui-reference-chip__target:focus-visible,
+.ui-reference-chip__remove:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.ui-reference-chip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0.15rem;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+.ui-reference-chip__remove:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+.ui-reference-chip[data-disabled="true"] {
+  opacity: 0.5;
+}
+.ui-reference-chip[data-disabled="true"] button {
+  cursor: default;
+}

@@ -22,6 +22,7 @@
 
   const { Story } = defineMeta({
     title: "Shell/App Shell",
+    tags: ["visual-pending"],
     component: AppShellRoot,
     parameters: {
       layout: "fullscreen",
@@ -547,7 +548,7 @@
       name: "Collapse projects sidebar",
     });
     const firstFileIcon = canvas
-      .getByRole("button", { name: "Source folder" })
+      .getByRole("button", { name: "Source folder: src" })
       .querySelector("svg");
     await expect(firstFileIcon).toBeInTheDocument();
     const expandedProjectToggleRect = projectToggle.getBoundingClientRect();
@@ -608,10 +609,10 @@
     );
 
     const indicator = projectToggle.querySelector(
-      '[data-ui-part="sidebar-toggle-indicator"]',
+      '[data-ui-component="panel-toggle"][data-ui-part="indicator"]',
     );
     const toggleIcon = projectToggle.querySelector(
-      '[data-ui-part="sidebar-toggle-icon"]',
+      '[data-ui-component="panel-toggle"][data-ui-part="icon"]',
     );
     await expect(indicator).toBeInTheDocument();
     await expect(toggleIcon).toBeInTheDocument();
@@ -1344,7 +1345,7 @@
     await expect(projectsSidebar).toHaveAttribute("aria-hidden", "true");
 
     const leftSelector = canvas.getByRole("button", {
-      name: "Choose left sidebar panel",
+      name: /^Choose left sidebar panel: /,
     });
     await expect(leftSelector).toHaveTextContent("Files");
     await userEvent.click(leftSelector);
@@ -1384,7 +1385,7 @@
     });
 
     const rightSelector = canvas.getByRole("button", {
-      name: "Choose right sidebar panel",
+      name: /^Choose right sidebar panel: /,
     });
     await expect(rightSelector).toHaveTextContent("AI conversation");
     await userEvent.click(rightSelector);

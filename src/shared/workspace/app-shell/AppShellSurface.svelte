@@ -110,7 +110,7 @@
     onOpenSettings={openSettings}
   />
 {:else}
-  <AppShellRibbon />
+  <AppShellRibbon onOpenSettings={openSettings} />
   <AppShellDesktopLayout {bottomPanelAlignment}>
     <AppShellLeftSidebar
       {workspaceLabel}

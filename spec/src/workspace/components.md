@@ -1,55 +1,64 @@
 # Workspace / Components
 
+Sidebar and bottom-panel visibility controls compose PanelToggle under DC-SHA-053
+with its default button styling and a fixed standard icon. Mobile/settings
+visibility icons compose PanelToggleIcon. Controller actions, hints and drag
+exclusions remain Workspace-owned.
+
+Workspace-tab formatting retains DC-WS-030 unchanged; see
+[the formatting record](../../records/workspace-tabs-formatting.md).
+
 Workspace components compose reusable visual surfaces on top of framework and shell contracts.
 
 ## Public surface coverage
 
-| Surface                        | Public boundary                                  | Requirement |
-| ------------------------------ | ------------------------------------------------ | ----------- |
-| About Dialog                   | `@lapismd/design-core/workspace/about-dialog`    | DC-WS-008   |
-| Bottom Panel                   | `@lapismd/design-core/workspace/bottom-panel`    | DC-WS-009   |
-| Bottom Panel status clearance  | `@lapismd/design-core/workspace/bottom-panel`    | DC-WS-045   |
-| Command Palette                | `@lapismd/design-core/workspace/command-palette` | DC-WS-010   |
-| Command Palette tabs           | `@lapismd/design-core/workspace/command-palette` | DC-WS-053   |
-| Command Palette groups         | `@lapismd/design-core/workspace/command-palette` | DC-WS-054   |
-| Command Palette open tab       | `@lapismd/design-core/workspace/command-palette` | DC-WS-055   |
-| Command Palette remembered tab | `@lapismd/design-core/workspace/command-palette` | DC-WS-057   |
-| Settings dialog reveal         | `@lapismd/design-core/workspace/settings`        | DC-WS-056   |
-| Drop Overlay                   | `@lapismd/design-core/workspace/drop-overlay`    | DC-WS-011   |
-| Empty View                     | `@lapismd/design-core/workspace/empty`           | DC-WS-012   |
-| Floating Layer                 | `@lapismd/design-core/workspace/floating-layer`  | DC-WS-013   |
-| Floating Window                | `@lapismd/design-core/workspace/floating-window` | DC-WS-014   |
-| Workspace Icon                 | `@lapismd/design-core/workspace/icon`            | DC-WS-015   |
-| Workspace Menu                 | `@lapismd/design-core/workspace/menu`            | DC-WS-016   |
-| Mobile Shell                   | `@lapismd/design-core/workspace/mobile`          | DC-WS-017   |
-| Popout Surface                 | `@lapismd/design-core/workspace/popout`          | DC-WS-018   |
-| Ribbon                         | `@lapismd/design-core/workspace/ribbon`          | DC-WS-019   |
-| Settings                       | `@lapismd/design-core/workspace/settings`        | DC-WS-020   |
-| Settings multi-enum            | `@lapismd/design-core/workspace/settings`        | DC-WS-044   |
-| Settings text-field focus      | `@lapismd/design-core/workspace/settings`        | DC-WS-049   |
-| Sidebar                        | `@lapismd/design-core/workspace/sidebar`         | DC-WS-021   |
-| Empty Sidebar                  | `@lapismd/design-core/workspace/sidebar-empty`   | DC-WS-022   |
-| Sidebar Group                  | `@lapismd/design-core/workspace/sidebar-group`   | DC-WS-023   |
-| Sidebar Toggle                 | `@lapismd/design-core/workspace/sidebar-toggle`  | DC-WS-024   |
-| Workspace Split                | `@lapismd/design-core/workspace/split`           | DC-WS-025   |
-| Stacked Tabs                   | `@lapismd/design-core/workspace/stacked-tabs`    | DC-WS-026   |
-| Startup                        | `@lapismd/design-core/workspace/startup`         | DC-WS-027   |
-| Status Bar                     | `@lapismd/design-core/workspace/status-bar`      | DC-WS-028   |
-| Status Item                    | `@lapismd/design-core/workspace/status-item`     | DC-WS-029   |
-| Workspace Tabs                 | `@lapismd/design-core/workspace/tabs`            | DC-WS-030   |
-| Workspace Tree                 | `@lapismd/design-core/workspace/tree`            | DC-WS-031   |
-| View Header                    | `@lapismd/design-core/workspace/view-header`     | DC-WS-032   |
-| Managed plugins                | `@lapismd/design-core/workspace`                 | DC-WS-039   |
-| Desktop drag                   | Workspace chrome                                 | DC-WS-042   |
-| Workspace dock commands        | `@lapismd/design-core/workspace`                 | DC-WS-060   |
-| Tab title-bar default          | `@lapismd/design-core/workspace/settings`        | DC-WS-061   |
-| Window-controls safe area      | Workspace chrome                                 | DC-WS-062   |
-| Workspace tab cursors          | Workspace tabs                                   | DC-WS-063   |
-| Narrow settings navigation     | `@lapismd/design-core/workspace/settings`        | DC-WS-064   |
-| Controlled settings sources    | `@lapismd/design-core/workspace/settings`        | DC-WS-065   |
-| Custom field adapters          | `@lapismd/design-core/workspace/settings`        | DC-WS-066   |
-| Settings copyable output       | `@lapismd/design-core/workspace/settings`        | DC-WS-067   |
-| Settings object-row actions    | `@lapismd/design-core/workspace/settings`        | DC-WS-068   |
+| Surface                              | Public boundary                                  | Requirement |
+| ------------------------------------ | ------------------------------------------------ | ----------- |
+| About Dialog                         | `@lapismd/design-core/workspace/about-dialog`    | DC-WS-008   |
+| Bottom Panel                         | `@lapismd/design-core/workspace/bottom-panel`    | DC-WS-009   |
+| Bottom Panel status clearance        | `@lapismd/design-core/workspace/bottom-panel`    | DC-WS-045   |
+| Command Palette                      | `@lapismd/design-core/workspace/command-palette` | DC-WS-010   |
+| Command Palette tabs                 | `@lapismd/design-core/workspace/command-palette` | DC-WS-053   |
+| Command Palette groups               | `@lapismd/design-core/workspace/command-palette` | DC-WS-054   |
+| Command Palette open tab             | `@lapismd/design-core/workspace/command-palette` | DC-WS-055   |
+| Command Palette remembered tab       | `@lapismd/design-core/workspace/command-palette` | DC-WS-057   |
+| Settings dialog reveal               | `@lapismd/design-core/workspace/settings`        | DC-WS-056   |
+| Drop Overlay                         | `@lapismd/design-core/workspace/drop-overlay`    | DC-WS-011   |
+| Empty View                           | `@lapismd/design-core/workspace/empty`           | DC-WS-012   |
+| Floating Layer                       | `@lapismd/design-core/workspace/floating-layer`  | DC-WS-013   |
+| Floating Window                      | `@lapismd/design-core/workspace/floating-window` | DC-WS-014   |
+| Workspace Icon                       | `@lapismd/design-core/workspace/icon`            | DC-WS-015   |
+| Workspace Menu                       | `@lapismd/design-core/workspace/menu`            | DC-WS-016   |
+| Mobile Shell                         | `@lapismd/design-core/workspace/mobile`          | DC-WS-017   |
+| Popout Surface                       | `@lapismd/design-core/workspace/popout`          | DC-WS-018   |
+| Ribbon                               | `@lapismd/design-core/workspace/ribbon`          | DC-WS-019   |
+| Declarative quantity and file inputs | `@lapismd/design-core/workspace/settings`        | DC-WS-082   |
+| Settings                             | `@lapismd/design-core/workspace/settings`        | DC-WS-020   |
+| Settings multi-enum                  | `@lapismd/design-core/workspace/settings`        | DC-WS-044   |
+| Settings text-field focus            | `@lapismd/design-core/workspace/settings`        | DC-WS-049   |
+| Sidebar                              | `@lapismd/design-core/workspace/sidebar`         | DC-WS-021   |
+| Empty Sidebar                        | `@lapismd/design-core/workspace/sidebar-empty`   | DC-WS-022   |
+| Sidebar Group                        | `@lapismd/design-core/workspace/sidebar-group`   | DC-WS-023   |
+| Sidebar Toggle                       | `@lapismd/design-core/workspace/sidebar-toggle`  | DC-WS-024   |
+| Workspace Split                      | `@lapismd/design-core/workspace/split`           | DC-WS-025   |
+| Stacked Tabs                         | `@lapismd/design-core/workspace/stacked-tabs`    | DC-WS-026   |
+| Startup                              | `@lapismd/design-core/workspace/startup`         | DC-WS-027   |
+| Status Bar                           | `@lapismd/design-core/workspace/status-bar`      | DC-WS-028   |
+| Status Item                          | `@lapismd/design-core/workspace/status-item`     | DC-WS-029   |
+| Workspace Tabs                       | `@lapismd/design-core/workspace/tabs`            | DC-WS-030   |
+| Workspace Tree                       | `@lapismd/design-core/workspace/tree`            | DC-WS-031   |
+| View Header                          | `@lapismd/design-core/workspace/view-header`     | DC-WS-032   |
+| Managed plugins                      | `@lapismd/design-core/workspace`                 | DC-WS-039   |
+| Desktop drag                         | Workspace chrome                                 | DC-WS-042   |
+| Workspace dock commands              | `@lapismd/design-core/workspace`                 | DC-WS-060   |
+| Tab title-bar default                | `@lapismd/design-core/workspace/settings`        | DC-WS-061   |
+| Window-controls safe area            | Workspace chrome                                 | DC-WS-062   |
+| Workspace tab cursors                | Workspace tabs                                   | DC-WS-063   |
+| Narrow settings navigation           | `@lapismd/design-core/workspace/settings`        | DC-WS-064   |
+| Controlled settings sources          | `@lapismd/design-core/workspace/settings`        | DC-WS-065   |
+| Custom field adapters                | `@lapismd/design-core/workspace/settings`        | DC-WS-066   |
+| Settings copyable output             | `@lapismd/design-core/workspace/settings`        | DC-WS-067   |
+| Settings object-row actions          | `@lapismd/design-core/workspace/settings`        | DC-WS-068   |
 
 ## DC-WS-008 — About Dialog
 
@@ -69,18 +78,18 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 - The public boundary is `@lapismd/design-core/workspace/bottom-panel`.
 - The top resize rail and nested panel dividers MUST expose row and column resize cursors respectively.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The visibility toggle MUST use PanelToggle's default ghost button styling and fixed standard icon, including hover/focus preview, without growing when expanded; the legacy size prop remains accepted.
 - The family MUST NOT host the dock visibility toggle in the right sidebar header; see DC-WS-048.
 
 ## DC-WS-045 — Bottom Panel status clearance
 
-**Requirement.** The Bottom Panel view container MUST pad its block-end by `--ui-workspace-status-height` so the last hosted row remains visible above the status bar.
+**Requirement.** The Bottom Panel MUST fit above the App Shell status footer without status-specific padding or spacer rows in hosted views.
 
 ### Acceptance details
 
 - The public boundary remains `@lapismd/design-core/workspace/bottom-panel`.
-- A `workspace-view-host` inside `.ui-workspace-bottom-panel__content` MUST set `padding-block-end` to `var(--ui-workspace-status-height)`.
-- The catalog MUST assert that computed padding on the hosted view container.
+- The shell MUST reserve footer space across every bottom-panel alignment.
+- The catalog MUST assert non-overlapping bounds and last-row reachability without status-specific hosted-view padding.
 
 ## DC-WS-010 — Command Palette
 
@@ -189,6 +198,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - Top-tab triggers MUST compute `cursor: pointer` at rest and while active.
 - Stacked-tab triggers MUST compute `cursor: pointer` at rest and while active.
 - Cursor presentation MUST NOT remove or replace either drag input path.
+- Compact top tabs MUST hide their label independently of the selectable, draggable title button, retaining its hit area beneath separate menu/close controls; hover MUST NOT move that title hit target under the pointer or turn a tab press into a close action.
 
 ## DC-WS-056 — Settings dialog reveal
 
@@ -267,7 +277,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 - The public boundary is `@lapismd/design-core/workspace/mobile`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
-- The tab-count action MUST include its visible count in its accessible name.
+- The tab-count action MUST include its visible count as a separate readable token in its accessible name.
 
 ## DC-WS-018 — Popout Surface
 
@@ -278,6 +288,8 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - The public boundary is `@lapismd/design-core/workspace/popout`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
+- Popup transfers, close admission, document ownership and native-control clearance MUST follow [the popup contracts](framework.md#dc-ws-076).
+
 ## DC-WS-019 — Ribbon
 
 **Requirement.** The Ribbon family MUST present registered workspace destinations and actions in a compact navigation rail.
@@ -285,7 +297,8 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/ribbon`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The default left App Shell ribbon MUST offer Settings in its bottom actions, opening the existing settings dialog while retaining the sidebar Settings action.
+- The catalog MUST demonstrate settings access while the left sidebar is collapsed.
 
 ## DC-WS-020 — Settings
 
@@ -410,7 +423,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/sidebar-group`.
+- The public boundary is `@lapismd/design-core/workspace/sidebar-group`; heading names MUST retain complete resolved view titles and visible badge values with their expansion action.
 - Sidebar groups MUST restore nested views to workspace primary and secondary backgrounds while preserving panel-painted group chrome.
 - Stacked panel dividers MUST expose a row resize cursor.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
@@ -422,6 +435,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/sidebar-toggle`.
+- Left and right toggles MUST use PanelToggle's default ghost button styling and fixed standard icon, including hover/focus preview, without growing when expanded; hint identity, drag exclusions, controlled callbacks and the legacy size prop remain available.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-025 — Workspace Split
@@ -456,12 +470,14 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ## DC-WS-028 — Status Bar
 
-**Requirement.** The Status Bar family MUST compose registered status content and actions into a stable landmark.
+**Requirement.** The Status Bar MUST provide a full-width, fixed-height footer with left, centered and right contribution regions. Activity text MUST NOT change footer geometry or displace side contributions. Host-supplied safe-area insets MUST protect edge controls while keeping the background full width.
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/status-bar`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The public boundary is `@lapismd/design-core/workspace/status-bar`; the default height MUST remain 1.5rem and centered width MUST default to 24rem through public tokens.
+- The centre MUST retain its width while idle and truncate long text; its midpoint MUST match the application midpoint, including with unequal inline safe-area insets.
+- Side overflow MUST preserve registry order, retain higher-priority items first and keep hidden contributions accessible through keyboard-operable popovers before reducing the centre.
+- Resizing and overflow MUST retain custom control identity and mount lifetime; the desktop footer MUST NOT introduce mobile chrome.
 
 ## DC-WS-029 — Status Item
 
@@ -469,7 +485,8 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/status-item`.
+- The public boundary is `@lapismd/design-core/workspace/status-item`; accessible names MUST retain complete visible segments as readable words even when a tooltip embeds a numeric label inside parentheses.
+- A custom `mount(host)` MAY own controls and CSS instead of built-in chrome; its returned disposer MUST run on replacement/removal, including while overflowed, with the owner providing accessible controls and resource cleanup.
 - An action's accessible name MUST contain its visible label or segments together with its tooltip context.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
@@ -478,7 +495,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 **Requirement.** The Workspace Tabs family MUST compose controlled workspace tabs with selection, close, overflow, and reorder actions.
 
 The family presents the shared controller pane menu, including Move to
-sidebar destinations marked with the `move` icon.
+main-body and sidebar destinations marked with the `move` icon.
 
 ### Acceptance details
 
@@ -578,3 +595,14 @@ sidebar destinations marked with the `move` icon.
 - The outer control MUST retain the standard horizontal padding and Settings height.
 - File-button height plus vertical padding and borders MUST fit inside that outer height.
 - File selection, disabled state and accessible labeling MUST retain the public Input behavior.
+
+## DC-WS-082 — Declarative unit and file inputs
+
+**Requirement.** Settings MUST provide first-party quantity and file-path inputs through their existing controlled sources.
+
+### Acceptance details
+
+- Numeric fields MAY declare `quantity` units, preferred unit and bounded slider metadata while retaining canonical safe-integer numeric persistence.
+- String fields MAY declare `filePicker` metadata with host-owned browse and error callbacks, without transferring filesystem or import authority.
+- Unit selection and cancelled browsing MUST not write, while invalid numeric drafts remain editable without replacing the retained value.
+- Settings MUST compose the generic Forms QuantityInput, FilePathInput and PasswordInput with shared validation, reset and disabled/read-only semantics.

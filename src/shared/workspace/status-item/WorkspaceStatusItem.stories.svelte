@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, within } from "storybook/test";
+  import { expect, userEvent, within, waitFor } from "storybook/test";
   import type { WorkspaceStatusItem as WorkspaceStatusItemModel } from "../core/types.js";
   import * as exampleSources from "./WorkspaceStatusItem.example-sources.js";
   import WorkspaceStatusItem from "./WorkspaceStatusItem.svelte";
@@ -28,6 +28,25 @@
 
 <script lang="ts">
   let result = $state("Nothing selected");
+  let mounted = $state(true);
+  let disposals = $state(0);
+  const customItem: WorkspaceStatusItemModel & {
+    mount: (host: HTMLElement) => () => void;
+  } = {
+    id: "custom",
+    mount(host) {
+      const button = document.createElement("button");
+      button.textContent = "Custom status details";
+      button.onclick = () => {
+        result = "Custom selected";
+      };
+      host.append(button);
+      return () => {
+        button.remove();
+        disposals += 1;
+      };
+    },
+  };
   const actionItem: WorkspaceStatusItemModel = {
     id: "ready",
     icon: "circle-check",
@@ -128,5 +147,49 @@
         item={{ ...menuItem, label: "3 plugins", tooltip: "Manage plugins" }}
       />
     </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Owned custom content"
+  tags={["visual-pending", "!autodocs"]}
+  play={async ({ canvas }) => {
+    await waitFor(() =>
+      expect(
+        getComputedStyle(
+          canvas.getByRole("button", { name: "Custom status details" }),
+        ).pointerEvents,
+      ).not.toBe("none"),
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Custom status details" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Custom selected",
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Toggle custom status" }),
+    );
+    await expect(
+      canvas.queryByRole("button", { name: "Custom status details" }),
+    ).toBeNull();
+    await expect(canvas.getByRole("status")).toHaveTextContent("Disposed 1");
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/status-item/owned-custom-content-chromium.png",
+      ],
+    },
+  }}
+>
+  {#snippet template()}
+    <button
+      onclick={() => {
+        mounted = !mounted;
+      }}>Toggle custom status</button
+    >
+    {#if mounted}<WorkspaceStatusItem item={customItem} />{/if}
+    <output class="sr-only">{result} · Disposed {disposals}</output>
   {/snippet}
 </Story>

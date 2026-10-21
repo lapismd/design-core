@@ -102,7 +102,7 @@ test("avatar local previews and inline full emoji keyboard search work without a
   await expect(search).toBeVisible();
   await page.getByRole("button", { name: "Done", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "Choose avatar", exact: true }),
+    page.getByRole("button", { name: /^Choose avatar: / }),
   ).toBeFocused();
 });
 

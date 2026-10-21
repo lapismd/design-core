@@ -86,7 +86,11 @@
   --ui-workspace-resize-handle-size: 1px;
   --ui-workspace-resize-handle-active-size: 2px;
   --ui-workspace-ribbon-width: 3rem;
+  --ui-workspace-safe-area-inline-start: 0px;
+  --ui-workspace-safe-area-inline-end: 0px;
+  --ui-workspace-safe-area-block-end: 0px;
   --ui-workspace-status-height: 1.5rem;
+  --ui-workspace-status-center-width: 24rem;
   --ui-workspace-settings-heading-size: 1rem;
   --ui-workspace-settings-heading-weight: 700;
   --ui-workspace-settings-label-size: 0.9375rem;

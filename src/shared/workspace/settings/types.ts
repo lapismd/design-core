@@ -2,6 +2,7 @@ import type { WorkspaceIconName } from "../core/types.js";
 import type { AppShellController } from "../core/app-shell-controller.svelte.js";
 import type { WorkspaceSettingsController } from "./settings-controller.svelte.js";
 import type { Component } from "svelte";
+import type { QuantityUnit } from "../../forms/quantity-input/quantity.js";
 
 export interface WorkspaceSettingOption<T extends string = string> {
   value: T;
@@ -39,6 +40,12 @@ export interface WorkspaceStringSetting extends WorkspaceSettingBase {
     | "icon"
     | "combobox"
     | "password";
+  /** A host-owned native chooser; selection only updates this string setting. */
+  filePicker?: {
+    browse?: () => Promise<string | null>;
+    onError?: (error: unknown) => void;
+    label?: string;
+  };
   placeholder?: string;
   minLength?: number;
   maxLength?: number;
@@ -54,6 +61,13 @@ export interface WorkspaceNumberSetting extends WorkspaceSettingBase {
   minimum?: number;
   maximum?: number;
   step?: number;
+  /** Exact integer canonical units; display conversion never changes persistence. */
+  quantity?: {
+    units: readonly QuantityUnit[];
+    preferredUnit?: string;
+    slider?: boolean;
+    sliderMax?: number;
+  };
 }
 
 export interface WorkspaceEnumSetting extends WorkspaceSettingBase {

@@ -14,7 +14,7 @@
       docs: {
         description: {
           component:
-            "Lapis-shaped bottom-right status surface backed by the controller status registry.",
+            "Full-width stable footer status surface backed by the controller status registry.",
         },
         source: {
           code: exampleSources.Basic,
@@ -50,7 +50,7 @@
 
 <Story
   name="Left and right contributions"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await expect(canvas.getByLabelText("Workspace status")).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "v1.12.3" }));

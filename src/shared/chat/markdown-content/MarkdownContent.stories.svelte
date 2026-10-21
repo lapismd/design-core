@@ -1,4 +1,5 @@
 <script module lang="ts">
+  import { spoilerExtension } from "./spoiler-extension.js";
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
   import { MarkdownContent } from "../index.js";
@@ -59,5 +60,28 @@
     await expect(
       canvasElement.querySelector('[onerror],a[href^="javascript:"]'),
     ).toBeNull();
+  }}
+/>
+
+<Story
+  name="Inline spoilers"
+  play={async ({ canvas }) => {
+    const spoiler = canvas.getByRole("button", { name: "Reveal spoiler" });
+    await userEvent.click(spoiler);
+    await expect(spoiler).toHaveAccessibleName("forty-two");
+    await expect(canvas.getByText("||Code stays literal||")).toBeVisible();
+  }}
+  args={{
+    content: "The answer is ||forty-two||.\n\n`||Code stays literal||`",
+    extensions: [spoilerExtension],
+  }}
+  parameters={{
+    docs: {
+      source: {
+        code: sources.Spoilers,
+        language: "tsx",
+        type: "code",
+      },
+    },
   }}
 />

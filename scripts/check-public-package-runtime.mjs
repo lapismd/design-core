@@ -87,6 +87,62 @@ async function checkPrimitiveStates(page) {
   assert.equal(styles.standardPanelWidth, "16px");
   assert.equal(styles.standardPanelHeight, "16px");
   assert.equal(styles.composedIconWidth, "20px");
+  const packedTool = page.locator('[data-review="reconciled-tool"]');
+  const toolDisclosure = packedTool.getByRole("button", {
+    name: /details for file.read Docs README.md/,
+  });
+  await toolDisclosure.waitFor();
+  assert.ok(await toolDisclosure.getAttribute("aria-labelledby"));
+  assert.equal(await packedTool.getByRole("status").count(), 0);
+  for (const text of ["Docs", "README.md", "+2", "−1", "4 lines"])
+    assert.ok((await toolDisclosure.innerText()).includes(text));
+  if ((await toolDisclosure.getAttribute("aria-expanded")) !== "true")
+    await toolDisclosure.click();
+  assert.equal(
+    await packedTool.getByText("Packed captured output").isVisible(),
+    true,
+  );
+  const keyword = page.locator(
+    '[data-review="reconciled-syntax"] .ui-code-token-keyword',
+  );
+  await keyword.waitFor();
+  const darkSyntax = await page.evaluate(() =>
+    document.documentElement.classList.contains("dark"),
+  );
+  assert.equal(
+    await keyword.evaluate((element) => getComputedStyle(element).color),
+    darkSyntax ? "rgb(196, 181, 253)" : "rgb(91, 33, 182)",
+  );
+  const workspaceToggles = await page
+    .locator(
+      "[data-workspace-sidebar-toggle], [data-workspace-bottom-panel-toggle]",
+    )
+    .evaluateAll((buttons) =>
+      buttons.map((button) => {
+        const icon = button.querySelector("svg");
+        return {
+          host: button.getAttribute("data-ui-component"),
+          variant: button.getAttribute("data-variant"),
+          size: button.getAttribute("data-size"),
+          width: getComputedStyle(button).width,
+          height: getComputedStyle(button).height,
+          iconWidth: getComputedStyle(icon).width,
+          iconHeight: getComputedStyle(icon).height,
+        };
+      }),
+    );
+  assert.deepEqual(
+    workspaceToggles,
+    Array.from({ length: 6 }, () => ({
+      host: "button",
+      variant: "ghost",
+      size: "icon-xs",
+      width: "28px",
+      height: "24px",
+      iconWidth: "16px",
+      iconHeight: "16px",
+    })),
+  );
   await page.getByRole("tab", { name: "Archive details" }).click();
   assert.equal(
     await page.getByText("Archive details panel", { exact: true }).isVisible(),
@@ -114,7 +170,7 @@ async function checkPrimitiveStates(page) {
     "🔥",
   );
   await page
-    .getByRole("button", { name: "Choose avatar", exact: true })
+    .getByRole("button", { name: "Choose avatar: PP", exact: true })
     .click();
   await page
     .getByRole("textbox", { name: "Avatar image URL" })
@@ -201,6 +257,260 @@ async function checkPrimitiveStates(page) {
   );
 }
 
+async function checkTranscriptAdditions(page) {
+  const scope = page.locator('[data-review="archive-followups"]');
+  // checkStyles repeats the interaction scenario for both themes.
+  await scope
+    .getByRole("button", { name: "Reset archive followups", exact: true })
+    .click();
+  const queue = scope.locator('[data-ui-component="message-queue"]');
+  assert.equal(await queue.getByRole("article").count(), 1);
+  await queue
+    .getByRole("button", {
+      name: "Cancel queued message for Assistant",
+      exact: true,
+    })
+    .click();
+  assert.equal(await queue.getByRole("article").count(), 1);
+  assert.equal(
+    await queue
+      .getByRole("button", {
+        name: "Cancel queued message for Assistant",
+        exact: true,
+      })
+      .isDisabled(),
+    true,
+  );
+  await scope
+    .getByRole("button", { name: "Queue message", exact: true })
+    .click();
+  assert.equal(
+    await scope.getByTestId("archive-queue-result").textContent(),
+    "Queued",
+  );
+  await scope.getByRole("button", { name: "Stop agent", exact: true }).click();
+  assert.equal(
+    await scope.getByTestId("archive-queue-result").textContent(),
+    "Stop requested",
+  );
+  await scope
+    .getByRole("button", { name: "<acp_context>", exact: true })
+    .click();
+  assert.equal(
+    await scope.locator('[data-prompt-element="<first />"]').isVisible(),
+    true,
+  );
+  const sentContext = scope.locator('[data-ui-component="sent-context"]');
+  await sentContext
+    .getByRole("button", { name: "Context delivery unknown", exact: true })
+    .click();
+  await sentContext
+    .getByRole("button", { name: "<sent_application_context>", exact: true })
+    .click();
+  assert.equal(
+    await sentContext.getByText("Captured", { exact: false }).isVisible(),
+    true,
+  );
+  await sentContext
+    .getByRole("button", { name: "Show raw context", exact: true })
+    .click();
+  assert.match(
+    await sentContext
+      .getByRole("region", { name: "Raw context", exact: true })
+      .textContent(),
+    /unknown/,
+  );
+  await sentContext
+    .getByRole("button", { name: "Show rendered context", exact: true })
+    .click();
+  assert.equal(
+    await sentContext.getByText("Captured", { exact: false }).isVisible(),
+    true,
+  );
+}
+
+async function checkTranscript(page) {
+  const capture = page.getByRole("textbox", {
+    name: "Archive capture",
+    exact: true,
+  });
+  await capture.waitFor();
+  assert.equal(await capture.getAttribute("aria-readonly"), "true");
+  assert.equal(
+    await page
+      .locator('[data-review="archive-transcript"] .ui-transcript-message')
+      .first()
+      .evaluate((node) => getComputedStyle(node).gap),
+    "8px",
+  );
+  await page
+    .getByRole("button", { name: "Comment on archive capture", exact: true })
+    .click();
+  const pending = page.getByRole("group", {
+    name: "Pending comments",
+    exact: true,
+  });
+  await pending.waitFor();
+  assert.equal(
+    await pending
+      .getByRole("textbox", { name: "Comment on Archive capture", exact: true })
+      .textContent(),
+    "Review this capture",
+  );
+  await page
+    .getByRole("button", { name: "Toggle archive transcript", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Toggle archive transcript", exact: true })
+    .click();
+  await page
+    .getByRole("group", { name: "Pending comments", exact: true })
+    .waitFor();
+  await page
+    .getByRole("button", { name: "Deliver archive comments", exact: true })
+    .click();
+  assert.equal(
+    await page.getByTestId("archive-comment-result").textContent(),
+    "acknowledged",
+  );
+  assert.equal(
+    await page
+      .getByRole("img", { name: "Sent", exact: true })
+      .last()
+      .isVisible(),
+    true,
+  );
+  await page
+    .getByRole("button", { name: "Edit last archive comment", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Deliver archive comments", exact: true })
+    .click();
+  await page.waitForFunction(
+    () =>
+      document.querySelector('[data-testid="archive-edit-result"]')
+        ?.textContent === "versioned replacement acknowledged",
+  );
+  assert.equal(
+    await page
+      .locator('[data-review="archive-transcript"] time')
+      .getAttribute("datetime"),
+    "2026-10-08T12:00:00Z",
+  );
+  const dock = page.locator('[data-review="archive-dock"]');
+  await dock
+    .getByRole("button", { name: "Formatting options", exact: true })
+    .waitFor();
+  assert.equal(
+    await dock
+      .getByRole("group", {
+        name: "Message formatting and actions",
+        exact: true,
+      })
+      .count(),
+    1,
+  );
+  await page
+    .getByRole("button", { name: "Toggle docked composer", exact: true })
+    .click();
+  await dock
+    .getByRole("button", { name: "Formatting options", exact: true })
+    .waitFor({ state: "detached" });
+  await page
+    .getByRole("button", { name: "Toggle docked composer", exact: true })
+    .click();
+  await dock
+    .getByRole("button", { name: "Formatting options", exact: true })
+    .waitFor();
+  await checkTranscriptAdditions(page);
+}
+
+async function checkCommunityComponents(page) {
+  const scope = page.locator('[data-review="community-components"]');
+  assert.equal(
+    await scope.getByRole("group", { name: "Archive participants" }).count(),
+    1,
+  );
+  const replyGroup = scope.getByRole("button", {
+    name: "Packed replies",
+    exact: true,
+  });
+  assert.equal(await replyGroup.locator("button, [tabindex]").count(), 0);
+  assert.equal(
+    await replyGroup.locator('[data-ui-component="avatar-group"]').count(),
+    0,
+  );
+  const participants = scope.getByRole("group", {
+    name: "Packed reply participants",
+  });
+  assert.equal(await participants.getByRole("button").count(), 2);
+  const participant = participants.getByRole("button", {
+    name: "About Archive author, AA",
+    exact: true,
+  });
+  await participant.hover();
+  const participantCard = page.getByRole("group", {
+    name: "About Archive author",
+    exact: true,
+  });
+  await participantCard.waitFor();
+  assert.equal(
+    await participantCard.locator('[data-ui-component="author-card"]').count(),
+    1,
+  );
+  await page.keyboard.press("Escape");
+  await participantCard.waitFor({ state: "hidden" });
+  assert.equal(
+    await participants
+      .locator('[data-ui-component="avatar"]')
+      .evaluate((node) => getComputedStyle(node).width),
+    "20px",
+  );
+  assert.equal(
+    await participants
+      .locator(".ui-avatar-group__overflow")
+      .evaluate((node) => getComputedStyle(node).width),
+    "20px",
+  );
+  const replyClicks = scope.getByTestId("packed-reply-clicks");
+  const previousClicks = Number(await replyClicks.textContent());
+  await replyGroup.focus();
+  await page.keyboard.press("Enter");
+  assert.equal(Number(await replyClicks.textContent()), previousClicks + 1);
+  const author = scope
+    .locator('[data-review="archive-author"]')
+    .getByRole("button", {
+      name: "About Archive author, AA",
+      exact: true,
+    });
+  await author.click();
+  await page.getByRole("dialog", { name: "About Archive author" }).waitFor();
+  await page.keyboard.press("Escape");
+  assert.equal(
+    await author.evaluate((node) => node === document.activeElement),
+    true,
+  );
+  const spoiler = scope.locator('[data-ui-component="spoiler"]');
+  await spoiler.click();
+  assert.equal(await spoiler.getAttribute("aria-pressed"), "true");
+  await spoiler.click();
+  assert.equal(
+    await scope
+      .getByRole("link", { name: "example.com Archive link", exact: true })
+      .count(),
+    1,
+  );
+  const quantity = scope.getByRole("spinbutton", { name: "Archive quantity" });
+  assert.equal(await quantity.inputValue(), "1");
+  assert.equal(
+    await scope.locator('[data-ui-component="thread-panel"]').count(),
+    1,
+  );
+  const reply = scope.getByRole("textbox", { name: "Reply", exact: true });
+  await reply.fill("Retain the archive reply");
+  assert.equal(await reply.textContent(), "Retain the archive reply");
+}
+
 async function checkStyles(page) {
   await page.evaluate(() => document.fonts.ready);
   const font = await page.evaluate(() => ({
@@ -238,6 +548,8 @@ async function checkStyles(page) {
   assert.equal(inputStyle.border, "solid");
   assert.notEqual(inputStyle.shadow, "none");
   await checkPrimitiveStates(page);
+  await checkTranscript(page);
+  await checkCommunityComponents(page);
   const light = await page.evaluate(
     () => getComputedStyle(document.body).backgroundColor,
   );
@@ -247,6 +559,8 @@ async function checkStyles(page) {
   );
   assert.notEqual(dark, light);
   await checkPrimitiveStates(page);
+  await checkTranscript(page);
+  await checkCommunityComponents(page);
   await page.evaluate(() => document.documentElement.classList.remove("dark"));
   const override = page.getByRole("button", {
     name: "Token override",
@@ -311,15 +625,39 @@ import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
 import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
 import * as Alert from "@lapismd/design-core/shadcn/alert";
 import { PanelToggle, PanelToggleIcon, type PanelToggleIconProps } from "@lapismd/design-core/shadcn/panel-toggle";
+import { CodeBlock } from "@lapismd/design-core/shadcn/code-block";
+import { ToolCalls } from "@lapismd/design-core/ai/chat";
+import { WorkspaceSidebarToggle } from "@lapismd/design-core/workspace/sidebar-toggle";
+import { WorkspaceBottomPanelToggle } from "@lapismd/design-core/workspace/bottom-panel";
 import { EmojiPicker } from "@lapismd/design-core/shadcn/emoji-picker";
 import { ResponsiveTabs } from "@lapismd/design-core/shadcn/responsive-tabs";
 import { TagList, type TagListItem, type TagListProps } from "@lapismd/design-core/shadcn/tag-list";
-import { Avatar } from "@lapismd/design-core/shadcn/avatar";
+import { Avatar, AvatarGroup, type AvatarIdentity, type AvatarSize } from "@lapismd/design-core/shadcn/avatar";
+import { AuthorCard } from "@lapismd/design-core/shadcn/author-card";
+import { ReferenceChip } from "@lapismd/design-core/shadcn/reference-chip";
+import { LinkPreview } from "@lapismd/design-core/shadcn/link-preview";
+import { Spoiler } from "@lapismd/design-core/shadcn/spoiler";
+import { RelativeTime } from "@lapismd/design-core/shadcn/relative-time";
+import { QuantityInput, bytesUnits } from "@lapismd/design-core/forms/quantity-input";
+import { ThreadPanel } from "@lapismd/design-core/chat";
 import { AvatarPicker } from "@lapismd/design-core/forms";
-import { MarkdownContent, Message as SharedMessage } from "@lapismd/design-core/chat";
+import { MarkdownContent, MarkdownComposer, Message as SharedMessage, Transcript, TranscriptFooter, MessageQueue, PromptContext, SentContext, TranscriptController, HistoryEdge, CommentQueue, type TranscriptItem } from "@lapismd/design-core/chat";
+import type { Snippet } from "svelte";
 import { Message as LegacyMessage } from "@lapismd/design-core/ai/chat";
 import { AppShell } from "@lapismd/design-core/shell";
 if (SharedMessage !== LegacyMessage) throw new Error("Chat compatibility export differs");
+let transcriptShown = $state(true);
+let transcriptResult = $state("");
+const transcriptBlock = { id: "archive/source", revision: "v1", kind: "markdown" as const, label: "Archive capture", text: "Captured café 👩🏽‍💻. Exact immutable source." };
+const transcriptItems: TranscriptItem[] = [{ id: "archive/message", kind: "message", role: "assistant", label: "Archive message", author: {id: "agent", name: "Assistant"}, createdAt: "2026-10-08T12:00:00Z", edited: true, blocks: [transcriptBlock] }];
+const transcriptController = new TranscriptController(() => ({ items: transcriptItems, canComment: true, canEditComment: () => true, onSend: (snapshot) => { transcriptResult = "acknowledged"; return {publication: "published", batchId: snapshot.id, commentVersions: Object.fromEntries(snapshot.comments.map(comment => [comment.commentId, comment.editOf ? "v2" : "v1"]))}; } }));
+let dockShown = $state(true);
+let dockActions = $state<Snippet>();
+const emptyController = new TranscriptController(() => ({items: []}));
+let archiveHasContent = $state(true);
+let archiveFollowupsRevision = $state(0);
+let archiveQueueResult = $state("");
+let archiveQueue = $state([{id:"waiting",submission:{id:"waiting",text:"Retained queued message",comments:[]},recipients:[{id:"assistant",label:"Assistant",state:"queued" as const,cancelling:false}]}]);
 let avatarValue = $state("");
 let navigationValue = $state("overview");
 import { EmojiPicker as LegacyEmojiPicker } from "@lapismd/design-core/ai/experimental";
@@ -327,6 +665,7 @@ import HandleLifecycle from "./HandleLifecycle.svelte";
 if (EmojiPicker !== LegacyEmojiPicker) throw new Error("Emoji compatibility export differs");
 let selectedEmoji = $state("");
 let selectedTag = $state("");
+let packedReplyClicks = $state(0);
 const tags: readonly TagListItem[] = [
   { id: "first", label: "Pinned" },
   { id: "long", label: "A long label preserved in the archive popover" },
@@ -353,6 +692,15 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <Alert.Root data-review="alert"><svg aria-hidden="true" width="16" height="16"><circle cx="8" cy="8" r="6" /></svg><Alert.Title>Archive notice</Alert.Title><Alert.Description>Icon alignment.</Alert.Description></Alert.Root>
 {#each panelVariants as iconVariant}{#each panelSides as side}<PanelToggle {iconVariant} {side} expanded data-review={['panel', iconVariant, side].join('-')} />{/each}{/each}
 <PanelToggleIcon {...panelIcon} class="packed-panel-icon" data-review="panel-icon-only" />
+{#snippet packedToolDetail()}<p>Packed captured output</p>{/snippet}
+{#snippet packedToolStats()}4 lines{/snippet}
+<div data-review="reconciled-tool"><ToolCalls calls={[{id:"read",name:"file.read",node:"Docs",target:"README.md",status:"running",additions:2,deletions:1,stats:packedToolStats,detail:packedToolDetail}]} /></div>
+<div data-review="reconciled-syntax"><CodeBlock code="const answer = 42;" language="javascript" highlightMode="spans" /></div>
+{#each [false, true] as expanded}
+<WorkspaceSidebarToggle side="left" label="Packed left sidebar" size="small" {expanded} onSelect={() => {}} />
+<WorkspaceSidebarToggle side="right" label="Packed right sidebar" {expanded} onSelect={() => {}} />
+<WorkspaceBottomPanelToggle {expanded} onSelect={() => {}} />
+{/each}
 <EmojiPicker triggerLabel="Packed emoji" onSelect={(emoji) => selectedEmoji = emoji} />
 <output data-testid="packed-emoji-selection">{selectedEmoji}</output>
 <ResponsiveTabs bind:value={navigationValue} items={[{ value: "overview", label: "Overview" }, { value: "files", label: "Files" }]} />
@@ -363,6 +711,42 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <output data-testid="packed-avatar-value">{avatarValue}</output>
 <AppShell.Topbar>{#snippet center()}<span data-testid="packed-topbar-center">Shared top bar</span>{/snippet}</AppShell.Topbar>
 <MarkdownContent content="# Packed Markdown" />
+<Button onclick={() => transcriptController.open(transcriptBlock,{from:0,to:8},"Review this capture")}>Comment on archive capture</Button>
+<Button onclick={() => transcriptShown = !transcriptShown}>Toggle archive transcript</Button>
+<Button onclick={() => { void transcriptController.send(); }}>Deliver archive comments</Button>
+<Button onclick={() => {
+  const thread = transcriptController.threads.at(-1);
+  const comment = thread?.comments.filter(entry => entry.status === "sent" && !entry.historical).at(-1);
+  if (thread && comment) { transcriptController.editSent(thread, comment); transcriptController.draft = "Updated archive comment"; }
+}}>Edit last archive comment</Button>
+<output data-testid="archive-edit-result">{transcriptController.threads.at(-1)?.comments.some(comment => comment.version === "v2" && comment.status === "sent") ? "versioned replacement acknowledged" : ""}</output>
+<output data-testid="archive-comment-result">{transcriptResult}</output>
+<HistoryEdge state="loading" /><CommentQueue state={emptyController} />
+{#if transcriptShown}<div data-review="archive-transcript" style="height:320px"><Transcript items={transcriptItems} commentState={transcriptController}>{#snippet composer()}<span>Host composer</span>{/snippet}</Transcript></div>{/if}
+<Button onclick={() => dockShown = !dockShown}>Toggle docked composer</Button>
+{#if dockShown}<MarkdownComposer presentation="document" dockActions bind:documentActions={dockActions} showSendButton={false} onSubmit={() => {}} />{/if}
+<div data-review="archive-dock"><TranscriptFooter>{#snippet actions()}{@render dockActions?.()}{/snippet}</TranscriptFooter></div>
+<section data-review="archive-followups">
+<Button onclick={() => { archiveHasContent = true; archiveQueueResult = ""; archiveQueue = archiveQueue.map(entry => ({...entry,recipients:entry.recipients.map(recipient => ({...recipient,cancelling:false}))})); archiveFollowupsRevision++; }}>Reset archive followups</Button>
+{#key archiveFollowupsRevision}
+<MessageQueue entries={archiveQueue} onCancel={() => {archiveQueue = archiveQueue.map(entry => ({...entry,recipients:entry.recipients.map(recipient => ({...recipient,cancelling:true}))}));}} />
+<TranscriptFooter busy canSend hasContent={archiveHasContent} onSend={() => {archiveHasContent=false;archiveQueueResult="Queued";}} onStop={() => {archiveQueueResult="Stop requested";}} />
+<output data-testid="archive-queue-result">{archiveQueueResult}</output>
+<PromptContext content={'<acp_context><first /><second /></acp_context>'} />
+<SentContext delivery="unknown" content={'<sent_application_context>\\n## Application state\\n\\nCaptured **Markdown**.\\n</sent_application_context>'} rawContent={JSON.stringify({delivery:"unknown"})} />
+{/key}
+</section>
+{#snippet packedParticipant(person: AvatarIdentity, size: AvatarSize)}<AuthorCard author={person} {size} description="Packed participant details" />{/snippet}
+<section data-review="community-components">
+<AvatarGroup items={[{id:"archive-author",name:"Archive author"}]} label="Archive participants" />
+<span><AvatarGroup items={[{id:"archive-author",name:"Archive author"},{id:"archive-agent",name:"Archive agent",emoji:"🐝"}]} size="xs" max={1} label="Packed reply participants" avatar={packedParticipant} /><Button aria-label="Packed replies" onclick={() => packedReplyClicks += 1}>2 replies</Button></span>
+<output data-testid="packed-reply-clicks">{packedReplyClicks}</output>
+<div data-review="archive-author"><AuthorCard author={{id:"archive-author",name:"Archive author"}} interaction="popover" description="Host supplied details" /></div>
+<ReferenceChip label="Archive reference" /><LinkPreview href="https://example.com" title="Archive link" />
+<Spoiler>Archive concealed text</Spoiler><RelativeTime timestamp="2026-10-17T12:00:00Z" now={Date.parse("2026-10-17T12:05:00Z")} />
+<QuantityInput id="archive-quantity" label="Archive quantity" value="1048576" units={bytesUnits} preferredUnit="MiB" min={0} max={1073741824} onValueChange={() => {}} />
+<div style="height:320px"><ThreadPanel rootId="archive-root" messages={[{id:"archive-root",author:{id:"archive-author",name:"Archive author"},content:"A shared thread."}]} onSubmit={() => {}} /></div>
+</section>
 </main>`,
     );
     copyFileSync(

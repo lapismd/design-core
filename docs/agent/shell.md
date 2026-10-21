@@ -205,3 +205,5 @@ transparent, including while hovered, expanded, previewed or dragged; keyboard
 resize focus remains visible. Document-local toggles sit inside the body's left
 and right edges, with content inset below them. The outer workspace-inspector
 toggle sits at the right of the document header.
+
+Prefer `PanelToggleIcon` for sidebar visibility icons, `PanelToggle` for a standalone controlled button, and the existing Workspace/AppShell toggle when controller integration is needed.

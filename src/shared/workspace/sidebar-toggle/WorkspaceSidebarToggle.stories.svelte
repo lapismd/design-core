@@ -5,12 +5,13 @@
 
   const { Story } = defineMeta({
     title: "Workspace/Components/Sidebar Toggle",
+    tags: ["visual-pending"],
     component: WorkspaceSidebarToggle,
     parameters: {
       docs: {
         description: {
           component:
-            "Source-shaped left and right sidebar visibility control with serializable F-mode hint metadata.",
+            "Shared PanelToggle styling and fixed standard icons with controlled Workspace visibility and serializable F-mode hint metadata.",
         },
       },
     },
@@ -19,12 +20,22 @@
 
 <script lang="ts">
   let selected = $state("No sidebar selected");
+  let leftExpanded = $state(false);
+  let rightExpanded = $state(true);
 </script>
 
 <Story
   name="Both sidebar directions"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
+    for (const button of canvas.getAllByRole("button")) {
+      await expect(button).toHaveAttribute("data-panel-toggle");
+      await expect(button).toHaveAttribute("data-size", "icon-xs");
+      await expect(button.getBoundingClientRect().width).toBe(28);
+      await expect(
+        button.querySelector("svg")!.getBoundingClientRect().width,
+      ).toBe(16);
+    }
     await userEvent.click(
       canvas.getByRole("button", { name: "Toggle right sidebar" }),
     );
@@ -49,12 +60,20 @@
       <WorkspaceSidebarToggle
         side="left"
         label="Toggle left sidebar"
-        onSelect={() => (selected = "Left sidebar selected")}
+        expanded={leftExpanded}
+        onSelect={() => {
+          leftExpanded = !leftExpanded;
+          selected = "Left sidebar selected";
+        }}
       />
       <WorkspaceSidebarToggle
         side="right"
         label="Toggle right sidebar"
-        onSelect={() => (selected = "Right sidebar selected")}
+        expanded={rightExpanded}
+        onSelect={() => {
+          rightExpanded = !rightExpanded;
+          selected = "Right sidebar selected";
+        }}
       />
       <output class="sr-only">{selected}</output>
     </div>

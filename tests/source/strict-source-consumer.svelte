@@ -1,4 +1,49 @@
 <script lang="ts">
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import {
+    AvatarGroup,
+    type AvatarIdentity,
+    type AvatarSize,
+  } from "@lapismd/design-core/shadcn/avatar";
+  import { AuthorCard } from "@lapismd/design-core/shadcn/author-card";
+  import { ReferenceChip } from "@lapismd/design-core/shadcn/reference-chip";
+  import { LinkPreview } from "@lapismd/design-core/shadcn/link-preview";
+  import { Spoiler } from "@lapismd/design-core/shadcn/spoiler";
+  import { RelativeTime } from "@lapismd/design-core/shadcn/relative-time";
+  import {
+    QuantityInput,
+    bytesUnits,
+  } from "@lapismd/design-core/forms/quantity-input";
+  import {
+    ThreadPanel,
+    type MarkdownComposerTrigger,
+  } from "@lapismd/design-core/chat";
+  const identity = { id: "alex", name: "Alex Morgan" };
+  const triggers: MarkdownComposerTrigger[] = [
+    {
+      character: "@",
+      searchSource: () => [{ id: "alex", label: "Alex" }],
+      onSelect: (item) => item.label,
+    },
+  ];
+
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
+  import {
+    Transcript,
+    TranscriptController,
+    TranscriptFooter,
+    MessageQueue,
+    PromptContext,
+    SentContext,
+    ComposerStatusBanner,
+    HistoryEdge,
+    CommentQueue,
+    type TranscriptItem,
+  } from "@lapismd/design-core/chat";
+  const transcriptItems: TranscriptItem[] = [];
+  const transcriptController = new TranscriptController(() => ({
+    items: transcriptItems,
+  }));
   import {
     TagList,
     type TagListItem,
@@ -43,6 +88,7 @@
   } from "@lapismd/design-core/chat";
   let sharedHandle = $state<MarkdownComposerHandle | null>(null);
   const commentProps = {
+    presentation: "bare",
     value: "A retained comment",
     source: { label: "Captured code", quote: "const value = 1;", kind: "code" },
     onSubmit: (_snapshot: string) => {},
@@ -182,3 +228,61 @@
 <CommentComposer {...commentProps} />
 <MessageActions actions={[]}><p>Strict shared message</p></MessageActions>
 <SharedReactionBar reactions={[{ emoji: "👍", count: 1 }]} />
+
+<Transcript items={transcriptItems} commentState={transcriptController} />
+<HistoryEdge state="loading" />
+<CommentQueue state={transcriptController} />
+
+<Sidebar.Provider><Sidebar.Trigger side="right" /></Sidebar.Provider>
+
+<TranscriptFooter
+  state={transcriptController}
+  busy
+  hasContent
+  canSend
+  onSend={() => {}}
+  onStop={() => {}}
+/>
+<MessageQueue entries={[]} onCancel={(_entry, _recipient) => {}} />
+<PromptContext
+  content={'<context source="host">Captured **Markdown**.</context>'}
+/>
+<SentContext
+  content="Captured **context**"
+  delivery="unknown"
+  rawContent={'{"delivery":"unknown"}'}
+/>
+<ComposerStatusBanner
+  status={{ type: "info", message: "Captured context" }}
+  position="bottom"
+/>
+
+{#snippet participant(person: AvatarIdentity, size: AvatarSize)}<AuthorCard
+    author={person}
+    {size}
+  />{/snippet}
+<AvatarGroup items={[identity]} avatar={participant} /><span
+  ><AvatarGroup
+    items={[identity]}
+    size="xs"
+    label="Reply participants"
+  /><Button aria-label="Open replies">2 replies</Button></span
+><AuthorCard author={identity} interaction="popover" />
+<ReferenceChip label="Reference" /><LinkPreview href="https://example.com" />
+<Spoiler>Captured spoiler</Spoiler><RelativeTime
+  timestamp="2026-10-17T12:00:00Z"
+/>
+<QuantityInput
+  id="quantity"
+  label="Quantity"
+  value="1024"
+  units={bytesUnits}
+  min={0}
+  max={1048576}
+  onValueChange={() => {}}
+/>
+<MarkdownComposer {triggers} onSubmit={() => {}} /><ThreadPanel
+  rootId="root"
+  messages={[]}
+  onSubmit={() => {}}
+/>

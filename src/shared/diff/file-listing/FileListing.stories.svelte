@@ -94,8 +94,12 @@
   }}
   tags={["visual-pending"]}
   play={async ({ canvas }) => {
-    const file = canvas.getByRole("button", { name: "src/index.ts" });
-    const disabled = canvas.getByRole("button", { name: "README.md" });
+    const file = canvas.getByRole("button", {
+      name: /^src\/index\.ts(?: [+-][0-9]+)*$/,
+    });
+    const disabled = canvas.getByRole("button", {
+      name: /^README\.md(?: [+-][0-9]+)*$/,
+    });
     expect(file).toHaveAttribute("draggable", "true");
     expect(disabled).toHaveAttribute("draggable", "false");
     const dataTransfer = new DataTransfer();
@@ -117,7 +121,11 @@
     expect(dataTransfer.getData("text/plain")).toBe("src");
     expect(canvas.getByRole("status")).toHaveTextContent("directory:src");
     await userEvent.click(folder);
-    expect(canvas.queryByRole("button", { name: "src/index.ts" })).toBeNull();
+    expect(
+      canvas.queryByRole("button", {
+        name: /^src\/index\.ts(?: [+-][0-9]+)*$/,
+      }),
+    ).toBeNull();
   }}
 >
   {#snippet template()}
@@ -148,8 +156,12 @@
         });
         const rows = within(region);
         await waitFor(() => {
-          const root = rows.getByRole("button", { name: "README.md" });
-          const nested = rows.getByRole("button", { name: "src/index.ts" });
+          const root = rows.getByRole("button", {
+            name: /^README\.md(?: [+-][0-9]+)*$/,
+          });
+          const nested = rows.getByRole("button", {
+            name: /^src\/index\.ts(?: [+-][0-9]+)*$/,
+          });
           const iconInset = (row: HTMLElement) =>
             row
               .querySelector(".ui-diff-file-listing__icon")!
@@ -189,16 +201,22 @@
   name="Selects a file in the folder tree"
   play={async ({ canvas }) => {
     await userEvent.click(
-      canvas.getByRole("button", { name: "src/lib/tree.ts" }),
+      canvas.getByRole("button", {
+        name: /^src\/lib\/tree\.ts(?: [+-][0-9]+)*$/,
+      }),
     );
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "src/lib/tree.ts",
     );
-    const selected = canvas.getByRole("button", { name: "src/lib/tree.ts" });
+    const selected = canvas.getByRole("button", {
+      name: /^src\/lib\/tree\.ts(?: [+-][0-9]+)*$/,
+    });
     expectRowSeparation(
       selected.closest('[data-ui-component="file-listing"]')!,
     );
-    const idle = canvas.getByRole("button", { name: "README.md" });
+    const idle = canvas.getByRole("button", {
+      name: /^README\.md(?: [+-][0-9]+)*$/,
+    });
     await expect(selected).toHaveAttribute("aria-current", "true");
     await expect(getComputedStyle(selected).backgroundColor).not.toBe(
       getComputedStyle(idle).backgroundColor,
@@ -295,13 +313,15 @@
       listing.querySelectorAll('[data-ui-part="virtual-row"]').length,
     ).toBeLessThan(80);
     const first = canvas.getByRole("button", {
-      name: "src/generated/file-0000.ts",
+      name: /^src\/generated\/file\-0000\.ts(?: [+-][0-9]+)*$/,
     });
     await waitFor(() => expectRowSeparation(listing));
     first.focus();
     await userEvent.keyboard("{ArrowDown}");
     await expect(
-      canvas.getByRole("button", { name: "src/generated/file-0001.ts" }),
+      canvas.getByRole("button", {
+        name: /^src\/generated\/file\-0001\.ts(?: [+-][0-9]+)*$/,
+      }),
     ).toHaveFocus();
 
     viewport.style.overflowY = "auto";
@@ -338,9 +358,11 @@
   name="Shows files as a flat list"
   play={async ({ canvas }) => {
     await expect(
-      canvas.getByRole("button", { name: "README.md" }),
+      canvas.getByRole("button", { name: /^README\.md(?: [+-][0-9]+)*$/ }),
     ).toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "README.md" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: /^README\.md(?: [+-][0-9]+)*$/ }),
+    );
     await expect(canvas.getByRole("status")).toHaveTextContent("README.md");
   }}
   tags={["visual-pending"]}
@@ -368,7 +390,9 @@
       canvas.getByRole("button", { name: "packages/web-ui/src" }),
     ).toBeVisible();
     await userEvent.click(
-      canvas.getByRole("button", { name: "packages/web-ui/src/file-tree.ts" }),
+      canvas.getByRole("button", {
+        name: /^packages\/web\-ui\/src\/file\-tree\.ts(?: [+-][0-9]+)*$/,
+      }),
     );
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "packages/web-ui/src/file-tree.ts",
@@ -398,12 +422,14 @@
     const directory = canvas.getByRole("button", { name: "src" });
     await expect(directory).toHaveAttribute("aria-expanded", "true");
     await expect(
-      canvas.getByRole("button", { name: "src/index.ts" }),
+      canvas.getByRole("button", { name: /^src\/index\.ts(?: [+-][0-9]+)*$/ }),
     ).toBeVisible();
     await userEvent.click(directory);
     await expect(directory).toHaveAttribute("aria-expanded", "false");
     await expect(
-      canvas.queryByRole("button", { name: "src/index.ts" }),
+      canvas.queryByRole("button", {
+        name: /^src\/index\.ts(?: [+-][0-9]+)*$/,
+      }),
     ).toBeNull();
   }}
   tags={["visual-pending"]}
@@ -427,4 +453,19 @@
       <FileListing files={[]} />
     </div>
   {/snippet}
+</Story>
+
+<Story
+  name="Accessible visible change counts"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const file = canvas.getByRole("button", { name: "Welcome.md +2 -2" });
+    await expect(file).toBeVisible();
+    await expect(file).toHaveTextContent("+2");
+    await expect(file).toHaveTextContent("-2");
+  }}
+>
+  {#snippet template()}<FileListing
+      files={[{ path: "Welcome.md", additions: 2, deletions: 2 }]}
+    />{/snippet}
 </Story>

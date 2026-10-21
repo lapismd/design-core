@@ -1,5 +1,11 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { acceptCompletion, completionStatus } from "@codemirror/autocomplete";
+  import {
+    composerSuggestions,
+    composerTriggerQuery,
+  } from "./composer-suggestions.js";
+  import "./composer-suggestions.css";
+  import { onMount, untrack } from "svelte";
   import Mira, { type MiraHandle } from "@lapismd/mira";
   import { fromOffset, type MiraMarkdownActionId } from "@lapismd/mira/core";
   import type { MiraExtension } from "@lapismd/mira/extensions";
@@ -20,6 +26,7 @@
   import Composer from "../../ai/composer/Composer.svelte";
   import ComposerDrawer from "../../ai/composer-drawer/ComposerDrawer.svelte";
   import { shouldSubmitComposerKey } from "../../ai/composer-behavior.js";
+  import { Separator } from "../../shadcn/separator/index.js";
   import { Button } from "../../shadcn/button/index.js";
   import { ScrollArea } from "../../shadcn/scroll-area/index.js";
   import {
@@ -50,16 +57,23 @@
     onStop,
     status,
     submitLabel = "Send message",
+    showSendButton = true,
+    showHint = true,
     submitOnEnter,
     formattingOpen = $bindable(false),
+    dockActions = false,
+    documentActions = $bindable(),
     colorMode = "inherit",
     extensions = [],
+    triggers = [],
     customEmojis = [],
     emojis,
     emojiText,
     reply,
     onCancelReply,
     context,
+    drawer,
+    interactiveDrawerWhenDisabled = false,
     avatar,
     additionalActions,
     class: className,
@@ -145,6 +159,7 @@
             "var(--_composer-caret-color, var(--mira-foreground))",
           marginInlineStart: "0",
         },
+        "&.cm-focused": { outline: "none" },
         ".cm-gutters": { display: "none" },
       }),
       Prec.highest(
@@ -162,6 +177,37 @@
       Prec.highest(
         EditorView.domEventHandlers({
           keydown(event, editor) {
+            if (
+              !event.defaultPrevented &&
+              !editor.composing &&
+              !event.isComposing &&
+              event.keyCode !== 229 &&
+              !event.shiftKey &&
+              !event.ctrlKey &&
+              !event.metaKey &&
+              !event.altKey &&
+              (event.key === "Enter" || event.key === "Tab") &&
+              composerTriggerQuery(
+                editor.state,
+                triggers.map((trigger) => trigger.character),
+              ) &&
+              completionStatus(editor.state) !== null
+            ) {
+              if (event.key === "Tab") {
+                if (
+                  blocked ||
+                  completionStatus(editor.state) !== "active" ||
+                  !acceptCompletion(editor)
+                )
+                  return false;
+                event.preventDefault();
+                return true;
+              }
+              if (completionStatus(editor.state) === "active" && !blocked)
+                acceptCompletion(editor);
+              event.preventDefault();
+              return true;
+            }
             if (
               event.defaultPrevented ||
               editor.composing ||
@@ -197,7 +243,15 @@
       };
     },
   };
-  const editorExtensions = $derived([composerExtension, ...extensions]);
+  const suggestions = composerSuggestions({
+    triggers: () => triggers,
+    disabled: () => blocked,
+  });
+  const editorExtensions = $derived([
+    composerExtension,
+    ...(triggers.length ? [suggestions] : []),
+    ...extensions,
+  ]);
   function change(next: string) {
     value = next;
     onChange?.(next);
@@ -207,7 +261,90 @@
       emojiText?.(emoji, custom) ?? (custom ? `:${custom.shortcode}:` : emoji),
     );
   }
+  const docked = $derived(dockActions && presentation === "document");
+  $effect(() => {
+    const actions = docked ? toolbar : undefined;
+    untrack(() => (documentActions = actions));
+    return () =>
+      untrack(() => {
+        if (documentActions === actions) documentActions = undefined;
+      });
+  });
 </script>
+
+{#snippet toolbar()}<Tooltip.Provider>
+    <div
+      class="ui-markdown-composer__actions"
+      role="group"
+      data-formatting-open={formattingOpen || undefined}
+      aria-label="Message formatting and actions"
+    >
+      <Tooltip.Root>
+        <Tooltip.Trigger
+          >{#snippet child({ props })}
+            <Button
+              {...props}
+              variant={formattingOpen ? "secondary" : "ghost"}
+              size="icon-sm"
+              disabled={blocked}
+              aria-label="Formatting options"
+              aria-pressed={formattingOpen}
+              onclick={() => (formattingOpen = !formattingOpen)}
+              ><TypeIcon aria-hidden="true" /></Button
+            >
+          {/snippet}</Tooltip.Trigger
+        >
+        <Tooltip.Content>Formatting options</Tooltip.Content>
+      </Tooltip.Root>
+      {#if formattingOpen}
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          aria-label="Hide formatting"
+          onclick={() => (formattingOpen = false)}
+          ><XIcon aria-hidden="true" /></Button
+        >
+        <Separator
+          orientation="vertical"
+          class="ui-markdown-composer__separator"
+        />
+        {#each formatActions as action (action.id)}
+          <Tooltip.Root>
+            <Tooltip.Trigger
+              >{#snippet child({ props })}
+                <Button
+                  {...props}
+                  variant="ghost"
+                  size="icon-sm"
+                  disabled={blocked}
+                  aria-label={action.label}
+                  onmousedown={(event) => event.preventDefault()}
+                  onclick={() => applyFormatting(action.id)}
+                  ><action.Icon aria-hidden="true" /></Button
+                >
+              {/snippet}</Tooltip.Trigger
+            >
+            <Tooltip.Content>{action.label}</Tooltip.Content>
+          </Tooltip.Root>
+        {/each}
+      {/if}
+      {#if !formattingOpen}<EmojiPicker
+          triggerLabel="Add emoji"
+          disabled={blocked}
+          {customEmojis}
+          {...emojis === undefined ? {} : { emojis }}
+          theme={colorMode === "light" || colorMode === "dark"
+            ? colorMode
+            : "auto"}
+          onSelect={addEmoji}
+        />{/if}
+      {@render additionalActions?.({
+        ...publicHandle,
+        disabled: blocked,
+        submit,
+      })}
+    </div>
+  </Tooltip.Provider>{/snippet}
 
 {#snippet replyPreview()}
   {#if reply}
@@ -241,12 +378,19 @@
   {/if}
 {/snippet}
 
+{#snippet composerDrawer()}
+  {@render drawer?.()}
+  {@render replyPreview()}
+{/snippet}
+
 <div
   bind:this={ref}
   {...restProps}
   class={["ui-markdown-composer", className].filter(Boolean).join(" ")}
   data-ui-component="markdown-composer"
   data-presentation={presentation}
+  data-actions-docked={docked}
+  data-send-hidden={!showSendButton}
   aria-busy={busy}
   role="group"
   aria-label={label}
@@ -256,13 +400,14 @@
     <Composer
       bind:value
       disabled={blocked}
+      {interactiveDrawerWhenDisabled}
       clearOnSubmit={false}
       elevation="none"
       isStopShown={busy && Boolean(onStop)}
       {...status === undefined ? {} : { status }}
       statusPosition="top"
       onSubmit={submit}
-      {...reply ? { drawer: replyPreview } : {}}
+      {...drawer || reply ? { drawer: composerDrawer } : {}}
       {...context === undefined ? {} : { headerContext: context }}
     >
       {#snippet input()}
@@ -292,86 +437,28 @@
           </ScrollArea>
         </div>
       {/snippet}
-      {#snippet footerActions()}
-        <div
-          class="ui-markdown-composer__actions"
-          role="group"
-          aria-label="Message formatting and actions"
-        >
-          <Tooltip.Root>
-            <Tooltip.Trigger
-              >{#snippet child({ props })}
-                <Button
-                  {...props}
-                  variant="ghost"
-                  size="icon-sm"
-                  disabled={blocked}
-                  aria-label="Formatting options"
-                  aria-pressed={formattingOpen}
-                  onclick={() => (formattingOpen = !formattingOpen)}
-                  ><TypeIcon aria-hidden="true" /></Button
-                >
-              {/snippet}</Tooltip.Trigger
-            >
-            <Tooltip.Content>Formatting options</Tooltip.Content>
-          </Tooltip.Root>
-          {#if formattingOpen}
-            {#each formatActions as action (action.id)}
-              <Tooltip.Root>
-                <Tooltip.Trigger
-                  >{#snippet child({ props })}
-                    <Button
-                      {...props}
-                      variant="ghost"
-                      size="icon-sm"
-                      disabled={blocked}
-                      aria-label={action.label}
-                      onmousedown={(event) => event.preventDefault()}
-                      onclick={() => applyFormatting(action.id)}
-                      ><action.Icon aria-hidden="true" /></Button
-                    >
-                  {/snippet}</Tooltip.Trigger
-                >
-                <Tooltip.Content>{action.label}</Tooltip.Content>
-              </Tooltip.Root>
-            {/each}
-          {/if}
-          <EmojiPicker
-            triggerLabel="Add emoji"
-            disabled={blocked}
-            {customEmojis}
-            {...emojis === undefined ? {} : { emojis }}
-            theme={colorMode === "light" || colorMode === "dark"
-              ? colorMode
-              : "auto"}
-            onSelect={addEmoji}
-          />
-          {@render additionalActions?.({
-            ...publicHandle,
-            disabled: blocked,
-            submit,
-          })}
-        </div>
-      {/snippet}
+      {#snippet footerActions()}{#if !docked}{@render toolbar()}{/if}{/snippet}
       {#snippet sendButton()}
-        <Button
-          data-ui-part="send-button"
-          data-stop={busy && onStop ? "true" : undefined}
-          size="icon-sm"
-          disabled={busy && onStop ? false : blocked || !hasDraft}
-          aria-label={busy && onStop ? "Stop response" : submitLabel}
-          onclick={busy && onStop ? onStop : submit}
-        >
-          {#if busy && onStop}<SquareIcon
-              aria-hidden="true"
-            />{:else}<ArrowUpIcon aria-hidden="true" />{/if}
-        </Button>
+        {#if showSendButton}
+          <Button
+            data-ui-part="send-button"
+            data-stop={busy && onStop ? "true" : undefined}
+            size="icon-sm"
+            disabled={busy && onStop ? false : blocked || !hasDraft}
+            aria-label={busy && onStop ? "Stop response" : submitLabel}
+            onclick={busy && onStop ? onStop : submit}
+          >
+            {#if busy && onStop}<SquareIcon
+                aria-hidden="true"
+              />{:else}<ArrowUpIcon aria-hidden="true" />{/if}
+          </Button>
+        {/if}
       {/snippet}
     </Composer>
   </Tooltip.Provider>
-  <span class="ui-markdown-composer__hint"
-    >{enterSubmits
-      ? "Shift+Enter for a new line"
-      : "Ctrl/⌘+Enter to send"}</span
-  >
+  {#if showHint}<span class="ui-markdown-composer__hint"
+      >{enterSubmits
+        ? "Shift+Enter for a new line"
+        : "Ctrl/⌘+Enter to send"}</span
+    >{/if}
 </div>

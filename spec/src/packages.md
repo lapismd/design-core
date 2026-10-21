@@ -1,13 +1,38 @@
 # Package exports
 
+Version 0.6.0 consumes the consolidated transcript, footer and presentation
+Changesets through the normal release-version command. Existing public import
+paths remain available; package publication still requires the verified archive.
+Every runtime dependency uses a valid semver version or range, including the
+exact qualified Vaul Svelte prerelease rather than a floating distribution tag.
+
+The additive `./forms/file-path-input` export and Forms barrel expose FilePathInput and its props; Workspace Settings exports quantity and filePicker metadata without changing existing persisted field kinds.
+
+The clean archive consumer exercises reconciled ToolCalls disclosure names and
+bundled light/dark CodeBlock syntax colors through their public family exports.
+
+The Chat barrel additionally exports TranscriptFooter, MessageQueue, PromptContext
+and promptElementsExtension. ComposerStatusBanner remains owned by the existing
+AI Composer family and is re-exported through Chat. XML syntax highlighting uses
+the declared registry dependency `@codemirror/lang-xml`; recorded-session data,
+adapters and avatar assets use `.stories.fixture.*` names and MUST be omitted
+from published archives. Packed acceptance exercises the new public footer,
+queue and XML context exports in cold development and production consumers.
+The same public archive acceptance covers versioned sent-comment edits, valid
+timestamp metadata and docked MarkdownComposer toolbar teardown/remount.
+
 The focused `shadcn/tag-list` family exports TagList and its item/props types.
 Strict source consumers cover the same existing wildcard export boundary.
 
 The app-component promotion batch adds the Chat entry point and qualifies
-published Mira `~0.0.5`.
+published Mira `~0.1.0`, including its public TableReader contract.
 The Chat entry point also exports MarkdownComposer, MessageActions and the
 shared ReactionBar while retaining existing AI compatibility imports. CommentComposer
 and its neutral source, props and focus/selection handle are also exported from Chat.
+Transcript, HistoryEdge, CommentQueue, TranscriptController and their neutral
+models join this entry point. Rootless TranscriptContent and TranscriptToolContent
+allow hosts to render captured details in an inspector without replacing the
+main conversation viewport or introducing a shell dependency.
 Responsive Tabs and Avatar use family exports; Avatar
 Picker uses Forms and Topbar uses Shell. Consumer adoption remains deferred.
 
@@ -172,4 +197,13 @@ and workspace audits remain unchanged.
 - Governance, quality, unit, static Storybook, Storybook interaction, Workspace pointer, Shell pointer, Shadcn pointer, and AI browser lanes must run independently.
 - Cacheable lanes must use the signed Turbo cache contract and publish cache summaries.
 - Full and production dependency audits must run after every nonvisual lane succeeds.
-- Visual comparison must remain outside the blocking graph, and maintained Node.js 24-compatible actions must be used.
+- CI must not run screenshot comparison; explicit local visual scripts remain available, and maintained Node.js 24-compatible actions must be used.
+
+## Community component boundaries
+
+AvatarGroup extends the Avatar wildcard family; AuthorCard, ReferenceChip, LinkPreview, Spoiler and RelativeTime use their Shadcn family exports. Forms exports QuantityInput through its barrel and forms/quantity-input, while Chat exports ThreadPanel and neutral composer suggestion models.
+Compact AvatarGroup composition is covered by strict source consumers and the
+clean packed fixture, including aligned member/overflow sizing and activation of
+a separate reply control without nested buttons.
+Workspace sidebar and bottom-panel imports are also exercised with both states,
+retaining the default PanelToggle button and fixed standard icon without Tailwind.

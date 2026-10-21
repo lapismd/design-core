@@ -48,7 +48,9 @@
   name="Single selection"
   tags={["skip-visual"]}
   play={async ({ canvas, canvasElement }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Account" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Account: Assets:Cash" }),
+    );
     const page = within(canvasElement.ownerDocument.body);
     await userEvent.click(
       page.getByRole("option", { name: /Expenses:Groceries/ }),
@@ -82,7 +84,9 @@
   name="Multiple full-width selection"
   tags={["skip-visual"]}
   play={async ({ canvas, canvasElement }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Accounts" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Accounts: Accounts (2)" }),
+    );
     const page = within(canvasElement.ownerDocument.body);
     await userEvent.click(
       page.getByRole("option", { name: /Liabilities:Card/ }),

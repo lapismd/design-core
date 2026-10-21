@@ -80,6 +80,12 @@
     await expect(
       maximizeButton.querySelector(".lucide-maximize"),
     ).not.toBeNull();
+    const redockButton = canvas.getByRole("button", {
+      name: "Redock floating pane",
+    });
+    await expect(
+      redockButton.querySelector(".lucide-picture-in-picture"),
+    ).not.toBeNull();
     await userEvent.click(maximizeButton);
     const restoreSizeButton = canvas.getByRole("button", {
       name: "Restore floating pane size",

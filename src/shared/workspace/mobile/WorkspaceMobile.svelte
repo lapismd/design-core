@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { PanelToggleIcon } from "../../shadcn/panel-toggle/index.js";
   import { untrack } from "svelte";
   import type { WorkspaceNode, WorkspaceTab } from "../core/types.js";
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
-  import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import WorkspaceMobileActionsDrawer from "./WorkspaceMobileActionsDrawer.svelte";
   import WorkspaceMobileDock from "./WorkspaceMobileDock.svelte";
@@ -352,7 +352,11 @@
               : "Open left sidebar"}
             onclick={() => (reveal = reveal === "left" ? "center" : "left")}
           >
-            <WorkspaceIcon name="panel-left" />
+            <PanelToggleIcon
+              expanded={reveal === "left"}
+              side="left"
+              iconVariant="standard"
+            />
           </button>
 
           <WorkspaceMobileViewActions

@@ -240,6 +240,7 @@ export class CommandManager {
   paletteProviders = $state<CommandPaletteProvider[]>([]);
   hotkeyOverrides = $state<HotkeyOverrides>({});
   ready = $state(false);
+  focusedHostId = $state("root");
   paletteOpen = $state(false);
   paletteTab = $state(COMMAND_PALETTE_TAB_ALL);
 

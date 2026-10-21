@@ -1,9 +1,15 @@
 # Workspace / Framework
 
+Workspace sidebar and bottom-panel visibility controls compose PanelToggle under DC-SHA-053 with its default ghost button styling, fixed standard icon and hover/focus preview. Controller actions, drag exclusions, hint identity and mobile reveal state remain owned by Workspace; glyph consolidation introduces no new layout controller.
+
 The Workspace App Shell compound export retains explicit readonly types for
 its component parts. Prepared declarations preserve existing public signatures
 without unnamed internal Svelte-generated component types. Runtime composition
 and workspace ownership remain unchanged under DC-WS-003.
+
+Session popup transfer and guarded removal follow DC-WS-076 and DC-WS-077;
+popup document ownership and native-control clearance follow DC-WS-078 and
+DC-WS-079.
 
 Workspace framework contracts coordinate reusable layout and state through explicit controllers, registries, events, and consumer adapters.
 Command manager palette search filters by tab (`openPalette({ tab })`,
@@ -24,6 +30,7 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 | ----------------------------- | ------------------------------------------ | ----------- |
 | Shared Workspace invariants   | Workspace layer                            | DC-WS-001   |
 | Workspace core                | `@lapismd/design-core/workspace/core`      | DC-WS-002   |
+| Plugin transition flush       | `@lapismd/design-core/workspace/core`      | DC-WS-075   |
 | Workspace App Shell           | `@lapismd/design-core/workspace/app-shell` | DC-WS-003   |
 | Workspace demo                | `@lapismd/design-core/workspace/demo`      | DC-WS-004   |
 | Workspace drag                | `@lapismd/design-core/workspace/drag`      | DC-WS-005   |
@@ -58,6 +65,16 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 - Programmatic tab creation MUST render immediately, and implicit leaf opens MUST target the active or first main pane when a sidebar or dock has focus.
 - Imperative view registration MUST expose live context chrome before mounting and MUST react when instance-owned chrome becomes available.
 
+## DC-WS-075 — Awaitable plugin transitions
+
+**Requirement.** The App Shell plugin manager MUST expose `flushChanges()` to await admitted enable/disable transitions and their persistence. `stop()` MUST await those transitions before unloading instances.
+
+### Acceptance details
+
+- Pending plugin load, unload and persistence promises MUST finish before a flush resolves.
+- Stopping during an admitted disable MUST unload that instance only once.
+- The boundary MUST remain independent of consumer filesystems and application lifecycle policy.
+
 ## DC-WS-003 — Workspace App Shell
 
 **Requirement.** The Workspace App Shell family MUST adapt workspace state to the shared structural shell without redefining App Shell primitives.
@@ -67,7 +84,7 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 - The public boundary is `@lapismd/design-core/workspace/app-shell`.
 - Built-in Appearance settings MUST persist one inherited scrollbar visibility value across the main shell, imperative views, and popouts; valid values are `scroll`, `hover`, and `always`, with `scroll` as the default.
 - Built-in dock-opening commands and the default-on tab title-bar preference MUST follow DC-WS-060 and DC-WS-061.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Default and explicit desktop composition MUST reserve a full-width footer track beneath ribbon, sidebars and content, with the footer, including its host safe-area inset, supplying their sole horizontal boundary; floating panes MUST stay above that track and omitting the footer MUST reclaim its space.
 
 ## DC-WS-004 — Workspace demo
 
@@ -162,14 +179,14 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 
 ## DC-WS-041 — Pane menu Move to
 
-**Requirement.** The shared pane menu MUST offer a Move to submenu, marked with the `move` icon, that relocates the current tab into the left sidebar, right sidebar, or bottom sidebar and opens that dock.
+**Requirement.** The shared pane menu MUST offer a Move to submenu, marked with the `move` icon, that relocates the current tab into the main body or a sidebar and activates it.
 
 ### Acceptance details
 
-- Move to MUST use the `move` icon, and its items MUST be Left Sidebar, Right Sidebar, and Bottom Sidebar with `panel-left`, `panel-right`, and `panel-bottom`.
-- Selecting a destination MUST move the tab into that dock's tabs pane, activate it, and open the dock.
+- Move to MUST offer Main body with `panel-top` for root-window tabs, followed by Left Sidebar, Right Sidebar, and Bottom Sidebar with `panel-left`, `panel-right`, and `panel-bottom`; popup tabs retain Main window under DC-WS-076.
+- Main body MUST return a sidebar tab to the last valid main pane, falling back to the first main pane; sidebar destinations MUST open that dock and select the moved tab.
 - The destination that already contains the tab MUST be disabled.
-- Controller tests MUST cover a successful dock move, and the Workspace Tabs pane-menu story MUST expose the submenu labels and icons.
+- Controller tests MUST cover moves into and out of each dock, and the Workspace Tabs pane-menu story MUST expose destination labels, icons and unavailable current destinations.
 
 ## Host window-controls geometry
 
@@ -178,3 +195,60 @@ from ordinary header clearance. Maximized top and stacked groups follow
 DC-WS-070; hosts set the full inset without subtracting ribbon width.
 Settings heading tokens retain configurable typography with bold defaults
 under DC-WS-069.
+
+## DC-WS-076 — Atomic popup transfer
+
+**Requirement.** Popup transfer MUST publish one final layout containing one instance of each moved tab. Failed or throwing host creation MUST preserve the source. The existing Move to menu MUST offer Main window, using the last valid main pane and then the first main pane.
+
+### Acceptance details
+
+- Transfer MUST retain the registered view identity.
+- Returning the last popup tab MUST dispose its empty host once.
+- Live JSON layout changes MUST retain existing popup handles and their tabs.
+- JSON MUST NOT create unowned popup hosts; cold restoration MUST omit popups.
+
+## DC-WS-077 — Guarded removal
+
+**Requirement.** Hosts MAY install an asynchronous close guard. Tab and window removal MUST await that guard before changing layout or closing a host. Rejected admission MUST leave tabs and windows reachable and expose the failure. A native close-request hook MUST enter the same admission path.
+
+### Acceptance details
+
+- Unguarded controllers retain synchronous compatibility operations.
+- Moving content between hosts MUST NOT invoke destructive close admission.
+
+## DC-WS-078 — Popup document ownership
+
+**Requirement.** Mounted popup surfaces MUST inherit application contexts and route shortcuts, focus and command palettes through their own document.
+
+### Acceptance details
+
+- Only the focused host MUST present shared command overlays.
+- Built-in tab/header menus and nested submenus MUST remain in their popup document.
+- Disposing a popup MUST release its document listeners.
+
+## DC-WS-079 — Popup native-control clearance
+
+**Requirement.** Each popup's top-left top or stacked tab strip MUST consume the full public overlay native-control inset without ribbon subtraction. Its tabs MUST meet the top edge and retain clearance after resizing or changing splits.
+
+### Acceptance details
+
+- Only the pane at the top-left corner MUST receive the inset.
+- The host MUST continue owning the measured inset value.
+
+## DC-WS-080 — Live popup appearance
+
+**Requirement.** Popup styles, inherited tokens and themes MUST mirror live without remounting retained views. Disposing a popup MUST release its owned style observers.
+
+### Acceptance details
+
+- Source stylesheet changes MUST reach every open popup.
+- Theme changes MUST retain editor identity.
+
+## Custom status composition
+
+Status contributions may supply `mount(host)` for plugin-owned controls and
+styles. The shared status item owns only the mount boundary and invokes its
+disposer on callback replacement or removal; custom content supplies accessible
+names, buttons and overlay lifetime. Built-in status text/menu rendering remains
+the default (DC-WS-029). No repository or domain-specific content belongs in the
+workspace shell.

@@ -70,14 +70,14 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 
 ## DC-WS-047 — Problems opener
 
-**Requirement.** The Problems presentation plugin MUST NOT seed a leaf when the shell becomes ready. Show Problems and the Problems status item MUST be the only creators, revealing an existing leaf or opening the default bottom tab. Registering the view MUST upgrade leftover missing-view placeholders, and ViewHost MUST NOT show missing-view once the type is registered. The status item MUST show the circle-alert icon and live diagnostics total and MUST call `showProblems()` on select.
+**Requirement.** The Problems plugin MUST NOT seed a leaf on shell readiness. Show Problems MUST reveal the existing leaf or create a bottom tab. The circle-alert status item MUST show the live diagnostics total and toggle the bottom dock without removing or relocating retained leaves. Opening MUST create Problems only when absent; registering the view MUST upgrade missing-view placeholders, and ViewHost MUST recognize the registered type.
 
 ### Acceptance details
 
 - Starting the shell with no persisted Problems leaf MUST leave `getLeavesOfType` empty.
-- The command and status item MUST reveal an existing leaf wherever it lives, including an empty missing-view placeholder that registration upgrades to `workspace:problems`, or create one closable bottom tab.
-- The right-aligned status item MUST show the live total; count changes MUST NOT open the dock.
-- ViewHost MUST NOT show missing-view once the type is registered; unit tests MUST cover no-seed start, command create, placeholder upgrade, and status click versus count-change.
+- Show Problems MUST reveal an existing leaf wherever it lives or create one closable bottom tab; the status action MUST toggle the bottom dock, revealing Problems there when present while preserving any relocated instance.
+- The left-aligned status item MUST show the live total; count changes MUST NOT open the dock.
+- ViewHost MUST NOT show missing-view once the type is registered; unit tests MUST cover no-seed start, command create, placeholder upgrade, status toggling with retained leaf identity, and count-change behavior.
 
 ## DC-WS-050 — Problems row quick fix
 

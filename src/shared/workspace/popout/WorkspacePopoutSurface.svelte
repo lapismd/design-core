@@ -44,6 +44,7 @@
     {controller}
     node={workspaceWindow.root}
     hostId={workspaceWindow.id}
+    nativeControls
     {drag}
     {createTab}
   />
