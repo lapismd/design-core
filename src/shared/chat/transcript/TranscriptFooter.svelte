@@ -33,7 +33,7 @@
   const pending = $derived(
     sendPending ?? (!!state?.sending || !!state?.retainedSubmission),
   );
-  const stopSelected = $derived(active && !!onStop && !content);
+  const stopSelected = $derived(active && !!onStop && (!content || pending));
   const available = $derived(
     !disabled &&
       !pending &&
@@ -83,32 +83,26 @@
         {@render actions()}
       </div>{/if}
     {@render workspace?.()}{@render controls?.()}
-    {#if active && onStop && content && pending}
-      <Button
+    {#if stopSelected || !active || (content && !pending)}<Button
         size="icon-sm"
-        variant="destructive"
-        disabled={disabled || stopping}
-        onclick={stop}
-        aria-label={stopping ? "Stopping agent" : "Stop agent"}
-        title="Stop active work"><StopIcon aria-hidden="true" /></Button
-      >
-    {/if}
-    <Button
-      size="icon-sm"
-      variant={stopSelected ? "destructive" : "default"}
-      class={stopSelected ? undefined : "ui-transcript-footer__send"}
-      disabled={stopSelected ? disabled || stopping : !available}
-      onclick={stopSelected ? stop : send}
-      aria-label={label}
-      aria-keyshortcuts={stopSelected ? undefined : "Control+Enter Meta+Enter"}
-      title={stopSelected ? "Stop active work" : `${label} (⌘ / Ctrl + Enter)`}
-      data-action={stopSelected ? "stop" : active ? "queue" : "send"}
-      >{#if stopSelected}<StopIcon
-          aria-hidden="true"
-        />{:else if active}<QueueIcon aria-hidden="true" />{:else}<SendIcon
-          aria-hidden="true"
-        />{/if}</Button
-    >
+        variant={stopSelected ? "destructive" : "default"}
+        class={stopSelected ? undefined : "ui-transcript-footer__send"}
+        disabled={stopSelected ? disabled || stopping : !available}
+        onclick={stopSelected ? stop : send}
+        aria-label={label}
+        aria-keyshortcuts={stopSelected
+          ? undefined
+          : "Control+Enter Meta+Enter"}
+        title={stopSelected
+          ? "Stop active work"
+          : `${label} (⌘ / Ctrl + Enter)`}
+        data-action={stopSelected ? "stop" : active ? "queue" : "send"}
+        >{#if stopSelected}<StopIcon
+            aria-hidden="true"
+          />{:else if active}<QueueIcon aria-hidden="true" />{:else}<SendIcon
+            aria-hidden="true"
+          />{/if}</Button
+      >{/if}
   </div>
   {#if showStatus && feedback && statusPosition === "bottom"}<ComposerStatusBanner
       status={feedback}

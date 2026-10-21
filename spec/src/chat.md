@@ -237,6 +237,12 @@ feedback beside a fixed send hint. `ComposerStatusBanner.position="standalone"`
 MUST round every corner without negative margins or overlap with adjacent controls.
 The default attached footer status remains unchanged.
 
+While busy, TranscriptFooter MUST show exactly one submission action when the
+host supplies Stop. A pending submission or empty/whitespace-only draft selects
+Stop; Queue appears only for nonempty content after submission settles. Pending
+content MUST NOT leave a disabled Queue beside Stop. Without host cancellation,
+empty or pending active drafts omit Queue. Idle Send availability is unchanged.
+
 ### Acceptance details
 
 - TranscriptFooter MUST select Send, Queue or Stop from host-supplied busy/content/pending state, use jj-store's paper-plane icon for idle Send, upward arrow for Queue and square for Stop, preserve accessible names and keyboard activation, and accept custom actions, workspace content and controls without executing agent operations.

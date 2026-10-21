@@ -9,6 +9,7 @@
   import { Button } from "../../shadcn/button/index.js";
   import * as Tooltip from "../../shadcn/tooltip/index.js";
   import RotateCcwIcon from "@lucide/svelte/icons/rotate-ccw";
+  import { Input } from "../../shadcn/input/index.js";
   const items: TranscriptItem[] = Array.from({ length: 14 }, (_, index) => ({
     id: `message-${index}`,
     kind: "message",
@@ -50,7 +51,80 @@
   let draft = $state("");
   let retries = $state(0);
   let fadeView = $state<"document" | "classic">("document");
+  let actionDraft = $state("A prompt awaiting acknowledgement");
+  let actionBusy = $state(false);
+  let actionPending = $state(false);
+  let actionStops = $state(0);
 </script>
+
+<Story
+  name="Single action during submission"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const actions = within(
+      canvas.getByRole("group", { name: "Message actions" }),
+    );
+    const only = (name: string) => {
+      expect(actions.getAllByRole("button")).toHaveLength(1);
+      expect(actions.getByRole("button", { name })).toBeVisible();
+    };
+    only("Send message");
+    await userEvent.click(
+      actions.getByRole("button", { name: "Send message" }),
+    );
+    only("Stop agent");
+    expect(actions.queryByRole("button", { name: "Queue message" })).toBeNull();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Acknowledge submission" }),
+    );
+    only("Stop agent");
+    const editor = canvas.getByRole("textbox", { name: "Draft" });
+    await userEvent.type(editor, "   ");
+    only("Stop agent");
+    await userEvent.type(editor, "A follow-up");
+    only("Queue message");
+    expect(
+      actions.getByRole("button", { name: "Queue message" }),
+    ).toBeEnabled();
+    await userEvent.click(
+      actions.getByRole("button", { name: "Queue message" }),
+    );
+    only("Stop agent");
+    await userEvent.click(actions.getByRole("button", { name: "Stop agent" }));
+    only("Send message");
+    expect(canvas.getByRole("status")).toHaveTextContent("Stop requests: 1");
+    expect(editor).toHaveValue("   A follow-up");
+  }}
+>
+  {#snippet template()}
+    <div style="display:grid;gap:1rem;padding:1rem">
+      <Input aria-label="Draft" bind:value={actionDraft} />
+      <Button
+        disabled={!actionPending}
+        onclick={() => {
+          actionDraft = "";
+          actionPending = false;
+        }}>Acknowledge submission</Button
+      >
+      <TranscriptFooter
+        busy={actionBusy}
+        sendPending={actionPending}
+        hasContent={!!actionDraft.trim()}
+        canSend={!!actionDraft.trim()}
+        onSend={() => {
+          actionBusy = true;
+          actionPending = true;
+        }}
+        onStop={() => {
+          actionBusy = false;
+          actionPending = false;
+          actionStops++;
+        }}
+      />
+      <span role="status">Stop requests: {actionStops}</span>
+    </div>
+  {/snippet}
+</Story>
 
 <Story
   name="Fading history above fixed footer"
