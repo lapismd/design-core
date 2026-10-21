@@ -34,13 +34,15 @@
     style:background-color={background}
     style:--_avatar-contrast={avatarContrast(background)}
   >
-    {#if src && src !== failed}<img
-        {src}
-        alt=""
-        onerror={() => {
-          failed = src;
-        }}
-      />
+    {#if src && src !== failed}{#key src}<img
+          {src}
+          alt=""
+          onerror={(event) => {
+            // Resource callbacks can outlive the parent's reactive identity.
+            // The keyed image retains its own requested source across replacement.
+            failed = event.currentTarget.getAttribute("src") ?? undefined;
+          }}
+        />{/key}
     {:else}<span aria-hidden="true"
         >{emoji || initials || avatarInitials(name) || "?"}</span
       >{/if}

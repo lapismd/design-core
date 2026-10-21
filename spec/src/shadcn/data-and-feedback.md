@@ -171,3 +171,13 @@ matching visible text order when avatar images are unavailable.
 - Invalid dates MUST retain a readable fallback and never throw during rendering.
 - Live updates MUST stop on disposal while supplied clocks, locale and absolute-date thresholds remain deterministic.
 - Interactive accessible names MUST contain the visible date text together with the exact date or host-supplied context label.
+
+## DC-SHA-063 — Avatar image request lifetime
+
+**Requirement.** Avatar image failures MUST remain bound to their originating image request rather than live parent identity state.
+
+### Acceptance details
+
+- Late resource events during owner teardown MUST NOT read destroyed reactive state.
+- Failure of a replaced image MUST NOT hide a newer image or select its fallback.
+- Current-image failure MUST retain the existing accessible initials fallback.
