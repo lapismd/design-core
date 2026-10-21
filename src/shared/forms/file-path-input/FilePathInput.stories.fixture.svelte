@@ -3,11 +3,15 @@
   let {
     manual = false,
     disabled = false,
+    readonly = false,
+    invalid = false,
     failure = false,
     delayed = false,
   }: {
     manual?: boolean;
     disabled?: boolean;
+    readonly?: boolean;
+    invalid?: boolean;
     failure?: boolean;
     delayed?: boolean;
   } = $props();
@@ -31,6 +35,8 @@
     label="Model file"
     bind:value
     {disabled}
+    {readonly}
+    {invalid}
     onBrowse={manual ? undefined : browse}
   />
   {#if delayed}<button onclick={() => resolve?.("/models/stale.gguf")}

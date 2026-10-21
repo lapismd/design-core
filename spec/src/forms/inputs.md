@@ -224,3 +224,4 @@ and persistence behavior are unchanged.
 - Browse MUST run only on explicit activation, expose pending state and accept a path or cancellation without altering a retained path on cancellation.
 - New typing, external values, disabling, read-only state and disposal MUST fence stale chooser results; failure MUST preserve the value and report through a host callback or accessible fallback.
 - Without a chooser the path MUST remain manually editable; disabled and read-only fields MUST not launch selection or emit edits.
+- Focus in either the path or Browse action MUST surround the complete control with one shared ring, retaining invalid-state indication and visible focus in forced colors.

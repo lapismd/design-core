@@ -1,6 +1,32 @@
 .ui-file-path-input__group {
   width: 100%;
   min-width: 0;
+  border-radius: calc(var(--radius) * 0.8);
+}
+.ui-file-path-input__group:focus-within {
+  box-shadow: 0 0 0 3px
+    color-mix(
+      in oklab,
+      var(--ui-input-focus-ring-color, var(--ring)) 50%,
+      transparent
+    );
+}
+.ui-file-path-input__group:has(input[aria-invalid="true"]) {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--destructive) 20%, transparent);
+}
+:where(.dark) .ui-file-path-input__group:has(input[aria-invalid="true"]) {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--destructive) 40%, transparent);
+}
+.ui-file-path-input__group input:focus-visible {
+  border-color: var(--ui-input-border-color, var(--input));
+}
+.ui-file-path-input__group input[aria-invalid="true"] {
+  border-color: var(--destructive);
+}
+.ui-file-path-input__group input:is(:focus-visible, [aria-invalid="true"]),
+.ui-file-path-input__group button:focus-visible {
+  box-shadow: none;
+  outline: none;
 }
 .ui-file-path-input__group input {
   min-width: 0;
@@ -13,4 +39,10 @@
   margin: 0.5rem 0 0;
   color: var(--destructive);
   font-size: 0.8rem;
+}
+@media (forced-colors: active) {
+  .ui-file-path-input__group:focus-within {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
 }
