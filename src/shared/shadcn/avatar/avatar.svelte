@@ -25,7 +25,7 @@
   data-ui-component="avatar"
   data-shape={shape}
   data-size={size}
-  role={decorative ? undefined : "img"}
+  role="img"
   aria-label={decorative ? undefined : label}
   aria-hidden={decorative || undefined}
 >

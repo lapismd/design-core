@@ -114,7 +114,7 @@ Data and feedback primitives communicate state without taking ownership of consu
 
 ### Acceptance details
 
-- The public family MUST provide named and decorative presentations with image-failure fallback and token-driven sizing, including larger `2xl` and `3xl` presentations for editable profile avatars.
+- The public family MUST provide named and decorative image presentations with image-failure fallback and token-driven sizing, including larger `2xl` and `3xl` presentations for editable profile avatars; decorative images retain `role="img"` and `aria-hidden="true"` so their initials are not mistaken for a surrounding control's visible text label.
 - Presence MUST remain available through an accessible label rather than color alone.
 - AvatarGroup MUST default to 32px avatars and preserve supplied identity order, overlapping circle or rounded shapes, full accessible names and optional host-selected overflow limits, with hovered or focused participants raised above their neighbours.
 - Groups MUST support every Avatar size, size overflow indicators consistently and accept optional custom member content for shared AuthorCard triggers without nested buttons or tooltips.

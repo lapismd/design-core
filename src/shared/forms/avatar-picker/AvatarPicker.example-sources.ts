@@ -37,3 +37,8 @@ export const TransparentImage = `<script lang="ts">
   let background = $state("#fef3c7");
 </script>
 <AvatarPicker bind:value bind:background presentation="inline" open shape="rounded" size="2xl" name="Profile" />`;
+
+export const InitialsLabel = `<script lang="ts">
+  import { AvatarPicker } from "@lapismd/design-core/forms/avatar-picker";
+</script>
+<AvatarPicker name="Saved Agent" label="Edit agent avatar" background="#6e56cf" />`;

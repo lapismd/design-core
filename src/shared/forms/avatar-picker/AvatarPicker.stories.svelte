@@ -27,6 +27,35 @@
   {#snippet template()}<StylesFixture />{/snippet}
 </Story>
 <Story
+  name="Initials trigger label"
+  parameters={{
+    docs: {
+      source: { code: sources.InitialsLabel, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const trigger = canvas.getByRole("button", { name: "Edit agent avatar" });
+    await expect(trigger).toBeVisible();
+    await expect(trigger).toHaveTextContent("SA");
+    await expect(
+      trigger.querySelector('[data-ui-component="avatar"]'),
+    ).toHaveAttribute("role", "img");
+    await expect(
+      trigger.querySelector('[data-ui-component="avatar"]'),
+    ).toHaveAttribute("aria-hidden", "true");
+  }}
+>
+  {#snippet template()}
+    <div style="padding:2rem">
+      <AvatarPicker
+        name="Saved Agent"
+        label="Edit agent avatar"
+        background="#6e56cf"
+      />
+    </div>
+  {/snippet}
+</Story>
+<Story
   name="Inline editor"
   parameters={{
     docs: { source: { code: sources.Inline, language: "tsx", type: "code" } },
