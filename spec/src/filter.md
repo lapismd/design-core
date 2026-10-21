@@ -24,7 +24,7 @@ text.
 ### Acceptance details
 
 - The public boundary is Filter layer.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract, and filter-edit controls MUST include visible field, operator and value text in their accessible names.
 
 ## DC-FILTER-002 — Filter query language
 

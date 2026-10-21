@@ -116,7 +116,7 @@ Data and feedback primitives communicate state without taking ownership of consu
 
 - The public family MUST provide named and decorative image presentations with image-failure fallback and token-driven sizing, including larger `2xl` and `3xl` presentations for editable profile avatars; decorative images retain `role="img"` and `aria-hidden="true"` so their initials are not mistaken for a surrounding control's visible text label.
 - Presence MUST remain available through an accessible label rather than color alone.
-- AvatarGroup MUST default to 32px avatars and preserve supplied identity order, overlapping circle or rounded shapes, full accessible names and optional host-selected overflow limits, with hovered or focused participants raised above their neighbours.
+- AvatarGroup MUST default to 32px avatars and preserve supplied identity order, overlapping circle or rounded shapes, full accessible names including visible initials or emoji fallbacks and optional host-selected overflow limits, with hovered or focused participants raised above their neighbours.
 - Groups MUST support every Avatar size, size overflow indicators consistently and accept optional custom member content for shared AuthorCard triggers without nested buttons or tooltips.
 
 ## DC-SHA-058 — Author Card
@@ -140,7 +140,7 @@ matching visible text order when avatar images are unavailable.
 
 ### Acceptance details
 
-- Full labels and descriptions MUST remain available through accessible tooltips while long inline labels truncate without changing supplied text.
+- Full labels and descriptions MUST remain available through accessible tooltips while long inline labels truncate without changing supplied text, and trigger names MUST include visible avatar fallbacks before the label.
 - Optional removal MUST be a separate labelled button and disabled references MUST never navigate or invoke callbacks.
 
 ## DC-SHA-060 — Link Preview
@@ -150,7 +150,7 @@ matching visible text order when avatar images are unavailable.
 ### Acceptance details
 
 - Unsafe protocols MUST remain noninteractive while safe links retain their destination, accessible name and keyboard focus.
-- Labels, descriptions, optional media and semantic tokens MUST support narrow containers without application-specific URL classification.
+- Labels, descriptions, optional media and semantic tokens MUST support narrow containers without application-specific URL classification, and link names MUST include all rendered text in reading order.
 
 ## DC-SHA-061 — Spoiler
 

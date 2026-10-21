@@ -10,6 +10,8 @@ The File Path Input catalog includes copy-pasteable public usage and host-inject
 The packed consumer checks complete ToolCalls disclosure metadata, decorative busy
 indicators and bundled CodeBlock keyword colors in light/dark development and
 production runs, without Tailwind tooling.
+AuthorCard checks retain exact fallback-inclusive trigger names under DC-SHA-058;
+the hover group and popover dialog keep their author-details names.
 
 The packed public-runtime fixture exercises acknowledged versioned comment edits
 and the docked MarkdownComposer toolbar across teardown/remount, alongside

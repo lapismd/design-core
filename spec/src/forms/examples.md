@@ -2,6 +2,9 @@
 
 Examples prove consumer composition without adding CV-specific runtime exports. Cross-family composition follows the canonical [`Forms guidance`](guidance.md).
 
+DC-FORM-040/041 retain the same edits, YAML and reset flows while trigger
+queries follow the shared Forms context-plus-visible-value naming contract.
+
 ## Public surface coverage
 
 | Surface          | Public boundary   | Requirement |

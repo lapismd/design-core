@@ -61,7 +61,6 @@
     href={destination}
     target={newTab ? "_blank" : undefined}
     rel={newTab ? "noopener noreferrer" : undefined}
-    aria-label={title || href}
     title={href}>{@render content()}</a
   >
 {:else}<span

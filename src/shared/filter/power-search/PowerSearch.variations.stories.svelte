@@ -72,7 +72,7 @@
     await userEvent.keyboard("{Enter}");
     await waitFor(() => {
       expect(
-        canvas.getByRole("button", { name: "Edit payee filter" }),
+        canvas.getByRole("button", { name: /^Edit payee filter: / }),
       ).toBeInTheDocument();
     });
     expect(canvas.getByText("groceries")).toBeInTheDocument();

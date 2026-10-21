@@ -41,7 +41,7 @@ test("avatar groups keep member and overflow sizes aligned with image and emoji 
         Array.from({ length: 3 }, () => ({ width: pixels, height: pixels })),
       );
       const image = group
-        .getByRole("button", { name: "Alex Morgan", exact: true })
+        .getByRole("button", { name: "Alex Morgan: AM", exact: true })
         .locator("img");
       await expect
         .poll(() =>
@@ -49,7 +49,7 @@ test("avatar groups keep member and overflow sizes aligned with image and emoji 
         )
         .toBeGreaterThan(0);
       const emoji = group.getByRole("button", {
-        name: "Build agent",
+        name: "Build agent: 🐝",
         exact: true,
       });
       await expect(emoji).toContainText("🐝");
@@ -74,7 +74,10 @@ test("named participant groups retain keyboard tooltips and their default size",
 }) => {
   await open(page, "participant-groups");
   const group = page.getByRole("group", { name: "Review participants" });
-  const first = group.getByRole("button", { name: "Alex Morgan", exact: true });
+  const first = group.getByRole("button", {
+    name: "Alex Morgan: AM",
+    exact: true,
+  });
   await first.focus();
   await expect(page.getByRole("tooltip")).toHaveText("Alex Morgan");
   await expect(first.locator('[data-ui-component="avatar"]')).toHaveCSS(

@@ -41,7 +41,7 @@
     data-ui-component="column-canvas"
     data-ui-part="collapsed-trigger"
     data-panel-toggle
-    aria-label={`Expand ${label} column`}
+    aria-label={`Expand ${label} column${count === undefined ? "" : `: ${label} ${count}`}`}
     title={count === undefined ? label : `${label} (${count})`}
     onclick={onExpand}
   >

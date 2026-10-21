@@ -35,6 +35,9 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 
 ## DC-SHA-036 — Column Canvas
 
+Collapsed rail names retain their full visible title and count. Rich catalog
+rows use their complete rendered text rather than title-only naming overrides.
+
 **Requirement.** Column Canvas MUST provide horizontally scrollable columns with consumer-owned items and responsive sizing. Wide auto mode MUST allocate scrolling pairs within bounds through inverse resizing and durable pair ratios. Leading `fixed` columns MUST pin their original expanded panels or collapsed rails, releasing trailing pins when scrolling minimums cannot fit. External Scroll Area viewports, custom rails, transient previews and accessible trailing content MUST preserve compact behavior and persistence.
 
 ### Acceptance details

@@ -62,7 +62,9 @@
               {...props}
               pressed={reaction.selected ?? false}
               {disabled}
-              aria-label={accessibleLabel}
+              aria-label={reaction.label
+                ? `${accessibleLabel}: ${reaction.count}`
+                : accessibleLabel}
               data-ai-chat-part="reaction"
               onPressedChange={() => {
                 if (disabled) return;

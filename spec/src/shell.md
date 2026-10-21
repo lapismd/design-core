@@ -16,7 +16,7 @@ The App Shell owns application structure and responsive layout while consumers o
 
 ### Acceptance details
 
-- Responsive variants must keep landmarks, labels, focus order, and consumer actions equivalent.
+- Responsive variants must keep landmarks, labels, focus order, and consumer actions equivalent, and panel selectors must include their visible selected panel in the accessible name.
 - Layout-only mobile stage and lane wrappers must stay semantically neutral so application content remains contained by its real navigation and main landmarks.
 - Mobile panel entry and focus restoration must not scroll the translated stage or move the active panel outside the bounded viewport.
 - Shell tokens must remain the supported styling extension boundary, including `--ui-shell-main-border` with the inset, radius, and shadow main-surface tokens.

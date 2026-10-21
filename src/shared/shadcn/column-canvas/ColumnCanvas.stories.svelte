@@ -488,7 +488,7 @@
       ]);
     });
     await expect(
-      canvas.getByRole("button", { name: "Lapis workspace" }),
+      canvas.getByRole("button", { name: /^Lapis workspace/ }),
     ).toHaveAttribute("aria-pressed", "true");
     await expect(
       canvas.getByRole("heading", {
@@ -498,7 +498,7 @@
     await expect(canvas.getByText("68% complete")).toBeVisible();
 
     const showcaseTaskRow = canvas.getByRole("button", {
-      name: "Build the complete Column Canvas showcase",
+      name: /^DC-184 In progress Build the complete Column Canvas showcase/,
     });
     await waitFor(() => {
       const content = showcaseTaskRow.firstElementChild;
@@ -530,7 +530,7 @@
     ).toBeNull();
     await userEvent.click(
       canvas.getByRole("button", {
-        name: "Tune vertical wheel handoff",
+        name: /^DC-179 In review Tune vertical wheel handoff/,
       }),
     );
     await expect(
@@ -541,10 +541,10 @@
       canvas.getByRole("button", { name: "Collapse Tasks column" }),
     );
     await expect(
-      canvas.getByRole("button", { name: "Expand Tasks column" }),
+      canvas.getByRole("button", { name: /^Expand Tasks column/ }),
     ).toBeVisible();
     await userEvent.click(
-      canvas.getByRole("button", { name: "Expand Tasks column" }),
+      canvas.getByRole("button", { name: /^Expand Tasks column/ }),
     );
 
     if (root.getAttribute("data-display-mode") === "wide") {
@@ -639,7 +639,6 @@
             <ColumnCanvas.Body>
               {#each showcaseWorkspaces as workspace (workspace.id)}
                 <ColumnCanvas.Item
-                  aria-label={workspace.label}
                   selected={showcaseCanvas.isSelected(0, workspace.id)}
                   onclick={() => showcaseCanvas.select(0, workspace.id)}
                 >
@@ -672,7 +671,6 @@
             <ColumnCanvas.Body>
               {#each showcaseWorkspace?.projects ?? [] as project (project.id)}
                 <ColumnCanvas.Item
-                  aria-label={project.label}
                   selected={showcaseCanvas.isSelected(1, project.id)}
                   onclick={() => showcaseCanvas.select(1, project.id)}
                 >
@@ -706,7 +704,6 @@
             <ColumnCanvas.Body>
               {#each showcaseProject?.boards ?? [] as board (board.id)}
                 <ColumnCanvas.Item
-                  aria-label={board.label}
                   selected={showcaseCanvas.isSelected(2, board.id)}
                   onclick={() => showcaseCanvas.select(2, board.id)}
                 >
@@ -733,7 +730,6 @@
             <ColumnCanvas.Body>
               {#each showcaseBoard?.tasks ?? [] as task (task.id)}
                 <ColumnCanvas.Item
-                  aria-label={task.title}
                   selected={showcaseCanvas.isSelected(3, task.id)}
                   onclick={() => showcaseCanvas.select(3, task.id)}
                 >
@@ -901,18 +897,18 @@
 
     await expect(canvas.getByText("Categories")).toBeVisible();
     await expect(
-      canvas.getByRole("button", { name: "Stable Chat" }),
+      canvas.getByRole("button", { name: /^Stable Chat/ }),
     ).toHaveAttribute("aria-pressed", "true");
     await expect(
-      canvas.getByRole("button", { name: "Composer" }),
+      canvas.getByRole("button", { name: /^Composer Layout shell/ }),
     ).toHaveAttribute("aria-pressed", "true");
-    await expect(canvas.getByRole("button", { name: "Name" })).toBeVisible();
+    await expect(canvas.getByRole("button", { name: /^Name/ })).toBeVisible();
     await expect(
       canvas.getByText("@lapismd/design-core/ai/chat"),
     ).toBeVisible();
 
     await userEvent.click(
-      canvas.getByRole("button", { name: "Message Bubble" }),
+      canvas.getByRole("button", { name: /^Message Bubble/ }),
     );
     await expect(canvas.getByText("message-bubble")).toBeVisible();
     await expect(
@@ -1012,7 +1008,6 @@
             <ColumnCanvas.Body>
               {#each aiDemoCategories as category (category.id)}
                 <ColumnCanvas.Item
-                  aria-label={category.label}
                   selected={basicCanvas.isSelected(0, category.id)}
                   onclick={() => basicCanvas.select(0, category.id)}
                 >
@@ -1035,7 +1030,6 @@
             <ColumnCanvas.Body>
               {#each basicSelectedCategory?.components ?? [] as component (component.id)}
                 <ColumnCanvas.Item
-                  aria-label={component.label}
                   selected={basicCanvas.isSelected(1, component.id)}
                   onclick={() => basicCanvas.select(1, component.id)}
                 >
@@ -1057,7 +1051,7 @@
           >
             <ColumnCanvas.Body>
               {#each basicDetailFields as field (field.id)}
-                <ColumnCanvas.Item aria-label={field.label} disabled>
+                <ColumnCanvas.Item disabled>
                   <span class="flex w-full min-w-0 flex-col gap-0.5">
                     <span class="text-muted-foreground text-xs">
                       {field.label}
@@ -1078,16 +1072,20 @@
   name="Three-level cascade"
   play={async ({ canvas }) => {
     threeLevelCanvas.clear();
-    await userEvent.click(canvas.getByRole("button", { name: "Stable Chat" }));
+    await userEvent.click(canvas.getByRole("button", { name: /^Stable Chat/ }));
     await expect(canvas.getByText("Composer")).toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "Composer" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: /^Composer Layout shell/ }),
+    );
     await expect(
       canvas.getByText("@lapismd/design-core/ai/chat"),
     ).toBeVisible();
     await expect(
       canvas.getByRole("button", { name: "Close Composer column" }),
     ).toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "Composer" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: /^Composer Layout shell/ }),
+    );
     await expect(canvas.queryByText("@lapismd/design-core/ai/chat")).toBeNull();
     await expect(canvas.getByText("Send Button")).toBeVisible();
   }}
@@ -1112,7 +1110,6 @@
           <ColumnCanvas.Body>
             {#each aiDemoCategories as category (category.id)}
               <ColumnCanvas.Item
-                aria-label={category.label}
                 selected={threeLevelCanvas.isSelected(0, category.id)}
                 onclick={() => threeLevelCanvas.select(0, category.id)}
               >
@@ -1135,7 +1132,6 @@
           <ColumnCanvas.Body>
             {#each threeLevelCategory?.components ?? [] as component (component.id)}
               <ColumnCanvas.Item
-                aria-label={component.label}
                 selected={threeLevelCanvas.isSelected(1, component.id)}
                 onclick={() => threeLevelCanvas.select(1, component.id)}
               >
@@ -1178,7 +1174,7 @@
     closeableCanvas.clear();
     closeableCanvas.open("detail");
     await userEvent.click(
-      canvas.getByRole("button", { name: "Message Bubble" }),
+      canvas.getByRole("button", { name: /^Message Bubble/ }),
     );
     await expect(canvas.getByText("Detail")).toBeVisible();
     const header = canvas
@@ -1236,7 +1232,6 @@
             <ColumnCanvas.Body>
               {#each stableChatComponents as component (component.id)}
                 <ColumnCanvas.Item
-                  aria-label={component.label}
                   selected={closeableCanvas.isSelected(0, component.id)}
                   onclick={() => closeableCanvas.select(0, component.id)}
                 >
@@ -1283,11 +1278,11 @@
       canvas.getByRole("button", { name: "Collapse Components column" }),
     );
     await expect(
-      canvas.getByRole("button", { name: "Expand Components column" }),
+      canvas.getByRole("button", { name: /^Expand Components column/ }),
     ).toBeVisible();
     await expect(canvas.getByText("Tool Calls")).not.toBeVisible();
     await userEvent.click(
-      canvas.getByRole("button", { name: "Expand Components column" }),
+      canvas.getByRole("button", { name: /^Expand Components column/ }),
     );
     await expect(canvas.getByText("Tool Calls")).toBeVisible();
   }}

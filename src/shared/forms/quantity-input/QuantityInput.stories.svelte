@@ -18,7 +18,7 @@
   name="Display units preserve canonical value"
   play={async ({ canvas }) => {
     await userEvent.click(
-      canvas.getByRole("button", { name: "Capacity unit" }),
+      canvas.getByRole("button", { name: /^Capacity unit: / }),
     );
     await userEvent.click(
       await within(document.body).findByRole("option", { name: /^KiB$/ }),

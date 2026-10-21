@@ -170,7 +170,7 @@ async function checkPrimitiveStates(page) {
     "🔥",
   );
   await page
-    .getByRole("button", { name: "Choose avatar", exact: true })
+    .getByRole("button", { name: "Choose avatar: PP", exact: true })
     .click();
   await page
     .getByRole("textbox", { name: "Avatar image URL" })
@@ -445,7 +445,7 @@ async function checkCommunityComponents(page) {
   });
   assert.equal(await participants.getByRole("button").count(), 2);
   const participant = participants.getByRole("button", {
-    name: "About Archive author",
+    name: "About Archive author, AA",
     exact: true,
   });
   await participant.hover();
@@ -480,7 +480,7 @@ async function checkCommunityComponents(page) {
   const author = scope
     .locator('[data-review="archive-author"]')
     .getByRole("button", {
-      name: "About Archive author",
+      name: "About Archive author, AA",
       exact: true,
     });
   await author.click();

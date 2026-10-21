@@ -242,7 +242,7 @@ wrapper/keyboard behavior.
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/ai/experimental`.
+- The public boundary is `@lapismd/design-core/ai/experimental`; reaction names MUST retain their visible count alongside supplied participant context.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - The experimental import MUST remain compatible with the shared Chat reaction implementation and neutral custom-emoji model defined by DC-CHAT-004.
 - Optional emoji choices MUST be omitted rather than forwarded as explicit `undefined` values.

@@ -127,7 +127,7 @@
           {...props}
           variant="outline"
           class="ui-date-picker__trigger"
-          aria-label={ariaLabel}
+          aria-label={ariaLabel ? `${ariaLabel}: ${displayValue}` : undefined}
           aria-invalid={error ? "true" : undefined}
           aria-describedby={error ? errorId : undefined}
           {disabled}

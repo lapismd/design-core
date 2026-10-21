@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { Avatar, avatarIdentityProps } from "../avatar/index.js";
+  import {
+    Avatar,
+    avatarIdentityProps,
+    avatarInitials,
+  } from "../avatar/index.js";
   import { Badge } from "../badge/index.js";
   import * as Tooltip from "../tooltip/index.js";
   import XIcon from "@lucide/svelte/icons/x";
@@ -20,6 +24,11 @@
   }: ReferenceChipProps = $props();
   const destination = $derived(disabled ? undefined : safeLink(href));
   const tooltip = $derived(description ? `${label} — ${description}` : label);
+  const accessibleLabel = $derived(
+    avatar
+      ? `${avatar.emoji || avatar.initials || avatarInitials(avatar.name)} ${label}`
+      : label,
+  );
 </script>
 
 {#snippet inner()}{#if avatar}<Avatar
@@ -43,7 +52,7 @@
               {...props}
               href={destination}
               class="ui-reference-chip__target"
-              aria-label={label}
+              aria-label={accessibleLabel}
               onclick={onClick}>{@render content()}</a
             >
           {:else if onClick}<button
@@ -51,7 +60,7 @@
               type="button"
               class="ui-reference-chip__target"
               {disabled}
-              aria-label={label}
+              aria-label={accessibleLabel}
               onclick={(event) => {
                 if (!disabled) onClick?.(event);
               }}>{@render content()}</button
@@ -61,7 +70,7 @@
               {variant}
               class="ui-reference-chip__target"
               tabindex={disabled ? undefined : 0}
-              aria-label={label}
+              aria-label={accessibleLabel}
               aria-disabled={disabled || undefined}>{@render inner()}</Badge
             >{/if}
         {/snippet}</Tooltip.Trigger

@@ -431,7 +431,7 @@
             });
           }}
         >
-          Insert token
+          Insert context token
         </Button>
         <Button
           type="button"
@@ -443,7 +443,7 @@
             if (insertedTokenId) handle?.expandToken(insertedTokenId);
           }}
         >
-          Expand token
+          Expand context token
         </Button>
       </div>
     </div>

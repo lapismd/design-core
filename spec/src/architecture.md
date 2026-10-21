@@ -105,9 +105,9 @@ workspace graphs, while packed consumers audit their own dependency resolution.
 ## DC-ARCH-006 — External consumption
 
 Public archive acceptance audits the installed production graph independently
-of local overrides. The recorded KaTeX exception under DC-PKG-009 is limited
-to Design Core 0.3.0 and its preparation manifest; subsequent releases cannot
-inherit that risk acceptance.
+of local overrides. The recorded user-approved KaTeX exception under DC-PKG-009
+is advisory-specific across package releases until upstream math ranges are
+patched; every other finding remains blocking and complete evidence is retained.
 
 **Requirement.** Independent first-party plugins MUST consume Design Core through its public versioned package boundary without repository source aliases or sibling workspace membership.
 

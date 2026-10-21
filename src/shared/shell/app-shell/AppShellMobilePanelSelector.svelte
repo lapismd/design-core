@@ -45,7 +45,7 @@
       <Select.Trigger
         size="sm"
         class="ui-minimal-app-shell__mobile-panel-selector-trigger"
-        aria-label={`Choose ${side} sidebar panel`}
+        aria-label={`Choose ${side} sidebar panel: ${activeLabel}`}
       >
         {activeLabel}
       </Select.Trigger>

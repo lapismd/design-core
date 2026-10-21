@@ -6,7 +6,7 @@
     avatarIdentityProps,
     type AvatarIdentity,
   } from "./avatar-identity.js";
-  import type { AvatarSize } from "./avatar.types.js";
+  import { avatarInitials, type AvatarSize } from "./avatar.types.js";
   import * as Tooltip from "../tooltip/index.js";
   import "./avatar-group.css";
   let {
@@ -52,7 +52,7 @@
             ><Tooltip.Trigger
               class="ui-avatar-group__member"
               data-shape={item.shape ?? "circle"}
-              aria-label={item.name}
+              aria-label={`${item.name}: ${item.emoji || item.initials || avatarInitials(item.name)}`}
             >
               <Avatar {...avatarIdentityProps(item)} {size} decorative />
             </Tooltip.Trigger><Tooltip.Content role="tooltip"

@@ -180,7 +180,7 @@
             class="ui-power-search__chip-body"
             data-power-search-token={token.id}
             {disabled}
-            aria-label={`Edit ${token.field} filter`}
+            aria-label={`Edit ${token.field} filter: ${token.field}: ${powerSearchOperatorLabel(token.operator)} ${token.value}`}
             onclick={() => openEditToken(token)}
           >
             <span class="ui-power-search__chip-meta">

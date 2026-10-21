@@ -13,6 +13,7 @@
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
   import WorkspaceViewLabel from "../view-header/WorkspaceViewLabel.svelte";
+  import { resolveWorkspaceViewLabel } from "../view-header/workspace-view-label.js";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import {
     collapsedSidebarPanelSize,
@@ -209,6 +210,12 @@
                 />
               {/if}
               {@const collapsed = group.collapsedByTabId[tab.id] === true}
+              {@const viewLabel = resolveWorkspaceViewLabel(
+                controller,
+                tab,
+                "root",
+                pane.id,
+              )}
               {@const panelMenu = controller.createPaneMenu(
                 tab.id,
                 "sidebar-group-panel",
@@ -253,7 +260,7 @@
                             data-ui-part="panel-header"
                             draggable="true"
                             aria-expanded={!collapsed}
-                            aria-label={`${collapsed ? "Expand" : "Collapse"} ${tab.title}`}
+                            aria-label={`${collapsed ? "Expand" : "Collapse"} ${viewLabel.title}${viewLabel.badge ? ` ${viewLabel.badge.value}, ${viewLabel.badge.label}` : ""}`}
                             data-hint-target="sidebar-group"
                             data-hint-group="sidebar"
                             data-hint-action="click"

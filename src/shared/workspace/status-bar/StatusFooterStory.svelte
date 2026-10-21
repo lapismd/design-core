@@ -58,7 +58,7 @@
     mount: (host) => {
       mounts += 1;
       const button = host.ownerDocument.createElement("button");
-      button.textContent = "Custom counter";
+      button.textContent = "Custom status counter";
       button.setAttribute("aria-label", "Custom status counter");
       button.onclick = () => {
         clicks += 1;

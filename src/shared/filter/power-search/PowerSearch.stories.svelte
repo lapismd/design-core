@@ -63,7 +63,7 @@
 
     await waitFor(() => {
       expect(
-        canvas.getByRole("button", { name: "Edit amount filter" }),
+        canvas.getByRole("button", { name: /^Edit amount filter: / }),
       ).toBeInTheDocument();
     });
   }}
@@ -102,7 +102,7 @@
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(
-      canvas.getByRole("button", { name: "Edit payee filter" }),
+      canvas.getByRole("button", { name: /^Edit payee filter: / }),
     );
     const dialog = await waitFor(() =>
       canvas.getByRole("dialog", { name: "Edit filter" }),
@@ -116,7 +116,7 @@
       canvas.getByRole("button", { name: "Remove payee filter" }),
     );
     await expect(
-      canvas.queryByRole("button", { name: "Edit payee filter" }),
+      canvas.queryByRole("button", { name: /^Edit payee filter: / }),
     ).not.toBeInTheDocument();
 
     // Re-seed via host state is already empty; add then clear all
@@ -137,12 +137,12 @@
     );
     await waitFor(() => {
       expect(
-        canvas.getByRole("button", { name: "Edit type filter" }),
+        canvas.getByRole("button", { name: /^Edit type filter: / }),
       ).toBeInTheDocument();
     });
     await userEvent.click(canvas.getByRole("button", { name: "Clear all" }));
     await expect(
-      canvas.queryByRole("button", { name: "Edit type filter" }),
+      canvas.queryByRole("button", { name: /^Edit type filter: / }),
     ).not.toBeInTheDocument();
   }}
   tags={["visual-approved", "skip-visual"]}

@@ -112,7 +112,7 @@
         }
 
         const firstNetwork = canvas.getAllByRole("button", {
-          name: "Network",
+          name: /^Network: /,
         })[0];
         await expect(
           firstNetwork.closest(".cv-form-inline-option-picker"),
@@ -398,7 +398,7 @@
           within(networks).getByRole("button", { name: "Add" }),
         );
         await expect(
-          within(networks).getAllByRole("button", { name: "Network" }),
+          within(networks).getAllByRole("button", { name: /^Network: / }),
         ).toHaveLength(3);
         await userEvent.click(
           within(networks).getAllByRole("button", { name: "Move up" }).at(-1)!,
@@ -409,7 +409,7 @@
             .at(-1)!,
         );
         await expect(
-          within(networks).getAllByRole("button", { name: "Network" }),
+          within(networks).getAllByRole("button", { name: /^Network: / }),
         ).toHaveLength(2);
 
         const targetRoles = canvas
@@ -480,7 +480,7 @@
               (titleRect.top + titleRect.height / 2),
           ),
         ).toBeLessThan(1);
-        const theme = canvas.getByRole("button", { name: "Select Theme" });
+        const theme = canvas.getByRole("button", { name: /^Select Theme: / });
         await expect(theme.closest(".ui-cycle-picker")).toBeInTheDocument();
         await userEvent.click(
           canvas.getByRole("button", { name: "Next Theme" }),
@@ -493,7 +493,7 @@
         await userEvent.type(nameColorValue, "112233");
         await expect(nameColorPicker).toHaveValue("#112233");
 
-        const bodyFont = canvas.getByRole("button", { name: "Select Body" });
+        const bodyFont = canvas.getByRole("button", { name: /^Select Body: / });
         await expect(bodyFont.closest(".ui-cycle-picker")).toBeInTheDocument();
         await userEvent.click(
           canvas.getByRole("button", { name: "Next Body" }),

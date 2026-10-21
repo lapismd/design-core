@@ -36,6 +36,7 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 - Display-only defaults must remain absent from authoritative values until the consumer edits the field.
 - Array and disclosure metadata must remain outside consumer values unless explicitly part of the configured schema.
+- Accessible trigger names MUST retain host context and the complete visible selected value, display unit or avatar fallback text.
 
 ## DC-FORM-007 — Autocomplete Input
 
@@ -191,7 +192,7 @@ readable contrast on both light and dark selection backgrounds.
 Catalog emoji selection waits for the expected selectable emoji after the lazy
 library mounts, rather than treating its search input as grid readiness.
 The initials-only trigger uses Avatar's decorative image semantics while its
-host-supplied label continues to name the button (DC-SHA-056); upload, selection
+host-supplied label and visible initials name the button (DC-SHA-056); upload, selection
 and persistence behavior are unchanged.
 
 **Requirement.** Avatar Picker MUST edit host-owned avatar values through image selection/drop, pasted URLs and emoji on a chosen background, using host-provided initials or name as the empty-image fallback.

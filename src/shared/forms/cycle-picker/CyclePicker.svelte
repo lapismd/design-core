@@ -108,7 +108,7 @@
       data-ui-part="cycle-current"
       style={previewStyle(value)}
       title={currentLabel || placeholder}
-      aria-label={`Select ${ariaLabel}`}
+      aria-label={`Select ${ariaLabel}: ${currentLabel || placeholder}`}
       aria-expanded={open}
       disabled={!options.length}
       onclick={() => (open = !open)}

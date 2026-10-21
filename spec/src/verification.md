@@ -5,6 +5,11 @@ The dependency-first 0.6 release preparation and workspace audit are recorded in
 DC-PKG-011, DC-ARCH-005 and DC-TOOL-003. Existing product milestone statuses
 remain unchanged until their original gates pass.
 
+The same Wave 4 record retains the 58-before accessibility naming failures
+across shared Forms, AvatarGroup, ReferenceChip, LinkPreview, Filter, Shell,
+Workspace and AI controls, and their exact cold-browser reruns. Accessibility
+rules and original milestone gates remain enforced.
+
 DC-CHAT-010 body and nested Markdown indentation is covered by
 [prompt-context geometry](../records/2026-10-21-prompt-context-indent.md).
 Source and compatible Desktop archive acceptance retain separate evidence;

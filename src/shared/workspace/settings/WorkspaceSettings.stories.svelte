@@ -779,7 +779,7 @@
   tags={["visual-pending"]}
   play={async ({ canvas }) => {
     const openNavigation = canvas.getByRole("button", {
-      name: "Open settings navigation",
+      name: /^Open settings navigation: /,
     });
     await expect(openNavigation).toHaveTextContent(/Workspace|Appearance/);
     await userEvent.click(openNavigation);

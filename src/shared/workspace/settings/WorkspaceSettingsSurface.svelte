@@ -46,7 +46,7 @@
             class="ui-workspace-settings__mobile-navigation-trigger"
             variant="ghost"
             size="sm"
-            aria-label="Open settings navigation"
+            aria-label={`Open settings navigation: ${selectedSection?.title ?? "Settings"}`}
           >
             <PanelToggleIcon
               expanded={navigationOpen}

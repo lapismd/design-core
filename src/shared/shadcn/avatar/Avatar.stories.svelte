@@ -226,7 +226,7 @@
     ).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Author cards" }));
     await expect(
-      canvas.getByRole("button", { name: "Alex Morgan" }),
+      canvas.getByRole("button", { name: "Alex Morgan: AM" }),
     ).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Author cards" }));
     await expect(

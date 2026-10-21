@@ -18,8 +18,9 @@
   const accessibleName = $derived.by(() => {
     const context = item.tooltip ?? item.label ?? item.id;
     const visible = item.segments?.join(" ") ?? item.label ?? "";
-    return visible &&
-      !context.toLocaleLowerCase().includes(visible.toLocaleLowerCase())
+    const contextWords = ` ${context.toLocaleLowerCase().replace(/\s+/gu, " ")} `;
+    const visibleWords = ` ${visible.toLocaleLowerCase().replace(/\s+/gu, " ")} `;
+    return visible && !contextWords.includes(visibleWords)
       ? `${context} · ${visible}`
       : context;
   });

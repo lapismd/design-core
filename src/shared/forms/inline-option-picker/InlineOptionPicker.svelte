@@ -113,7 +113,7 @@
       type="button"
       class="cv-form-inline-option-trigger"
       style={optionStyle(currentOption)}
-      aria-label={ariaLabel}
+      aria-label={`${ariaLabel}: ${currentLabel || placeholder}`}
       aria-expanded={open}
       onclick={toggleOpen}
     >

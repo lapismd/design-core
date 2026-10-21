@@ -83,3 +83,64 @@ and generates 0.6.0 plus its changelog. No published version is edited manually.
 The command uses existing GitHub authentication without writing a credential
 to the checkout. The versioned spec/config checks pass and the exact 0.6.0
 archive qualification is running before publication.
+
+The first 0.6.0 packed check passes archive preparation, independent installed
+types and audit classification, then times out on an outdated AuthorCard button
+name. DC-SHA-058 requires the visible fallback in that name: `About Archive
+author, AA`, while details remain `About Archive author`. Both packed trigger
+locators now assert the complete required name; no product or accessibility
+behavior, timeout or interaction assertion is weakened. The exact runtime
+boundary reruns against the existing archive before the complete pack gate.
+The independent consumer has six low propagated entries, rooted only in the
+previously accepted KaTeX GHSA-238p-pmpm-9mq7; other severities are zero.
+
+The first direct-runtime retry supplied a relative tarball path, which npm
+resolved inside its disposable consumer rather than the repository (install
+exit 254). The runner now supplies the absolute archive path; package code and
+assertions are unchanged. DC-ARCH-006's obsolete 0.3.0-only prose is synchronized
+with DC-PKG-009 and the already recorded October 11 cross-release acceptance;
+this adds no advisory or exception and retains independent audit qualification.
+
+## Hosted accessibility qualification
+
+PR #31 is attached at source `4ac484f203a624d0b5492e1d8287d63acf2ff5c7`.
+CI `39660230850` passes governance, quality, units, static Storybook, Workspace
+and Shell pointer suites and AI browser acceptance. Storybook interactions
+report 839 passes / 58 failures in 27 files, all from axe 4.14's existing
+`label-content-name-mismatch` rule. The Shadcn pointer lane remains pending.
+No failed lane is waived and no screenshot comparison is run.
+
+Shared selected-value, avatar fallback, filter and badge/count names now retain
+their complete visible text with their host context. Link Preview uses its
+rendered contents for its name; catalog-only rich Column Canvas rows remove
+title-only overrides. Fixture action labels match their visible wording.
+Selectors follow the changed complete names while preserving state/callback
+assertions; the global accessibility rules and deadlines remain unchanged.
+The 27 affected files run in a fresh serial browser process, with full hosted
+qualification required on the final source. Naming fixes do not change layout,
+application routing, persistence, selected values or author authority.
+
+The direct cold-runtime retry with an absolute archive path passes development
+and production CSS, fonts, focus, themes, token overrides, TagList actions,
+reactive CodeEditor and bound Composer Input teardown without Tailwind or Svelte
+diagnostics. Subsequent naming changes require a freshly prepared final archive.
+
+The first focused cold run across all 27 affected files reports 123 passes and
+11 failures: eight stale or ambiguous selectors and three deeper naming cases.
+After correcting those, the same command reports 131 passes and three Column
+Canvas row-query failures. Their full names include descriptions or task IDs,
+so selectors now distinguish the exact Composer row from Composer Input/Drawer
+and match the visible task key/status/title. The complete Column Canvas rerun
+first reports 13 passes and one remaining task query; its exact correction
+reruns the same 14 cases. State/callback assertions and all axe checks remain.
+
+Original hosted Shadcn pointer acceptance completes with 152 passes and one
+platform-specific skip. The original CI still fails its interaction gate and
+correctly skips audits; its Validate result fails. Final-source hosted CI,
+including all pointer suites, remains mandatory before merge.
+
+The final exact Column Canvas rerun passes all 14 cases in a fresh process.
+Together with the unchanged 26 passing files in the preceding 27-file run,
+all affected flows now pass focused qualification. The current spec/config
+checks pass, and a fresh full `pnpm packages:pack` is in progress. The release
+candidate remains unpublished while final-source hosted qualification runs.

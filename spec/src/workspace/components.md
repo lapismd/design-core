@@ -277,7 +277,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 - The public boundary is `@lapismd/design-core/workspace/mobile`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
-- The tab-count action MUST include its visible count in its accessible name.
+- The tab-count action MUST include its visible count as a separate readable token in its accessible name.
 
 ## DC-WS-018 — Popout Surface
 
@@ -423,7 +423,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/sidebar-group`.
+- The public boundary is `@lapismd/design-core/workspace/sidebar-group`; heading names MUST retain complete resolved view titles and visible badge values with their expansion action.
 - Sidebar groups MUST restore nested views to workspace primary and secondary backgrounds while preserving panel-painted group chrome.
 - Stacked panel dividers MUST expose a row resize cursor.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
@@ -485,7 +485,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/status-item`.
+- The public boundary is `@lapismd/design-core/workspace/status-item`; accessible names MUST retain complete visible segments as readable words even when a tooltip embeds a numeric label inside parentheses.
 - A custom `mount(host)` MAY own controls and CSS instead of built-in chrome; its returned disposer MUST run on replacement/removal, including while overflowed, with the owner providing accessible controls and resource cleanup.
 - An action's accessible name MUST contain its visible label or segments together with its tooltip context.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

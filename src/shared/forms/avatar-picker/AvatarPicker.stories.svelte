@@ -34,7 +34,9 @@
     },
   }}
   play={async ({ canvas }) => {
-    const trigger = canvas.getByRole("button", { name: "Edit agent avatar" });
+    const trigger = canvas.getByRole("button", {
+      name: /^Edit agent avatar: /,
+    });
     await expect(trigger).toBeVisible();
     await expect(trigger).toHaveTextContent("SA");
     await expect(
@@ -100,7 +102,7 @@
   exportName="ChooseImageEmojiOrInitials"
   play={async ({ canvas }) => {
     await userEvent.click(
-      canvas.getByRole("button", { name: "Choose avatar" }),
+      canvas.getByRole("button", { name: /^Choose avatar: / }),
     );
     const body = within(document.body);
     await userEvent.click(body.getByRole("tab", { name: /^Emoji$/ }));
@@ -119,7 +121,7 @@
     );
     await expect(
       canvas
-        .getByRole("button", { name: "Choose avatar" })
+        .getByRole("button", { name: /^Choose avatar: / })
         .querySelector('[data-ui-component="avatar"]'),
     ).toHaveAttribute("data-shape", "rounded");
   }}>{#snippet template()}<Fixture />{/snippet}</Story

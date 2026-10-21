@@ -187,7 +187,7 @@
                 }}
               >
                 <Select.Trigger
-                  aria-label={`${label} unit`}
+                  aria-label={`${label} unit: ${unit.label}`}
                   class="ui-quantity-input__unit-trigger"
                   >{unit.label}</Select.Trigger
                 >

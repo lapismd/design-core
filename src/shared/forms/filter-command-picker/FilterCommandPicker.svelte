@@ -182,7 +182,9 @@
           {...props}
           type="button"
           class="ui-filter-command-picker__trigger"
-          aria-label={ariaLabel}
+          aria-label={triggerLabel === ariaLabel
+            ? ariaLabel
+            : `${ariaLabel}: ${triggerLabel ?? ""}`}
           title={ariaLabel}
           aria-describedby={error ? errorId : undefined}
           data-active={active}
