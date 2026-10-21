@@ -53,3 +53,10 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  /* Reproduce an editor dependency's unlayered generic slot rule. */
+  :global([data-slot="dropdown-menu-item"][data-variant="destructive"]) {
+    color: var(--destructive, #dc2626);
+  }
+</style>
