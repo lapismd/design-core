@@ -25,6 +25,7 @@ Form inputs provide higher-level controlled editing patterns composed from share
 | Search Filter in a Form | Catalogued composition                                  | DC-FORM-020 |
 | Avatar Picker           | `@lapismd/design-core/forms` and `/forms/avatar-picker` | DC-FORM-047 |
 
+| File Path Input | `@lapismd/design-core/forms/file-path-input` | DC-FORM-049 |
 | Quantity Input | `@lapismd/design-core/forms/quantity-input` | DC-FORM-048 |
 
 ## DC-FORM-006 — Shared Forms invariants
@@ -211,3 +212,15 @@ and persistence behavior are unchanged.
 - Switching display units MUST never emit a canonical edit or silently round the retained value.
 - Empty, fractional, unsafe and out-of-range drafts MUST remain distinguishable and retain their input text with accessible validation.
 - Reset and optional sliders MUST retain bounds, keyboard focus and disabled or read-only behaviour without allocating unbounded step arrays.
+
+- Control-only composition MUST retain its accessible name and validation when a host supplies row labels.
+
+## DC-FORM-049 — File Path Input
+
+**Requirement.** FilePathInput MUST provide manual path entry and an optional host-owned native chooser without owning filesystem access or performing imports.
+
+### Acceptance details
+
+- Browse MUST run only on explicit activation, expose pending state and accept a path or cancellation without altering a retained path on cancellation.
+- New typing, external values, disabling, read-only state and disposal MUST fence stale chooser results; failure MUST preserve the value and report through a host callback or accessible fallback.
+- Without a chooser the path MUST remain manually editable; disabled and read-only fields MUST not launch selection or emit edits.

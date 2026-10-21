@@ -1,0 +1,16 @@
+.ui-file-path-input__group {
+  width: 100%;
+  min-width: 0;
+}
+.ui-file-path-input__group input {
+  min-width: 0;
+  flex: 1;
+}
+.ui-file-path-input__group button {
+  flex: none;
+}
+.ui-file-path-input__error {
+  margin: 0.5rem 0 0;
+  color: var(--destructive);
+  font-size: 0.8rem;
+}

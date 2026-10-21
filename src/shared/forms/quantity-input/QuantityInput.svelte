@@ -32,6 +32,7 @@
     slider = false,
     sliderMax,
     density = "regular",
+    layout = "row",
     onValueChange,
     draft = $bindable(),
   }: {
@@ -53,6 +54,8 @@
     /** Convenience range; larger valid typed values expand it without edits. */
     sliderMax?: number;
     density?: "regular" | "compact";
+    /** Control-only composition when the host already renders a labelled row. */
+    layout?: "row" | "control";
     onValueChange: (canonical: string) => void;
     /** Retain this binding with the host draft across navigation; NaN marks invalid canonical values. */
     draft?: { canonical: string; text: string; unit: string } | undefined;
@@ -133,7 +136,7 @@
   }
 </script>
 
-<div data-ui-component="quantity-input">
+<div data-ui-component="quantity-input" data-layout={layout}>
   <Field.Field
     orientation="responsive"
     class="ui-quantity-input"
@@ -141,22 +144,23 @@
     data-invalid={validation ? true : undefined}
     data-disabled={disabled ? true : undefined}
   >
-    <Field.Content>
-      <Field.Label for={id}>{label}</Field.Label>
-      {#if description}<Field.Description id={helpId}
-          >{description}</Field.Description
-        >{/if}
-      {#if defaultValue !== undefined}<p class="ui-quantity-input__default">
-          Default: {defaultValue.toLocaleString("en-GB")}
-          {units[0]!.label}
-        </p>{/if}
-    </Field.Content>
+    {#if layout === "row"}<Field.Content>
+        <Field.Label for={id}>{label}</Field.Label>
+        {#if description}<Field.Description id={helpId}
+            >{description}</Field.Description
+          >{/if}
+        {#if defaultValue !== undefined}<p class="ui-quantity-input__default">
+            Default: {defaultValue.toLocaleString("en-GB")}
+            {units[0]!.label}
+          </p>{/if}
+      </Field.Content>{/if}
     <div class="ui-quantity-input__controls">
       <div class="ui-quantity-input__entry">
         <InputGroup.Root class="ui-quantity-input__input" aria-label={label}>
           <InputGroup.Input
             bind:ref={input}
             {id}
+            aria-label={label}
             type="number"
             required={!optional}
             step="any"

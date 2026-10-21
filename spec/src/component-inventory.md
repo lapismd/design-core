@@ -292,3 +292,7 @@ component-owned native CSS and host-owned display data. QuantityInput is a Forms
 input with exact unit conversion. MarkdownComposer trigger suggestions extend
 the existing Chat family; ThreadPanel adds nested human discussion presentation.
 These families contain no Community identities, repository models or transport.
+
+FilePathInput is a shared Forms primitive adapted from JJ Store, with optional
+host-owned file selection and no filesystem authority. Workspace Settings may
+compose it and QuantityInput as first-party declarative inputs.

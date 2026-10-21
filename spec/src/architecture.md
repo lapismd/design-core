@@ -1,5 +1,7 @@
 # Architecture
 
+Settings composes the generic Forms QuantityInput, FilePathInput and PasswordInput through an explicit internal boundary; native file selection, import policy and authoritative values stay in the consuming host.
+
 The Chat layer composes host-owned transcript snapshots, footer/queue/reaction
 presentation and optional author details. PromptContext adds inert XML-style
 preview syntax through Mira's public extension API and a declared CodeMirror XML

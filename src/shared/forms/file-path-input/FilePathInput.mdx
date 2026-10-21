@@ -1,0 +1,22 @@
+import { Meta, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./FilePathInput.stories.svelte";
+import { Basic } from "./FilePathInput.example-sources.js";
+
+<Meta of={Stories} />
+
+# FilePathInput
+
+Manual path input with an optional native Browse action. The host supplies the
+chooser, filters and error reporting; returning `null` cancels. Selection only
+updates the controlled string and never imports or reads a file. Pending choices
+cannot overwrite newer typed or external values, or update a disabled, read-only
+or disposed control. Without `onBrowse`, only manual entry is shown.
+
+<Source code={Basic} language="tsx" />
+
+Settings can declare a string field with `filePicker: { browse, onError }`.
+Numeric settings can declare `quantity: { units, preferredUnit, slider }` and
+retain their normal canonical number, minimum, maximum and default values.
+See UI Forms/Guidance and Workspace/Settings/Unit and File Inputs for composition.
+
+Adapted from JJ Store, Apache-2.0. See PROVENANCE.md.

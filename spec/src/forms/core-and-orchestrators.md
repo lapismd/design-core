@@ -1,5 +1,7 @@
 # Forms core and orchestrators
 
+FilePathInput joins the Forms barrel and focused `forms/file-path-input` export; DC-FORM-049 owns its chooser contract, while Settings metadata composes the same control under DC-WS-082.
+
 QuantityInput is exported from the Forms barrel and its focused entry point;
 its canonical unit and draft contract remains owned by DC-FORM-048 in inputs.
 

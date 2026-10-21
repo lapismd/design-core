@@ -403,6 +403,10 @@
     {
       "name": "./forms/quantity-input",
       "requirement": "DC-FORM-048"
+    },
+    {
+      "name": "./forms/file-path-input",
+      "requirement": "DC-FORM-049"
     }
   ],
   "catalog": [
@@ -1113,6 +1117,14 @@
     {
       "name": "Chat/Thread Panel",
       "requirement": "DC-CHAT-014"
+    },
+    {
+      "name": "Workspace/Settings/Unit and File Inputs",
+      "requirement": "DC-WS-082"
+    },
+    {
+      "name": "UI Forms/File Path Input",
+      "requirement": "DC-FORM-049"
     }
   ]
 }

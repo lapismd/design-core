@@ -64,6 +64,7 @@ const shadcnChapters = {
 };
 
 const formChapters = {
+  "file-path-input": ["spec/src/forms/inputs.md"],
   "quantity-input": ["spec/src/forms/inputs.md"],
   "avatar-picker": ["spec/src/forms/inputs.md"],
   core: ["spec/src/forms/core-and-orchestrators.md"],

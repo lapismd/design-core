@@ -1,5 +1,7 @@
 # Tooling
 
+The File Path Input catalog includes copy-pasteable public usage and host-injected chooser fixtures; the Settings unit/file catalog verifies the declarative path without native filesystem dependencies.
+
 The packed consumer checks complete ToolCalls disclosure metadata, decorative busy
 indicators and bundled CodeBlock keyword colors in light/dark development and
 production runs, without Tailwind tooling.

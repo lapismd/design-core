@@ -1,5 +1,7 @@
 # Package exports
 
+The additive `./forms/file-path-input` export and Forms barrel expose FilePathInput and its props; Workspace Settings exports quantity and filePicker metadata without changing existing persisted field kinds.
+
 The clean archive consumer exercises reconciled ToolCalls disclosure names and
 bundled light/dark CodeBlock syntax colors through their public family exports.
 
