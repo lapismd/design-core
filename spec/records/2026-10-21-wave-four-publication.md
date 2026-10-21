@@ -20,9 +20,13 @@ rollback, Deno retirement or later release waves.
 - `jj --no-pager st`, `jj workspace list` and read-only
   `git worktree list --porcelain`: one clean active default checkout.
 - The October 18 reconciliation includes retired workspace changes by ancestry
-  or recorded equivalent implementation. Its original bookmarks, ignored
-  artifacts and 57 verified generator inputs remain recoverable. No additional
-  workspace or archive is deleted during this release.
+  or recorded equivalent implementation; its tracked archive bookmarks remain
+  present. The retirement record documents preserving ignored artifacts and 57
+  verified generator inputs. A fresh probe cannot resolve the old recovery path,
+  and macOS denies listing `~/.Trash` with EPERM, so current recovery contents
+  are unverified. This does not establish deletion. No archive is modified or
+  deleted in this release, and the complete retired source reconciliation is
+  already in the released tree.
 - `jj git fetch --remote codex-https` and GitHub PR inspection refresh main;
   there is no open Dependabot proposal to consolidate.
 - Protected [PR #31](https://github.com/lapismd/design-core/pull/31) at
@@ -91,7 +95,7 @@ consumer types pass; cold development and production CSS, fonts, focus, themes,
 token overrides, TagList overflow/actions, reactive CodeEditor and bound Composer
 Input lifecycle pass without Tailwind tooling or Svelte diagnostics. The exact
 log is `/private/tmp/design-core-wave4-public-consumer.log`; registry inspection,
-manifest, archive and signatures are retained under the ignored temporary
+manifest, archive and signatures are retained under the temporary
 `design-core-wave4-hosted.htsuGQ` evidence directory.
 
 `pnpm exec prettier --check spec/records/2026-10-21-wave-four-publication.md`
