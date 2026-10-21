@@ -155,3 +155,10 @@ That exact cold-runtime retry passes consumer types plus development/production
 interactions and styling with the complete host/title link name. The final
 producer gate will assemble preparation, independent audit policy and these
 runtime checks again in the protected release workflow before publication.
+
+Final manifest inspection finds one pre-existing non-semver runtime specifier:
+`vaul-svelte: next`. Its installed and locked runtime is 1.0.0-next.7. Under
+DC-PKG-009, the release pins that exact already qualified public prerelease;
+no runtime package changes. All remaining runtime specs already pass semver
+validation. Fresh hosted qualification and the actual release artifact retain
+their gates after this manifest-only correction.

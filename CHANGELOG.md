@@ -14,6 +14,7 @@
 ### Patch Changes
 
 - Keep visible values, avatar initials, counts and complete rich-row text in accessible control names across Forms, Filter, Shell, Workspace and AI presentation.
+- Pin the already qualified Vaul Svelte Drawer preview instead of the floating next tag.
 
 - [`fd2a327`](https://github.com/lapismd/design-core/commit/fd2a327f65c7177d7aa82acbe7ec6f7e2e504af8) Thanks [@stevejuma](https://github.com/stevejuma)! - Use compact shared AvatarGroup presentation beside Transcript reply links,
   retain participant tooltips and hover stacking, and document all supported sizes.

@@ -4,6 +4,8 @@ Release 0.6.0 qualification consumes registry Mira `~0.1.0` and Visual Delta `0.
 without temporary archive resolution. Catalog tooling uses patched Storybook
 10.6.3 and Vite 6.4.5 ranges. CI remains nonvisual; screenshot comparison is an
 explicit local command only.
+The Drawer runtime pins the already qualified `vaul-svelte@1.0.0-next.7` preview
+instead of its floating `next` tag; its resolved runtime graph is unchanged.
 
 Settings composes the generic Forms QuantityInput, FilePathInput and PasswordInput through an explicit internal boundary; native file selection, import policy and authoritative values stay in the consuming host.
 
