@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, waitFor } from "storybook/test";
   import PromptContext from "./PromptContext.svelte";
   import { Basic } from "./PromptContext.example-sources.js";
   import recording from "../transcript/reference/capture.stories.fixture.json";
@@ -66,6 +66,29 @@
           '<file path="src/settings.ts" />',
       ),
     ).toHaveTextContent('<file path="src/settings.ts" />');
+    const parentTag = canvas
+      .getByRole("button", {
+        name: /^<acp_context source="host">$/,
+      })
+      .querySelector(".ui-prompt-context-tag")!;
+    const heading = canvas.getByRole("heading", { name: "Workspace" });
+    await waitFor(() =>
+      expect(heading.getBoundingClientRect().left).toBeGreaterThan(
+        parentTag.getBoundingClientRect().left,
+      ),
+    );
+    const nested = canvas.getByRole("button", { name: "<references>" });
+    await userEvent.click(nested);
+    const nestedTag = nested.querySelector(".ui-prompt-context-tag")!;
+    const list = canvas.getByText("Retain exact source", { exact: true });
+    await waitFor(() => {
+      expect(nestedTag.getBoundingClientRect().left).toBeGreaterThan(
+        parentTag.getBoundingClientRect().left,
+      );
+      expect(list.getBoundingClientRect().left).toBeGreaterThan(
+        nestedTag.getBoundingClientRect().left,
+      );
+    });
   }}
 />
 <Story

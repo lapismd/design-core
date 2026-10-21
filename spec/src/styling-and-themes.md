@@ -1,5 +1,8 @@
 # Styling and themes
 
+Prompt Context uses logical inline body padding beyond the parent disclosure
+label to make XML and nested Markdown hierarchy visible (DC-CHAT-010).
+
 Transcript fenced code reuses captured-reader spacing: one shared code frame,
 a padded language/copy header and the existing code-body inset, inline comment
 cards and fold controls. The frame adds no second body inset.

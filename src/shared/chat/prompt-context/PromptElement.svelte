@@ -85,7 +85,8 @@
   :global(.ui-prompt-context-element__body) {
     min-width: 0;
     padding-block: 0.125rem 0.375rem;
-    padding-inline: 1rem 0.625rem;
+    /* The trigger label starts at 2rem, after its icon and gap. */
+    padding-inline: 2.5rem 0.625rem;
   }
   .ui-prompt-context-element__compact {
     padding: 0.25rem 0.625rem;
