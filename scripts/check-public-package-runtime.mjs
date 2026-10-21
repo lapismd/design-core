@@ -496,7 +496,7 @@ async function checkCommunityComponents(page) {
   await spoiler.click();
   assert.equal(
     await scope
-      .getByRole("link", { name: "Archive link", exact: true })
+      .getByRole("link", { name: "example.com Archive link", exact: true })
       .count(),
     1,
   );

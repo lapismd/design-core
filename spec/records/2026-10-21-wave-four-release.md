@@ -144,3 +144,14 @@ Together with the unchanged 26 passing files in the preceding 27-file run,
 all affected flows now pass focused qualification. The current spec/config
 checks pass, and a fresh full `pnpm packages:pack` is in progress. The release
 candidate remains unpublished while final-source hosted qualification runs.
+
+Fresh package qualification passes preparation, consumer types and the avatar
+interactions, then finds one more stale exact name: the Link Preview assertion
+still expects its title alone. It now requires `example.com Archive link`, the
+complete rendered host and title under DC-SHA-060. The current archive's cold
+runtime check reruns before the full package gate; no product change is needed.
+
+That exact cold-runtime retry passes consumer types plus development/production
+interactions and styling with the complete host/title link name. The final
+producer gate will assemble preparation, independent audit policy and these
+runtime checks again in the protected release workflow before publication.
