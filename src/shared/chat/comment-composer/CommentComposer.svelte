@@ -37,6 +37,7 @@
     sourceContent,
     presentation = "card",
     avatar,
+    actions,
     onChange,
     onSelectionChange,
     onSubmit,
@@ -266,16 +267,17 @@
         </div>
       {/if}
     </div>
-    {#if onRemove}<div class="ui-comment-composer__actions">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-xs"
-          disabled={blocked}
-          aria-label="Remove comment"
-          title="Remove comment"
-          onclick={onRemove}><XIcon aria-hidden="true" /></Button
-        >
+    {#if actions || onRemove}<div class="ui-comment-composer__actions">
+        {@render actions?.()}
+        {#if onRemove}<Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            disabled={blocked}
+            aria-label="Remove comment"
+            title="Remove comment"
+            onclick={onRemove}><XIcon aria-hidden="true" /></Button
+          >{/if}
       </div>{/if}
     <Button
       type="button"

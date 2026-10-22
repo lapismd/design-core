@@ -48,6 +48,27 @@
       ),
     ).toBeLessThanOrEqual(1);
     const hover = card.querySelector(".ui-transcript-comment-links")!;
-    expect(getComputedStyle(hover).position).toBe("absolute");
+    expect(hover.closest(".ui-comment-composer__actions")).not.toBeNull();
+    expect(getComputedStyle(hover.parentElement!).position).toBe("absolute");
+    const input = card.querySelector(".ui-comment-composer__input")!;
+    const row = card.querySelector(".ui-comment-composer__card")!;
+    expect(
+      Math.abs(
+        toggle.getBoundingClientRect().left -
+          input.getBoundingClientRect().right -
+          parseFloat(getComputedStyle(row).columnGap),
+      ),
+    ).toBeLessThanOrEqual(1);
+    await userEvent.click(within(card as HTMLElement).getByRole("textbox"));
+    const actions = hover.getBoundingClientRect();
+    const formatting = toggle.getBoundingClientRect();
+    expect(Math.abs(actions.top - formatting.top)).toBeLessThanOrEqual(1);
+    expect(actions.right).toBeLessThanOrEqual(formatting.left);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch conversation" }),
+    );
+    expect(
+      canvas.queryByRole("button", { name: "Comment formatting options" }),
+    ).toBeNull();
   }}>{#snippet template()}<Fixture />{/snippet}</Story
 >

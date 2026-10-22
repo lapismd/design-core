@@ -123,6 +123,68 @@
             data-comment-id={comment.id}
             tabindex="-1"
           >
+            {#snippet commentActions()}
+              <div class="ui-transcript-comment-links">
+                {#if (placement === "inline" || placement === "summary") && !comment.replyTo && (comment.status === "draft" || comment.status === "sending" || comment.batchId)}
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    aria-label={comment.batchId
+                      ? "View message"
+                      : "Go to queued comment"}
+                    title={comment.batchId
+                      ? "View message"
+                      : "Go to queued comment"}
+                    onclick={() => state.goToMessage(current, comment)}
+                    ><CornerDownRightIcon /></Button
+                  >
+                {/if}
+                {#if source || placement === "summary"}
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    disabled={!available && !state.props().onNavigateSource}
+                    aria-label={`Go to source: ${current.label}`}
+                    title="Go to source"
+                    onclick={(event) =>
+                      state.goToSource(current, event.currentTarget)}
+                    ><CornerUpLeftIcon /></Button
+                  >
+                {/if}
+                {#if placement === "inline" && state.canEditSent(current, comment)}
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    aria-label="Edit comment"
+                    title="Edit comment"
+                    onclick={() => state.editSent(current, comment)}
+                    ><PencilIcon /></Button
+                  >
+                {/if}
+                {#if comment.status === "draft"}
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    aria-label="Remove pending comment"
+                    title="Remove pending comment"
+                    onclick={() => state.remove(comment.id)}><XIcon /></Button
+                  >
+                {/if}
+                {#if (placement === "inline" || placement === "summary") && comment.id === comments.at(-1)?.id}
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    disabled={state.sending ||
+                      !available ||
+                      state.props().canComment === false}
+                    aria-label={hasDraft ? "Add another comment" : "Reply"}
+                    title={hasDraft ? "Add another comment" : "Reply"}
+                    onclick={(event) => reply(event.currentTarget)}
+                    ><MessageSquarePlusIcon /></Button
+                  >
+                {/if}
+              </div>
+            {/snippet}
             <TranscriptAvatar
               member={comment.author}
               size="xsmall"
@@ -135,6 +197,7 @@
                   thread={current}
                   {comment}
                   location={placement === "queue" ? "queue" : "inline"}
+                  actions={commentActions}
                 />
               {:else}<MarkdownContent
                   {...presentation?.markdown ?? state.props().markdown}
@@ -142,66 +205,7 @@
                   fullWidth
                 />{/if}
             </div>
-            <div class="ui-transcript-comment-links">
-              {#if (placement === "inline" || placement === "summary") && !comment.replyTo && (comment.status === "draft" || comment.status === "sending" || comment.batchId)}
-                <Button
-                  variant="ghost"
-                  size="icon-xs"
-                  aria-label={comment.batchId
-                    ? "View message"
-                    : "Go to queued comment"}
-                  title={comment.batchId
-                    ? "View message"
-                    : "Go to queued comment"}
-                  onclick={() => state.goToMessage(current, comment)}
-                  ><CornerDownRightIcon /></Button
-                >
-              {/if}
-              {#if source || placement === "summary"}
-                <Button
-                  variant="ghost"
-                  size="icon-xs"
-                  disabled={!available && !state.props().onNavigateSource}
-                  aria-label={`Go to source: ${current.label}`}
-                  title="Go to source"
-                  onclick={(event) =>
-                    state.goToSource(current, event.currentTarget)}
-                  ><CornerUpLeftIcon /></Button
-                >
-              {/if}
-              {#if placement === "inline" && state.canEditSent(current, comment)}
-                <Button
-                  variant="ghost"
-                  size="icon-xs"
-                  aria-label="Edit comment"
-                  title="Edit comment"
-                  onclick={() => state.editSent(current, comment)}
-                  ><PencilIcon /></Button
-                >
-              {/if}
-              {#if comment.status === "draft"}
-                <Button
-                  variant="ghost"
-                  size="icon-xs"
-                  aria-label="Remove pending comment"
-                  title="Remove pending comment"
-                  onclick={() => state.remove(comment.id)}><XIcon /></Button
-                >
-              {/if}
-              {#if (placement === "inline" || placement === "summary") && comment.id === comments.at(-1)?.id}
-                <Button
-                  variant="ghost"
-                  size="icon-xs"
-                  disabled={state.sending ||
-                    !available ||
-                    state.props().canComment === false}
-                  aria-label={hasDraft ? "Add another comment" : "Reply"}
-                  title={hasDraft ? "Add another comment" : "Reply"}
-                  onclick={(event) => reply(event.currentTarget)}
-                  ><MessageSquarePlusIcon /></Button
-                >
-              {/if}
-            </div>
+            {#if !(editable && (comment.status === "draft" || comment.status === "sending"))}{@render commentActions()}{/if}
             <ChatCommentDelivery {state} {comment} />
           </article>
         {/each}

@@ -79,16 +79,15 @@
 }
 .ui-transcript-comment-links {
   position: absolute;
-  inset-inline-end: 0;
-  inset-block-end: 100%;
-  z-index: 2;
-  pointer-events: none;
   display: flex;
+  flex: 0 0 auto;
   gap: 0.125rem;
   opacity: 0;
+  pointer-events: none;
 }
 .ui-transcript-comment-card:hover .ui-transcript-comment-links,
 .ui-transcript-comment-card:focus-within .ui-transcript-comment-links {
+  position: static;
   opacity: 1;
   pointer-events: auto;
 }
@@ -118,12 +117,8 @@
   padding-block: 0.5rem;
 }
 @media (hover: none) {
-  .ui-transcript-comment-card {
-    padding-block-start: 1.5rem;
-  }
   .ui-transcript-comment-links {
-    inset-block-start: 0;
-    inset-block-end: auto;
+    position: static;
     opacity: 1;
     pointer-events: auto;
   }

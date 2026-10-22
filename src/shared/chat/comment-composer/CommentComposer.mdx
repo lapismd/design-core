@@ -64,9 +64,11 @@ The row scrolls horizontally on narrow cards.
 
 <Canvas of={Stories.InlineFormattingToggle} />
 
-The T control stays at the far right. Transcript hover controls float above the
-comment, reserving no hidden inline width; touch layouts reserve space only for
-their visible actions. The first toolbar glyph aligns with the comment text.
+The T control stays at the far right. The optional `actions` snippet places
+transient controls before it on the same row. Hidden controls reserve no width;
+touch layouts show the controls inline. Transcript comments use this slot for
+their navigation, removal and reply actions. The first toolbar glyph aligns
+with the comment text.
 The formatting row includes the shared EmojiPicker. Optional `emojis`,
 `customEmojis` and `emojiText` props forward host palettes and serialization;
 the default picker uses the full library and inserts at the retained selection.

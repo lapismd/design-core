@@ -34,6 +34,8 @@ export type CommentComposerProps = Omit<
   sourceContent?: Snippet<[CommentComposerSource]>;
   /** Host-owned identity presentation, typically a decorative small Avatar. */
   avatar?: Snippet;
+  /** Hover/focus actions before the persistent formatting toggle, without hidden row width. */
+  actions?: Snippet;
   label?: string;
   inputLabel?: string;
   placeholder?: string;

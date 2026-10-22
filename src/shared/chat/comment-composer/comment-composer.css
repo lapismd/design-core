@@ -63,6 +63,7 @@
   );
 }
 .ui-comment-composer__card {
+  position: relative;
   display: flex;
   min-width: 0;
   gap: 0.5rem;
@@ -93,13 +94,18 @@
   overflow-x: auto;
 }
 .ui-comment-composer__actions {
+  position: absolute;
   display: flex;
   flex: 0 0 auto;
+  gap: 0.125rem;
   opacity: 0;
+  pointer-events: none;
 }
 .ui-comment-composer__card:hover .ui-comment-composer__actions,
 .ui-comment-composer__card:focus-within .ui-comment-composer__actions {
+  position: static;
   opacity: 1;
+  pointer-events: auto;
 }
 .ui-comment-composer__unavailable {
   margin: 0 0 0.5rem;
@@ -111,7 +117,9 @@
 }
 @media (hover: none) {
   .ui-comment-composer__actions {
+    position: static;
     opacity: 1;
+    pointer-events: auto;
   }
 }
 @media (forced-colors: active) {
