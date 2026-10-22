@@ -54,9 +54,14 @@
     await userEvent.click(
       canvas.getByRole("button", { name: "Show details for Read source" }),
     );
-    await userEvent.click(
-      await canvas.findByRole("button", { name: "Comment on Read result" }),
-    );
+    const comment = await canvas.findByRole("button", {
+      name: "Comment on Read result",
+    });
+    for (let tabs = 0; tabs < 8 && document.activeElement !== comment; tabs++)
+      await userEvent.tab();
+    await expect(comment).toHaveFocus();
+    await expect(comment).toBeVisible();
+    await userEvent.click(comment);
     const editor = await canvas.findByRole("textbox", {
       name: "Comment on Read result",
     });

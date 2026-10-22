@@ -223,6 +223,10 @@ the exact captured path, unless the host overrides it. Reasoning MUST retain a
 distinct lightbulb icon unless overridden by the host.
 Reactive presentation bindings MUST support cleared optional host values under
 strict exact-optional-property checking without changing message actions.
+Transcript-owned font sizing MUST configure Mira through its public
+`--mira-font-size` theme variable, including rootless context and handoff readers;
+Mira's content styles MUST remain stock. Hover-only actions MUST become usable
+through their owning block's hover or focus state.
 
 Host-marked error or warning notices MUST remain inline with a tinted semantic
 surface and circular warning icon. Captured text stays immutable, and trailing

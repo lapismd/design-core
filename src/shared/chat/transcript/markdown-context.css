@@ -28,4 +28,5 @@
   --mira-foreground: var(--_transcript-foreground);
   --mira-background: var(--_transcript-background);
   --mira-font-sans: var(--_transcript-font);
+  --mira-font-size: var(--ui-transcript-font-size, 0.875rem);
 }

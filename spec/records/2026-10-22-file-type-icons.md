@@ -159,6 +159,21 @@ It supersedes the earlier combined archive for consumer acceptance. Package
 preparation and browser suites run sequentially because the temporary package
 tsconfig can invalidate an active Vite client.
 
+The combined 929-case interaction run found two regressions (927 passed): custom
+18px context/handoff readers fell back to Mira's 14px default, and the tool-comment
+story clicked an intentionally non-interactive hidden toolbar. Transcript now
+sets Mira's public `--mira-font-size` theme variable from its existing host token;
+Mira's content styles remain unchanged. The story reaches Comment by actual Tab
+navigation, verifies focus/visibility and retains its click, exact paste and
+Document/Classic draft assertions. Hover simulation alone correctly failed the
+pointer check. The final exact two-family run passed all nine cases.
+
+V3 prepared output supersedes V2 for the consumer:
+`lapismd-design-core-0.6.0-agent-icons-reference-review-v3.tgz`, SHA-256
+`a62a66af2569f1fdf526b11627e76725dfae5b769d222802120b210d73164443`.
+`pnpm packages:pack` passed clean public types and cold development/production
+runtime checks, retaining only the existing accepted KaTeX low-severity exception.
+
 ## Review gate
 
 Storybook runs at http://localhost:9409 in the isolated source workspace.
