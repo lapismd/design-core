@@ -412,15 +412,17 @@ test("nested file and thinking disclosures have distinct leading icons", async (
   const file = page
     .locator('[data-chat-item="delta-19/group"] .ui-transcript-file-trigger')
     .first();
-  await expect(file.locator(":scope > svg")).toBeVisible();
+  const icon = file.locator(
+    ':scope > [data-ui-component="file-type-icon"]:first-child',
+  );
+  await expect(icon).toBeVisible();
+  await expect(icon.locator("svg")).toBeVisible();
+  await expect(icon).toHaveAttribute("data-file-type-icon", "swift");
+  await expect(icon).toHaveAttribute("aria-hidden", "true");
   const thinking = page
     .locator('[data-kind="reasoning"] .ui-transcript-context-trigger')
     .first();
   await expect(thinking.locator(":scope > svg")).toBeVisible();
-  const firstElement = await file.evaluate(
-    (element) => element.firstElementChild?.tagName,
-  );
-  expect(firstElement).toBe("svg");
   await expect(thinking.locator(":scope > svg")).toHaveAttribute(
     "aria-hidden",
     "true",
