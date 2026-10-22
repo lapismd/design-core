@@ -314,6 +314,9 @@ wrapper/keyboard behavior.
 
 **Requirement.** Tool Call Detail and Rich Tool Call Detail MUST provide provider-neutral formatted/raw presentation of normalized tool activity without executing tools or interpreting provider schemas.
 
+Unavailable normalized tool output MUST use the public shadcn Empty pattern
+with an icon, title and the recorded refusal reason. Raw capture stays reachable.
+
 Tool detail MUST use the shared ContentViewToggle as one icon-only button for
 formatted/raw switching. Code offers raw capture and BookOpen returns to formatted
 content, with accessible names and tooltips.

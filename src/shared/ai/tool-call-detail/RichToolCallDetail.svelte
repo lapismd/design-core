@@ -1,4 +1,6 @@
 <script lang="ts">
+  import * as Empty from "@lapismd/design-core/shadcn/empty";
+  import FileQuestionIcon from "@lucide/svelte/icons/file-question-mark";
   import { tick } from "svelte";
   import * as Dialog from "@lapismd/design-core/shadcn/dialog";
   import MaximizeIcon from "@lucide/svelte/icons/maximize";
@@ -340,9 +342,15 @@
               No matches were captured.
             </p>{/if}
         </section>
-      {:else if detail?.kind === "unavailable"}<p class="tool-detail__notice">
-          {detail.reason}
-        </p>
+      {:else if detail?.kind === "unavailable"}<Empty.Root role="status"
+          ><Empty.Header
+            ><Empty.Media variant="icon"
+              ><FileQuestionIcon aria-hidden="true" /></Empty.Media
+            ><Empty.Title>Tool output unavailable</Empty.Title
+            ><Empty.Description>{detail.reason}</Empty.Description
+            ></Empty.Header
+          ></Empty.Root
+        >
       {:else if input !== undefined || output !== undefined || error !== undefined}
         <ToolCallPayloads
           {...input === undefined ? {} : { input }}

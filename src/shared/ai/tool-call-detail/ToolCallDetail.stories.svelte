@@ -106,6 +106,16 @@
 </Story>
 <Story
   name="Unavailable output"
+  play={async ({ canvasElement }) => {
+    const empty = canvasElement.querySelector('[data-slot="empty"]');
+    await expect(empty).toBeVisible();
+    await expect(
+      empty?.querySelector('[data-ui-part="empty-media"] svg'),
+    ).toBeVisible();
+    await expect(empty).toHaveTextContent(
+      "This tool's formatted output is unavailable. Raw retains the recorded fields.",
+    );
+  }}
   parameters={{
     docs: { source: { code: sources.Generic, language: "tsx", type: "code" } },
   }}
