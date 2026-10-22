@@ -199,3 +199,13 @@ The previously recorded focused, unit, static and packed-public-output passes
 remain valid; they do not establish a complete final aggregate pass. Screenshot
 comparison remains unavailable and visual review pending. No publication or
 push is performed as part of this closeout.
+
+## Local downstream refresh
+
+The default source checkout now contains the complete committed icon/reference
+slice and final font repair. Agent UI, Lapis Notes, Lapis Plugins, JJ Store and
+Desktop installed the already-prepared V3 archive through ignored development
+overlays. Public manifests and registry lockfiles remain unchanged. The Agent UI
+closeout record documents install commands, resolved stale-hook prerequisites
+and older consumer peer-range warnings. No further tests, package publication,
+push, native-service restart or release qualification were performed.
