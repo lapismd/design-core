@@ -25,6 +25,7 @@
   const { Story } = defineMeta({
     title: "Diff/File Diff",
     component: FileDiff,
+    tags: ["visual-pending"],
     parameters: {
       docs: {
         description: {

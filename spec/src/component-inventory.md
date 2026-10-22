@@ -24,6 +24,10 @@ exactly one owning shared layer before it becomes a public export.
 
 Generic primitives in `src/shared/shadcn/`:
 
+`file-type-icon/` owns filename-based Material file icons, exported through
+`@lapismd/design-core/shadcn/file-type-icon` (DC-SHA-064). Diff File Listing
+composes it without changing folder icons, row geometry or host-owned state.
+
 accordion, alert, alert-dialog, badge, button, card, code, code-block,
 collapsible, column-canvas, command, command-view, dialog, dropdown-menu, emoji-picker, empty, field, panel-toggle,
 input, input-group, label, hover-card, popover, resizable, scroll-area, select, separator,

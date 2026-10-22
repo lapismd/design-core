@@ -4,6 +4,7 @@
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
   import { Button } from "../../shadcn/button/index.js";
+  import { FileTypeIcon } from "../../shadcn/file-type-icon/index.js";
   import { truncatePathMiddle } from "../core/unified-diff.js";
   import FileDiff from "./FileDiff.svelte";
   import type {
@@ -111,6 +112,10 @@
                 {/if}
               </Button>
             {/if}
+            {#if file.path && !fileHeaderLeading}<FileTypeIcon
+                path={file.path}
+                size="s"
+              />{/if}
             <span title={file.path}>{truncatePathMiddle(file.path)}</span>
           </div>
           {#if fileHeaderTrailing}

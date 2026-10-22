@@ -3,14 +3,9 @@
   import { SvelteSet } from "svelte/reactivity";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
-  import FileIcon from "@lucide/svelte/icons/file";
-  import FileCodeIcon from "@lucide/svelte/icons/file-code";
-  import FileCode2Icon from "@lucide/svelte/icons/file-code-2";
-  import FileJsonIcon from "@lucide/svelte/icons/file-json";
-  import FileTextIcon from "@lucide/svelte/icons/file-text";
+  import { FileTypeIcon } from "../../shadcn/file-type-icon/index.js";
   import FolderIcon from "@lucide/svelte/icons/folder";
   import FolderOpenIcon from "@lucide/svelte/icons/folder-open";
-  import ImageIcon from "@lucide/svelte/icons/image";
   import {
     getFileDirectory,
     getFilePathName,
@@ -18,7 +13,6 @@
   } from "../core/file-tree.js";
   import { formatDiffDelta } from "../file-change-stats/format-diff-delta.js";
   import FileChangeStats from "../file-change-stats/FileChangeStats.svelte";
-  import { fileIconNameForPath } from "./file-icon.js";
   import { fileListingRows, type FileListingRow } from "./file-listing-rows.js";
   import FileListingVirtualRows from "./FileListingVirtualRows.svelte";
   import type {
@@ -182,23 +176,6 @@
   }
 </script>
 
-{#snippet fileIcon(path: string)}
-  {@const icon = fileIconNameForPath(path)}
-  {#if icon === "file-code-2"}
-    <FileCode2Icon size={14} aria-hidden="true" />
-  {:else if icon === "file-json"}
-    <FileJsonIcon size={14} aria-hidden="true" />
-  {:else if icon === "file-text"}
-    <FileTextIcon size={14} aria-hidden="true" />
-  {:else if icon === "file-code"}
-    <FileCodeIcon size={14} aria-hidden="true" />
-  {:else if icon === "image"}
-    <ImageIcon size={14} aria-hidden="true" />
-  {:else}
-    <FileIcon size={14} aria-hidden="true" />
-  {/if}
-{/snippet}
-
 {#snippet fileRow(
   file: FileListingFile,
   path: string,
@@ -234,7 +211,7 @@
       <span class="ui-diff-file-listing__chevron" aria-hidden="true"></span>
     {/if}
     <span class="ui-diff-file-listing__icon">
-      {@render fileIcon(path)}
+      <FileTypeIcon {path} />
     </span>
     {#if fileLeading}
       {@render fileLeading(context)}

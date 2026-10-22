@@ -207,3 +207,5 @@ clean packed fixture, including aligned member/overflow sizing and activation of
 a separate reply control without nested buttons.
 Workspace sidebar and bottom-panel imports are also exercised with both states,
 retaining the default PanelToggle button and fixed standard icon without Tailwind.
+
+The FileTypeIcon wildcard family uses the framework-neutral MIT `material-file-icons` development-only asset source pinned to 2.4.0; it adds no React dependency or consumer source scan.

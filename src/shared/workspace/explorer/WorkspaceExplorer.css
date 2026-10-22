@@ -273,3 +273,7 @@
   outline: none;
   box-shadow: none;
 }
+
+.ui-workspace-explorer__type-icon[data-ui-component="file-type-icon"] {
+  --ui-file-type-icon-size: var(--ui-workspace-icon-size, 1rem);
+}

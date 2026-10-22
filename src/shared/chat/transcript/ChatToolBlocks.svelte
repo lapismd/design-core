@@ -5,6 +5,7 @@
   import ChatContent from "./ChatContent.svelte";
   import FileDiffIcon from "@lucide/svelte/icons/file-diff";
   import FileTextIcon from "@lucide/svelte/icons/file-text";
+  import { FileTypeIcon } from "../../shadcn/file-type-icon/index.js";
   import type { TranscriptBlock, TranscriptProps } from "./model.js";
   import type { TranscriptController } from "./comments.svelte.js";
   let {
@@ -34,7 +35,10 @@
             class="ui-transcript-file-trigger"
             aria-label={`${open(block, index) ? "Hide" : "Show"} captured file ${block.path ?? block.label}`}
           >
-            <Icon aria-hidden="true" />
+            {#if block.path}<FileTypeIcon
+                path={block.path}
+                size="s"
+              />{:else}<Icon aria-hidden="true" />{/if}
             <span>{block.path ?? block.label}</span>
             <ChatDisclosureIcon />
           </Collapsible.Trigger>

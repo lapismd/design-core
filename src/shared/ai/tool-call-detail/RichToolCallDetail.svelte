@@ -7,6 +7,7 @@
   import MinimizeIcon from "@lucide/svelte/icons/minimize";
   import { FileDiff, resolveDiffLanguage } from "@lapismd/design-core/diff";
   import { Button } from "@lapismd/design-core/shadcn/button";
+  import { FileTypeIcon } from "@lapismd/design-core/shadcn/file-type-icon";
   import { CodeBlock } from "@lapismd/design-core/shadcn/code-block";
   import ContentViewToggle from "../content-view-toggle/ContentViewToggle.svelte";
   import * as Alert from "@lapismd/design-core/shadcn/alert";
@@ -196,7 +197,11 @@
         <section class="tool-detail__panel" aria-label="File contents">
           <header class="tool-detail__panel-header">
             <span class="tool-detail__path"
-              >{detail.path ?? "Captured file contents"}</span
+              >{#if detail.path}<FileTypeIcon
+                  path={detail.path}
+                  size="s"
+                />{/if}<span>{detail.path ?? "Captured file contents"}</span
+              ></span
             >
             {#if detail.path && onOpen}<Button
                 variant="ghost"
@@ -238,7 +243,10 @@
           >
             <header class="tool-detail__panel-header">
               <span class="tool-detail__path"
-                >{file.path ?? "Captured change"}</span
+                >{#if file.path}<FileTypeIcon
+                    path={file.path}
+                    size="s"
+                  />{/if}<span>{file.path ?? "Captured change"}</span></span
               >
               {#if file.path && onOpen}<Button
                   variant="ghost"
@@ -321,18 +329,30 @@
                       if (match.path)
                         open(match.path, match.line, match.column);
                     }}
-                    >{match.path}{match.line === undefined
-                      ? ""
-                      : `:${match.line}`}{match.column === undefined
-                      ? ""
-                      : `:${match.column}`}</Button
+                    ><FileTypeIcon
+                      path={match.path}
+                      size="s"
+                      data-icon="inline-start"
+                    /><span
+                      >{match.path}{match.line === undefined
+                        ? ""
+                        : `:${match.line}`}{match.column === undefined
+                        ? ""
+                        : `:${match.column}`}</span
+                    ></Button
                   >
                 {:else}<span class="tool-detail__location"
-                    >{match.path ?? "Unknown location"}{match.line === undefined
-                      ? ""
-                      : `:${match.line}`}{match.column === undefined
-                      ? ""
-                      : `:${match.column}`}</span
+                    >{#if match.path}<FileTypeIcon
+                        path={match.path}
+                        size="s"
+                      />{/if}<span
+                      >{match.path ?? "Unknown location"}{match.line ===
+                      undefined
+                        ? ""
+                        : `:${match.line}`}{match.column === undefined
+                        ? ""
+                        : `:${match.column}`}</span
+                    ></span
                   >{/if}
                 <code>{match.text}</code>
               </li>

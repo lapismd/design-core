@@ -24,6 +24,7 @@
   const { Story } = defineMeta({
     title: "Diff/Merge Editor",
     component: MergeEditor,
+    tags: ["visual-pending"],
     parameters: {
       docs: {
         description: {

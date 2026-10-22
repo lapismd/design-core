@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Button } from "@lapismd/design-core/shadcn/button";
+  import { FileTypeIcon } from "@lapismd/design-core/shadcn/file-type-icon";
   import { Input } from "@lapismd/design-core/shadcn/input";
   import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
   import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
@@ -233,6 +234,10 @@
 {#snippet Tree({ node }: { node: ExplorerNode })}
   {@const menu = controller.createItemMenu(node)}
   {#if node.kind === "file"}
+    {@const icon = controller.customIconFor(
+      node,
+      controller.editingPath === node.path,
+    )}
     <li class="ui-workspace-explorer__item">
       {#if controller.editingPath === node.path}
         <div
@@ -242,10 +247,13 @@
         >
           <span class="ui-workspace-explorer__disclosure" aria-hidden="true"
           ></span>
-          <WorkspaceIcon
-            name={controller.iconFor(node, true)}
-            class="ui-workspace-explorer__type-icon"
-          />
+          {#if icon}<WorkspaceIcon
+              name={icon}
+              class="ui-workspace-explorer__type-icon"
+            />{:else}<FileTypeIcon
+              path={node.path}
+              class="ui-workspace-explorer__type-icon"
+            />{/if}
           <span class="ui-workspace-explorer__rename" use:focusRename>
             <Input
               class="ui-workspace-explorer__rename-input"
@@ -307,10 +315,13 @@
                   class="ui-workspace-explorer__disclosure"
                   aria-hidden="true"
                 ></span>
-                <WorkspaceIcon
-                  name={controller.iconFor(node, false)}
-                  class="ui-workspace-explorer__type-icon"
-                />
+                {#if icon}<WorkspaceIcon
+                    name={icon}
+                    class="ui-workspace-explorer__type-icon"
+                  />{:else}<FileTypeIcon
+                    path={node.path}
+                    class="ui-workspace-explorer__type-icon"
+                  />{/if}
                 <span class="ui-workspace-explorer__title">{node.name}</span>
               </button>
             {/snippet}

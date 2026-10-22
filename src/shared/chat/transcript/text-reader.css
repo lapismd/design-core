@@ -97,6 +97,9 @@
   overflow: visible;
 }
 .ui-transcript-text-block [data-ui-part="capture-heading"] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem 0.75rem;
   color: var(--muted-foreground);
   background: var(--muted);

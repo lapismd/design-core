@@ -129,7 +129,8 @@ The gate MUST retain diagnostics caught during component teardown and fail
 after the story or final suite cleanup instead of relying only on the
 immediately thrown error.
 The development catalog readiness probe MUST prepare representative client
-entries, including the shared Workspace AppShell export graph, and await pending
+entries, including the shared Workspace AppShell export graph and the Shell
+AppShell story module used by pointer acceptance, and await pending
 import requests before browser acceptance begins.
 Compilation failures return an unavailable response and allow a later retry.
 Workspace pointer acceptance MUST await the requested story's render and play
@@ -184,3 +185,8 @@ host acknowledgement in both cold development and production output.
 Community component discovery includes the ThreadPanel Chat family and the
 new Shadcn/Forms families through colocated docs and stories. Public archive
 runtime acceptance exercises their exported styles and controls without Tailwind.
+
+The project-authored FileTypeIcon family uses `pnpm icons:generate` to extract
+curated artwork and filename tables from pinned development data. `pnpm icons:check`
+compares generated assets without writing; both spec validation and check lanes
+run it before the shared validator. Runtime modules import only generated data.

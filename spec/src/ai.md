@@ -1,5 +1,7 @@
 # AI
 
+RichToolCallDetail read/edit headers and search locations use the shared FileTypeIcon only when normalized presentation includes an explicit path. Open-file callbacks retain their exact path, line and column; unknown locations, raw payloads and status/action icons remain distinct.
+
 AI presentation contracts remain provider-neutral and leave transport, model selection, persistence, and product policy downstream. Historical implementation and visual-comparison evidence lives under `spec/records/`; this chapter remains authoritative.
 
 Composer disabled surfaces use the public

@@ -1,0 +1,102 @@
+import { Meta, Stories, Source } from "@storybook/addon-docs/blocks";
+import * as stories from "./FileTypeIcon.stories.svelte";
+import {
+  Basic,
+  Named,
+  Styling,
+  Reactive,
+  Sizes,
+} from "./FileTypeIcon.example-sources";
+
+<Meta of={stories} />
+
+# File Type Icon
+
+Filename-based Material icons for files, attachments and diff headers. This
+project-authored family uses a curated subset of the same Material artwork as
+Changeyard. Follow [Shadcn guidance](?path=/docs/shadcn-guidance--docs).
+
+## Usage
+
+<Source code={Basic} language="tsx" />
+
+Use `path` for either a filename or a complete POSIX/Windows path. No filesystem,
+network, MIME detection or file contents are required.
+
+## Anatomy
+
+A fixed-size inline wrapper owns accessibility and sizing. Its SVG comes only
+from the generated, licensed artwork subset. Unknown names use the generic file
+icon; missing SVG data falls back to the shared Lucide text-file glyph.
+
+## Variations
+
+<Stories />
+
+The single-list gallery covers 57 common developer and personal-vault files:
+notes, PDF/EPUB, office documents, sheets, slides, calendars, mail, photos, voice
+recordings, videos, archives, databases and diagrams, plus source/configuration
+files. The subset retains 113 distinct artworks; related uncommon tools share
+category icons. Matching is filename-based, so ambiguous extensions retain their
+established meaning (`.key` is a cryptographic key).
+Sizes demonstrates `xs` (12px), `s` (14px), `md` (16px) and `lg` (24px), plus a
+20px CSS override. The default is `md`.
+
+<Source code={Sizes} language="tsx" />
+Use the catalog theme and light/dark controls for both presentations.
+
+## Behavior and accessibility
+
+Matching uses the basename, ignoring case, with special filenames before the
+longest matching extension. Updating `path` updates the existing icon immediately.
+Icons beside filenames are decorative. Give a standalone icon `title` to expose
+`role="img"` and an accessible name. Icons are never interactive themselves.
+
+<Source code={Named} language="tsx" />
+<Source code={Reactive} language="tsx" />
+
+## Styling variables
+
+| Variable                             | Default                   | Purpose                              | Owner/source                |
+| ------------------------------------ | ------------------------- | ------------------------------------ | --------------------------- |
+| `--ui-file-type-icon-size`           | Selected preset           | Explicit override of both dimensions | `file-type-icon.css`        |
+| `--ui-file-type-icon-size-xs`        | `0.75rem`                 | XS preset (12px)                     | `file-type-icon.tokens.css` |
+| `--ui-file-type-icon-size-s`         | `0.875rem`                | S preset (14px)                      | `file-type-icon.tokens.css` |
+| `--ui-file-type-icon-size-md`        | `1rem`                    | Default MD preset (16px)             | `file-type-icon.tokens.css` |
+| `--ui-file-type-icon-size-lg`        | `1.5rem`                  | LG preset (24px)                     | `file-type-icon.tokens.css` |
+| `--ui-file-type-icon-fallback-color` | `var(--muted-foreground)` | Missing-SVG glyph colour             | `file-type-icon.tokens.css` |
+
+Material SVGs preserve their original colours. The fallback-colour token does
+not recolour them. The component imports native CSS and works without Tailwind.
+
+<Source code={Styling} language="tsx" />
+
+## API
+
+| Prop             | Type                       | Default  | Purpose                                     |
+| ---------------- | -------------------------- | -------- | ------------------------------------------- |
+| `size`           | `"xs" / "s" / "md" / "lg"` | `"md"`   | Named size preset; explicit CSS size wins   |
+| `path`           | `string`                   | Required | Filename or full path                       |
+| `title`          | `string`                   | Unset    | Optional accessible name and native tooltip |
+| `class`, `style` | Native span attributes     | Unset    | Composition and public token overrides      |
+
+`FileTypeIconProps`, `FileTypeIconSize`, `fileTypeIconTokenNames` and `FileTypeIconToken` are exported
+from the family entry point. Wrapper semantic markers and accessibility remain
+component-owned.
+
+## Composition
+
+Design Core File Listing uses this same component at 14px in list, tree and
+package views, including virtual rows. Folder disclosure, counts, selection,
+drag payloads and host-owned controllers are unchanged. Import the family
+directly in file headers and attachment chips rather than copying its resolver.
+The existing Diff `fileIconNameForPath` export retains its legacy Lucide names.
+
+## Asset maintenance and bundle boundary
+
+`material-file-icons@2.4.0` is pinned as a development-only asset source.
+`pnpm icons:generate` refreshes selected artwork and filename tables;
+`pnpm icons:check` rejects drift through the specification lanes. Generated
+assets retain MIT attribution. The runtime has no upstream catalogue import,
+network loading or asynchronous icon flash. A focused bundle test caps the
+resolver and artwork at 48 KiB gzip.

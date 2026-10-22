@@ -3,6 +3,7 @@
   import { MiraCodeEditor, type MiraCodeEditorHandle } from "@lapismd/mira";
   import { Compartment } from "@codemirror/state";
   import ChatHoverActions from "./ChatHoverActions.svelte";
+  import { FileTypeIcon } from "../../shadcn/file-type-icon/index.js";
   import type { EditorView } from "@codemirror/view";
   import { readingExtensions, refreshComments } from "./text-editor.js";
   import type { TranscriptBlock, TranscriptProps } from "./model.js";
@@ -213,7 +214,9 @@
   {#if showHeader && block.kind !== "markdown"}<div
       data-ui-part="capture-heading"
     >
-      {block.label}
+      {#if block.path}<FileTypeIcon path={block.path} size="s" />{/if}<span
+        >{block.label}</span
+      >
     </div>{/if}
   <div class="ui-transcript-text-reader">
     <MiraCodeEditor

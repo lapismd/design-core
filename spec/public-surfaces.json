@@ -1129,6 +1129,10 @@
     {
       "name": "AI/Chat/Content View Toggle",
       "requirement": "DC-AI-027"
+    },
+    {
+      "name": "Shadcn/Data/File Type Icon",
+      "requirement": "DC-SHA-064"
     }
   ]
 }

@@ -18,6 +18,12 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 
 **Requirement.** The Explorer Panel family MUST compose controlled hierarchical resources, selection, actions, and empty states through generic workspace contracts.
 
+Explorer file rows use shared FileTypeIcon from the saved path, including
+inline rename. Host `getIcon` overrides take precedence even when explicitly
+returning `file`; folder icons and disclosure spacing remain unchanged.
+`ExplorerController.customIconFor` exposes that optional override independently
+of the legacy `iconFor` fallback contract.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/explorer`; tree construction MUST preserve stable resource identity and ordering, while overflow MUST stay in a bounded Scroll Area viewport whose inherited visibility follows App Shell Appearance settings and whose overlay remains flush to the Explorer edge above a competing resize rail while visible.

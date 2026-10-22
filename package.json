@@ -48,11 +48,11 @@
     "test:storybook": "vitest run --project storybook",
     "test:storybook:watch": "vitest --project storybook",
     "spec:build": "spec-validator build",
-    "spec:check": "spec-validator check",
+    "spec:check": "pnpm icons:check && spec-validator check",
     "spec:first": "spec-validator first",
     "spec:index": "spec-validator index",
     "spec:search": "spec-validator search",
-    "spec:validate": "spec-validator validate",
+    "spec:validate": "pnpm icons:check && spec-validator validate",
     "spec:serve": "spec-validator serve",
     "test:workspace:pointer": "node scripts/with-storybook-env.mjs playwright test -c playwright.workspace.config.ts",
     "test:shell:pointer": "node scripts/with-storybook-env.mjs playwright test -c playwright.shell.config.ts",
@@ -108,7 +108,9 @@
     "checks:release": "pnpm spec:check && pnpm check && pnpm check:no-tailwind && pnpm test:unit && pnpm test:release && pnpm build-storybook && pnpm workspace:visual:audit",
     "checks": "pnpm checks:nonvisual",
     "checks:visual": "pnpm checks:nonvisual && pnpm test:visual",
-    "filter:grammar": "node scripts/generate-filter-query-parser.mjs"
+    "filter:grammar": "node scripts/generate-filter-query-parser.mjs",
+    "icons:generate": "node scripts/generate-file-type-icons.mjs",
+    "icons:check": "node scripts/generate-file-type-icons.mjs --check"
   },
   "peerDependencies": {
     "svelte": "^5.0.0"
@@ -193,6 +195,7 @@
     "highlight.js": "^11.11.1",
     "jsdom": "^29.1.1",
     "magic-string": "^1.0.0",
+    "material-file-icons": "2.4.0",
     "pixelmatch": "^7.2.0",
     "playwright": "^1.62.1",
     "pngjs": "^7.0.0",

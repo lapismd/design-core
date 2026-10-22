@@ -326,3 +326,5 @@ and `--ui-workspace-safe-area-block-end`. The larger inline inset protects both
 edges without shifting the centre. The bottom inset adds to the footer track,
 retaining the full-width background and ordinary content height. Hosts own
 platform/window values; plugins need no clearance padding.
+
+FileTypeIcon exposes `--ui-file-type-icon-size` (explicit override of the selected preset), named xs/s/md/lg preset tokens (12/14/16/24px, md default) and `--ui-file-type-icon-fallback-color` (`var(--muted-foreground)`). Material artwork retains its original colours; File Listing sets its existing 14px slot through the size token.

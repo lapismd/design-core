@@ -1,3 +1,4 @@
+@import "./shared/shadcn/file-type-icon/file-type-icon.tokens.css";
 @import "tailwindcss";
 @import "@fontsource-variable/dm-sans";
 @import "@fontsource-variable/source-code-pro";

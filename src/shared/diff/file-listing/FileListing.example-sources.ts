@@ -1,3 +1,18 @@
+import { commonFilePaths } from "../../shadcn/file-type-icon/FileTypeIcon.stories.data.js";
+
+export const CommonFileTypes = `<script lang="ts">
+  import { FileListing } from "@lapismd/design-core/diff";
+  const files = ${JSON.stringify(
+    commonFilePaths.map((path) => ({ path })),
+    null,
+    2,
+  )};
+</script>
+
+<div style="max-height:36rem;overflow:auto;border:1px solid var(--border);border-radius:var(--radius);padding:1rem">
+  <FileListing {files} mode="list" />
+</div>`;
+
 export const Basic = `<script lang="ts">
   import {
     FileListing,

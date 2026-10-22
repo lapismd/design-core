@@ -95,7 +95,9 @@
     expect(trigger.scrollWidth).toBeLessThanOrEqual(trigger.clientWidth + 1);
     const heading = trigger.parentElement!;
     expect(heading.scrollWidth).toBeLessThanOrEqual(heading.clientWidth + 1);
-    const title = trigger.querySelector<HTMLElement>("span")!;
+    const title = trigger.querySelector<HTMLElement>(
+      ':scope > span:not([data-ui-component="file-type-icon"])',
+    )!;
     expect(title.clientWidth).toBeGreaterThan(40);
     expect(title.getBoundingClientRect().height).toBeLessThanOrEqual(
       parseFloat(getComputedStyle(title).lineHeight) + 1,

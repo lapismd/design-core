@@ -5,6 +5,7 @@ import {
 } from "@lapismd/spec-validator";
 
 const shadcnChapters = {
+  "file-type-icon": ["spec/src/shadcn/data-and-feedback.md"],
   "author-card": ["spec/src/shadcn/data-and-feedback.md"],
   "reference-chip": ["spec/src/shadcn/data-and-feedback.md"],
   "link-preview": ["spec/src/shadcn/data-and-feedback.md"],

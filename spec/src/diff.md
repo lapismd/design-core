@@ -1,5 +1,7 @@
 # Diff
 
+File Diff Composer headers and Merge Editor titles with an explicit path compose the shared FileTypeIcon at size s. A host fileHeaderLeading snippet replaces the default icon. Missing paths do not invent file types; truncation, sticky headers and merge controls retain their original behavior.
+
 Diff contracts keep change-set listing, file comparison, and merge presentation separate from version-control commands, file I/O, and review policy. Headless tree, unified-diff, and merge models live under `src/shared/diff/core`.
 
 ## Public surface coverage
@@ -39,6 +41,10 @@ non-draggable, and selection/disclosure behavior stays independent of dragging.
 in list, folder and package modes. Eager rows split that space across their
 block margins; virtual row wrappers include it in their measured height so
 scroll offsets, continuation and keyboard navigation retain the same spacing.
+
+Default file rows compose the public FileTypeIcon primitive (DC-SHA-064) at
+14px, preserving the original icon slot and folder/disclosure geometry. The
+legacy `fileIconNameForPath` helper retains its public Lucide-name contract.
 
 Default file-row accessible names retain the full path and every visible signed
 change count. Custom leading, label or meta snippets use their native text as

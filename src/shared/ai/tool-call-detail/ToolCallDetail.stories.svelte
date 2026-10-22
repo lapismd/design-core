@@ -64,6 +64,17 @@
 </Story>
 <Story
   name="File read"
+  play={async ({ canvasElement, canvas }) => {
+    await expect(
+      canvasElement.querySelector(
+        ".tool-detail__path [data-file-type-icon='typescript']",
+      ),
+    ).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Open file" }));
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "src/lib/greeting.ts:12",
+    );
+  }}
   parameters={{
     docs: { source: { code: sources.Files, language: "tsx", type: "code" } },
   }}
@@ -72,6 +83,18 @@
 </Story>
 <Story
   name="File edits and patches"
+  play={async ({ canvasElement }) => {
+    await expect(
+      canvasElement.querySelectorAll(
+        ".tool-detail__path [data-ui-component='file-type-icon']",
+      ),
+    ).toHaveLength(2);
+    await expect(
+      canvasElement.querySelector(
+        ".tool-detail__path [data-file-type-icon='test-ts']",
+      ),
+    ).toBeVisible();
+  }}
   parameters={{
     docs: { source: { code: sources.Files, language: "tsx", type: "code" } },
   }}
@@ -80,6 +103,21 @@
 </Story>
 <Story
   name="Search results"
+  play={async ({ canvasElement, canvas }) => {
+    await expect(
+      canvasElement.querySelectorAll(
+        ".tool-detail__matches [data-ui-component='file-type-icon']",
+      ),
+    ).toHaveLength(2);
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: "src/lib/greeting.ts:12:17",
+      }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "src/lib/greeting.ts:12:17",
+    );
+  }}
   parameters={{
     docs: { source: { code: sources.Search, language: "tsx", type: "code" } },
   }}

@@ -1,0 +1,31 @@
+@import "./file-type-icon.tokens.css";
+
+.ui-file-type-icon {
+  --_ui-file-type-icon-size: var(--ui-file-type-icon-size-md, 1rem);
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  inline-size: var(--ui-file-type-icon-size, var(--_ui-file-type-icon-size));
+  block-size: var(--ui-file-type-icon-size, var(--_ui-file-type-icon-size));
+  color: var(--ui-file-type-icon-fallback-color, var(--muted-foreground));
+  line-height: 0;
+  vertical-align: middle;
+}
+
+.ui-file-type-icon[data-size="xs"] {
+  --_ui-file-type-icon-size: var(--ui-file-type-icon-size-xs, 0.75rem);
+}
+
+.ui-file-type-icon[data-size="s"] {
+  --_ui-file-type-icon-size: var(--ui-file-type-icon-size-s, 0.875rem);
+}
+
+.ui-file-type-icon[data-size="lg"] {
+  --_ui-file-type-icon-size: var(--ui-file-type-icon-size-lg, 1.5rem);
+}
+
+.ui-file-type-icon > svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}

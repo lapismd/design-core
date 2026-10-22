@@ -8,6 +8,7 @@
   import XIcon from "@lucide/svelte/icons/x";
   import { ensureHighlightStyles } from "../../shadcn/code-block/index.js";
   import { Button } from "../../shadcn/button/index.js";
+  import { FileTypeIcon } from "../../shadcn/file-type-icon/index.js";
   import * as ScrollArea from "../../shadcn/scroll-area/index.js";
   import { highlightText } from "../file-diff/highlight.js";
   import { resolveDiffLanguage } from "../file-diff/language.js";
@@ -591,7 +592,10 @@
   data-header-center={headerCenter ? "true" : undefined}
 >
   <div class="ui-diff-merge-editor__toolbar">
-    <span class="ui-diff-merge-editor__title">{path ?? "Merge"}</span>
+    <span class="ui-diff-merge-editor__title">
+      {#if path}<FileTypeIcon {path} size="s" />{/if}
+      <span class="ui-diff-merge-editor__filename">{path ?? "Merge"}</span>
+    </span>
     {#if headerCenter}
       <div class="ui-diff-merge-editor__header-center">
         {@render headerCenter()}

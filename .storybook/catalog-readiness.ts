@@ -8,6 +8,7 @@ const CLIENT_ENTRIES = [
   "/src/shared/shadcn/button/button.svelte",
   "/src/shared/workspace/plugins/notifications/NotificationToasts.svelte",
   "/src/shared/workspace/app-shell/index.ts",
+  "/src/shared/shell/app-shell/AppShell.stories.svelte",
 ];
 
 /** Probe the client compiler, not just the already-generated story index. */

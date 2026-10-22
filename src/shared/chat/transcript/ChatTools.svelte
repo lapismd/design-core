@@ -6,6 +6,7 @@
   import CircleAlertIcon from "@lucide/svelte/icons/circle-alert";
   import LoaderCircleIcon from "@lucide/svelte/icons/loader-circle";
   import WrenchIcon from "@lucide/svelte/icons/wrench";
+  import { FileTypeIcon } from "../../shadcn/file-type-icon/index.js";
   import ChatRawToggle from "./ChatRawToggle.svelte";
   import ChatCollapsedComments from "./ChatCollapsedComments.svelte";
   import ChatToolBlocks from "./ChatToolBlocks.svelte";
@@ -85,6 +86,9 @@
                         size={14}
                       />{:else if tool.status === "running"}<LoaderCircleIcon
                         size={14}
+                      />{:else if tool.path && !tool.icon}<FileTypeIcon
+                        path={tool.path}
+                        size="s"
                       />{:else}<Icon />{/if}<span>{tool.title}</span
                     >{#if !tool.inlineBlocks?.length}<ChatDisclosureIcon />{/if}
                   </Button>
@@ -102,6 +106,7 @@
             {#if tool.inlineBlocks?.length}
               <Collapsible.Content
                 class="ui-transcript-tool-detail"
+                role="group"
                 aria-label={`Captured contents for ${tool.title}`}
               >
                 {#if expanded(tool.id)}<ChatToolBlocks
@@ -140,7 +145,10 @@
                     {:else if tool.status === "running"}<LoaderCircleIcon
                         size={14}
                       />
-                    {:else}<Icon />{/if}
+                    {:else if tool.path && !tool.icon}<FileTypeIcon
+                        path={tool.path}
+                        size="s"
+                      />{:else}<Icon />{/if}
                     <span>{tool.title}</span>
                     <ChatDisclosureIcon />
                   </Collapsible.Trigger>
@@ -150,6 +158,7 @@
             </div>
             <Collapsible.Content
               class="ui-transcript-tool-detail"
+              role="group"
               aria-label={tool.title}
             >
               {#if expanded(tool.id, item.defaultExpanded && calls.length === 1)}<ChatToolBlocks
