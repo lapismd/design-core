@@ -32,3 +32,9 @@ accessibility cases after replacing unsupported namespace-member story metadata
 with the actual imported root component (the first import attempt failed one
 file; its companion example passed). Canonical specification validation passes.
 No thresholds, accessibility rules or baseline images were changed.
+
+The initial spec-first attempt exposed the missing new-family map and the two
+owning styling/governance chapter updates. These are added without weakening
+the protected-surface gate; the final slice is checked against its original
+source base. The public archive has SHA-256
+`e841c0227cec3cf4862784796a320a27c6c88dc4fbd15c2630a46695bf322d81`.

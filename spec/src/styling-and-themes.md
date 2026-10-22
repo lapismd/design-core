@@ -1,5 +1,8 @@
 # Styling and themes
 
+Radio Group paints through public `--ui-radio-group-*` tokens and imports its
+family defaults from the shared stylesheet (DC-SHA-065).
+
 Prompt Context uses logical inline body padding beyond the parent disclosure
 label to make XML and nested Markdown hierarchy visible (DC-CHAT-010).
 

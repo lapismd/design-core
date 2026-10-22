@@ -1,5 +1,9 @@
 # Specification governance
 
+Radio Group family source, generated provenance and catalog artifacts map to
+Shadcn Forms under DC-SHA-065. Its converter keeps root and descendant style
+sites separate and maps external FieldLabel markers to semantic slots.
+
 The `forms/file-path-input` family maps to Forms Inputs, and its public export/catalog mappings select DC-FORM-049; declarative Settings composition maps to DC-WS-082.
 
 Panel visibility integration is governed by DC-SHA-053, DC-SHA-040 and DC-SHELL-003. The governed pointer examples cover the same native shared icon inside Workspace, AppShell, Sidebar and mobile controls; preview metadata stays visual-pending.
