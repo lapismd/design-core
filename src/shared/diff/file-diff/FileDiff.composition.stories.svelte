@@ -87,3 +87,39 @@
     </div>
   {/snippet}
 </Story>
+
+<Story
+  name="Selected collection frame and header hover"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const selected = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="file-section"][data-selected="true"]',
+    )!;
+    await expect(getComputedStyle(selected, "::after").content).toBe('""');
+    const other = canvas.getByRole("button", { name: /^Expand other\.ts/ });
+    const header = other.closest("header")!;
+    const before = getComputedStyle(header).backgroundColor;
+    // Native focus exercises the shared hover/focus background in regular
+    // Storybook too; browser acceptance additionally drives a real pointer hover.
+    other.focus();
+    await expect(getComputedStyle(header).backgroundColor).not.toBe(before);
+  }}
+>
+  {#snippet template()}
+    <div
+      style="--ui-diff-file-selection-outline:2px solid rgb(12,106,222);--ui-diff-file-selection-outline-offset:-2px"
+    >
+      <FileDiffComposer
+        expandOnHeaderClick
+        sizing="content"
+        selectedPath="selected.ts"
+        files={[
+          { path: "selected.ts", oldText: "old value", newText: "new value" },
+          { path: "other.ts", oldText: "before", newText: "after" },
+        ]}
+        collapsedFilePaths={["other.ts"]}
+        onFileToggle={() => {}}
+      />
+    </div>
+  {/snippet}
+</Story>

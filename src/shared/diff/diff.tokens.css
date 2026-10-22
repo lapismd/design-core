@@ -11,6 +11,16 @@
   --ui-diff-file-selection-outline: 2px solid var(--ring);
   --ui-diff-file-content-padding-bottom: 0;
   --ui-diff-file-selected-header: var(--muted);
+  --ui-diff-file-header-hover: color-mix(
+    in srgb,
+    var(--foreground) 6%,
+    var(--muted)
+  );
+  --ui-diff-file-selected-header-hover: color-mix(
+    in srgb,
+    var(--foreground) 6%,
+    var(--ui-diff-file-selected-header)
+  );
   --ui-diff-added-background: color-mix(
     in srgb,
     var(--chart-2, oklch(0.7 0.15 145)) 16%,

@@ -256,6 +256,8 @@
 }
 
 .ui-diff-file-diff-composer__file {
+  position: relative;
+  isolation: isolate;
   border: var(--ui-diff-file-section-border, var(--ui-diff-frame-border));
   border-bottom: var(
     --ui-diff-file-section-separator,
@@ -269,6 +271,19 @@
 .ui-diff-file-diff-composer__file[data-selected="true"] {
   outline: var(--ui-diff-file-selection-outline, 2px solid var(--ring));
   outline-offset: var(--ui-diff-file-selection-outline-offset, 1px);
+}
+
+/* Paint inset selection above opaque diff panes and sticky gutters. The outer
+   outline retains the default outward ring when hosts use a positive offset. */
+.ui-diff-file-diff-composer__file[data-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  outline: var(--ui-diff-file-selection-outline, 2px solid var(--ring));
+  outline-offset: var(--ui-diff-file-selection-outline-offset, 1px);
+  pointer-events: none;
 }
 
 .ui-diff-file-diff-composer__header {
@@ -381,6 +396,15 @@
 .ui-diff-file-diff-composer__file[data-selected="true"]
   > .ui-diff-file-diff-composer__header {
   background: var(--ui-diff-file-selected-header, var(--muted));
+}
+
+.ui-diff-file-diff-composer__header:is(:hover, :focus-within) {
+  background: var(--ui-diff-file-header-hover);
+}
+
+.ui-diff-file-diff-composer__file[data-selected="true"]
+  > .ui-diff-file-diff-composer__header:is(:hover, :focus-within) {
+  background: var(--ui-diff-file-selected-header-hover);
 }
 
 .ui-diff-file-diff-composer__action {

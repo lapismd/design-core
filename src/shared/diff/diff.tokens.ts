@@ -9,6 +9,8 @@ export const diffTokenNames = {
   fileSelectionOutline: "--ui-diff-file-selection-outline",
   fileContentPaddingBottom: "--ui-diff-file-content-padding-bottom",
   fileSelectedHeader: "--ui-diff-file-selected-header",
+  fileHeaderHover: "--ui-diff-file-header-hover",
+  fileSelectedHeaderHover: "--ui-diff-file-selected-header-hover",
   addedBackground: "--ui-diff-added-background",
   addedForeground: "--ui-diff-added-foreground",
   removedBackground: "--ui-diff-removed-background",
