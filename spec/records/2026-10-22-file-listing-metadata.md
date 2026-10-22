@@ -17,3 +17,15 @@ Agent UI consumes this archive through its ignored review dependency hook; npm
 manifests and portable lock entries retain registry ranges. This is temporary
 local acceptance, not a publication or downstream-service update. Broad suites,
 other consumers and visual baseline approval remain deferred to final review.
+
+## Prepared consumer acceptance archive
+
+The source-only tarball exposed Vite 8 optimizer parsing of `.svelte.ts` files
+in the consumer. The existing `packLocal` workflow was then used with
+`retainSource: true` and suffix `-history-review-built`; it prepared declarations
+and browser CSS with zero remaining utility references. Archive:
+`.local/packages/lapismd-design-core-0.6.0-history-review-built.tgz`, SHA-256
+`ad206732908689b06432cad37518afcf6ea112e4d460b30909d3f42fc06fa8bc`.
+This replaces the source-only archive for temporary Agent UI review. The source
+spec check passed all three lanes and spec-first covered ten protected files and
+two canonical chapters. No published package or downstream service changed.
