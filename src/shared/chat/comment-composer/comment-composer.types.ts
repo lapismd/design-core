@@ -34,6 +34,8 @@ export type CommentComposerProps = Omit<
   sourceContent?: Snippet<[CommentComposerSource]>;
   /** Host-owned identity presentation, typically a decorative small Avatar. */
   avatar?: Snippet;
+  /** Hover/focus actions before the persistent formatting toggle, without hidden row width. */
+  actions?: Snippet;
   label?: string;
   inputLabel?: string;
   placeholder?: string;
@@ -44,8 +46,22 @@ export type CommentComposerProps = Omit<
   references?: import("../inline-reference/inline-reference.types.js").ChatReferenceOptions;
   triggers?: readonly import("../markdown-composer/composer-suggestions.js").MarkdownComposerTrigger[];
   editorExtensions?: import("@codemirror/state").Extension;
-  /** Escape requests dismissal without deleting the draft. */
+  /** Optional host palette; omitted values use the shared full emoji picker. */
+  emojis?:
+    | readonly import("../../shadcn/emoji-picker/index.js").EmojiOption[]
+    | undefined;
+  customEmojis?:
+    | readonly import("../../shadcn/emoji-picker/index.js").CustomEmoji[]
+    | undefined;
+  emojiText?:
+    | ((
+        value: string,
+        custom?: import("../../shadcn/emoji-picker/index.js").CustomEmoji,
+      ) => string)
+    | undefined;
+  /** Escape or empty Backspace (without onRemove) requests host-owned dismissal. */
   onDismiss?: () => void;
+  /** The remove control or plain Backspace on an already empty editable draft requests removal. */
   onRemove?: () => void;
   /** The opener supports host-owned source navigation and focus restoration. */
   onNavigateSource?: (opener: HTMLButtonElement) => void;

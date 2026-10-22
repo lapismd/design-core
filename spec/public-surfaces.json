@@ -1137,6 +1137,10 @@
     {
       "name": "Shadcn/Data/File Type Icon",
       "requirement": "DC-SHA-064"
+    },
+    {
+      "name": "Shadcn/Forms/Radio Group",
+      "requirement": "DC-SHA-065"
     }
   ]
 }

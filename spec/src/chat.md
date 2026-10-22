@@ -87,7 +87,13 @@ Catalog collapse assertions await the closed drawer layout while retaining
 their existing geometry bounds and deadlines.
 
 Hosts MAY attach status to either edge with `statusPosition` (`top` by default),
-including a bottom warning behind the framed composer.
+including a bottom warning behind the framed composer. Document presentation
+MUST retain the same opaque framed body and joined banner while status is
+attached, restoring its ordinary prose surface when that status clears.
+`statusContent` MAY compose host metadata/actions inside that same shell, with
+custom content owning its accessible announcement semantics. Error feedback
+MUST retain its shared red treatment across Default/Lapis light and dark themes.
+Custom MessageMetadata MUST use the same typography as ordinary status feedback.
 
 Hosts MAY omit the inline keyboard hint with `showHint=false` when they render
 the instruction in their own fixed row; the default hint remains visible.
@@ -101,7 +107,7 @@ Classic) and bounds the Classic scroll viewport without overriding content style
 
 ### Acceptance details
 
-- The component MUST support framed and document presentations with left-aligned editor content, top reply quotes, form serialization, contextual content, host actions, disabled/busy state and bottom formatting actions with accessible tooltips; document presentation uses a transparent prose surface, a host-supplied avatar vertically centred beside the first draft line and a tall writing area
+- The component MUST support framed and document presentations with left-aligned editor content, top reply quotes, form serialization, contextual content, host actions, disabled/busy state and bottom formatting actions with accessible tooltips; document presentation uses a transparent prose surface unless status is attached, a host-supplied avatar vertically centred beside the first draft line and a tall writing area
 - Formatting, emoji insertion, optional host-owned reply cancellation and presentation changes MUST retain the draft and editor selection through public Mira and CodeMirror APIs, with custom emoji syntax and editor extensions supplied through host hooks.
 - Keyboard submission MUST distinguish Enter, Shift+Enter, modifier submission and IME composition, while disabled/busy controls MUST block submission and editing.
 - Submission MUST emit the exact draft snapshot without clearing it, leaving acknowledgement, failed delivery feedback, persistence and any clearing to the host.
@@ -137,6 +143,18 @@ Hosts MAY disable action tooltips entirely while retaining accessible labels.
 
 **Requirement.** CommentComposer MUST present a controlled compact comment editor with optional captured source context and host-owned navigation and delivery.
 
+An accessible T toggle at the editor's right edge MUST open and close a compact
+formatting strip below the input, including the shared emoji picker. It MUST use the same public Mira Markdown
+commands as MarkdownComposer, preserve the exact editor/selection and draft,
+and block formatting while disabled, pending or read-only.
+The T control MUST be the last row action; hover actions MUST stay inside the
+same first row before the T and reserve no inline width while hidden. The first
+formatting glyph MUST align with the editor text.
+Hosts MAY supply emoji palettes and custom emoji serialization through public props.
+Plain, non-repeated Backspace on an already empty editable draft MUST request
+`onRemove`, falling back to `onDismiss`; deleting the final character MUST keep
+the editor open. Modified keys, IME and blocked editors MUST NOT request removal.
+
 ### Acceptance details
 
 - Captured code or safe Markdown quotes MUST appear above the avatar/editor card, retain their original text and expose optional source navigation and unavailable-source explanation without relocating anchors.
@@ -152,6 +170,10 @@ Other custom blocks retain their frame.
 
 Context, handoff and rootless content readers MUST inherit the transcript prose
 font and size (including host overrides), with independent Markdown spacing.
+Hosts MAY declare a destructive disclosure tone for captured outcomes without
+turning them into execution errors. Its text and icon MUST use readable red in
+both themes; a final compact disclosure/tool row MUST retain the ordinary tool
+row gap before the composer rather than the full message margin.
 Retained unavailable-source comments MUST have a small token-controlled gap
 between cards while keeping each status attached to its own quote.
 Message `status` MUST appear below its body in the shared metadata row, alongside
@@ -245,6 +267,10 @@ metadata actions request an explicit host retry without dispatching implicitly.
 
 Custom-section annotation handlers MUST ignore input already handled by a nested editor, retaining each typed or pasted character exactly once.
 Hosts setting `canComment` to false MUST omit comment actions, including empty hover-action surfaces, while preserving existing comments and independent reaction or host actions. Commentable hosts MUST retain the disabled waiting-for-source action for unpublished blocks.
+
+Expanded queued/history/reply quotes MUST share their enclosing context background
+without an additional prose, list or captured-code highlight. The original
+source's selection highlighting MUST remain independent.
 
 ### Acceptance details
 

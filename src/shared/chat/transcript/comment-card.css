@@ -16,6 +16,7 @@
   border-radius: var(--radius);
 }
 .ui-transcript-comment-quote {
+  --mira-preview-background: transparent;
   margin: 0 0 0.5rem;
   font-size: inherit;
   line-height: var(--ui-transcript-markdown-line-height, 1.55);
@@ -26,8 +27,6 @@
 }
 .ui-transcript-comment-quote :is(p, code) {
   color: inherit;
-  background: color-mix(in srgb, var(--primary) 15%, transparent);
-  border-radius: 3px;
 }
 .ui-transcript-comment-quote > code {
   font: inherit;
@@ -78,13 +77,22 @@
   margin-block: 0;
 }
 .ui-transcript-comment-links {
+  position: absolute;
   display: flex;
+  flex: 0 0 auto;
   gap: 0.125rem;
   opacity: 0;
+  pointer-events: none;
 }
 .ui-transcript-comment-card:hover .ui-transcript-comment-links,
 .ui-transcript-comment-card:focus-within .ui-transcript-comment-links {
+  position: static;
   opacity: 1;
+  pointer-events: auto;
+}
+.ui-transcript-comment-links button:is(:hover, :focus-visible) {
+  background: var(--background);
+  box-shadow: inset 0 0 0 1px var(--border);
 }
 .ui-transcript-comment-complete {
   color: var(--ui-diff-stat-added, var(--success, #16a34a));
@@ -109,7 +117,9 @@
 }
 @media (hover: none) {
   .ui-transcript-comment-links {
+    position: static;
     opacity: 1;
+    pointer-events: auto;
   }
 }
 

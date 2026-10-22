@@ -30,7 +30,7 @@ composes it without changing folder icons, row geometry or host-owned state.
 
 accordion, alert, alert-dialog, badge, button, card, code, code-block,
 collapsible, column-canvas, command, command-view, dialog, dropdown-menu, emoji-picker, empty, field, panel-toggle,
-input, input-group, label, hover-card, popover, resizable, scroll-area, select, separator,
+radio-group, input, input-group, label, hover-card, popover, resizable, scroll-area, select, separator,
 sheet, sidebar, skeleton, spinner, switch, swipe-item, tabs, textarea, toggle,
 toggle-group, tooltip, progress, slider, context-menu, drawer
 

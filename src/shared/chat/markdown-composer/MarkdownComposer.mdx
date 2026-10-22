@@ -1,5 +1,6 @@
-import { Meta, Source } from "@storybook/addon-docs/blocks";
+import { Meta, Source, Canvas } from "@storybook/addon-docs/blocks";
 import * as Stories from "./MarkdownComposer.stories.svelte";
+import * as StatusStories from "./MarkdownComposer.status.stories.svelte";
 import { Basic, Document, Custom } from "./MarkdownComposer.example-sources";
 
 <Meta of={Stories} />
@@ -81,3 +82,29 @@ plain string/token values, so application-specific mention serialization stays
 with the host. CodeMirror owns keyboard navigation, Escape and cursor-relative
 placement; Enter accepts active suggestions before submission. Triggers are
 suppressed inside captured inline/fenced code and during IME composition.
+
+## Attached feedback in Document view
+
+When `status` is present, Document view uses the same opaque bordered input body
+as the framed composer so the curved status banner joins its edge. The author
+avatar, draft, selection and docked actions stay in Document presentation. Clearing
+status restores the ordinary transparent prose surface without replacing the editor.
+
+<Canvas of={StatusStories.DocumentAttachedWarning} />
+<Canvas of={StatusStories.DocumentAttachedError} />
+
+<Canvas of={StatusStories.DocumentAttachedWarningDark} />
+<Canvas of={StatusStories.DocumentAttachedErrorDark} />
+<Canvas of={StatusStories.DocumentAttachedTopStatus} />
+
+Errors use destructive red text and icons on a lightly tinted background.
+Use `statusContent` to render shared MessageMetadata or host actions inside the
+same attached status shell. Custom content owns its status/alert announcement;
+the shell retains the semantic tone, placement and frame. Shared MessageMetadata
+inherits the banner's 0.75rem text size and 1rem line height (both respond to
+`--ui-ai-chat-type-scale`), matching ordinary status messages.
+
+<Canvas of={StatusStories.DocumentErrorMetadata} />
+<Canvas of={StatusStories.DocumentErrorMetadataDark} />
+
+<Canvas of={StatusStories.DocumentErrorLapisDark} />

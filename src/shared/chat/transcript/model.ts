@@ -89,6 +89,8 @@ export interface TranscriptItem {
   label: string;
   icon?: Component | undefined;
   role?: "user" | "assistant" | undefined;
+  /** Presentation of a captured disclosure outcome, independent of execution errors. */
+  tone?: "destructive" | undefined;
   turn?: TranscriptTurn | undefined;
   author?: TranscriptAuthor | undefined;
   blocks: readonly TranscriptBlock[];
@@ -179,7 +181,12 @@ export interface TranscriptSubmissionResult {
 export interface TranscriptHost {
   commentComposer?: Pick<
     import("../comment-composer/comment-composer.types.js").CommentComposerProps,
-    "references" | "triggers" | "editorExtensions"
+    | "references"
+    | "triggers"
+    | "editorExtensions"
+    | "emojis"
+    | "customEmojis"
+    | "emojiText"
   >;
   /** Per-message actions; opaque IDs and execution remain host-owned. */
   getMessageActions?: (

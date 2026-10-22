@@ -24,6 +24,7 @@ const shadcnChapters = {
   "button-group": ["spec/src/shadcn/actions-and-content.md"],
   card: ["spec/src/shadcn/layout.md"],
   checkbox: ["spec/src/shadcn/forms.md"],
+  "radio-group": ["spec/src/shadcn/forms.md"],
   code: ["spec/src/shadcn/actions-and-content.md"],
   "code-block": ["spec/src/shadcn/actions-and-content.md"],
   collapsible: ["spec/src/shadcn/disclosure-and-navigation.md"],

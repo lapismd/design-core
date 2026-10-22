@@ -1,6 +1,6 @@
-import { Meta, Source } from "@storybook/addon-docs/blocks";
+import { Meta, Source, Canvas } from "@storybook/addon-docs/blocks";
 import * as Stories from "./CommentComposer.stories.svelte";
-import { Basic, Inline } from "./CommentComposer.example-sources";
+import { Basic, Inline, EmptyDraft } from "./CommentComposer.example-sources";
 
 <Meta of={Stories} />
 
@@ -25,6 +25,15 @@ nonblank draft, without clearing it. IME composition never submits. Escape
 requests `onDismiss`, preserving the draft. Optional `onRemove` requests removal;
 the component never deletes the host's data itself. `pending`, `disabled` and
 `readOnly` block editing and submission. A `name` adds host-form serialization.
+
+Plain Backspace on an already empty draft requests `onRemove`, or `onDismiss`
+when no removal handler is supplied. Deleting the last character leaves the
+editor open until another deliberate Backspace. Modified keys, held-key repeats,
+IME composition and blocked editors do not request removal. Whitespace remains
+content until deleted. Transcript hosts remove the empty draft and restore focus
+to its original source through their existing controller dismissal flow.
+
+<Source code={EmptyDraft} language="tsx" />
 
 `avatar` accepts host-owned identity content. `onNavigateSource` receives the
 opener so the host can restore focus after visiting the captured source.
@@ -52,3 +61,23 @@ avatar, border and padding. The default `card` presentation remains self-contain
 Pass `references`, `triggers` and optional `editorExtensions` to reuse host
 reference chips and cancellable suggestions in inline comments. The editor
 retains exact text, source offsets, selection and its original compact geometry.
+
+## Inline formatting
+
+The T toggle sits to the right of each editable comment. Its pressed state opens
+a compact formatting row below the input; closing it preserves the draft,
+selection and editor instance. Bold, italic, strikethrough, inline code, lists
+and quotes use the same action definitions and public Mira commands as the main
+Markdown composer. Disabled, pending and read-only editors block these actions.
+The row scrolls horizontally on narrow cards.
+
+<Canvas of={Stories.InlineFormattingToggle} />
+
+The T control stays at the far right. The optional `actions` snippet places
+transient controls before it on the same row. Hidden controls reserve no width;
+touch layouts show the controls inline. Transcript comments use this slot for
+their navigation, removal and reply actions. The first toolbar glyph aligns
+with the comment text.
+The formatting row includes the shared EmojiPicker. Optional `emojis`,
+`customEmojis` and `emojiText` props forward host palettes and serialization;
+the default picker uses the full library and inserts at the retained selection.

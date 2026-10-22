@@ -11,13 +11,7 @@
   import type { MiraExtension } from "@lapismd/mira/extensions";
   import { Prec } from "@codemirror/state";
   import { EditorView } from "@codemirror/view";
-  import BoldIcon from "@lucide/svelte/icons/bold";
-  import ItalicIcon from "@lucide/svelte/icons/italic";
-  import StrikeIcon from "@lucide/svelte/icons/strikethrough";
-  import CodeIcon from "@lucide/svelte/icons/code";
-  import ListIcon from "@lucide/svelte/icons/list";
-  import OrderedListIcon from "@lucide/svelte/icons/list-ordered";
-  import QuoteIcon from "@lucide/svelte/icons/quote";
+  import { formatActions } from "./format-actions.js";
   import TypeIcon from "@lucide/svelte/icons/type";
   import ArrowUpIcon from "@lucide/svelte/icons/arrow-up";
   import SquareIcon from "@lucide/svelte/icons/square";
@@ -56,6 +50,7 @@
     busy = false,
     onStop,
     status,
+    statusContent,
     statusPosition = "top",
     submitLabel = "Send message",
     showSendButton = true,
@@ -86,15 +81,6 @@
   const blocked = $derived(disabled || busy);
   const enterSubmits = $derived(submitOnEnter ?? presentation === "framed");
   const hasDraft = $derived(value.trim().length > 0);
-  const formatActions = [
-    { id: "bold", label: "Bold", Icon: BoldIcon },
-    { id: "italic", label: "Italic", Icon: ItalicIcon },
-    { id: "strikethrough", label: "Strikethrough", Icon: StrikeIcon },
-    { id: "inlineCode", label: "Inline code", Icon: CodeIcon },
-    { id: "bulletList", label: "Bulleted list", Icon: ListIcon },
-    { id: "numberedList", label: "Numbered list", Icon: OrderedListIcon },
-    { id: "quote", label: "Quote", Icon: QuoteIcon },
-  ] as const;
 
   function submit() {
     if (!blocked && hasDraft) onSubmit(value);
@@ -376,6 +362,7 @@
   class={["ui-markdown-composer", className].filter(Boolean).join(" ")}
   data-ui-component="markdown-composer"
   data-presentation={presentation}
+  data-attached-status={status ? statusPosition : undefined}
   data-actions-docked={docked}
   data-send-hidden={!showSendButton}
   aria-busy={busy}
@@ -393,6 +380,7 @@
       isStopShown={busy && Boolean(onStop)}
       {...status === undefined ? {} : { status }}
       {statusPosition}
+      {statusContent}
       onSubmit={submit}
       {...drawer || reply ? { drawer: composerDrawer } : {}}
       {...context === undefined ? {} : { headerContext: context }}

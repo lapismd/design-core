@@ -139,6 +139,14 @@ Error foreground MUST remain readable on light/dark tinted message surfaces;
 
 **Requirement.** The Composer family MUST coordinate controlled input, tokens, attachments or drawers, and submit affordances. Its elevation and focus chrome MUST remain visible when host shadow tokens are absent and MUST NOT stack a focus border with its focus ring.
 
+Error banners MUST use semantic red text and icons with at least 4.5:1 text
+contrast in both light and dark brand themes, using the existing metadata
+foreground-mixing strategy for readable dark errors.
+`statusContent` MAY replace the default icon/message with host-owned metadata
+inside the existing attached shell, without duplicating live announcements.
+Shared MessageMetadata in that shell MUST inherit the banner's text size and
+line height, matching default status feedback rather than compact timestamps.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
