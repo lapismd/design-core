@@ -31,6 +31,8 @@
     onFileToggle,
     fileHeaderLeading,
     fileHeaderTrailing,
+    fileHeaderMeta,
+    expandOnHeaderClick = false,
     lineAccessory,
     lineAnnotation,
   }: {
@@ -48,6 +50,10 @@
     onFileToggle?: (path: string, collapsed: boolean) => void;
     fileHeaderLeading?: Snippet<[FileDiffComposerFileContext]>;
     fileHeaderTrailing?: Snippet<[FileDiffComposerFileContext]>;
+    /** Noninteractive stats or status within the header's expansion target. */
+    fileHeaderMeta?: Snippet<[FileDiffComposerFileContext]>;
+    /** Expand the full header label and metadata area; actions remain independent. */
+    expandOnHeaderClick?: boolean;
     lineAccessory?: Snippet<[FileDiffLineContext]>;
     /** Host-owned content inserted after each matching unified diff row. */
     lineAnnotation?: Snippet<[FileDiffLineContext]>;
@@ -98,43 +104,78 @@
         data-selected={context.selected}
         data-collapsed={context.collapsed}
       >
-        <header class="ui-diff-file-diff-composer__header">
-          <div class="ui-diff-file-diff-composer__header-start">
-            {#if fileHeaderLeading}
-              <div class="ui-diff-file-diff-composer__header-leading">
-                {@render fileHeaderLeading(context)}
-              </div>
-            {/if}
-            {#if onFileToggle}
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-xs"
-                aria-expanded={!context.collapsed}
-                aria-controls={`${instanceId}-file-${index}`}
-                aria-label={`${context.collapsed ? "Expand" : "Collapse"} ${file.path}`}
-                onclick={() => onFileToggle?.(file.path, !context.collapsed)}
+        <header
+          class="ui-diff-file-diff-composer__header"
+          data-expand-on-click={expandOnHeaderClick && !!onFileToggle}
+        >
+          {#if expandOnHeaderClick && onFileToggle}
+            <button
+              type="button"
+              class="ui-diff-file-diff-composer__header-toggle"
+              aria-expanded={!context.collapsed}
+              aria-controls={`${instanceId}-file-${index}`}
+              onclick={() => onFileToggle?.(file.path, !context.collapsed)}
+            >
+              <span class="ui-diff-file-diff-composer__action"
+                >{context.collapsed ? "Expand" : "Collapse"}</span
               >
-                {#if context.collapsed}
-                  <ChevronRightIcon aria-hidden="true" />
-                {:else}
-                  <ChevronDownIcon aria-hidden="true" />
-                {/if}
-              </Button>
-            {/if}
-            {#if file.path && !fileHeaderLeading}<FileTypeIcon
-                path={file.path}
-                size="s"
-              />{/if}
-            <span title={file.path}>{truncatePathMiddle(file.path)}</span>
-          </div>
+              {#if context.collapsed}<ChevronRightIcon
+                  aria-hidden="true"
+                />{:else}<ChevronDownIcon aria-hidden="true" />{/if}
+              {#if fileHeaderLeading}{@render fileHeaderLeading(context)}
+              {:else}<FileTypeIcon path={file.path} size="s" />{/if}
+              <span class="ui-diff-file-diff-composer__path" title={file.path}
+                >{truncatePathMiddle(file.path)}</span
+              >
+              {#if fileHeaderMeta}<span class="ui-diff-file-diff-composer__meta"
+                  >{@render fileHeaderMeta(context)}</span
+                >{/if}
+            </button>
+          {:else}
+            <div class="ui-diff-file-diff-composer__header-start">
+              {#if fileHeaderLeading}
+                <div class="ui-diff-file-diff-composer__header-leading">
+                  {@render fileHeaderLeading(context)}
+                </div>
+              {/if}
+              {#if onFileToggle}
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-xs"
+                  aria-expanded={!context.collapsed}
+                  aria-controls={`${instanceId}-file-${index}`}
+                  aria-label={`${context.collapsed ? "Expand" : "Collapse"} ${file.path}`}
+                  onclick={() => onFileToggle?.(file.path, !context.collapsed)}
+                >
+                  {#if context.collapsed}
+                    <ChevronRightIcon aria-hidden="true" />
+                  {:else}
+                    <ChevronDownIcon aria-hidden="true" />
+                  {/if}
+                </Button>
+              {/if}
+              {#if file.path && !fileHeaderLeading}<FileTypeIcon
+                  path={file.path}
+                  size="s"
+                />{/if}
+              <span title={file.path}>{truncatePathMiddle(file.path)}</span>
+            </div>
+            {#if fileHeaderMeta}<div class="ui-diff-file-diff-composer__meta">
+                {@render fileHeaderMeta(context)}
+              </div>{/if}
+          {/if}
           {#if fileHeaderTrailing}
             <div class="ui-diff-file-diff-composer__header-trailing">
               {@render fileHeaderTrailing(context)}
             </div>
           {/if}
         </header>
-        <div id={`${instanceId}-file-${index}`} hidden={context.collapsed}>
+        <div
+          class="ui-diff-file-diff-composer__content"
+          id={`${instanceId}-file-${index}`}
+          hidden={context.collapsed}
+        >
           {#if !context.collapsed}
             {#if fileContent}
               {@render fileContent(context)}

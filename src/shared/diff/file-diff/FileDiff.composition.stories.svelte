@@ -14,6 +14,7 @@
 </script>
 
 <script lang="ts">
+  import { Button } from "../../shadcn/button/index.js";
   import FileDiff from "./FileDiff.svelte";
   let collapsed = $state<string[]>([]);
   const oldText = Array.from({ length: 40 }, (_, i) => `old line ${i}`).join(
@@ -29,24 +30,30 @@
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Host-owned binary state")).toBeVisible();
-    const toggle = canvas.getByRole("button", { name: "Collapse image.png" });
+    const toggle = canvas.getByRole("button", { name: /^Collapse image\.png/ });
     await expect(toggle).toHaveAttribute("aria-expanded", "true");
-    await userEvent.click(toggle);
+    await userEvent.click(canvas.getByText("Modified"));
     await expect(
       canvas.queryByText("Host-owned binary state"),
     ).not.toBeInTheDocument();
     await userEvent.click(
-      canvas.getByRole("button", { name: "Expand image.png" }),
+      canvas.getByRole("button", { name: /^Expand image\.png/ }),
     );
+    await userEvent.click(canvas.getByRole("button", { name: "File actions" }));
     await expect(canvas.getByText("Host-owned binary state")).toBeVisible();
   }}
 >
   {#snippet template()}
     <FileDiffComposer
+      expandOnHeaderClick
       files={[{ path: "image.png" }]}
       collapsedFilePaths={collapsed}
       onFileToggle={(path, value) => (collapsed = value ? [path] : [])}
     >
+      {#snippet fileHeaderMeta()}<span>Modified</span>{/snippet}
+      {#snippet fileHeaderTrailing()}<Button aria-label="File actions"
+          >Actions</Button
+        >{/snippet}
       {#snippet fileContent()}<p>Host-owned binary state</p>{/snippet}
     </FileDiffComposer>
   {/snippet}

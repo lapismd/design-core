@@ -4,6 +4,13 @@
  */
 :root,
 .ui-diff {
+  --ui-diff-file-gap: 0.75rem;
+  --ui-diff-file-section-border: var(--ui-diff-frame-border);
+  --ui-diff-file-section-separator: var(--ui-diff-frame-border);
+  --ui-diff-file-selection-outline-offset: 1px;
+  --ui-diff-file-selection-outline: 2px solid var(--ring);
+  --ui-diff-file-content-padding-bottom: 0;
+  --ui-diff-file-selected-header: var(--muted);
   --ui-diff-added-background: color-mix(
     in srgb,
     var(--chart-2, oklch(0.7 0.15 145)) 16%,

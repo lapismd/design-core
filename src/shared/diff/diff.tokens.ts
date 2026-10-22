@@ -2,6 +2,13 @@
  * Public Diff token names. Defaults live in `diff.tokens.css`.
  */
 export const diffTokenNames = {
+  fileGap: "--ui-diff-file-gap",
+  fileSectionBorder: "--ui-diff-file-section-border",
+  fileSectionSeparator: "--ui-diff-file-section-separator",
+  fileSelectionOutlineOffset: "--ui-diff-file-selection-outline-offset",
+  fileSelectionOutline: "--ui-diff-file-selection-outline",
+  fileContentPaddingBottom: "--ui-diff-file-content-padding-bottom",
+  fileSelectedHeader: "--ui-diff-file-selected-header",
   addedBackground: "--ui-diff-added-background",
   addedForeground: "--ui-diff-added-foreground",
   removedBackground: "--ui-diff-removed-background",

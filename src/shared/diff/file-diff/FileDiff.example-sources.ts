@@ -185,7 +185,7 @@ export const HostContent = `<script lang="ts">
   import { FileDiffComposer, FileDiff } from "@lapismd/design-core/diff";
   let collapsedFilePaths = $state<string[]>(["image.png"]);
 </script>
-<FileDiffComposer files={[{ path: "note.md" }, { path: "image.png" }]}
+<FileDiffComposer expandOnHeaderClick files={[{ path: "note.md" }, { path: "image.png" }]}
   {collapsedFilePaths}
   onFileToggle={(path, collapsed) => collapsedFilePaths = collapsed
     ? [...collapsedFilePaths, path]
