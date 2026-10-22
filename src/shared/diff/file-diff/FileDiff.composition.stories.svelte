@@ -98,16 +98,21 @@
     await expect(getComputedStyle(selected, "::after").content).toBe('""');
     const other = canvas.getByRole("button", { name: /^Expand other\.ts/ });
     const header = other.closest("header")!;
-    const before = getComputedStyle(header).backgroundColor;
+    const selectedHeader = selected.querySelector("header")!;
+    // A translucent selection wash still needs an opaque backing when sticky.
+    await expect(getComputedStyle(selectedHeader).backgroundColor).not.toMatch(
+      /rgba\(|transparent/,
+    );
+    const before = getComputedStyle(header).backgroundImage;
     // Native focus exercises the shared hover/focus background in regular
     // Storybook too; browser acceptance additionally drives a real pointer hover.
     other.focus();
-    await expect(getComputedStyle(header).backgroundColor).not.toBe(before);
+    await expect(getComputedStyle(header).backgroundImage).not.toBe(before);
   }}
 >
   {#snippet template()}
     <div
-      style="--ui-diff-file-selection-outline:2px solid rgb(12,106,222);--ui-diff-file-selection-outline-offset:-2px"
+      style="--ui-diff-file-selection-outline:2px solid rgb(12,106,222);--ui-diff-file-selection-outline-offset:-2px;--ui-diff-file-selected-header:rgba(138,92,245,0.2)"
     >
       <FileDiffComposer
         expandOnHeaderClick

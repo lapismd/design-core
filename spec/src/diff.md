@@ -70,7 +70,8 @@ snippets authoritative. Totals describe loaded files only.
 Highlighted additions/removals MUST retain readable syntax foreground on row and intraline washes through `--ui-diff-changed-syntax-foreground` (default `--foreground`), while unchanged rows retain readable normal syntax colors in both light and dark modes.
 
 Multi-file headers MUST expose semantic hover and keyboard-focus backgrounds,
-retaining selected tint. Inset selection outlines MUST paint all four edges
+retaining selected tint over an opaque diff surface so sticky headers obscure
+scrolled content, including with translucent theme tints. Inset selection outlines MUST paint all four edges
 above opaque file content and sticky gutters without intercepting input.
 
 ### Acceptance details
