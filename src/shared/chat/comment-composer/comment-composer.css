@@ -84,6 +84,12 @@
   flex: 1;
   min-width: 0;
 }
+.ui-comment-composer__toolbar {
+  display: flex;
+  gap: 0.125rem;
+  padding-block-start: 0.25rem;
+  overflow-x: auto;
+}
 .ui-comment-composer__actions {
   display: flex;
   flex: 0 0 auto;

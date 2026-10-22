@@ -103,3 +103,32 @@
       <CommentComposer presentation="bare" bind:value={bareValue} />
     </div>{/snippet}</Story
 >
+
+<Story
+  name="Inline formatting toggle"
+  play={async ({ canvas }) => {
+    const editor = canvas.getByRole("textbox", { name: "Comment" });
+    const toggle = canvas.getByRole("button", {
+      name: "Comment formatting options",
+    });
+    await expect(toggle).toHaveAttribute("aria-pressed", "false");
+    await userEvent.click(editor);
+    await userEvent.keyboard("{Home}{Shift>}{End}{/Shift}");
+    await userEvent.click(toggle);
+    await expect(toggle).toHaveAttribute("aria-pressed", "true");
+    const toolbar = canvas.getByRole("group", { name: "Comment formatting" });
+    await expect(toolbar.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+      editor.getBoundingClientRect().bottom,
+    );
+    await userEvent.click(canvas.getByRole("button", { name: /^Bold$/ }));
+    await expect(canvas.getByTestId("comment-draft")).toHaveTextContent(
+      "**show me contents of this file**",
+    );
+    await userEvent.click(toggle);
+    await expect(toggle).toHaveAttribute("aria-pressed", "false");
+    await expect(
+      canvas.queryByRole("group", { name: "Comment formatting" }),
+    ).not.toBeInTheDocument();
+    await expect(editor).toHaveTextContent("**show me contents of this file**");
+  }}>{#snippet template()}<Fixture scenario="inline" />{/snippet}</Story
+>

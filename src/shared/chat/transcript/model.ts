@@ -89,6 +89,8 @@ export interface TranscriptItem {
   label: string;
   icon?: Component | undefined;
   role?: "user" | "assistant" | undefined;
+  /** Presentation of a captured disclosure outcome, independent of execution errors. */
+  tone?: "destructive" | undefined;
   turn?: TranscriptTurn | undefined;
   author?: TranscriptAuthor | undefined;
   blocks: readonly TranscriptBlock[];

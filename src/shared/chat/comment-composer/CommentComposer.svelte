@@ -4,10 +4,16 @@
   import { Prec } from "@codemirror/state";
   import { EditorView } from "@codemirror/view";
   import { markdown } from "@codemirror/lang-markdown";
+  import {
+    applyMiraMarkdownAction,
+    type MiraMarkdownActionId,
+  } from "@lapismd/mira/core";
+  import { formatActions } from "../markdown-composer/format-actions.js";
   import { composerSuggestions } from "../markdown-composer/composer-suggestions.js";
   import { referenceEditor } from "../inline-reference/reference-widget.js";
   import CornerUpLeftIcon from "@lucide/svelte/icons/corner-up-left";
   import XIcon from "@lucide/svelte/icons/x";
+  import TypeIcon from "@lucide/svelte/icons/type";
   import { Button } from "../../shadcn/button/index.js";
   import { ScrollArea } from "../../shadcn/scroll-area/index.js";
   import { shouldSubmitComposerKey } from "../../ai/composer-behavior.js";
@@ -47,6 +53,7 @@
     ...restProps
   }: CommentComposerProps = $props();
   let editor = $state<MiraCodeEditorHandle | undefined>();
+  let formattingOpen = $state(false);
   const blocked = $derived(disabled || pending || readOnly);
   const publicHandle: CommentComposerHandle = {
     focus: () => editor?.focus(),
@@ -62,6 +69,12 @@
   function change(next: string) {
     value = next;
     onChange?.(next);
+  }
+  function format(action: MiraMarkdownActionId) {
+    const view = editor?.getView();
+    if (blocked || !view) return;
+    applyMiraMarkdownAction(view, action);
+    editor?.focus();
   }
   const suggestions = composerSuggestions({
     triggers: () => triggers,
@@ -210,7 +223,40 @@
         lineNumbers={false}
         spellcheck
       />
+      {#if formattingOpen}
+        <div
+          class="ui-comment-composer__toolbar"
+          role="group"
+          aria-label="Comment formatting"
+        >
+          {#each formatActions as action (action.id)}
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-xs"
+              disabled={blocked}
+              aria-label={action.label}
+              title={action.label}
+              onmousedown={(event) => event.preventDefault()}
+              onclick={() => format(action.id)}
+              ><action.Icon aria-hidden="true" /></Button
+            >
+          {/each}
+        </div>
+      {/if}
     </div>
+    <Button
+      type="button"
+      variant={formattingOpen ? "secondary" : "ghost"}
+      size="icon-xs"
+      disabled={blocked}
+      aria-label="Comment formatting options"
+      title="Formatting options"
+      aria-pressed={formattingOpen}
+      onmousedown={(event) => event.preventDefault()}
+      onclick={() => (formattingOpen = !formattingOpen)}
+      ><TypeIcon aria-hidden="true" /></Button
+    >
     {#if onRemove}<div class="ui-comment-composer__actions">
         <Button
           type="button"

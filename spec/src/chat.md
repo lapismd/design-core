@@ -143,6 +143,11 @@ Hosts MAY disable action tooltips entirely while retaining accessible labels.
 
 **Requirement.** CommentComposer MUST present a controlled compact comment editor with optional captured source context and host-owned navigation and delivery.
 
+An accessible T toggle at the editor's right edge MUST open and close a compact
+formatting strip below the input. It MUST use the same public Mira Markdown
+commands as MarkdownComposer, preserve the exact editor/selection and draft,
+and block formatting while disabled, pending or read-only.
+
 ### Acceptance details
 
 - Captured code or safe Markdown quotes MUST appear above the avatar/editor card, retain their original text and expose optional source navigation and unavailable-source explanation without relocating anchors.
@@ -158,6 +163,10 @@ Other custom blocks retain their frame.
 
 Context, handoff and rootless content readers MUST inherit the transcript prose
 font and size (including host overrides), with independent Markdown spacing.
+Hosts MAY declare a destructive disclosure tone for captured outcomes without
+turning them into execution errors. Its text and icon MUST use readable red in
+both themes; a final compact disclosure/tool row MUST retain the ordinary tool
+row gap before the composer rather than the full message margin.
 Retained unavailable-source comments MUST have a small token-controlled gap
 between cards while keeping each status attached to its own quote.
 Message `status` MUST appear below its body in the shared metadata row, alongside

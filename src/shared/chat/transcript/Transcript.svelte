@@ -387,7 +387,9 @@
                       onOpenChange={(open) =>
                         (comments.disclosures[item.id] = open)}
                     >
-                      <Collapsible.Trigger class="ui-transcript-context-trigger"
+                      <Collapsible.Trigger
+                        class="ui-transcript-context-trigger"
+                        data-tone={item.tone}
                         ><Icon aria-hidden="true" /><span>{item.label}</span
                         ><ChatDisclosureIcon /></Collapsible.Trigger
                       >

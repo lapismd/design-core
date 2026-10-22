@@ -100,6 +100,15 @@
 .ui-transcript-reply-context {
   margin-block-end: 0.5rem;
 }
+.ui-transcript-document
+  > li:is(
+    [data-kind="reasoning"],
+    [data-kind="tools"],
+    [data-kind="context"],
+    [data-kind="handoff"]
+  ):last-child {
+  margin-block-end: var(--ui-transcript-tool-row-gap, 0.25rem);
+}
 .ui-transcript-document-inset
   > [data-ui-component="collapsible"]
   > [data-ui-part="collapsible-content"] {
@@ -164,6 +173,12 @@
 }
 .ui-transcript-context-trigger:hover {
   background: transparent;
+}
+.ui-transcript-context-trigger[data-tone="destructive"] {
+  color: color-mix(in srgb, var(--destructive) 80%, var(--foreground));
+}
+.dark .ui-transcript-context-trigger[data-tone="destructive"] {
+  color: color-mix(in srgb, var(--destructive) 60%, var(--foreground));
 }
 .ui-transcript-context-trigger > svg {
   width: 14px;

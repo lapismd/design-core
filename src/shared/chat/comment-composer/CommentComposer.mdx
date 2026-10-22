@@ -1,4 +1,4 @@
-import { Meta, Source } from "@storybook/addon-docs/blocks";
+import { Meta, Source, Canvas } from "@storybook/addon-docs/blocks";
 import * as Stories from "./CommentComposer.stories.svelte";
 import { Basic, Inline } from "./CommentComposer.example-sources";
 
@@ -52,3 +52,14 @@ avatar, border and padding. The default `card` presentation remains self-contain
 Pass `references`, `triggers` and optional `editorExtensions` to reuse host
 reference chips and cancellable suggestions in inline comments. The editor
 retains exact text, source offsets, selection and its original compact geometry.
+
+## Inline formatting
+
+The T toggle sits to the right of each editable comment. Its pressed state opens
+a compact formatting row below the input; closing it preserves the draft,
+selection and editor instance. Bold, italic, strikethrough, inline code, lists
+and quotes use the same action definitions and public Mira commands as the main
+Markdown composer. Disabled, pending and read-only editors block these actions.
+The row scrolls horizontally on narrow cards.
+
+<Canvas of={Stories.InlineFormattingToggle} />

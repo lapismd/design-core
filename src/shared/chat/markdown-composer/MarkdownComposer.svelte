@@ -11,13 +11,7 @@
   import type { MiraExtension } from "@lapismd/mira/extensions";
   import { Prec } from "@codemirror/state";
   import { EditorView } from "@codemirror/view";
-  import BoldIcon from "@lucide/svelte/icons/bold";
-  import ItalicIcon from "@lucide/svelte/icons/italic";
-  import StrikeIcon from "@lucide/svelte/icons/strikethrough";
-  import CodeIcon from "@lucide/svelte/icons/code";
-  import ListIcon from "@lucide/svelte/icons/list";
-  import OrderedListIcon from "@lucide/svelte/icons/list-ordered";
-  import QuoteIcon from "@lucide/svelte/icons/quote";
+  import { formatActions } from "./format-actions.js";
   import TypeIcon from "@lucide/svelte/icons/type";
   import ArrowUpIcon from "@lucide/svelte/icons/arrow-up";
   import SquareIcon from "@lucide/svelte/icons/square";
@@ -87,15 +81,6 @@
   const blocked = $derived(disabled || busy);
   const enterSubmits = $derived(submitOnEnter ?? presentation === "framed");
   const hasDraft = $derived(value.trim().length > 0);
-  const formatActions = [
-    { id: "bold", label: "Bold", Icon: BoldIcon },
-    { id: "italic", label: "Italic", Icon: ItalicIcon },
-    { id: "strikethrough", label: "Strikethrough", Icon: StrikeIcon },
-    { id: "inlineCode", label: "Inline code", Icon: CodeIcon },
-    { id: "bulletList", label: "Bulleted list", Icon: ListIcon },
-    { id: "numberedList", label: "Numbered list", Icon: OrderedListIcon },
-    { id: "quote", label: "Quote", Icon: QuoteIcon },
-  ] as const;
 
   function submit() {
     if (!blocked && hasDraft) onSubmit(value);

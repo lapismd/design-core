@@ -180,3 +180,11 @@ Comment and optional reactions. The default Comment is icon-only, hidden bars
 never intercept tool controls, and a wholly unavailable bar is omitted. Set
 `actionTooltips={false}` to omit tooltips. The older messageActions snippet remains
 available for custom host controls.
+
+## Captured disclosure outcomes
+
+Set `tone: "destructive"` on a captured context/reasoning/handoff item to render
+its disclosure label and icon in readable red. This presentation does not turn a
+permission decision into an execution error or change its captured content.
+Final compact rows retain `--ui-transcript-tool-row-gap` (0.25rem) below them.
+Inline draft comments use CommentComposer's T toggle and formatting strip.
