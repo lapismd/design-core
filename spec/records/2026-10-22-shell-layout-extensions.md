@@ -98,9 +98,60 @@ late stylesheet font-size propagation in `app-component-promotion.spec.ts:158`
 and document editor height/background/line-height in
 `chat-composer-actions.spec.ts:48`. Both failed again in the exact two-case rerun
 (`/tmp/dc-shell-markdown-exact-rerun.log`). The same cases are being checked against
-the parent revision `9362a4ba` without these shell extensions before assigning a
-cause. A separate touch-composer case also hit story-readiness timeout; its exact
-rerun is pending. No product or assertion changes were made for these findings.
+the parent revision `9362a4ba` without these shell extensions. Both parent cases
+also failed with the same expected/actual values, confirming pre-existing
+failures in the Chat MarkdownContent/MarkdownComposer styling contracts
+(`/tmp/dc-shell-markdown-baseline.log`). The parent reproduction used an empty
+temporary Jujutsu workspace and the same installed registry dependencies; no
+source files were changed. A separate touch-composer readiness timeout passed
+its exact rerun (`/tmp/dc-shell-readiness-exact-rerun.log`). No product or assertion
+changes were made for these findings.
+
+The first isolated broad run was cancelled after 83 cases when later link-preview
+and panel-toggle stories hit Svelte runtime render errors. The temporary parent
+catalog shared the installed dependency cache, so its compilation could disturb
+the running implementation catalog. The parent link-preview case passed. Both
+catalogs were stopped, the temporary workspace was removed, and render checks
+were restarted with only the implementation catalog active.
+The fresh exact link-preview/panel-toggle group passed all nine cases without
+source or assertion changes (`/tmp/dc-shell-render-fresh.log`).
+
+The implementation was committed as `e6320c0d` at the user's request. Other
+agents subsequently merged Chat work into `6f740f9c` in the same checkout. The
+final shared-control rerun validates that integrated checkout; comparison with
+the implementation commit confirms no changes to `src/shared/shell` or
+`tests/shell`. The table above records the completed implementation checks rather
+than claiming those earlier full-repository results apply to all later Chat work.
+
+The integrated checkout also exposes Chat transcript failures outside the shell
+implementation. Queue cancel/status buttons are covered by the author avatar in
+`transcript-review.spec.ts:44` and `:298`; quoted list rows measure 23.09375px
+against the 22px maximum in `transcript-review.spec.ts:169`. The exact rerun of
+`:44` and `:169` reproduced both failures
+(`/tmp/dc-shell-transcript-integration-rerun.log`). Source-navigation
+cases at `transcript.spec.ts:99` and `:406` timed out because the comment editor
+intercepts the source-navigation button. The rendered-comment spacing case at
+`transcript.spec.ts:346` expected 21.7px line height but received 21px. These
+findings belong to the Chat transcript/comment composition surface; no shell
+source, Chat source, click
+behavior or assertion was changed to bypass them. The broad browser lane remains
+failing, and no passing root aggregate or release qualification is claimed.
+
+## Completed browser integration run
+
+- Command: `SHADCN_STORYBOOK_PORT=9670 SHADCN_VISUAL_SERVER_PORT=9671 pnpm test:shadcn:pointer`.
+- Result: **145 passed, 8 failed, 1 skipped** in 12 minutes; all 154 cases completed.
+- Log: `/tmp/dc-shell-shared-browser-complete.log`.
+- The skip is the governed WebKit overlay-preference case in the Chromium
+  project; its WebKit counterpart passed, as did all seven WebKit cases.
+- The eight open failures are the two parent-reproduced Markdown failures and
+  the six integrated Chat transcript cases described above. No shell source
+  changes were made during these reruns, and these failures are not waived.
+- The implementation's 15 shell browser cases and 939 Storybook
+  interaction/accessibility cases passed before the Chat merge. The final
+  integrated suite also passed the existing topbar and AppShell toggle cases.
+- Validation was limited to local checks. No publication, push, consumer
+  migration or visual-baseline update was performed.
 
 Package validation retains the existing accepted low-severity KaTeX advisory
 exception; it does not alter dependency or audit policy. Screenshot comparisons
