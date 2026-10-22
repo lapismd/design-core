@@ -46,6 +46,11 @@
   --ui-diff-gutter-wash: color-mix(in srgb, var(--muted) 76%, transparent);
   --ui-diff-mono: var(--font-mono, ui-monospace, monospace);
   --ui-diff-file-listing-row-gap: 2px;
+  --ui-diff-file-conflict-background: color-mix(
+    in srgb,
+    var(--destructive) 8%,
+    var(--background)
+  );
   --ui-diff-row-hover: color-mix(in srgb, var(--muted) 40%, transparent);
   --ui-diff-selected: var(
     --ui-workspace-selection,

@@ -8,6 +8,7 @@ export const diffTokenNames = {
   removedForeground: "--ui-diff-removed-foreground",
   modifiedBackground: "--ui-diff-modified-background",
   conflictBackground: "--ui-diff-conflict-background",
+  fileConflictBackground: "--ui-diff-file-conflict-background",
   resolvedBackground: "--ui-diff-resolved-background",
   segmentAdded: "--ui-diff-segment-added",
   segmentRemoved: "--ui-diff-segment-removed",

@@ -78,3 +78,27 @@
 .ui-diff-file-listing__row [data-ui-component="file-change-stats"] {
   margin-inline-start: auto;
 }
+
+.ui-diff-file-listing__summary {
+  margin-inline-start: auto;
+}
+.ui-diff-file-listing__row[data-conflicted] {
+  background: var(--ui-diff-file-conflict-background);
+}
+.ui-diff-file-listing__row[data-conflicted]:hover,
+.ui-diff-file-listing__row--selected[data-conflicted] {
+  background: color-mix(
+    in srgb,
+    var(--foreground) 7%,
+    var(--ui-diff-file-conflict-background)
+  );
+}
+.ui-diff-file-listing__conflict {
+  display: inline-flex;
+  flex: none;
+  color: var(--destructive);
+}
+.ui-diff-file-listing__conflict svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}

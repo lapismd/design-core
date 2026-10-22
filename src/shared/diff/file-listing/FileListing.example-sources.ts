@@ -1,5 +1,15 @@
 import { commonFilePaths } from "../../shadcn/file-type-icon/FileTypeIcon.stories.data.js";
 
+export const ConflictTotals = `<script lang="ts">
+  import { FileListing } from "@lapismd/design-core/diff";
+  const files = [
+    { path: "src/a.ts", additions: 3, deletions: 1, conflicted: true },
+    { path: "src/lib/b.ts", additions: 7, deletions: 2 },
+    { path: "src/image.png" },
+  ];
+</script>
+<FileListing {files} mode="tree" selectedPath="src/a.ts" />`;
+
 export const CommonFileTypes = `<script lang="ts">
   import { FileListing } from "@lapismd/design-core/diff";
   const files = ${JSON.stringify(

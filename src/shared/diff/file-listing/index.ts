@@ -7,4 +7,5 @@ export type {
   FileListingFile,
   FileListingFileContext,
   FileListingViewMode,
+  FileListingSummary,
 } from "./types.js";

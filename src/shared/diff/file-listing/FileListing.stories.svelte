@@ -11,6 +11,7 @@
     Basic,
     LazyDirectories,
     NativeRowDrags,
+    ConflictTotals,
   } from "./FileListing.example-sources.js";
   import FileListing from "./FileListing.svelte";
   import FileListingViewModeToggle from "./FileListingViewModeToggle.svelte";
@@ -112,7 +113,9 @@
     expect(file).not.toHaveAttribute("aria-current");
     await userEvent.click(file);
     expect(file).toHaveAttribute("aria-current", "true");
-    const folder = canvas.getByRole("button", { name: "src" });
+    const folder = canvas.getByRole("button", {
+      name: /^src(?: [+-][0-9]+)*(?: Conflicted)?$/,
+    });
     expect(folder).toHaveAttribute("draggable", "true");
     await fireEvent(
       folder,
@@ -143,6 +146,47 @@
     />
     <p role="status">{lastDrag || "No drag"}</p>
   {/snippet}
+</Story>
+
+<Story
+  name="Conflicts and loaded folder totals"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: ConflictTotals, language: "tsx", type: "code" },
+      description: {
+        story:
+          "Conflict rows retain a semantic tint and trailing icon through selection. Folder totals include loaded descendants even when collapsed; unknown binary counts are omitted. Override --ui-diff-file-conflict-background to customize the tint.",
+      },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const file = canvas.getByRole("button", {
+      name: "src/a.ts +3 -1 Conflicted",
+    });
+    await expect(file).toBeVisible();
+    await expect(
+      within(file).getByRole("img", { name: "Conflicted" }),
+    ).toBeVisible();
+    const folder = canvas.getByRole("button", {
+      name: /^src(?: [+-][0-9]+)*(?: Conflicted)?$/,
+    });
+    await expect(folder).toHaveTextContent("+10");
+    await expect(folder).toHaveTextContent("-3");
+    await userEvent.click(folder);
+    await expect(folder).toHaveTextContent("+10");
+    await expect(file).not.toBeInTheDocument();
+  }}
+>
+  {#snippet template()}<FileListing
+      files={[
+        { path: "src/a.ts", additions: 3, deletions: 1, conflicted: true },
+        { path: "src/lib/b.ts", additions: 7, deletions: 2 },
+        { path: "src/image.png" },
+      ]}
+      mode="tree"
+      selectedPath="src/a.ts"
+    />{/snippet}
 </Story>
 
 <Story
@@ -245,8 +289,12 @@
     await expect(getComputedStyle(activeToggle).backgroundColor).toBe(
       getComputedStyle(selected).backgroundColor,
     );
-    await expect(canvas.getByText("+12")).toBeVisible();
-    await expect(canvas.getByText("-1")).toBeVisible();
+    await expect(within(selected).getByText("+12")).toBeVisible();
+    await expect(
+      within(
+        canvas.getByRole("button", { name: "src/index.ts +4 -1" }),
+      ).getByText("-1"),
+    ).toBeVisible();
   }}
   tags={["visual-pending"]}
 >
@@ -274,7 +322,9 @@
     },
   }}
   play={async ({ canvas }) => {
-    const directory = canvas.getByRole("button", { name: "src" });
+    const directory = canvas.getByRole("button", {
+      name: /^src(?: [+-][0-9]+)*(?: Conflicted)?$/,
+    });
     await expect(directory).toHaveAttribute("aria-expanded", "false");
     await expect(
       canvas.queryByRole("button", { name: "src/lib.rs" }),
@@ -387,7 +437,9 @@
   name="Compacts nested package folders"
   play={async ({ canvas }) => {
     await expect(
-      canvas.getByRole("button", { name: "packages/web-ui/src" }),
+      canvas.getByRole("button", {
+        name: /^packages\/web-ui\/src(?: [+-][0-9]+)*$/,
+      }),
     ).toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", {
@@ -419,7 +471,9 @@
 <Story
   name="Collapses a directory"
   play={async ({ canvas }) => {
-    const directory = canvas.getByRole("button", { name: "src" });
+    const directory = canvas.getByRole("button", {
+      name: /^src(?: [+-][0-9]+)*(?: Conflicted)?$/,
+    });
     await expect(directory).toHaveAttribute("aria-expanded", "true");
     await expect(
       canvas.getByRole("button", { name: /^src\/index\.ts(?: [+-][0-9]+)*$/ }),

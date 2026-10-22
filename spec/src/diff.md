@@ -50,6 +50,12 @@ Default file-row accessible names retain the full path and every visible signed
 change count. Custom leading, label or meta snippets use their native text as
 the accessible name rather than an overriding path-only label.
 
+Host-issued `conflicted` file metadata MUST remain visible through selection and
+hover as a semantic conflict tint and trailing accessible icon. Default directory
+metadata MUST sum all loaded descendants, including collapsed descendants, while
+distinguishing unknown counts from measured zero and leaving custom metadata
+snippets authoritative. Totals describe loaded files only.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`; hosts MAY provide public `FileListingDirectory` values before their children are loaded, and controlled disclosure MUST request expansion through `onDirectoryToggle` without performing I/O or inventing child files.

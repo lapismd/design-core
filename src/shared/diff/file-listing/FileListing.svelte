@@ -6,6 +6,7 @@
   import { FileTypeIcon } from "../../shadcn/file-type-icon/index.js";
   import FolderIcon from "@lucide/svelte/icons/folder";
   import FolderOpenIcon from "@lucide/svelte/icons/folder-open";
+  import TriangleAlertIcon from "@lucide/svelte/icons/triangle-alert";
   import {
     getFileDirectory,
     getFilePathName,
@@ -189,6 +190,7 @@
     class:ui-diff-file-listing__row--selected={context.isSelected}
     data-ui-part="file-row"
     data-file-path={path}
+    data-conflicted={file.conflicted || undefined}
     aria-label={fileLeading || fileLabel || fileMeta
       ? undefined
       : [
@@ -199,6 +201,7 @@
           ...(file.deletions && file.deletions > 0
             ? [formatDiffDelta(file.deletions, "-")]
             : []),
+          ...(file.conflicted ? ["Conflicted"] : []),
         ].join(" ")}
     aria-current={context.isSelected ? "true" : undefined}
     style={depth === undefined ? undefined : `--ui-diff-file-depth: ${depth}`}
@@ -231,6 +234,11 @@
         deletions={file.deletions ?? 0}
       />
     {/if}
+    {#if file.conflicted}<span
+        class="ui-diff-file-listing__conflict"
+        role="img"
+        aria-label="Conflicted"><TriangleAlertIcon aria-hidden="true" /></span
+      >{/if}
   </button>
 {/snippet}
 
@@ -242,16 +250,30 @@
       node: row.node,
       depth: row.depth,
       isCollapsed: row.collapsed,
+      summary: row.summary,
     }}
     <button
       type="button"
       class="ui-diff-file-listing__row ui-diff-file-listing__row--directory"
       data-ui-part="directory-row"
       data-directory-path={row.path}
+      data-conflicted={row.summary.conflicted || undefined}
       draggable={Boolean(onDirectoryDragStart) &&
         (directoryDraggable?.(directoryContext) ?? true)}
       ondragstart={(event) => onDirectoryDragStart?.(event, directoryContext)}
-      aria-label={row.path}
+      aria-label={directoryMeta
+        ? undefined
+        : [
+            row.path,
+            ...(row.summary.additions > 0
+              ? [formatDiffDelta(row.summary.additions, "+")]
+              : []),
+            ...(row.summary.deletions > 0
+              ? [formatDiffDelta(row.summary.deletions, "-")]
+              : []),
+            ...(row.summary.conflicted ? ["Conflicted"] : []),
+          ].join(" ")}
+      title={`${row.summary.knownFiles} of ${row.summary.fileCount} loaded files with known counts; ${row.summary.additions} additions, ${row.summary.deletions} deletions${row.summary.conflicted ? "; contains conflicts" : ""}`}
       aria-expanded={!row.collapsed}
       style={`--ui-diff-file-depth: ${row.depth}`}
       onclick={() => toggleDirectory(row.path)}
@@ -268,7 +290,24 @@
           />{/if}
       </span>
       <span class="ui-diff-file-listing__label">{row.node.name}</span>
-      {#if directoryMeta}{@render directoryMeta(directoryContext)}{/if}
+      {#if directoryMeta}{@render directoryMeta(
+          directoryContext,
+        )}{:else if row.summary.knownFiles}
+        <span
+          class="ui-diff-file-listing__summary"
+          title="Totals for loaded files with known counts"
+          ><FileChangeStats
+            additions={row.summary.additions}
+            deletions={row.summary.deletions}
+          /></span
+        >
+      {/if}
+      {#if row.summary.conflicted}<span
+          class="ui-diff-file-listing__conflict"
+          role="img"
+          aria-label="Contains conflicted files"
+          ><TriangleAlertIcon aria-hidden="true" /></span
+        >{/if}
     </button>
   {/if}
 {/snippet}
