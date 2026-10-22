@@ -12,7 +12,7 @@
   }: {
     status: ComposerStatus;
     /** Custom content owns its accessible status announcement. */
-    children?: Snippet;
+    children?: Snippet | undefined;
     /** Standalone keeps all corners rounded without overlapping adjacent controls. */
     position?: "top" | "bottom" | "standalone";
   } = $props();

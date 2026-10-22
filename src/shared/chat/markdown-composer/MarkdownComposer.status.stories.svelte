@@ -58,9 +58,19 @@
   async function verifyMetadata(
     context: Parameters<typeof verifyAttachedStatus>[0],
   ) {
-    expect(
-      context.canvas.getByRole("group", { name: "Draft metadata" }),
-    ).toBeVisible();
+    const metadata = context.canvas.getByRole("group", {
+      name: "Draft metadata",
+    });
+    expect(metadata).toBeVisible();
+    const banner = metadata.closest(
+      '[data-ui-component="composer-status-banner"]',
+    )!;
+    expect(getComputedStyle(metadata).fontSize).toBe(
+      getComputedStyle(banner).fontSize,
+    );
+    expect(getComputedStyle(metadata).lineHeight).toBe(
+      getComputedStyle(banner).lineHeight,
+    );
     expect(context.canvas.getAllByRole("alert")).toHaveLength(1);
     await verifyAttachedStatus(context);
   }
@@ -109,4 +119,12 @@
   play={verifyMetadata}
 >
   {#snippet template()}<Fixture kind="error" custom />{/snippet}
+</Story>
+
+<Story
+  name="Document error Lapis dark"
+  globals={{ colorMode: "dark", theme: "lapis" }}
+  play={verifyAttachedStatus}
+>
+  {#snippet template()}<Fixture kind="error" lapisDark />{/snippet}
 </Story>

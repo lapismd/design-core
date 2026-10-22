@@ -100,7 +100,11 @@ status restores the ordinary transparent prose surface without replacing the edi
 Errors use destructive red text and icons on a lightly tinted background.
 Use `statusContent` to render shared MessageMetadata or host actions inside the
 same attached status shell. Custom content owns its status/alert announcement;
-the shell retains the semantic tone, placement and frame.
+the shell retains the semantic tone, placement and frame. Shared MessageMetadata
+inherits the banner's 0.75rem text size and 1rem line height (both respond to
+`--ui-ai-chat-type-scale`), matching ordinary status messages.
 
 <Canvas of={StatusStories.DocumentErrorMetadata} />
 <Canvas of={StatusStories.DocumentErrorMetadataDark} />
+
+<Canvas of={StatusStories.DocumentErrorLapisDark} />

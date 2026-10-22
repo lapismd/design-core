@@ -91,7 +91,9 @@ including a bottom warning behind the framed composer. Document presentation
 MUST retain the same opaque framed body and joined banner while status is
 attached, restoring its ordinary prose surface when that status clears.
 `statusContent` MAY compose host metadata/actions inside that same shell, with
-custom content owning its accessible announcement semantics.
+custom content owning its accessible announcement semantics. Error feedback
+MUST retain its shared red treatment across Default/Lapis light and dark themes.
+Custom MessageMetadata MUST use the same typography as ordinary status feedback.
 
 Hosts MAY omit the inline keyboard hint with `showHint=false` when they render
 the instruction in their own fixed row; the default hint remains visible.

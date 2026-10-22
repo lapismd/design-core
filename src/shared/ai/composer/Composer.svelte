@@ -50,7 +50,7 @@
     clearOnSubmit?: boolean;
     status?: ComposerStatus;
     /** Optional custom status content, retaining the shared semantic shell. */
-    statusContent?: Snippet;
+    statusContent?: Snippet | undefined;
     statusPosition?: "top" | "bottom";
     triggers?: ComposerTrigger[];
     drawer?: Snippet;

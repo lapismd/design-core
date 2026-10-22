@@ -72,3 +72,36 @@ The public prepared review archive retains source for consumer token auditing:
 `622536ff52aff1f97b790336da779b9608b0f7a67b0902cade993be612044f29`.
 Preparation audits 267 styles with no remaining utility references. Publication
 and broad qualification remain deferred for review.
+
+The Agent UI Lapis-dark Classic Error acceptance then exposed one contrast
+failure (3.68:1), although the source catalog variants passed. Error text now
+uses the existing metadata strategy in dark mode: 60% destructive mixed with
+foreground, instead of the light-mode 80% mix. An explicit Lapis-dark source
+variation is retained, and the exact consumer failure is rerun against the
+refreshed public package. No contrast threshold or assertion is relaxed.
+
+The user then requested Chat Error typography match All Messages. The exact
+status-story file reported two failures/six passes: nested MessageMetadata was
+11px while the shared footer was 12px. The owning banner stylesheet now lets
+that shared metadata inherit its font size and line height; ordinary timestamp
+metadata remains compact. The new assertions compare the computed typography
+in light and dark rather than overriding the consumer.
+
+The strict source-consumer type lane additionally found three diagnostics when
+optional status snippets were explicitly undefined. Their public types now
+accept undefined, matching forwarding behavior; root, shell and filter type
+lanes were already clean. This is a source contract repair, not a consumer shim.
+
+Final focused source qualification: 47 interaction/accessibility cases pass
+across Composer, MarkdownComposer, Transcript and ordinary MessageMetadata
+stories (seven files). The exact eight-case status file improves from two
+failures/six passes to eight passes. Root/shell/filter types pass and the exact
+strict source-consumer lane improves from three diagnostics to zero. Native CSS,
+canonical validation and original-base spec-first pass. Wide suites and visual
+baselines remain deferred for the user review.
+
+Final source-inclusive prepared archive:
+`lapismd-design-core-0.6.0-agent-requests-error-parity-review.tgz`, SHA-256
+`de91da5b4daa984ca0a1fb3150014693202d1ab95972f31278b76f7c696e2a64`.
+Preparation audits 267 styles with no remaining utilities. This is isolated
+review output, not a publication or downstream application update.

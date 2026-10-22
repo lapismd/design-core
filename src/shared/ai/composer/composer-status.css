@@ -67,3 +67,17 @@
 [data-ui-component="composer-status-banner"][data-status="warning"] svg {
   color: color-mix(in oklab, var(--chart-4) 62%, var(--foreground));
 }
+
+.dark [data-ui-component="composer-status-banner"][data-status="error"],
+[data-ui-component="composer-status-banner"].dark[data-status="error"] {
+  color: var(
+    --ui-composer-status-foreground,
+    color-mix(in srgb, var(--destructive) 60%, var(--foreground))
+  );
+}
+
+[data-ui-component="composer-status-banner"]
+  [data-ui-component="ai-chat-message-metadata"] {
+  font-size: inherit;
+  line-height: inherit;
+}

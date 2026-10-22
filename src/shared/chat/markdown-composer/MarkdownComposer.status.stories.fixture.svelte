@@ -9,10 +9,12 @@
     kind = "warning",
     position = "bottom",
     custom = false,
+    lapisDark = false,
   }: {
     kind?: "warning" | "error";
     position?: "top" | "bottom";
     custom?: boolean;
+    lapisDark?: boolean;
   } = $props();
   let value = $state("Retain this exact draft.");
   let presentation = $state<"document" | "framed">("document");
@@ -36,7 +38,11 @@
     aria-label="Draft metadata"
   />
 {/snippet}
-<div style="max-width:48rem;padding:1.5rem">
+<div
+  class:dark={lapisDark}
+  data-ui-theme={lapisDark ? "lapis" : undefined}
+  style="max-width:48rem;padding:1.5rem;background:var(--background);color:var(--foreground)"
+>
   <MarkdownComposer
     bind:value
     {presentation}
