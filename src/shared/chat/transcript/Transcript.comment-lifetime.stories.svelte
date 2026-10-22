@@ -32,3 +32,22 @@
 >
   {#snippet template()}<Fixture />{/snippet}
 </Story>
+
+<Story
+  name="Comment formatting controls align with content"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const toggle = canvas.getByRole("button", {
+      name: "Comment formatting options",
+    });
+    const card = toggle.closest(".ui-transcript-comment-card")!;
+    expect(
+      Math.abs(
+        toggle.getBoundingClientRect().right -
+          card.getBoundingClientRect().right,
+      ),
+    ).toBeLessThanOrEqual(1);
+    const hover = card.querySelector(".ui-transcript-comment-links")!;
+    expect(getComputedStyle(hover).position).toBe("absolute");
+  }}>{#snippet template()}<Fixture />{/snippet}</Story
+>

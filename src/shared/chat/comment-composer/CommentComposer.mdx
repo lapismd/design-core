@@ -63,3 +63,10 @@ Markdown composer. Disabled, pending and read-only editors block these actions.
 The row scrolls horizontally on narrow cards.
 
 <Canvas of={Stories.InlineFormattingToggle} />
+
+The T control stays at the far right. Transcript hover controls float above the
+comment, reserving no hidden inline width; touch layouts reserve space only for
+their visible actions. The first toolbar glyph aligns with the comment text.
+The formatting row includes the shared EmojiPicker. Optional `emojis`,
+`customEmojis` and `emojiText` props forward host palettes and serialization;
+the default picker uses the full library and inserts at the retained selection.

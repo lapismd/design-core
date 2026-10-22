@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, within } from "storybook/test";
   import CommentComposer from "./CommentComposer.svelte";
   import Fixture from "./CommentComposer.stories.fixture.svelte";
   import * as sources from "./CommentComposer.example-sources.js";
@@ -120,15 +120,32 @@
     await expect(toolbar.getBoundingClientRect().top).toBeGreaterThanOrEqual(
       editor.getBoundingClientRect().bottom,
     );
-    await userEvent.click(canvas.getByRole("button", { name: /^Bold$/ }));
+    const bold = canvas.getByRole("button", { name: /^Bold$/ });
+    expect(
+      Math.abs(
+        bold.querySelector("svg")!.getBoundingClientRect().left -
+          editor.getBoundingClientRect().left,
+      ),
+    ).toBeLessThanOrEqual(1);
+    await userEvent.click(bold);
     await expect(canvas.getByTestId("comment-draft")).toHaveTextContent(
       "**show me contents of this file**",
     );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Add emoji to comment" }),
+    );
+    await userEvent.click(
+      within(document.body).getByRole("button", {
+        name: "React with celebration",
+      }),
+    );
+    await expect(canvas.getByTestId("comment-draft")).toHaveTextContent("🎉");
+    const retainedEmojiDraft = canvas.getByTestId("comment-draft").textContent!;
     await userEvent.click(toggle);
     await expect(toggle).toHaveAttribute("aria-pressed", "false");
     await expect(
       canvas.queryByRole("group", { name: "Comment formatting" }),
     ).not.toBeInTheDocument();
-    await expect(editor).toHaveTextContent("**show me contents of this file**");
+    await expect(editor).toHaveTextContent(retainedEmojiDraft);
   }}>{#snippet template()}<Fixture scenario="inline" />{/snippet}</Story
 >

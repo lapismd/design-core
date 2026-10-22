@@ -144,9 +144,12 @@ Hosts MAY disable action tooltips entirely while retaining accessible labels.
 **Requirement.** CommentComposer MUST present a controlled compact comment editor with optional captured source context and host-owned navigation and delivery.
 
 An accessible T toggle at the editor's right edge MUST open and close a compact
-formatting strip below the input. It MUST use the same public Mira Markdown
+formatting strip below the input, including the shared emoji picker. It MUST use the same public Mira Markdown
 commands as MarkdownComposer, preserve the exact editor/selection and draft,
 and block formatting while disabled, pending or read-only.
+The T control MUST be the last row action; hidden hover actions MUST reserve no
+inline width, while the first formatting glyph aligns with the editor text.
+Hosts MAY supply emoji palettes and custom emoji serialization through public props.
 
 ### Acceptance details
 

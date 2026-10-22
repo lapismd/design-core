@@ -43,6 +43,9 @@
   <p>A captured quote with a compact comment draft, following jj-store.</p>
   <CommentComposer
     bind:value
+    emojis={scenario === "inline"
+      ? [{ emoji: "🎉", name: "celebration" }]
+      : undefined}
     {...source === undefined ? {} : { source }}
     disabled={scenario === "disabled"}
     pending={scenario === "pending"}

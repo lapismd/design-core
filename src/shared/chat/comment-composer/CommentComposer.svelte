@@ -14,6 +14,10 @@
   import CornerUpLeftIcon from "@lucide/svelte/icons/corner-up-left";
   import XIcon from "@lucide/svelte/icons/x";
   import TypeIcon from "@lucide/svelte/icons/type";
+  import {
+    EmojiPicker,
+    type CustomEmoji,
+  } from "../../shadcn/emoji-picker/index.js";
   import { Button } from "../../shadcn/button/index.js";
   import { ScrollArea } from "../../shadcn/scroll-area/index.js";
   import { shouldSubmitComposerKey } from "../../ai/composer-behavior.js";
@@ -49,6 +53,9 @@
     references,
     triggers = [],
     editorExtensions = [],
+    emojis,
+    customEmojis = [],
+    emojiText,
     class: className,
     ...restProps
   }: CommentComposerProps = $props();
@@ -69,6 +76,13 @@
   function change(next: string) {
     value = next;
     onChange?.(next);
+  }
+  function addEmoji(value: string, custom?: CustomEmoji) {
+    if (blocked) return;
+    editor?.replaceSelection(
+      emojiText?.(value, custom) ?? (custom ? `:${custom.shortcode}:` : value),
+    );
+    editor?.focus();
   }
   function format(action: MiraMarkdownActionId) {
     const view = editor?.getView();
@@ -242,9 +256,27 @@
               ><action.Icon aria-hidden="true" /></Button
             >
           {/each}
+          <EmojiPicker
+            {...emojis === undefined ? {} : { emojis }}
+            {customEmojis}
+            disabled={blocked}
+            triggerLabel="Add emoji to comment"
+            onSelect={addEmoji}
+          />
         </div>
       {/if}
     </div>
+    {#if onRemove}<div class="ui-comment-composer__actions">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-xs"
+          disabled={blocked}
+          aria-label="Remove comment"
+          title="Remove comment"
+          onclick={onRemove}><XIcon aria-hidden="true" /></Button
+        >
+      </div>{/if}
     <Button
       type="button"
       variant={formattingOpen ? "secondary" : "ghost"}
@@ -257,16 +289,5 @@
       onclick={() => (formattingOpen = !formattingOpen)}
       ><TypeIcon aria-hidden="true" /></Button
     >
-    {#if onRemove}<div class="ui-comment-composer__actions">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-xs"
-          disabled={blocked}
-          aria-label="Remove comment"
-          title="Remove comment"
-          onclick={onRemove}><XIcon aria-hidden="true" /></Button
-        >
-      </div>{/if}
   </div>
 </div>
