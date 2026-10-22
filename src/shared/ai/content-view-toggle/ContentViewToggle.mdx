@@ -1,0 +1,28 @@
+import { Meta, Canvas, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./ContentViewToggle.stories.svelte";
+import { Basic } from "./ContentViewToggle.example-sources";
+
+<Meta of={Stories} />
+
+# Content View Toggle
+
+One presentation-only button switches between formatted content and its captured source.
+The Code icon offers source; BookOpen offers the formatted view. It never reads or changes capture data.
+
+## Usage
+
+<Source code={Basic} language="tsx" />
+
+<Canvas of={Stories.FormattedAndSource} />
+
+## Labels and disabled state
+
+Set `sourceLabel` and `formattedLabel` to describe the action for this surface. These are both the accessible name and tooltip. Keyboard Space/Enter use the native button action; `aria-pressed` records source mode. `disabled` blocks the action.
+
+<Canvas of={Stories.RawCaptureLabels} />
+
+<Canvas of={Stories.Disabled} />
+
+## Styling and composition
+
+`--ui-content-view-toggle-icon-size` defaults to `1rem`. Button chrome uses shared semantic tokens. Bind `view` or handle `onViewChange`; the host supplies either presentation and retains reader identity. ToolCallDetail and Agent tool inspectors compose this same control. Additional capture modes remain explicit host controls.

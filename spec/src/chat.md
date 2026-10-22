@@ -83,6 +83,9 @@ remounting the editor or changing the draft.
 Catalog collapse assertions await the closed drawer layout while retaining
 their existing geometry bounds and deadlines.
 
+Hosts MAY attach status to either edge with `statusPosition` (`top` by default),
+including a bottom warning behind the framed composer.
+
 Hosts MAY omit the inline keyboard hint with `showHint=false` when they render
 the instruction in their own fixed row; the default hint remains visible.
 
@@ -135,6 +138,14 @@ Hosts MAY request `surface="plain"` on a custom block to omit its default
 border and padding while preserving exact text, comments and host interaction.
 Other custom blocks retain their frame.
 
+Context, handoff and rootless content readers MUST inherit the transcript prose
+font and size (including host overrides), with independent Markdown spacing.
+Retained unavailable-source comments MUST have a small token-controlled gap
+between cards while keeping each status attached to its own quote.
+Message `status` MUST appear below its body in the shared metadata row, alongside
+the timestamp and explicit host actions. Error labels and details MUST use the
+destructive foreground in both views; status presentation never retries a turn.
+
 **Requirement.** Transcript MUST present immutable host-owned conversations in document and classic views, preserving jj-store reference geometry, exact source text and reader identity during streaming and history loading.
 
 Hosts MAY opt into `scrollButton` in either transcript presentation. The shared
@@ -174,6 +185,9 @@ Hosts MAY opt into a fixed Classic composer through `classicComposerPlacement`.
 The composer, pending comments and queued messages MUST stay adjacent to the
 footer as history scrolls, without remounting the editor or changing Document
 placement. The default Classic placement remains inline.
+Document composers MUST retain the document's trailing writing space after the
+draft: 4rem, or 3rem below 600px, controlled by
+`--ui-transcript-composer-trailing-space`. Classic composer spacing is unchanged.
 Captured GFM task lists MUST render checked and unchecked read-only checkboxes,
 including nested and ordered tasks. Their original markers and UTF-16 comment
 offsets MUST remain unchanged; inline and fenced examples stay literal.

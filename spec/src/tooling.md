@@ -80,6 +80,10 @@ Repository tools keep source generation, discovery, documentation, validation, C
 
 The AI catalog derives stable public chat components, including shared tool-call detail, from their colocated stories and public subpath exports.
 
+The stable AI catalog inventory MUST include ContentViewToggle under its public
+AI/chat import; catalog count checks retain exact inventory assertions when a
+new independently documented family is added.
+
 ### Acceptance details
 
 - Machine-readable output must be stable enough for repository automation, and validation must include strict public Shell, Search Filter Bar, and composed source-consumer type-checks so source-export compatibility cannot regress unnoticed.

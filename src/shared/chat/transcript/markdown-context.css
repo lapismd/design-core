@@ -1,4 +1,7 @@
 :where(.ui-transcript-content-flow, .ui-transcript-comment-area) {
+  font-family: var(--font-sans, system-ui);
+  font-size: var(--ui-transcript-font-size, 0.875rem);
+  line-height: var(--ui-transcript-line-height, 1.65);
   --ui-chat-markdown-padding: var(--ui-transcript-markdown-padding, 0);
   --ui-chat-markdown-font-size: var(--ui-transcript-markdown-font-size, 1em);
   --ui-chat-markdown-line-height: var(

@@ -1125,6 +1125,10 @@
     {
       "name": "UI Forms/File Path Input",
       "requirement": "DC-FORM-049"
+    },
+    {
+      "name": "AI/Chat/Content View Toggle",
+      "requirement": "DC-AI-027"
     }
   ]
 }

@@ -102,6 +102,9 @@ regressions; both entries map to one shared implementation.
 
 **Requirement.** The Spec-first classification family MUST fail closed when a production or tooling change lacks the owning canonical chapter in the same local or CI diff.
 
+New catalog controls MUST add one public-surface mapping and one owning chapter
+coverage row, alongside their canonical requirement and verification row.
+
 ### Acceptance details
 
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.

@@ -1,0 +1,7 @@
+[data-ui-component="content-view-toggle"] {
+  display: inline-flex;
+}
+[data-ui-component="content-view-toggle"] svg {
+  width: var(--ui-content-view-toggle-icon-size, 1rem);
+  height: var(--ui-content-view-toggle-icon-size, 1rem);
+}

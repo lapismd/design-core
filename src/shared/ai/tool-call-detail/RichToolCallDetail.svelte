@@ -6,7 +6,7 @@
   import { FileDiff, resolveDiffLanguage } from "@lapismd/design-core/diff";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { CodeBlock } from "@lapismd/design-core/shadcn/code-block";
-  import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
+  import ContentViewToggle from "../content-view-toggle/ContentViewToggle.svelte";
   import * as Alert from "@lapismd/design-core/shadcn/alert";
   import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
   import TerminalIcon from "@lucide/svelte/icons/terminal";
@@ -99,17 +99,12 @@
     <div class="tool-detail__toolbar">
       <span class="tool-detail__title">{toolName ?? "Tool details"}</span>
       <div class="tool-detail__actions">
-        <ToggleGroup.Root
-          type="single"
-          size="sm"
-          variant="outline"
-          value={view}
-          onValueChange={setView}
-          aria-label="Tool output view"
-        >
-          <ToggleGroup.Item value="formatted">Formatted</ToggleGroup.Item>
-          <ToggleGroup.Item value="raw">Raw</ToggleGroup.Item>
-        </ToggleGroup.Root>
+        <ContentViewToggle
+          view={view === "raw" ? "source" : "formatted"}
+          sourceLabel="Show raw capture"
+          onViewChange={(next) =>
+            setView(next === "source" ? "raw" : "formatted")}
+        />
         {#if maximized}
           <Button
             variant="ghost"

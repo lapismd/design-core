@@ -43,11 +43,15 @@
     });
     await expect(panel).toHaveTextContent("$ pnpm test");
     await expect(panel).toHaveTextContent("Tests: 42 passed");
-    await userEvent.click(canvas.getByRole("radio", { name: /^Raw$/ }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Show raw capture" }),
+    );
     await expect(
       canvas.getByRole("group", { name: /^json$/ }),
     ).toHaveTextContent('"exitCode": 0');
-    await userEvent.click(canvas.getByRole("radio", { name: /^Formatted$/ }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Show formatted output" }),
+    );
     await expect(
       canvas.getByRole("region", { name: "Shell command and output" }),
     ).toBeVisible();

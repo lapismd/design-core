@@ -24,6 +24,9 @@
 .ui-transcript-composer-flow {
   display: contents;
 }
+[data-conversation-view="document"] .ui-transcript-document-composer {
+  padding-block-end: var(--ui-transcript-composer-trailing-space, 4rem);
+}
 .ui-transcript-composer-flow[data-fixed="true"] {
   display: flex;
   flex-direction: column;
@@ -176,6 +179,8 @@
   padding-block: 0.75rem;
 }
 .ui-transcript-stale {
+  display: grid;
+  gap: var(--ui-transcript-stale-gap, 0.5rem);
   padding: 1.5rem;
 }
 .ui-transcript-viewport .sr-only {
@@ -186,6 +191,9 @@
   clip-path: inset(50%);
 }
 @media (max-width: 600px) {
+  [data-conversation-view="document"] .ui-transcript-document-composer {
+    padding-block-end: var(--ui-transcript-composer-trailing-space, 3rem);
+  }
   .ui-transcript-document {
     padding: 1rem 2.25rem 3rem 0.75rem;
   }
@@ -198,14 +206,14 @@
   }
 }
 
-.ui-transcript-message-metadata {
+.ui-transcript-message-metadata[data-ui-component] {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.4rem;
+  gap: var(--ui-transcript-metadata-gap, 0.4rem);
   min-height: 1.5rem;
   color: var(--muted-foreground);
-  font-size: 0.75rem;
+  font-size: var(--ui-transcript-metadata-font-size, 0.75rem);
   line-height: 1;
 }
 [data-conversation-view="classic"]

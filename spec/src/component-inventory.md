@@ -147,6 +147,7 @@ network or host-store dependency. Storybook: `AI/...`.
   typing, and unread primitives. Every export is marked `@experimental`;
   import from `@lapismd/design-core/ai/experimental`.
 
+- `content-view-toggle/` owns the shared icon-only formatted/source control (DC-AI-027), used by tool detail and host inspectors; `/chat` re-exports it.
 - `tool-call-detail/` owns generic and rich tool details: formatted/raw shell, file read, file edit and search presentation. `/chat` re-exports this family. Provider adapters remain host-owned.
 
 Import: `@lapismd/design-core/ai`, `@lapismd/design-core/ai/chat`, and

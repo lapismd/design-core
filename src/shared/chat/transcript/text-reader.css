@@ -185,8 +185,15 @@
   font-family: var(--font-mono, monospace);
   font-size: 0.85rem;
 }
-.ui-transcript-text-block[data-kind="markdown"] .ui-transcript-text-reader {
-  --mira-code-editor-font-size: var(--conversation-prose-size, 0.875rem);
+.ui-transcript-text-block[data-kind="markdown"]
+  .ui-transcript-text-reader
+  :is(.mira-code-editor, .cm-editor) {
+  --mira-code-editor-font-size: var(
+    --conversation-prose-size,
+    var(--ui-transcript-font-size, 0.875rem)
+  );
+  --font-text-size: var(--ui-transcript-font-size, 0.875rem);
+  font-size: var(--ui-transcript-font-size, 0.875rem);
 }
 .ui-transcript-text-block[data-kind="code"]
   .cm-content:not([data-comment-editor] *) {

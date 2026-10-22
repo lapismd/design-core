@@ -15,29 +15,33 @@
     timestamp,
     footer,
     status,
+    statusLabel: statusLabelProp,
     ...restProps
   }: HTMLAttributes<HTMLDivElement> & {
     ref?: HTMLDivElement | null;
     sender?: MessageSender;
-    timestamp?: string | Snippet;
-    footer?: Snippet;
-    status?: MessageStatus;
+    timestamp?: string | Snippet | undefined;
+    footer?: Snippet | undefined;
+    status?: MessageStatus | undefined;
+    /** Explicit host label; omitted values use the standard delivery wording. */
+    statusLabel?: string | undefined;
   } = $props();
 
   const message = useMessageContext();
   const sender = $derived(senderProp ?? message?.sender ?? "assistant");
   const statusLabel = $derived(
-    status === "sending"
-      ? "Sending"
-      : status === "sent"
-        ? "Sent"
-        : status === "delivered"
-          ? "Delivered"
-          : status === "read"
-            ? "Read"
-            : status === "error"
-              ? "Failed to send"
-              : "",
+    statusLabelProp ??
+      (status === "sending"
+        ? "Sending"
+        : status === "sent"
+          ? "Sent"
+          : status === "delivered"
+            ? "Delivered"
+            : status === "read"
+              ? "Read"
+              : status === "error"
+                ? "Failed to send"
+                : ""),
   );
 </script>
 

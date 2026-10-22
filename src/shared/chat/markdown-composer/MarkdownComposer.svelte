@@ -56,6 +56,7 @@
     busy = false,
     onStop,
     status,
+    statusPosition = "top",
     submitLabel = "Send message",
     showSendButton = true,
     showHint = true,
@@ -405,7 +406,7 @@
       elevation="none"
       isStopShown={busy && Boolean(onStop)}
       {...status === undefined ? {} : { status }}
-      statusPosition="top"
+      {statusPosition}
       onSubmit={submit}
       {...drawer || reply ? { drawer: composerDrawer } : {}}
       {...context === undefined ? {} : { headerContext: context }}

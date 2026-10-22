@@ -79,6 +79,8 @@ export interface TranscriptTurn {
 }
 export interface TranscriptItem {
   id: string;
+  /** Captured message outcome. Actions remain explicit metadataSupplement hooks. */
+  status?: (ComposerStatus & { label: string }) | undefined;
   /** Captured application context shown before this message, separate from authored text. */
   sentContext?: SentContextData | undefined;
   kind: "message" | "tools" | "context" | "reasoning" | "handoff";

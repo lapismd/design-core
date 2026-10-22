@@ -39,6 +39,11 @@ foreground. Comments and their editors default to the transcript's prose size
 (0.875rem), with `--ui-transcript-comment-font-size` available for an explicit
 override. This replaces the earlier, larger 1rem default following visual review.
 
+Document mode keeps the trailing document buffer after the inline draft: 4rem
+on desktop and 3rem below 600px. Override
+`--ui-transcript-composer-trailing-space` to change this writing space. Classic
+keeps its existing 1rem composer inset, including when fixed.
+
 Collapsed file, tool and context headers show only the last nonempty current root
 comment per discussion. Expanding restores earlier comments; agent responses stay
 in their linked messages. Historical versions remain in history.
@@ -141,3 +146,20 @@ conflict resolution in the host. Published results can return `commentVersions`
 keyed by submitted comment ID. Only acknowledgement retires the exact replaced
 version; queued/unknown/rejected changes retain it, and newer drafts are preserved.
 Without a returned version, further editing waits for a host data refresh.
+
+## Message outcomes
+
+Set `item.status={{ type: "error", label: "Failed", message: "Your message is retained." }}`
+to place status below the message body. The shared MessageMetadata row keeps the
+time, `metadataSupplement` action buttons and outcome in that order. Supply retry
+through the supplement; rendering or changing views never dispatches a retry.
+Classic retains the same metadata and red error detail below its prompt.
+
+Style metadata with `--ui-transcript-metadata-font-size` (0.75rem),
+`--ui-transcript-metadata-gap` (0.4rem) and the shared
+`--ui-ai-chat-metadata-error-foreground` (a readable semantic destructive/foreground mix).
+Context, handoff and rootless content use `--ui-transcript-font-size` (0.875rem)
+and the host sans font; the existing Markdown tokens retain independent spacing.
+
+Retained unavailable-source comment cards use `--ui-transcript-stale-gap` (0.5rem)
+between cards, keeping each status banner attached to its own captured quote.
