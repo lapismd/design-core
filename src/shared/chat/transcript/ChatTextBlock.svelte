@@ -53,9 +53,19 @@
   const replyPrefix = new Compartment();
   const reader = new Compartment();
   let configured = "";
+  let configuredReferences: TranscriptProps["inlineReferences"];
+  let configuredReader: TranscriptProps["readerExtensions"];
   const extensions = untrack(() => [
     reader.of(
-      readingExtensions(block, comments, contexts, fileView, source, markdown),
+      readingExtensions(
+        block,
+        comments,
+        contexts,
+        fileView,
+        source,
+        markdown,
+        presentation,
+      ),
     ),
     replyPrefix.of(reply ? replyIndicator : []),
   ]);
@@ -133,8 +143,19 @@
       block.emojis,
       fileView,
     ]);
-    if (view && signature !== configured) {
-      comments.sourceSelections.delete(block.id);
+    const references =
+      presentation?.inlineReferences ?? comments.props().inlineReferences;
+    const readerExtensions =
+      presentation?.readerExtensions ?? comments.props().readerExtensions;
+    if (
+      view &&
+      (signature !== configured ||
+        references !== configuredReferences ||
+        readerExtensions !== configuredReader)
+    ) {
+      if (signature !== configured) comments.sourceSelections.delete(block.id);
+      configuredReferences = references;
+      configuredReader = readerExtensions;
       configured = signature;
       const previous = view.state.doc.toString(),
         next = block.text;
@@ -165,6 +186,7 @@
             fileView,
             source,
             markdown,
+            presentation,
           ),
         ),
         filter: false,

@@ -41,6 +41,9 @@ export type CommentComposerProps = Omit<
   disabled?: boolean;
   pending?: boolean;
   readOnly?: boolean;
+  references?: import("../inline-reference/inline-reference.types.js").ChatReferenceOptions;
+  triggers?: readonly import("../markdown-composer/composer-suggestions.js").MarkdownComposerTrigger[];
+  editorExtensions?: import("@codemirror/state").Extension;
   /** Escape requests dismissal without deleting the draft. */
   onDismiss?: () => void;
   onRemove?: () => void;

@@ -1,0 +1,82 @@
+import { Meta, Canvas, Source, ArgTypes } from "@storybook/addon-docs/blocks";
+import * as Stories from "./InlineReference.stories.svelte";
+import { Basic, Paired } from "./InlineReference.example-sources";
+
+<Meta of={Stories} />
+
+# Inline Reference
+
+A shared ReferenceChip renderer for editor, Markdown preview and transcript references.
+
+## Usage
+
+Hosts supply display identities and navigation. Rendering never dispatches work.
+
+<Source code={Basic} language="tsx" />
+<Source code={Paired} language="tsx" />
+
+## Anatomy
+
+ReferenceChip owns the icon/avatar, label, safe ordinary link and accessible activation.
+InlineReference also offers a compact `presentation="emoji"` for host custom emoji.
+The extension mounts the same renderer in CodeMirror and Markdown previews.
+
+## Variations
+
+<Canvas of={Stories.Basic} />
+<Canvas of={Stories.PairedComposerAndPreview} />
+<Canvas of={Stories.HostTokenSerialization} />
+<Canvas of={Stories.RemovableAuthorChips} />
+<Canvas of={Stories.AuthorProfilePopover} />
+
+## Behavior and accessibility
+
+`resolve` recognizes registered destinations; unknown links retain ordinary behavior.
+`matches` supplies exact UTF-16 ranges for legacy tokens, excluding code, images and
+existing links. Editor selection reveals the original source. Hosts own cancellable
+suggestion search and optional serialization; Markdown links are the default.
+Application schemes require `onActivate`; they never widen ReferenceChip's safe-link
+policy. Plain references never select message recipients. In Transcript, supply
+`chatReferenceDecorations` through `inlineReferences` and the same codec through
+`markdown.references`, retaining exact anchors.
+
+Person/agent references use the original jj-store filled inline author chip,
+including full-size text, a 1.25em avatar and a separate composer removal button.
+Removal edits the exact token range and one trailing space; Undo restores it.
+Preview/transcript readers never expose removal. Supply `getPopover(reference)`
+to return host profile content; omit it for ordinary links without a profile card.
+The shared HoverCard owns hover, focus, Escape and portal behavior.
+All removable composer references use one filled chip boundary, including
+repository and work-item links. Inline avatars align to the surrounding text
+baseline rather than determining the chip's baseline.
+
+## Styling variables
+
+| Variable                             | Default                        | Purpose               | Owner           |
+| ------------------------------------ | ------------------------------ | --------------------- | --------------- |
+| `--ui-reference-chip-radius`         | `999px`                        | Chip corners          | ReferenceChip   |
+| `--ui-reference-chip-padding`        | `0.12rem 0.4rem`               | Chip inset            | ReferenceChip   |
+| `--ui-reference-chip-font-size`      | `0.875em`                      | Relative chip type    | ReferenceChip   |
+| `--ui-reference-chip-max-width`      | `16rem`                        | Label limit           | ReferenceChip   |
+| `--ui-chat-inline-emoji-size`        | `1.2em`                        | Custom emoji diameter | InlineReference |
+| `--ui-reference-mention-radius`      | `calc(var(--radius) - 0.2rem)` | Mention corners       | ReferenceChip   |
+| `--ui-reference-mention-background`  | `var(--secondary)`             | Mention fill          | ReferenceChip   |
+| `--ui-reference-mention-padding`     | `0 0.25em`                     | Mention inset         | ReferenceChip   |
+| `--ui-reference-mention-font-weight` | `600`                          | Mention weight        | ReferenceChip   |
+| `--ui-reference-mention-avatar-size` | `1.25em`                       | Mention avatar        | ReferenceChip   |
+
+Set these variables on the owning surface; theme colors inherit semantic tokens.
+
+## API
+
+<ArgTypes of={Stories} />
+
+`createChatReferenceExtension(options)` returns a public Mira extension.
+`chatReferenceTriggers(sources, options)` returns MarkdownComposer triggers.
+`serializeChatReference` and `chatReferenceRanges` retain source-level contracts.
+
+## Composition
+
+Use one configuration in composer, preview, transcript and comments. Resolve
+identities and metadata in the host; production extensions contain no app routes,
+credentials, dispatch, persistence or repository authority.

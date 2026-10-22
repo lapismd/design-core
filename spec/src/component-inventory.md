@@ -298,6 +298,11 @@ input with exact unit conversion. MarkdownComposer trigger suggestions extend
 the existing Chat family; ThreadPanel adds nested human discussion presentation.
 These families contain no Community identities, repository models or transport.
 
+InlineReference is a shared Chat family composing ReferenceChip for person,
+agent and entity references and a compact custom-emoji presentation. Public Mira
+extensions and CodeMirror widgets share the renderer; host codecs own entity
+lookup, serialization and navigation. No application routing or dispatch is owned here.
+
 FilePathInput is a shared Forms primitive adapted from JJ Store, with optional
 host-owned file selection and no filesystem authority. Workspace Settings may
 compose it and QuantityInput as first-party declarative inputs.

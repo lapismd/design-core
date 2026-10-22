@@ -24,10 +24,13 @@ export function readingExtensions(
   fileView = false,
   source?: ReaderSource,
   markdown?: TranscriptProps["markdown"],
+  presentation?: Pick<TranscriptProps, "inlineReferences" | "readerExtensions">,
 ) {
   const references =
     block.kind === "markdown"
-      ? (comments.props().inlineReferences?.(block) ?? [])
+      ? ((
+          presentation?.inlineReferences ?? comments.props().inlineReferences
+        )?.(block) ?? [])
       : [];
   const reading =
     block.kind === "markdown"
@@ -83,7 +86,9 @@ export function readingExtensions(
   });
   return [
     chatCaret,
-    comments.props().readerExtensions?.(block) ?? [],
+    (presentation?.readerExtensions ?? comments.props().readerExtensions)?.(
+      block,
+    ) ?? [],
     EditorView.updateListener.of((update) => {
       if (source && update.selectionSet && update.view.hasFocus) {
         const selection = update.state.selection.main;

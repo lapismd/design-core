@@ -139,29 +139,15 @@
   const composerExtension: MiraExtension = {
     name: "design-core-markdown-composer",
     codeMirror: () => [
-      // Compose public Mira tokens on the CodeMirror root, where its document
-      // surface defines its own margins and readable line width.
+      // Keep Mira's content styles; the chat shell owns column width and inset.
       EditorView.theme({
         "&.cm-editor": {
+          "--file-line-width": "100%",
           "--file-margins-x":
             "var(--ui-markdown-composer-editor-padding, var(--_composer-editor-padding, 0.5rem))",
           "--file-margins-y":
             "var(--ui-markdown-composer-editor-padding, var(--_composer-editor-padding, 0.5rem))",
-          "--file-line-width": "100%",
         },
-        "&.cm-editor > .cm-scroller > .cm-content": {
-          minHeight: "var(--_composer-content-min-height, 0px)",
-          paddingBlock: "var(--_composer-caret-padding-block, 0px)",
-          paddingInline: "var(--_composer-caret-padding-inline, 0px)",
-        },
-        ".ui-markdown-composer[data-presentation='document'] & .cm-cursor": {
-          borderInlineStartWidth: "2px",
-          borderInlineStartColor:
-            "var(--_composer-caret-color, var(--mira-foreground))",
-          marginInlineStart: "0",
-        },
-        "&.cm-focused": { outline: "none" },
-        ".cm-gutters": { display: "none" },
       }),
       Prec.highest(
         EditorView.contentAttributes.of(() => ({
@@ -423,6 +409,7 @@
               {value}
               onChange={change}
               mode="live-preview"
+              lineNumbers={false}
               readonly={blocked}
               placeholder={placeholder ??
                 (presentation === "document" ? "" : "Write a message…")}
@@ -430,7 +417,6 @@
               extensions={editorExtensions}
               toolbar={false}
               blockControls={false}
-              indentGuides={false}
               outline={false}
               htmlPolicy="safe"
               class="ui-markdown-composer__editor"

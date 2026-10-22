@@ -181,5 +181,8 @@ Published CLI script arguments are passed directly through pnpm without an extra
 ## Community component boundaries
 
 Community presentation families map to shadcn/data-and-feedback; QuantityInput maps to forms/inputs and composer suggestions and ThreadPanel map to Chat.
+InlineReference's codecs and editor lifecycle map to Chat; shared ReferenceChip
+mention appearance, removal controls and host profile previews additionally map
+to shadcn/data-and-feedback.
 
 The FileTypeIcon family maps to DC-SHA-064 in the Shadcn data-and-feedback chapter, with a governed standalone catalog and native token metadata.

@@ -1131,6 +1131,10 @@
       "requirement": "DC-AI-027"
     },
     {
+      "name": "Chat/Inline Reference",
+      "requirement": "DC-CHAT-016"
+    },
+    {
       "name": "Shadcn/Data/File Type Icon",
       "requirement": "DC-SHA-064"
     }

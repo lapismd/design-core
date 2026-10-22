@@ -112,24 +112,21 @@
 .ui-transcript-text-actions {
   position: absolute;
   right: 0;
-  top: -0.5rem;
+  bottom: 100%;
+  margin-bottom: 0.125rem;
   z-index: 2;
-  border-radius: var(--radius);
-  background: var(--muted);
-  border: 1px solid var(--border);
-  padding: 0.125rem;
-  align-items: center;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  justify-content: flex-end;
+  --ui-message-actions-radius: var(--radius);
+  max-width: 100%;
   opacity: 0;
+  pointer-events: none;
 }
 .ui-transcript-text-block:hover .ui-transcript-text-actions,
 .ui-transcript-text-block:focus-within .ui-transcript-text-actions,
 .ui-transcript-custom:hover .ui-transcript-text-actions,
 .ui-transcript-custom:focus-within .ui-transcript-text-actions,
-.ui-transcript-text-actions:has([aria-expanded="true"]) {
+.ui-transcript-text-actions:has([data-visible="true"]) {
   opacity: 1;
+  pointer-events: auto;
 }
 .ui-transcript-text-actions button:hover,
 .ui-transcript-text-actions button:focus-visible {
@@ -138,15 +135,14 @@
 }
 .ui-transcript-custom[data-kind="context"] > .ui-transcript-text-actions {
   /* Prompt disclosures start on the first line; keep actions above that hit area. */
-  top: 0;
-  transform: translateY(-100%);
+  bottom: 100%;
   pointer-events: none;
 }
 .ui-transcript-custom[data-kind="context"]:hover > .ui-transcript-text-actions,
 .ui-transcript-custom[data-kind="context"]:focus-within
   > .ui-transcript-text-actions,
 .ui-transcript-custom[data-kind="context"]
-  > .ui-transcript-text-actions:has([aria-expanded="true"]) {
+  > .ui-transcript-text-actions:has([data-visible="true"]) {
   pointer-events: auto;
 }
 .ui-transcript-text-reader .cm-editor:not([data-comment-editor] *) {
@@ -336,7 +332,11 @@
 }
 @media (hover: none) {
   .ui-transcript-text-actions {
+    position: static;
+    display: flex;
+    justify-content: flex-end;
     opacity: 1;
+    pointer-events: auto;
   }
   .ui-transcript-custom[data-kind="context"] > .ui-transcript-text-actions {
     pointer-events: auto;

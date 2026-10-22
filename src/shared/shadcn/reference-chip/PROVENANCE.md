@@ -5,3 +5,7 @@ Apache-2.0, Copyright LapisMD contributors.
 Application identity resolution, persistence, transport, URL classification and
 permission policy are excluded. Native CSS retains semantic host colours and
 reference geometry; the family imports its own styles.
+
+The optional mention appearance adapts jj-store `f58b9363` CommunityChip,
+CommunityComposerRemovableChip and CommunityComposerChipDismiss. Hover cards
+compose the existing Design Core HoverCard; content remains host supplied.

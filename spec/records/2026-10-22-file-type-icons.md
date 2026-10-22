@@ -115,6 +115,34 @@ KaTeX low-severity release exception across six packages.
 - `pnpm test:workspace:pointer`: 16 passed in a fresh catalog process.
 - Remaining native-browser results are recorded below.
 
+## Combined reference review
+
+The original final driver passed governance/quality, 898 units, three concurrency
+and 16 release/tooling cases, static build/audit, 919 interaction/axe cases and
+the 16 workspace, 11 shell and three AI browser cases. Its final shadcn/browser
+lane passed 152 cases, intentionally skipped one Chromium-only-inapplicable
+WebKit scenario and failed one recorded-transcript assertion that required a
+direct SVG child. The shared FileTypeIcon correctly owns a span wrapper. The
+regression now verifies its first-child position, visible SVG, Swift artwork and
+decorative semantics while retaining the independent reasoning icon assertion.
+The exact cold target passed one case. The wider follow-up was stopped at case
+62 to qualify the merged tree; it encountered one AppShell story-finished timeout
+before pointer assertions. That result remains explicit until the combined rerun.
+
+The independent portable-reference slice is merged without rewriting either
+implementation commit. Its new InlineReference family exposed a stale exact
+CLI inventory assertion: one failed and 903 passed. The exact components test
+now includes the public family and passes all 12 cases. The canonical transcript
+icon clause was moved into normative prose after one 80-word acceptance-budget
+failure. Full specification validation, book generation and spec-first pass.
+The complete qualification is running against this combined tree.
+
+Prepared combined public output retains the reference slice's local Mira
+dependency through its ignored hook; manifests and registry ranges are unchanged.
+The archive is `lapismd-design-core-0.6.0-agent-icons-reference-review.tgz`, SHA-256
+`6f864a5ad9a77fb45255a8df9ceea10ec436ab2c39dfd9814bbec630f7b4baba`.
+Source package preparation audits 265 styles with zero utility references.
+
 ## Review gate
 
 Storybook runs at http://localhost:9409 in the isolated source workspace.

@@ -1,4 +1,9 @@
 <script lang="ts">
+  import { getContext } from "svelte";
+  import {
+    presentationContext,
+    type TranscriptPresentationContext,
+  } from "./presentation-context.js";
   import { tick } from "svelte";
   import CommentComposer from "../comment-composer/CommentComposer.svelte";
   import type { CommentComposerHandle } from "../comment-composer/comment-composer.types.js";
@@ -43,6 +48,9 @@
       });
     }
   });
+  const presentation = getContext<TranscriptPresentationContext | undefined>(
+    presentationContext,
+  );
 </script>
 
 <div
@@ -52,6 +60,7 @@
   onfocusin={() => controller.activate(thread, comment, location)}
 >
   <CommentComposer
+    {...presentation?.commentComposer ?? controller.props().commentComposer}
     bind:handle
     presentation="bare"
     value={comment.text}

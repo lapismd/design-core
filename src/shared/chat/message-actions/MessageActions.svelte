@@ -13,15 +13,19 @@
     ref = $bindable(null),
     actions,
     children,
+    additionalActions,
     label = "Message actions",
     moreLabel = "More message actions",
     disabled = false,
     alwaysVisible = false,
+    tooltips = true,
     presentation,
     customEmojis = [],
     emojis,
     theme = "auto",
     onAddReaction,
+    reactionLabel = "Add reaction",
+    reactionOptions = [],
     class: className,
     ...restProps
   }: MessageActionsProps = $props();
@@ -43,6 +47,26 @@
   }
 </script>
 
+{#snippet actionButton(
+  action: MessageAction,
+  index: number,
+  props: Record<string, unknown> = {},
+)}
+  <Button
+    {...props}
+    variant="ghost"
+    size={action.icon ? "icon-sm" : "sm"}
+    aria-label={action.label}
+    aria-disabled={unavailable(action)}
+    aria-describedby={action.disabledReason
+      ? `${reasonId}-${index}`
+      : undefined}
+    onclick={() => select(action)}
+  >
+    {#if action.icon}{@render action.icon()}{:else}{action.label}{/if}
+  </Button>
+{/snippet}
+
 <div
   bind:this={ref}
   {...restProps}
@@ -52,13 +76,14 @@
   data-visible={alwaysVisible || menuOpen || emojiOpen}
 >
   {@render children?.()}
-  {#if primary.length || overflow.length || onAddReaction}
+  {#if primary.length || overflow.length || onAddReaction || additionalActions}
     <div class="ui-message-actions__controls" role="group" aria-label={label}>
       <Tooltip.Provider>
         {#if onAddReaction}
           <EmojiPicker
             bind:open={emojiOpen}
-            triggerLabel="Add reaction"
+            triggerLabel={reactionLabel}
+            presets={reactionOptions}
             {disabled}
             {customEmojis}
             {theme}
@@ -67,28 +92,16 @@
           />
         {/if}
         {#each primary as action, index (action.id)}
-          <Tooltip.Root>
-            <Tooltip.Trigger
-              >{#snippet child({ props })}
-                <Button
-                  {...props}
-                  variant="ghost"
-                  size={action.icon ? "icon-sm" : "sm"}
-                  aria-label={action.label}
-                  aria-disabled={unavailable(action)}
-                  aria-describedby={action.disabledReason
-                    ? `${reasonId}-${index}`
-                    : undefined}
-                  onclick={() => select(action)}
-                >
-                  {#if action.icon}{@render action.icon()}{:else}{action.label}{/if}
-                </Button>
-              {/snippet}</Tooltip.Trigger
-            >
-            <Tooltip.Content
-              >{action.disabledReason ?? action.label}</Tooltip.Content
-            >
-          </Tooltip.Root>
+          {#if tooltips}<Tooltip.Root>
+              <Tooltip.Trigger
+                >{#snippet child({ props })}
+                  {@render actionButton(action, index, props)}
+                {/snippet}</Tooltip.Trigger
+              >
+              <Tooltip.Content
+                >{action.disabledReason ?? action.label}</Tooltip.Content
+              >
+            </Tooltip.Root>{:else}{@render actionButton(action, index)}{/if}
           {#if action.disabledReason}<span
               class="ui-message-actions__reason"
               id={`${reasonId}-${index}`}>{action.disabledReason}</span
@@ -134,6 +147,7 @@
             </DropdownMenu.Content>
           </DropdownMenu.Root>
         {/if}
+        {@render additionalActions?.()}
       </Tooltip.Provider>
     </div>
   {/if}

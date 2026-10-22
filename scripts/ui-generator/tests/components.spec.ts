@@ -144,6 +144,7 @@ Hello
     ).toEqual([
       "comment-composer",
       "history-edge",
+      "inline-reference",
       "markdown-composer",
       "markdown-content",
       "message-actions",
