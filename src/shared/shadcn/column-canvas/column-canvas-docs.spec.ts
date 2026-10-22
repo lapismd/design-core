@@ -48,6 +48,7 @@ describe("Column Canvas documentation", () => {
       "Body",
       "Item",
       "onScrollNearEnd",
+      "fitMaxWidth",
       "compactBreakpoint",
       "displayMode",
       "trailingSpacerWidth",
