@@ -213,7 +213,7 @@ Hosts setting `canComment` to false MUST omit comment actions, including empty h
 ### Acceptance details
 
 - Selection, keyboard, typing, paste and IME MUST create equivalent exact anchors; multiple comments and whole-section anchors MUST retain drafts through folding and raw/rich transitions, and collapsed files/tools/sections MUST show only the last nonempty current root comment per anchored discussion, with earlier comments restored on expansion and agent responses retained in their linked messages.
-- Changed or missing sources MUST retain quotes and unavailable explanations, and source navigation MUST reveal folded content before restoring selection and focus.
+- Changed or missing sources MUST retain quotes and unavailable explanations, and source navigation MUST reveal folded content before restoring selection and focus, while removing a host-owned thread MUST release its rendered quote without reading an absent thread during child teardown.
 - Comment editors MUST compose CommentComposer, retain host typography and block edits/submission while disabled or sending.
 - Unavailable-source status MUST reuse Composer's curved status banner with host-selected semantic colour and top/bottom placement, while retaining the exact quote and explanation.
 
