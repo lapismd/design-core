@@ -183,3 +183,19 @@ the missing-cache fallback, then exited before capture. No daemon was started,
 no baseline or threshold was changed, and changed stories remain visual-pending.
 Functional and package qualification are recorded separately; this is not a
 release or downstream rollout.
+
+## User-directed closeout
+
+On 22 October the user requested: “commit all changes and update downstream
+repos without running any further tests.” Remaining qualification is deferred
+at that explicit request; no additional tests were started. Implementation and
+prepared public V3 output are retained for the local downstream refresh.
+
+The final full interaction run completed 924 cases across 264 files with no
+assertion failures, then lost its browser WebSocket connection; five cases
+across five files did not complete. The already-started exact FormPlaceholder
+rerun passed one case. The merged full native-browser lanes remain incomplete.
+The previously recorded focused, unit, static and packed-public-output passes
+remain valid; they do not establish a complete final aggregate pass. Screenshot
+comparison remains unavailable and visual review pending. No publication or
+push is performed as part of this closeout.
