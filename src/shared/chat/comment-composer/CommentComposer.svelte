@@ -91,6 +91,29 @@
     applyMiraMarkdownAction(view, action);
     editor?.focus();
   }
+  function removeEmptyDraft(event: KeyboardEvent) {
+    const view = editor?.getView();
+    if (
+      event.key !== "Backspace" ||
+      event.defaultPrevented ||
+      event.repeat ||
+      event.altKey ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.shiftKey ||
+      event.isComposing ||
+      event.keyCode === 229 ||
+      blocked ||
+      !view ||
+      view.composing ||
+      view.state.doc.length !== 0 ||
+      !view.contentDOM.contains(event.target as Node) ||
+      !(onRemove || onDismiss)
+    )
+      return;
+    event.preventDefault();
+    (onRemove ?? onDismiss)?.();
+  }
   const suggestions = composerSuggestions({
     triggers: () => triggers,
     disabled: () => blocked,
@@ -212,7 +235,7 @@
     {#if avatar}<div class="ui-comment-composer__avatar">
         {@render avatar()}
       </div>{/if}
-    <div class="ui-comment-composer__input">
+    <div class="ui-comment-composer__input" onkeydowncapture={removeEmptyDraft}>
       <MiraCodeEditor
         bind:this={editor}
         {value}

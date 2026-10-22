@@ -149,3 +149,75 @@
     await expect(editor).toHaveTextContent(retainedEmojiDraft);
   }}>{#snippet template()}<Fixture scenario="inline" />{/snippet}</Story
 >
+
+<Story
+  name="Empty draft removal keyboard boundary"
+  parameters={{
+    docs: {
+      source: { code: sources.EmptyDraft, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvasElement }) => {
+    const editable = within(
+      canvasElement.querySelector('[data-case="editable"]') as HTMLElement,
+    );
+    const editor = editable.getByRole("textbox", { name: "Comment" });
+    await userEvent.click(editor);
+    for (const init of [
+      { isComposing: true },
+      { keyCode: 229 },
+      { repeat: true },
+      { ctrlKey: true },
+      { metaKey: true },
+      { altKey: true },
+      { shiftKey: true },
+    ])
+      editor.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "Backspace",
+          bubbles: true,
+          ...init,
+        }),
+      );
+    await expect(editable.getByTestId("comment-result")).toHaveTextContent(
+      "No action requested",
+    );
+    await userEvent.keyboard(" ");
+    await userEvent.keyboard("{Backspace}");
+    await expect(editable.getByTestId("comment-result")).toHaveTextContent(
+      "No action requested",
+    );
+    for (const name of ["disabled", "pending", "readonly"]) {
+      const blocked = within(
+        canvasElement.querySelector(`[data-case="${name}"]`) as HTMLElement,
+      );
+      blocked
+        .getByRole("textbox")
+        .dispatchEvent(
+          new KeyboardEvent("keydown", { key: "Backspace", bubbles: true }),
+        );
+      await expect(blocked.getByTestId("comment-result")).toHaveTextContent(
+        "No action requested",
+      );
+    }
+    await userEvent.click(editor);
+    await userEvent.keyboard("{Backspace}");
+    await expect(editable.getByTestId("comment-result")).toHaveTextContent(
+      "Removal requested",
+    );
+  }}
+  >{#snippet template()}
+    <div data-case="editable">
+      <Fixture scenario="inline" initialValue="" />
+    </div>
+    <div data-case="disabled">
+      <Fixture scenario="disabled" initialValue="" />
+    </div>
+    <div data-case="pending">
+      <Fixture scenario="pending" initialValue="" />
+    </div>
+    <div data-case="readonly">
+      <Fixture scenario="readonly" initialValue="" />
+    </div>
+  {/snippet}</Story
+>

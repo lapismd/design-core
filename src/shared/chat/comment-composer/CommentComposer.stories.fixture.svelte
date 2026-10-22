@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { untrack } from "svelte";
   import { CommentComposer, type CommentComposerSource } from "../index.js";
   import { Avatar } from "../../shadcn/avatar/index.js";
   import { Button } from "../../shadcn/button/index.js";
   let {
     scenario = "code",
+    initialValue = "show me contents of this file",
   }: {
     scenario?:
       | "code"
@@ -11,10 +13,12 @@
       | "inline"
       | "disabled"
       | "pending"
+      | "readonly"
       | "unavailable"
       | "narrow";
+    initialValue?: string;
   } = $props();
-  let value = $state("show me contents of this file");
+  let value = $state(untrack(() => initialValue));
   let result = $state("No action requested");
   let submitted = $state("");
   let alternate = $state(false);
@@ -49,6 +53,7 @@
     {...source === undefined ? {} : { source }}
     disabled={scenario === "disabled"}
     pending={scenario === "pending"}
+    readOnly={scenario === "readonly"}
     onSubmit={(snapshot) => {
       submitted = snapshot;
       result = "Submission requested";

@@ -151,6 +151,9 @@ The T control MUST be the last row action; hover actions MUST stay inside the
 same first row before the T and reserve no inline width while hidden. The first
 formatting glyph MUST align with the editor text.
 Hosts MAY supply emoji palettes and custom emoji serialization through public props.
+Plain, non-repeated Backspace on an already empty editable draft MUST request
+`onRemove`, falling back to `onDismiss`; deleting the final character MUST keep
+the editor open. Modified keys, IME and blocked editors MUST NOT request removal.
 
 ### Acceptance details
 
@@ -264,6 +267,10 @@ metadata actions request an explicit host retry without dispatching implicitly.
 
 Custom-section annotation handlers MUST ignore input already handled by a nested editor, retaining each typed or pasted character exactly once.
 Hosts setting `canComment` to false MUST omit comment actions, including empty hover-action surfaces, while preserving existing comments and independent reaction or host actions. Commentable hosts MUST retain the disabled waiting-for-source action for unpublished blocks.
+
+Expanded queued/history/reply quotes MUST share their enclosing context background
+without an additional prose, list or captured-code highlight. The original
+source's selection highlighting MUST remain independent.
 
 ### Acceptance details
 

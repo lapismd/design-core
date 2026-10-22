@@ -16,6 +16,7 @@
   border-radius: var(--radius);
 }
 .ui-transcript-comment-quote {
+  --mira-preview-background: transparent;
   margin: 0 0 0.5rem;
   font-size: inherit;
   line-height: var(--ui-transcript-markdown-line-height, 1.55);
@@ -26,8 +27,6 @@
 }
 .ui-transcript-comment-quote :is(p, code) {
   color: inherit;
-  background: color-mix(in srgb, var(--primary) 15%, transparent);
-  border-radius: 3px;
 }
 .ui-transcript-comment-quote > code {
   font: inherit;

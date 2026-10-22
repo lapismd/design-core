@@ -1,6 +1,6 @@
 import { Meta, Source, Canvas } from "@storybook/addon-docs/blocks";
 import * as Stories from "./CommentComposer.stories.svelte";
-import { Basic, Inline } from "./CommentComposer.example-sources";
+import { Basic, Inline, EmptyDraft } from "./CommentComposer.example-sources";
 
 <Meta of={Stories} />
 
@@ -25,6 +25,15 @@ nonblank draft, without clearing it. IME composition never submits. Escape
 requests `onDismiss`, preserving the draft. Optional `onRemove` requests removal;
 the component never deletes the host's data itself. `pending`, `disabled` and
 `readOnly` block editing and submission. A `name` adds host-form serialization.
+
+Plain Backspace on an already empty draft requests `onRemove`, or `onDismiss`
+when no removal handler is supplied. Deleting the last character leaves the
+editor open until another deliberate Backspace. Modified keys, held-key repeats,
+IME composition and blocked editors do not request removal. Whitespace remains
+content until deleted. Transcript hosts remove the empty draft and restore focus
+to its original source through their existing controller dismissal flow.
+
+<Source code={EmptyDraft} language="tsx" />
 
 `avatar` accepts host-owned identity content. `onNavigateSource` receives the
 opener so the host can restore focus after visiting the captured source.

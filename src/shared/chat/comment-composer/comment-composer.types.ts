@@ -59,8 +59,9 @@ export type CommentComposerProps = Omit<
         custom?: import("../../shadcn/emoji-picker/index.js").CustomEmoji,
       ) => string)
     | undefined;
-  /** Escape requests dismissal without deleting the draft. */
+  /** Escape or empty Backspace (without onRemove) requests host-owned dismissal. */
   onDismiss?: () => void;
+  /** The remove control or plain Backspace on an already empty editable draft requests removal. */
   onRemove?: () => void;
   /** The opener supports host-owned source navigation and focus restoration. */
   onNavigateSource?: (opener: HTMLButtonElement) => void;

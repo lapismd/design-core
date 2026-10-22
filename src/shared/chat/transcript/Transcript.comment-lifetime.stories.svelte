@@ -34,6 +34,66 @@
 </Story>
 
 <Story
+  name="Queued Markdown quote inherits context background"
+  play={async ({ canvasElement }) => {
+    const quote = canvasElement.querySelector(".ui-transcript-comment-quote")!;
+    for (const element of [
+      quote,
+      ...quote.querySelectorAll(".mira-markdown-preview, p, ul"),
+    ]) {
+      expect(getComputedStyle(element).backgroundColor).toBe(
+        "rgba(0, 0, 0, 0)",
+      );
+    }
+    expect(quote).toHaveTextContent("Preserve the original layout");
+    expect(quote.querySelectorAll('input[type="checkbox"]')).toHaveLength(2);
+  }}
+  >{#snippet template()}<Fixture
+      quote={"A **captured** quote.\n\n- [ ] Preserve the original layout\n- [x] Review the exported components"}
+    />{/snippet}</Story
+>
+
+<Story
+  name="Queued code quote inherits context background"
+  play={async ({ canvasElement }) => {
+    const quote = canvasElement.querySelector(
+      ".ui-transcript-comment-quote > code",
+    )!;
+    expect(getComputedStyle(quote).backgroundColor).toBe("rgba(0, 0, 0, 0)");
+    expect(quote).toHaveTextContent("const café = '🦀';");
+  }}
+  >{#snippet template()}<Fixture
+      quote={"const café = '🦀';"}
+      sourceKind="code"
+    />{/snippet}</Story
+>
+
+<Story
+  name="Empty Backspace removes the draft comment"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const editor = canvas.getByRole("textbox");
+    await userEvent.click(editor);
+    await userEvent.keyboard("{Home}{Shift>}{End}{/Shift}{Backspace}");
+    await expect(editor.querySelector(".cm-placeholder")).not.toBeNull();
+    await expect(
+      canvas.getByRole("group", { name: "Inline comments on Original note" }),
+    ).toBeVisible();
+    await userEvent.keyboard("{Backspace}");
+    await expect(canvas.queryByRole("textbox")).toBeNull();
+    await expect(
+      canvas.queryByRole("group", { name: "Inline comments on Original note" }),
+    ).toBeNull();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Restore draft" }),
+    );
+    await expect(canvas.getByRole("textbox")).toHaveTextContent(
+      "Keep this draft",
+    );
+  }}>{#snippet template()}<Fixture inline />{/snippet}</Story
+>
+
+<Story
   name="Comment formatting controls align with content"
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);

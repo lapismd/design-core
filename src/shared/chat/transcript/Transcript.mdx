@@ -34,6 +34,11 @@ inset, including in rootless inspectors and standalone queues. Its tokens are
 `--ui-transcript-markdown-line-height` (1.55) and
 `--ui-transcript-paragraph-spacing` (0.45rem). Editable comments use the bare
 CommentComposer presentation inside the existing comment card.
+In expanded pending/sent/reply contexts, captured quotes use the enclosing muted
+surface without an extra prose, list or captured-code fill. Markdown previews use
+Mira's public `--mira-preview-background` variable; source selection highlights
+remain unchanged. Plain Backspace in an already empty draft closes and removes
+that comment through the existing controller, retaining other comments.
 Reply prose, quoted context and comment cards inherit the same host font and
 foreground. Comments and their editors default to the transcript's prose size
 (0.875rem), with `--ui-transcript-comment-font-size` available for an explicit
