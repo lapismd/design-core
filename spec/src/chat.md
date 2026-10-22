@@ -87,7 +87,9 @@ Catalog collapse assertions await the closed drawer layout while retaining
 their existing geometry bounds and deadlines.
 
 Hosts MAY attach status to either edge with `statusPosition` (`top` by default),
-including a bottom warning behind the framed composer.
+including a bottom warning behind the framed composer. Document presentation
+MUST retain the same opaque framed body and joined banner while status is
+attached, restoring its ordinary prose surface when that status clears.
 
 Hosts MAY omit the inline keyboard hint with `showHint=false` when they render
 the instruction in their own fixed row; the default hint remains visible.
@@ -101,7 +103,7 @@ Classic) and bounds the Classic scroll viewport without overriding content style
 
 ### Acceptance details
 
-- The component MUST support framed and document presentations with left-aligned editor content, top reply quotes, form serialization, contextual content, host actions, disabled/busy state and bottom formatting actions with accessible tooltips; document presentation uses a transparent prose surface, a host-supplied avatar vertically centred beside the first draft line and a tall writing area
+- The component MUST support framed and document presentations with left-aligned editor content, top reply quotes, form serialization, contextual content, host actions, disabled/busy state and bottom formatting actions with accessible tooltips; document presentation uses a transparent prose surface unless status is attached, a host-supplied avatar vertically centred beside the first draft line and a tall writing area
 - Formatting, emoji insertion, optional host-owned reply cancellation and presentation changes MUST retain the draft and editor selection through public Mira and CodeMirror APIs, with custom emoji syntax and editor extensions supplied through host hooks.
 - Keyboard submission MUST distinguish Enter, Shift+Enter, modifier submission and IME composition, while disabled/busy controls MUST block submission and editing.
 - Submission MUST emit the exact draft snapshot without clearing it, leaving acknowledgement, failed delivery feedback, persistence and any clearing to the host.

@@ -44,3 +44,14 @@ export const Form = `<script lang="ts">
   <Button type="submit">Submit form</Button>
 </form>
 <output>{submitted}</output>`;
+
+export const AttachedStatus = `<script lang="ts">
+  import { MarkdownComposer } from "@lapismd/design-core/chat";
+  import { Avatar } from "@lapismd/design-core/shadcn/avatar";
+  let draft = $state("Retain this exact draft.");
+</script>
+<MarkdownComposer bind:value={draft} presentation="document" statusPosition="bottom"
+  status={{ type: "warning", message: "Context window is 90% full." }}
+  dockActions showSendButton={false} showHint={false} onSubmit={() => {}}>
+  {#snippet avatar()}<Avatar name="You" initials="YO" size="sm" decorative />{/snippet}
+</MarkdownComposer>`;

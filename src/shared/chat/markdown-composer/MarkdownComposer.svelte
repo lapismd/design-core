@@ -376,6 +376,7 @@
   class={["ui-markdown-composer", className].filter(Boolean).join(" ")}
   data-ui-component="markdown-composer"
   data-presentation={presentation}
+  data-attached-status={status ? statusPosition : undefined}
   data-actions-docked={docked}
   data-send-hidden={!showSendButton}
   aria-busy={busy}
