@@ -40,6 +40,7 @@
     patch,
     viewMode = "unified",
     wrap = false,
+    sizing = "fill",
     language,
     scrollTo,
     lineAccessory,
@@ -56,6 +57,8 @@
     patch?: string;
     viewMode?: FileDiffViewMode;
     wrap?: boolean;
+    /** Content sizing lets an outer file collection own vertical scrolling. */
+    sizing?: "fill" | "content";
     language?: string;
     scrollTo?: FileDiffScrollTarget | null;
     lineAccessory?: Snippet<[FileDiffLineContext]>;
@@ -340,6 +343,7 @@
   data-ui-part="file-diff"
   data-view-mode={viewMode}
   data-wrap={wrap ? "true" : undefined}
+  data-sizing={sizing}
   data-diff-file-path={path}
 >
   {#if binary}

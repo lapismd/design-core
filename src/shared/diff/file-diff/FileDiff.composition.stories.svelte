@@ -1,0 +1,82 @@
+<script module lang="ts">
+  import { defineMeta } from "@storybook/addon-svelte-csf";
+  import { expect, within, userEvent } from "storybook/test";
+  import FileDiffComposer from "./FileDiffComposer.svelte";
+  import { HostContent } from "./FileDiff.example-sources.js";
+  const { Story } = defineMeta({
+    title: "Diff/File Diff",
+    component: FileDiffComposer,
+    tags: ["!autodocs", "visual-pending"],
+    parameters: {
+      docs: { source: { code: HostContent, language: "tsx", type: "code" } },
+    },
+  });
+</script>
+
+<script lang="ts">
+  import FileDiff from "./FileDiff.svelte";
+  let collapsed = $state<string[]>([]);
+  const oldText = Array.from({ length: 40 }, (_, i) => `old line ${i}`).join(
+    "\n",
+  );
+  const newText = Array.from({ length: 40 }, (_, i) => `new line ${i}`).join(
+    "\n",
+  );
+</script>
+
+<Story
+  name="Host content in expanding file sections"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText("Host-owned binary state")).toBeVisible();
+    const toggle = canvas.getByRole("button", { name: "Collapse image.png" });
+    await expect(toggle).toHaveAttribute("aria-expanded", "true");
+    await userEvent.click(toggle);
+    await expect(
+      canvas.queryByText("Host-owned binary state"),
+    ).not.toBeInTheDocument();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Expand image.png" }),
+    );
+    await expect(canvas.getByText("Host-owned binary state")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <FileDiffComposer
+      files={[{ path: "image.png" }]}
+      collapsedFilePaths={collapsed}
+      onFileToggle={(path, value) => (collapsed = value ? [path] : [])}
+    >
+      {#snippet fileContent()}<p>Host-owned binary state</p>{/snippet}
+    </FileDiffComposer>
+  {/snippet}
+</Story>
+
+<Story
+  name="Content-sized split panes in a scrolling collection"
+  play={async ({ canvasElement }) => {
+    const diff = canvasElement.querySelector(
+      "[data-ui-component='file-diff']",
+    )!;
+    await expect(diff.getBoundingClientRect().height).toBeGreaterThan(600);
+    for (const viewport of diff.querySelectorAll<HTMLElement>(
+      "[data-ui-part='scroll-area-viewport']",
+    )) {
+      await expect(
+        viewport.scrollHeight - viewport.clientHeight,
+      ).toBeLessThanOrEqual(2);
+    }
+  }}
+>
+  {#snippet template()}
+    <div style="height:15rem;overflow:auto">
+      <FileDiff
+        path="long.ts"
+        {oldText}
+        {newText}
+        viewMode="split"
+        sizing="content"
+      />
+    </div>
+  {/snippet}
+</Story>

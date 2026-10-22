@@ -73,7 +73,7 @@ Highlighted additions/removals MUST retain readable syntax foreground on row and
 
 - The public boundary is `@lapismd/design-core/diff`, and unchanged context MUST collapse with incremental expand controls in both unified and split layouts; split panes MUST share expansion state, keep changed-row pairing and old/new line numbers, and reveal or hide the same context when either pane's controls are used.
 - Line identity MUST be exposed through `data-diff-line-*`, a `lineAccessory` snippet, and a host-owned `lineAnnotation` seam after unified rows; line accessories MUST occupy the number gutter and reveal on row hover or keyboard focus, while split gutters MUST show old-file numbers on the left and new-file numbers on the right, each aligned with its row.
-- Multi-file composition MUST expose controlled selection/collapse, host-owned headers, optional sticky headers and repeatable path scrolling without persistence; File Diff accepts an optional host label distinguishing previous/later pane landmarks across files or hunks while preserving default names when omitted.
+- Multi-file composition MUST accept a typed host-owned file body for loading, unavailable and domain previews while retaining disclosure semantics and controlled selection/collapse, host-owned headers, optional sticky headers and repeatable path scrolling without persistence; File Diff accepts an optional host label distinguishing previous/later pane landmarks across files or hunks while preserving default names when omitted.
 - The catalog MUST demonstrate unified, split, collapsed-context, binary, empty, multi-file composer, and wrap-text states without introducing a second runtime contract.
 
 ## DC-DIFF-004 — Merge Editor
@@ -122,7 +122,7 @@ Highlighted additions/removals MUST retain readable syntax foreground on row and
 
 ## DC-DIFF-008 — Diff scroll surfaces
 
-**Requirement.** File Diff and Merge Editor MUST scroll through the public shadcn ScrollArea, fill the host height, and keep unwrapped horizontal scrollbars at the bottom of that filled surface. File Diff MAY override the host scroll strategy for unified and split panes.
+**Requirement.** File Diff and Merge Editor MUST scroll through the public shadcn ScrollArea, fill the host height, and keep unwrapped horizontal scrollbars at the bottom of that filled surface. File Diff MAY override the host scroll strategy for unified and split panes. An explicit content-sizing option MUST let an outer multi-file collection own vertical scrolling while preserving horizontal split synchronization; fill sizing remains the default.
 
 ### Acceptance details
 

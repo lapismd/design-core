@@ -314,3 +314,15 @@
 .ui-diff-file-diff__text [data-tone] [class^="ui-code-token-"] {
   color: var(--ui-diff-changed-syntax-foreground, var(--foreground));
 }
+
+/* A collection owns vertical scrolling; each file retains horizontal panes. */
+.ui-diff-file-diff[data-sizing="content"],
+.ui-diff-file-diff[data-sizing="content"] .ui-diff-file-diff__split,
+.ui-diff-file-diff[data-sizing="content"] .ui-diff-file-diff__pane,
+.ui-diff-file-diff[data-sizing="content"] .ui-diff-file-diff__scroll,
+.ui-diff-file-diff[data-sizing="content"] .ui-diff-file-diff__pane-scroll,
+.ui-diff-file-diff[data-sizing="content"]
+  [data-ui-part="scroll-area-viewport"] {
+  height: auto;
+  flex: none;
+}

@@ -21,6 +21,9 @@
     files,
     viewMode = "unified",
     selectedPath,
+    wrap = false,
+    sizing = "fill",
+    fileContent,
     collapsedFilePaths = [],
     scrollToFile,
     stickyHeaders = false,
@@ -34,6 +37,10 @@
     files: FileDiffFile[];
     viewMode?: FileDiffViewMode;
     selectedPath?: string;
+    wrap?: boolean;
+    sizing?: "fill" | "content";
+    /** Host-owned file body; collapse, headers and navigation remain shared. */
+    fileContent?: Snippet<[FileDiffComposerFileContext]>;
     collapsedFilePaths?: readonly string[];
     scrollToFile?: FileDiffFileScrollTarget | null;
     stickyHeaders?: boolean;
@@ -46,6 +53,7 @@
     lineAnnotation?: Snippet<[FileDiffLineContext]>;
   } = $props();
 
+  const instanceId = $props.id();
   let rootEl: HTMLElement | null = $state(null);
 
   function fileContext(file: FileDiffFile): FileDiffComposerFileContext {
@@ -81,7 +89,7 @@
   {#if files.length === 0}
     <p class="ui-diff-file-diff__empty">No file diffs</p>
   {:else}
-    {#each files as file (file.path)}
+    {#each files as file, index (file.path)}
       {@const context = fileContext(file)}
       <section
         class="ui-diff-file-diff-composer__file"
@@ -102,6 +110,8 @@
                 type="button"
                 variant="ghost"
                 size="icon-xs"
+                aria-expanded={!context.collapsed}
+                aria-controls={`${instanceId}-file-${index}`}
                 aria-label={`${context.collapsed ? "Expand" : "Collapse"} ${file.path}`}
                 onclick={() => onFileToggle?.(file.path, !context.collapsed)}
               >
@@ -124,24 +134,34 @@
             </div>
           {/if}
         </header>
-        {#if !context.collapsed}
-          <FileDiff
-            path={file.path}
-            {...file.oldText === undefined ? {} : { oldText: file.oldText }}
-            {...file.newText === undefined ? {} : { newText: file.newText }}
-            {...file.patch === undefined ? {} : { patch: file.patch }}
-            {...file.language === undefined ? {} : { language: file.language }}
-            {viewMode}
-            scrollTo={scrollTo?.path === file.path ||
-            (scrollTo != null &&
-              scrollTo.path == null &&
-              files[0]?.path === file.path)
-              ? scrollTo
-              : null}
-            {...lineAccessory === undefined ? {} : { lineAccessory }}
-            {...lineAnnotation === undefined ? {} : { lineAnnotation }}
-          />
-        {/if}
+        <div id={`${instanceId}-file-${index}`} hidden={context.collapsed}>
+          {#if !context.collapsed}
+            {#if fileContent}
+              {@render fileContent(context)}
+            {:else}
+              <FileDiff
+                path={file.path}
+                {...file.oldText === undefined ? {} : { oldText: file.oldText }}
+                {...file.newText === undefined ? {} : { newText: file.newText }}
+                {...file.patch === undefined ? {} : { patch: file.patch }}
+                {...file.language === undefined
+                  ? {}
+                  : { language: file.language }}
+                {viewMode}
+                {wrap}
+                {sizing}
+                scrollTo={scrollTo?.path === file.path ||
+                (scrollTo != null &&
+                  scrollTo.path == null &&
+                  files[0]?.path === file.path)
+                  ? scrollTo
+                  : null}
+                {...lineAccessory === undefined ? {} : { lineAccessory }}
+                {...lineAnnotation === undefined ? {} : { lineAnnotation }}
+              />
+            {/if}
+          {/if}
+        </div>
       </section>
     {/each}
   {/if}
