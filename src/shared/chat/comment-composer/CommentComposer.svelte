@@ -3,6 +3,9 @@
   import { MiraCodeEditor, type MiraCodeEditorHandle } from "@lapismd/mira";
   import { Prec } from "@codemirror/state";
   import { EditorView } from "@codemirror/view";
+  import { markdown } from "@codemirror/lang-markdown";
+  import { composerSuggestions } from "../markdown-composer/composer-suggestions.js";
+  import { referenceEditor } from "../inline-reference/reference-widget.js";
   import CornerUpLeftIcon from "@lucide/svelte/icons/corner-up-left";
   import XIcon from "@lucide/svelte/icons/x";
   import { Button } from "../../shadcn/button/index.js";
@@ -37,6 +40,9 @@
     disabled = false,
     pending = false,
     readOnly = false,
+    references,
+    triggers = [],
+    editorExtensions = [],
     class: className,
     ...restProps
   }: CommentComposerProps = $props();
@@ -57,7 +63,17 @@
     value = next;
     onChange?.(next);
   }
-  const extensions = [
+  const suggestions = composerSuggestions({
+    triggers: () => triggers,
+    disabled: () => blocked,
+  });
+  const suggestionExtensions =
+    suggestions.codeMirror?.({ mode: "source", readonly: false }) ?? [];
+  const extensions = $derived([
+    markdown(),
+    suggestionExtensions,
+    ...(references ? [referenceEditor(references)] : []),
+    editorExtensions,
     EditorView.theme({
       "&.cm-editor": {
         fontSize: "var(--ui-comment-composer-font-size, 1rem)",
@@ -111,7 +127,7 @@
         },
       }),
     ),
-  ];
+  ]);
 </script>
 
 <div

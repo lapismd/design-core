@@ -24,3 +24,9 @@ with `aria-disabled`; `disabledReason` explains availability and blocks executio
 Custom emoji use the shared neutral registration model. An explicit `emojis`
 list, including an empty list, restricts the picker. Hosts own reaction state.
 Styles load with the family; `--ui-message-actions-radius` defaults to 999px.
+
+Set `tooltips={false}` to omit tooltip triggers and content while preserving
+button labels. `additionalActions` retains existing host controls in this bar.
+`reactionLabel` and `reactionOptions` configure the shared picker. Transcript
+uses the same component with an icon-only Comment and `getMessageActions(id, block)`
+for primary/overflow actions. Its bar disappears when every action is unavailable.

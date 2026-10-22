@@ -23,14 +23,20 @@ export type MessageActionsProps = HTMLAttributes<HTMLDivElement> & {
   ref?: HTMLDivElement | null;
   actions: readonly MessageAction[];
   children?: Snippet;
+  /** Compatibility slot for host-owned controls inside the same action bar. */
+  additionalActions?: Snippet;
   label?: string;
   moreLabel?: string;
   disabled?: boolean;
   alwaysVisible?: boolean;
+  /** Omit tooltip triggers/content while preserving accessible button labels. */
+  tooltips?: boolean;
   /** Floating around supplied message content; inline when used alone. */
   presentation?: "floating" | "inline";
   customEmojis?: readonly CustomEmoji[];
   emojis?: readonly EmojiOption[];
   theme?: EmojiPickerProps["theme"];
   onAddReaction?: (emoji: string, custom?: CustomEmoji) => void;
+  reactionLabel?: string;
+  reactionOptions?: readonly string[];
 };

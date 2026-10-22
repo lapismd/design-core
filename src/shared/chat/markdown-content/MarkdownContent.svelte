@@ -1,10 +1,12 @@
 <script lang="ts">
   import "@lapismd/mira/styles.css";
   import { MarkdownPreview } from "@lapismd/mira/preview";
+  import { createChatReferenceExtension } from "../inline-reference/reference-extension.js";
   import type { MarkdownContentProps } from "./markdown-content.types.js";
   import "./markdown-content.css";
   let {
     content,
+    references,
     compact = true,
     fullWidth = false,
     sourcePath,
@@ -15,6 +17,9 @@
     highlight = true,
     ...restProps
   }: MarkdownContentProps = $props();
+  const referenceExtension = $derived(
+    references ? createChatReferenceExtension(references) : undefined,
+  );
 </script>
 
 <div
@@ -27,7 +32,10 @@
     class="ui-chat-markdown-preview"
     value={content}
     {...sourcePath === undefined ? {} : { sourcePath }}
-    extensions={[...extensions]}
+    extensions={[
+      ...extensions,
+      ...(referenceExtension ? [referenceExtension] : []),
+    ]}
     {...components === undefined ? {} : { components }}
     {...linkResolver === undefined ? {} : { linkResolver }}
     {...assetResolver === undefined ? {} : { assetResolver }}

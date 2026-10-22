@@ -163,3 +163,18 @@ and the host sans font; the existing Markdown tokens retain independent spacing.
 
 Retained unavailable-source comment cards use `--ui-transcript-stale-gap` (0.5rem)
 between cards, keeping each status banner attached to its own captured quote.
+
+## Host references and actions
+
+Use `markdown.references` and `inlineReferences={block => chatReferenceDecorations(block.text, references)}`
+with the same host codec for preview and retained CodeMirror readers. Reader
+hooks also apply with an externally owned TranscriptController.
+`commentComposer` accepts the same reference codec, trigger suggestions and
+CodeMirror extensions; comment previews use the transcript Markdown configuration.
+
+`getMessageActions(messageId, block)` returns shared MessageAction descriptors.
+Primary actions use icon buttons; other actions use the kebab menu alongside
+Comment and optional reactions. The default Comment is icon-only, hidden bars
+never intercept tool controls, and a wholly unavailable bar is omitted. Set
+`actionTooltips={false}` to omit tooltips. The older messageActions snippet remains
+available for custom host controls.

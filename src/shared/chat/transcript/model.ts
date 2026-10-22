@@ -177,6 +177,16 @@ export interface TranscriptSubmissionResult {
   error?: string | undefined;
 }
 export interface TranscriptHost {
+  commentComposer?: Pick<
+    import("../comment-composer/comment-composer.types.js").CommentComposerProps,
+    "references" | "triggers" | "editorExtensions"
+  >;
+  /** Per-message actions; opaque IDs and execution remain host-owned. */
+  getMessageActions?: (
+    messageId: string,
+    block: TranscriptBlock,
+  ) => readonly import("../message-actions/message-actions.types.js").MessageAction[];
+  actionTooltips?: boolean;
   items: readonly TranscriptItem[];
   author?: TranscriptAuthor | undefined;
   canComment?: boolean | undefined;

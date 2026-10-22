@@ -1129,6 +1129,10 @@
     {
       "name": "AI/Chat/Content View Toggle",
       "requirement": "DC-AI-027"
+    },
+    {
+      "name": "Chat/Inline Reference",
+      "requirement": "DC-CHAT-016"
     }
   ]
 }

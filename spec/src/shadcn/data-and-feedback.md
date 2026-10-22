@@ -140,8 +140,9 @@ matching visible text order when avatar images are unavailable.
 
 ### Acceptance details
 
-- Full labels and descriptions MUST remain available through accessible tooltips while long inline labels truncate without changing supplied text, and trigger names MUST include visible avatar fallbacks before the label.
+- Full labels and descriptions MUST remain available through accessible tooltips or optional host profile previews while long inline labels truncate without changing supplied text, and trigger names MUST include visible avatar fallbacks before the label.
 - Optional removal MUST be a separate labelled button and disabled references MUST never navigate or invoke callbacks.
+- Mention appearance MUST preserve filled jj-store inline author geometry and semantic foreground color in Markdown; default reference appearance and native link semantics MUST remain intact.
 
 ## DC-SHA-060 — Link Preview
 

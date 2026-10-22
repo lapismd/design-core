@@ -59,6 +59,7 @@ compact fold row with a trailing divider.
 
 | Composer Suggestions | `@lapismd/design-core/chat` | DC-CHAT-013 |
 | Thread Panel | `@lapismd/design-core/chat` | DC-CHAT-014 |
+| Inline Reference | `@lapismd/design-core/chat` | DC-CHAT-016 |
 
 ## DC-CHAT-001 — Markdown Content
 
@@ -67,8 +68,8 @@ compact fold row with a trailing divider.
 ### Acceptance details
 
 - The Chat entry point MUST re-export stable chat primitives without breaking existing AI imports.
-- Transcript reply prose, quoted context and comments MUST share the host prose font and foreground across Mira reader boundaries, with comments defaulting to the transcript prose size (0.875rem) rather than a separate 1rem; retain no additional Markdown inset, compact quoted lists and no first/last block margins while standalone MarkdownContent keeps its configurable small outer padding.
-- Markdown MUST retain transparent parent-composed backgrounds, left-aligned compact/full-width presentation with small token-driven padding, streaming updates, public preview hooks and late stylesheet loading without copying Mira internals.
+- Mira MUST own MarkdownContent typography, lists, quotes, tables, images and block spacing without Chat content overrides; the enclosing message owns its optional wrapper inset.
+- Markdown MUST retain left-aligned full-width presentation with optional token-driven wrapper padding, streaming updates, public preview hooks and late stylesheet loading without copying Mira internals.
 - Published Mira 0.0.5 MUST be qualified before the new preview is added; domain-specific references and authorization remain consumer extensions.
 
 ## DC-CHAT-002 — Markdown Composer
@@ -89,12 +90,16 @@ including a bottom warning behind the framed composer.
 Hosts MAY omit the inline keyboard hint with `showHint=false` when they render
 the instruction in their own fixed row; the default hint remains visible.
 
-Editor focus MUST keep the resting shell border and omit its focus shadow and
-editor outline in both presentations; the caret and toolbar focus cues remain.
+Editor content MUST retain stock Mira typography, indentation, spacing and focus
+styles. Chat MAY remove only note-column centering; shell geometry and custom
+reference/suggestion components remain owned by Chat.
+The composer MUST disable Mira's line-number extension through `lineNumbers=false`.
+The shell owns its compact outer editor inset (0.25rem in Document, 0.5rem in
+Classic) and bounds the Classic scroll viewport without overriding content styles.
 
 ### Acceptance details
 
-- The component MUST support framed and document presentations with left-aligned editor content, top reply quotes, form serialization, contextual content, host actions, disabled/busy state and bottom formatting actions with accessible tooltips; document presentation uses a transparent prose surface, a host-supplied avatar vertically centred beside the first draft line and a tall writing area.
+- The component MUST support framed and document presentations with left-aligned editor content, top reply quotes, form serialization, contextual content, host actions, disabled/busy state and bottom formatting actions with accessible tooltips; document presentation uses a transparent prose surface, a host-supplied avatar vertically centred beside the first draft line and a tall writing area
 - Formatting, emoji insertion, optional host-owned reply cancellation and presentation changes MUST retain the draft and editor selection through public Mira and CodeMirror APIs, with custom emoji syntax and editor extensions supplied through host hooks.
 - Keyboard submission MUST distinguish Enter, Shift+Enter, modifier submission and IME composition, while disabled/busy controls MUST block submission and editing.
 - Submission MUST emit the exact draft snapshot without clearing it, leaving acknowledgement, failed delivery feedback, persistence and any clearing to the host.
@@ -102,6 +107,11 @@ editor outline in both presentations; the caret and toolbar focus cues remain.
 ## DC-CHAT-003 — Message Actions
 
 **Requirement.** MessageActions MUST expose host-supplied message actions through hover, keyboard focus and touch without embedding application policy.
+
+Transcript hover actions MUST compose MessageActions, use an icon-only Comment,
+and omit the toolbar when no enabled action exists. Invisible controls MUST NOT
+intercept pointer input; their position MUST leave tool header actions usable.
+Hosts MAY disable action tooltips entirely while retaining accessible labels.
 
 ### Acceptance details
 
@@ -329,3 +339,14 @@ empty or pending active drafts omit Queue. Idle Send availability is unchanged.
 - The separate labelled reply control MUST own keyboard activation and navigation callbacks while participant details remain outside it without nested buttons.
 - Optional author presentation MUST compose the same shared AuthorCard for reply participants, retaining host-owned descriptions, details and actions.
 - Reply-link decoration MUST apply only to the count label, leaving participant avatars separate and undecorated.
+
+## DC-CHAT-016 — Inline references
+
+**Requirement.** Chat references MUST share InlineReference/ReferenceChip rendering across composer widgets, Markdown preview and transcript readers through host-supplied codecs and activation callbacks.
+
+### Acceptance details
+
+- Public extension and suggestion helpers MUST preserve source text and UTF-16 offsets, ignore code/images and leave unresolved links readable; Markdown serialization is the default and explicit host codecs MUST NOT widen safe-link policy or dispatch work.
+- Person/agent mentions MUST retain jj-store's filled inline chip geometry in preview and composer, with optional host profile popovers and exact-range composer removal; mounted references MUST release owned components and selection MUST reveal source.
+- Removable references MUST contain their removal button within the filled chip and align inline text baselines; Document composer insets MUST retain fully visible task checkboxes.
+- Paired stories MUST render the same source and configuration, including person/agent avatars, repository icons, custom emoji and ordinary links; token defaults and public usage MUST be documented.

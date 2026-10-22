@@ -54,14 +54,13 @@ The `additionalActions` snippet receives focus, insertion, formatting, submissio
 and disabled-state helpers. Hosts still own uploads, recipients and queues.
 Tokens: `--ui-markdown-composer-min-height` (6rem) and
 `--ui-markdown-composer-max-height` (18rem), plus
-`--ui-markdown-composer-editor-padding` (0.5rem framed, 0 document). Document
-presentation additionally supports `--ui-markdown-composer-document-min-height`,
-`--ui-markdown-composer-font-family`, `--ui-markdown-composer-font-size`,
-`--ui-markdown-composer-line-height`, `--ui-markdown-composer-avatar-width` and
-`--ui-markdown-composer-avatar-gap`. Set the avatar width and gap to `0px` for
-an unindented document. Its maximum height is unbounded unless explicitly set.
-Both presentations start at the leading edge of their text column. No Tailwind
-tooling is required.
+document avatar width/gap tokens. Both presentations use stock Mira typography,
+list/quote/table layout and focus styling. The only content layout
+adjustments remove Mira's centered note column and use the host-requested compact
+outer inset (`--ui-markdown-composer-editor-padding`: 0.25rem in Document, 0.5rem
+in Classic). Shell sizing, avatars and custom
+reference/suggestion components remain Chat-owned. Use Mira's public theme tokens
+for explicit host theming. No Tailwind tooling is required.
 
 ## Docked document toolbar
 
