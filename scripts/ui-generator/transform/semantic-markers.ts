@@ -2,6 +2,11 @@ import type { MarkerOwnership } from "./selector-remapper.js";
 
 /** External relationships that have no owning utility element in the intake. */
 export function semanticMarkers(component: string): MarkerOwnership[] {
+  if (component === "radio-group") {
+    return [
+      { marker: "group/field-label", selector: '[data-slot="field-label"]' },
+    ];
+  }
   if (component === "checkbox") {
     return [{ marker: "group/field", selector: '[data-slot="field"]' }];
   }

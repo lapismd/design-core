@@ -510,6 +510,33 @@ export const FAMILY_TOKEN_SPECS: Record<string, FamilyTokenSpec> = {
       },
     ],
   },
+  "radio-group": {
+    keys: CURATED_FIVE,
+    defaults: {
+      background: "var(--primary)",
+      foreground: "var(--primary-foreground)",
+      borderColor: "var(--input)",
+      radius: "9999px",
+      focusRingColor: "var(--ring)",
+    },
+    paintRewrites: [
+      {
+        themeVar: "--primary",
+        token: "background",
+        properties: ["background-color"],
+      },
+      {
+        themeVar: "--input",
+        token: "borderColor",
+        properties: ["border-color"],
+      },
+      {
+        themeVar: "--ring",
+        token: "focusRingColor",
+        properties: ["border-color", "--tw-ring-color"],
+      },
+    ],
+  },
   checkbox: {
     keys: CURATED_FIVE,
     defaults: {

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "component": "radio-group",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "radio-group",
+    "fetchedAt": "2026-10-22T16:34:23.765Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/radio-group/index.ts",
+        "sha256": "362d6e9a225a65e43e6f223a3a4b9aea4a3c3e6fe7f5d66464ee4df3e8df18f5"
+      },
+      {
+        "path": "src/lib/components/ui/radio-group/radio-group-item.svelte",
+        "sha256": "ffbdcc211ead09b2988b13b04a3eb29d0a8e06ca54e543a86b57cedc884c9828"
+      },
+      {
+        "path": "src/lib/components/ui/radio-group/radio-group.svelte",
+        "sha256": "dde5bb535965a95b54758289d7d393ad665a9c40579e3925084ccd45e80fddf2"
+      }
+    ],
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/radio-group.md",
+    "docsFetchedAt": "2026-10-22T16:34:23.785Z",
+    "docsSha256": "56f01c8780dd533b7e605191f4840dad69ef9cd397b4ea5b45920a37e3b86e30",
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs",
+    "examplesIncluded": ["Preview"],
+    "examplesSkipped": []
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 2
+  },
+  "recipe": {
+    "name": "radio-group",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

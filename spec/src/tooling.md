@@ -192,3 +192,7 @@ The project-authored FileTypeIcon family uses `pnpm icons:generate` to extract
 curated artwork and filename tables from pinned development data. `pnpm icons:check`
 compares generated assets without writing; both spec validation and check lanes
 run it before the shared validator. Runtime modules import only generated data.
+
+Radio Group conversion maps upstream FieldLabel group relationships to the
+existing semantic `data-slot="field-label"` boundary (DC-SHA-065), preserving
+focus behavior without publishing utility marker selectors.
