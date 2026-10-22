@@ -4,11 +4,15 @@ The App Shell owns application structure and responsive layout while consumers o
 
 ## Public surface coverage
 
-| Surface                 | Public boundary              | Requirement  |
-| ----------------------- | ---------------------------- | ------------ |
-| Shared Shell invariants | Shell layer                  | DC-SHELL-001 |
-| App Shell               | `@lapismd/design-core/shell` | DC-SHELL-002 |
-| Shell Guidance          | Documentation surface        | DC-SHELL-003 |
+| Surface                 | Public boundary                 | Requirement  |
+| ----------------------- | ------------------------------- | ------------ |
+| Shared Shell invariants | Shell layer                     | DC-SHELL-001 |
+| App Shell               | `@lapismd/design-core/shell`    | DC-SHELL-002 |
+| Shell Guidance          | Documentation surface           | DC-SHELL-003 |
+| Top bar                 | `AppShell.Topbar`               | DC-SHELL-004 |
+| Resize observation      | Shell geometry lifecycle        | DC-SHELL-005 |
+| Attached panels         | `Sidebar` and `Sidebar.Section` | DC-SHELL-006 |
+| Overlay page chrome     | `SurfaceLayer` compound parts   | DC-SHELL-007 |
 
 ## DC-SHELL-001 — Shared Shell invariants
 
@@ -43,11 +47,43 @@ The App Shell owns application structure and responsive layout while consumers o
 
 ## DC-SHELL-004 — Top bar
 
-**Requirement.** AppShell.Topbar MUST provide reusable application chrome above Root while retaining the canonical sidebar/main topology.
+**Requirement.** AppShell.Topbar MUST provide reusable application chrome above Root and opt-in relocation into an explicit body-header target while retaining the canonical sidebar/main topology.
 
 ### Acceptance details
 
 - The top bar MUST support leading content before back/forward controls, centre and trailing snippets, optional back/forward callbacks and an explicit main-element reference for centre alignment.
-- Measurements MUST avoid overlap in narrow layouts and release observers and queued frames during teardown.
+- Measurements MUST avoid overlap in narrow layouts and release observers and queued frames during teardown; body placement MUST use the existing controller's resolved mode and a neutral `Topbar.Target` outside scrolling content.
 - The top bar MUST share the outer body background by default, and the full-height catalog MUST compose icon-collapse left navigation, body-local sidebars, an independent right inspector and a transparent far-right rail using existing controllers and shared Panel Toggle icons, with ResponsiveTabs and independently scrolling content bodies rather than page scrolling.
-- The example MUST place document-local toggles inside the body's corresponding left and right edges and the outer right-inspector toggle at the right of the document header, retaining mobile state and focus behavior.
+- The default top placement MUST remain compatible; opt-in body placement MUST move one mounted bar, preserve drafts, focus and open widgets, fall back to its original position without a target, and allow native hosts to retain top placement explicitly.
+
+## DC-SHELL-005 — Resize observation
+
+**Requirement.** Shell geometry observers MUST defer reactive layout changes out of ResizeObserver delivery and release queued work on teardown.
+
+### Acceptance details
+
+- Automatic, constrained and multi-panel shells MUST settle without ResizeObserver loop diagnostics.
+- Observations MUST coalesce into animation frames and retain the initial bounded-root measurement.
+- Unmounting MUST disconnect observers and cancel pending frames.
+
+## DC-SHELL-006 — Attached panels and rail sections
+
+**Requirement.** AppShell.Sidebar MUST offer an opt-in attached surface variant and reusable neutral content sections without changing controller or persistence ownership.
+
+### Acceptance details
+
+- Adjacent visible inline attached panels and Main MUST share background and outer edges, with one internal divider and no intervening gap; independent outer rails MUST remain outside the group.
+- Hidden, closed, suspended, previewed and mobile panels MUST leave no stale joined edges; constrained replacement MUST retain the corresponding exposed edges.
+- `Sidebar.Section` MUST accept host-owned heading, actions and content snippets, use public spacing tokens, and infer no heading level or navigation state.
+- Existing sidebar variants, independent widths, pointer/keyboard resizing, priorities and persisted state MUST retain their contracts.
+
+## DC-SHELL-007 — Overlay page chrome
+
+**Requirement.** SurfaceLayer MUST provide opt-in fixed footer and contextual close parts, child-owned scrolling and responsive inset tokens through its existing single-layer contract.
+
+### Acceptance details
+
+- `SurfaceLayer.Close` MUST delegate to the owner's current `onDismiss`, inherit its accessible dismissal label and respect a prevented click; it MUST NOT create open state.
+- Header and Footer MUST remain outside the bounded body viewport; `Body scrollable={false}` MUST allow a child to own scrolling while the default retains its Scroll Area.
+- Mobile inset tokens MUST fall back to existing desktop inset values when unset; header/footer spacing and separators MUST use public tokens.
+- Scrim/Escape dismissal, portalled-menu Escape handling, focus return, coverage, panel suspension and restoration MUST retain their existing contracts.

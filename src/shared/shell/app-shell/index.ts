@@ -1,4 +1,5 @@
 import AppShellTopbar from "./AppShellTopbar.svelte";
+import AppShellTopbarTarget from "./AppShellTopbarTarget.svelte";
 import AppShellBody from "./AppShellBody.svelte";
 import AppShellBodyContent from "./AppShellBodyContent.svelte";
 import AppShellBodySidebar from "./AppShellBodySidebar.svelte";
@@ -11,12 +12,20 @@ import AppShellSidebarClose from "./AppShellSidebarClose.svelte";
 import AppShellSidebarFooter from "./AppShellSidebarFooter.svelte";
 import AppShellSidebarHeader from "./AppShellSidebarHeader.svelte";
 import AppShellSidebarToggle from "./AppShellSidebarToggle.svelte";
+import AppShellSidebarSection from "./AppShellSidebarSection.svelte";
 import AppShellSurfaceLayer from "./AppShellSurfaceLayer.svelte";
 import AppShellSurfaceLayerBody from "./AppShellSurfaceLayerBody.svelte";
 import AppShellSurfaceLayerHeader from "./AppShellSurfaceLayerHeader.svelte";
+import AppShellSurfaceLayerFooter from "./AppShellSurfaceLayerFooter.svelte";
+import AppShellSurfaceLayerClose from "./AppShellSurfaceLayerClose.svelte";
 import AppShellToolbar from "./AppShellToolbar.svelte";
 
+export const Topbar = Object.assign(AppShellTopbar, {
+  Target: AppShellTopbarTarget,
+});
+
 export const Sidebar = Object.assign(AppShellSidebar, {
+  Section: AppShellSidebarSection,
   Header: AppShellSidebarHeader,
   Body: AppShellSidebarBody,
   Footer: AppShellSidebarFooter,
@@ -31,6 +40,8 @@ export const Body = Object.assign(AppShellBody, {
 });
 
 export const SurfaceLayer = Object.assign(AppShellSurfaceLayer, {
+  Footer: AppShellSurfaceLayerFooter,
+  Close: AppShellSurfaceLayerClose,
   Header: AppShellSurfaceLayerHeader,
   Body: AppShellSurfaceLayerBody,
 });
@@ -48,12 +59,19 @@ export {
   AppShellSidebarFooter,
   AppShellSidebarHeader,
   AppShellSidebarToggle,
+  AppShellSidebarSection,
+  AppShellSidebarSection as SidebarSection,
   AppShellSurfaceLayer,
   AppShellSurfaceLayerBody,
   AppShellSurfaceLayerHeader,
+  AppShellSurfaceLayerFooter,
+  AppShellSurfaceLayerClose,
+  AppShellSurfaceLayerFooter as SurfaceLayerFooter,
+  AppShellSurfaceLayerClose as SurfaceLayerClose,
   AppShellToolbar,
   AppShellTopbar,
-  AppShellTopbar as Topbar,
+  AppShellTopbarTarget,
+  AppShellTopbarTarget as TopbarTarget,
   AppShellBodyContent as BodyContent,
   AppShellBodySidebar as BodySidebar,
   AppShellBodyToggle as BodyToggle,
@@ -70,7 +88,7 @@ export {
 };
 
 export const AppShell = {
-  Topbar: AppShellTopbar,
+  Topbar,
   Root: AppShellRoot,
   Sidebar,
   Main: AppShellMain,

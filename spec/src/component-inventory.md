@@ -181,6 +181,12 @@ guidance, tokens, and the package barrel):
   `Sidebar.Footer`, `Sidebar.Toggle`, `Sidebar.Close`, `Main`, `Toolbar`, and
   `Body`, `Body.Content`, `Body.Sidebar`, `Body.Toggle`, `SurfaceLayer`,
   `SurfaceLayer.Header`, and `SurfaceLayer.Body` surfaces
+- Opt-in responsive `Topbar` with a neutral `Topbar.Target`, retaining one
+  mounted set of controls and explicit native top placement
+- Opt-in `Sidebar variant="attached"` with derived logical joined edges,
+  independent rail siblings and a token-driven `Sidebar.Section`
+- `SurfaceLayer.Footer`, contextual `SurfaceLayer.Close`, optional child-owned
+  body scrolling and responsive inset tokens; still one active layer per root
 - Viewport-height root with overrideable structural geometry tokens
 - Independent reactive left and right expanded/collapsed/closed and width
   controllers

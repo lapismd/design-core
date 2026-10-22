@@ -1,9 +1,45 @@
-import { Meta } from "@storybook/addon-docs/blocks";
+import { Meta, Source } from "@storybook/addon-docs/blocks";
 import * as Stories from "./AppShell.stories.svelte";
+import { Basic as ExtensionsSource } from "./AppShellExtensions.example-sources.js";
 
 <Meta of={Stories} />
 
 # App Shell
+
+## Opt-in layout extensions
+
+`Topbar mobilePlacement="body"` uses an explicit `controller` and
+`mobileTarget` reference bound from `Topbar.Target`, placed first inside Main.
+The default remains `"top"`; native hosts retain that placement and supply their
+own window attributes. The same leading, centre and trailing children move
+without remounting. An absent target leaves the topbar at its original position.
+
+Use `Sidebar variant="attached"` for panes that share Main's surface. Compose
+attached siblings nearest Main, followed by an independent `variant="rail"`.
+Each retains its existing controller and persistence. `Sidebar.Section` provides
+spacing for heading/actions/content without assigning navigation semantics.
+
+`SurfaceLayer.Footer` stays outside body scrolling and `SurfaceLayer.Close`
+delegates to `onDismiss`. Set `SurfaceLayer.Body scrollable={false}` when an
+editor or conversation owns its viewport. Mobile inset tokens fall back to the
+ordinary inset tokens; set them on the shell ancestor for responsive gutters.
+
+<Source code={ExtensionsSource} language="tsx" />
+
+Layout extension tokens are exported through `shellTokenNames` and
+`shellTokenDefaults` from `@lapismd/design-core/shell/tokens`:
+
+| Prefix                              | Tokens and defaults                                                                                                                 |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `--ui-shell-topbar-*`               | `height` (`2.75rem`), `padding` (`0.5rem`), `background` (local sidebar/muted surface), `body-background` (local main background)   |
+| `--ui-shell-attached-*`             | `divider` (`1px solid var(--border)`), `shadow` (`none`), `header-padding` (`0.125rem 0.75rem`), `footer-padding` (`0.75rem`)       |
+| `--ui-shell-sidebar-section-*`      | `gap` (`0.5rem`), `padding` (`0.75rem`)                                                                                             |
+| `--ui-shell-surface-layer-*`        | `header-padding` (`0.625rem 0.75rem 0.625rem 1rem`), `footer-padding` (`0.75rem 1rem`), `footer-border` (`1px solid var(--border)`) |
+| `--ui-shell-surface-layer-mobile-*` | `main-start-allowance`, `inline-end-inset` (fall back to the corresponding ordinary layer inset)                                    |
+
+Background and mobile-inset overrides default to CSS `initial` so their
+fallbacks resolve against the current host's tokens. Existing sidebar variants
+keep their current chrome; new attached styling and section spacing are opt-in.
 
 When a child chat or editor owns scrolling, use
 `<AppShell.Sidebar.Body scrollable={false}>` to keep the sidebar bounded without

@@ -9,7 +9,16 @@
     width: 232,
   });
   let surfaceOpen = $state(false);
+  let main = $state<HTMLElement | null>(null);
+  let target = $state<HTMLElement | null>(null);
 </script>
+
+<AppShell.Topbar
+  {controller}
+  mainElement={main}
+  mobilePlacement="body"
+  mobileTarget={target}
+/>
 
 <AppShell.Sidebar.Toggle
   shellController={controller}
@@ -22,7 +31,8 @@
   <AppShell.Sidebar side="left" label="Navigation">
     <AppShell.Sidebar.Body>Navigation</AppShell.Sidebar.Body>
   </AppShell.Sidebar>
-  <AppShell.Main>
+  <AppShell.Main bind:ref={main}>
+    <AppShell.Topbar.Target bind:ref={target} />
     <AppShell.Toolbar>
       <AppShell.Sidebar.Toggle side="left" />
     </AppShell.Toolbar>
@@ -30,10 +40,16 @@
   </AppShell.Main>
   <AppShell.Sidebar
     side="right"
+    variant="attached"
     constraintPriority={0}
     constrainedPresentation="replace-main"
   >
-    <AppShell.Sidebar.Body>Inspector</AppShell.Sidebar.Body>
+    <AppShell.Sidebar.Body
+      ><AppShell.Sidebar.Section>
+        {#snippet heading()}<h2>Inspector</h2>{/snippet}
+        Inspector content
+      </AppShell.Sidebar.Section></AppShell.Sidebar.Body
+    >
   </AppShell.Sidebar>
   <AppShell.Sidebar
     side="right"
@@ -50,7 +66,12 @@
     suspendPanelIds={["overview"]}
     onDismiss={() => (surfaceOpen = false)}
   >
-    <AppShell.SurfaceLayer.Header>Reviews</AppShell.SurfaceLayer.Header>
-    <AppShell.SurfaceLayer.Body>Release reviews</AppShell.SurfaceLayer.Body>
+    <AppShell.SurfaceLayer.Header
+      >Reviews<AppShell.SurfaceLayer.Close /></AppShell.SurfaceLayer.Header
+    >
+    <AppShell.SurfaceLayer.Body scrollable={false}
+      >Release reviews</AppShell.SurfaceLayer.Body
+    >
+    <AppShell.SurfaceLayer.Footer>Review actions</AppShell.SurfaceLayer.Footer>
   </AppShell.SurfaceLayer>
 </AppShell.Root>

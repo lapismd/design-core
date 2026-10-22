@@ -1,5 +1,10 @@
 # Specification governance
 
+The opt-in Shell layout additions extend DC-SHELL-004 and register
+DC-SHELL-005 through DC-SHELL-007. The offline Shell guide is classified under
+Tooling and agent guidance as well as pointing to its canonical Shell contract;
+these documentation updates retain the existing authority and change map.
+
 The `forms/file-path-input` family maps to Forms Inputs, and its public export/catalog mappings select DC-FORM-049; declarative Settings composition maps to DC-WS-082.
 
 Panel visibility integration is governed by DC-SHA-053, DC-SHA-040 and DC-SHELL-003. The governed pointer examples cover the same native shared icon inside Workspace, AppShell, Sidebar and mobile controls; preview metadata stays visual-pending.

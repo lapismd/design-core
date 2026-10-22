@@ -10,8 +10,10 @@
   } from "./app-shell-controller.svelte.js";
   import { APP_SHELL_DEFAULT_SIDEBAR_WIDTH } from "./app-shell-controller.svelte.js";
   import AppShellMobilePanelSelector from "./AppShellMobilePanelSelector.svelte";
+  import { observeAttachedSurfaces } from "./app-shell-attached-surfaces.js";
   import "../shell.tokens.css";
   import "./AppShell.css";
+  import "./AppShell.extensions.css";
 
   let {
     ref = $bindable(null),
@@ -56,6 +58,7 @@
 
   let observedWidth = $state(Number.POSITIVE_INFINITY);
   let stageElement = $state<HTMLDivElement | null>(null);
+  let compositionElement = $state<HTMLDivElement | null>(null);
   let leftPanelHost = $state<HTMLDivElement | null>(null);
   let mainHost = $state<HTMLDivElement | null>(null);
   let rightPanelHost = $state<HTMLDivElement | null>(null);
@@ -166,11 +169,16 @@
   $effect(() => rootController.mobile.setPanelHost("left", leftPanelHost));
   $effect(() => rootController.mobile.setMainHost(mainHost));
   $effect(() => rootController.mobile.setPanelHost("right", rightPanelHost));
+  $effect(() => {
+    if (compositionElement) return observeAttachedSurfaces(compositionElement);
+  });
 
   onMount(() => {
     void rootController.restoreLayout();
     if (!ref || typeof ResizeObserver === "undefined") return;
+    let frame: number | undefined;
     const updateWidth = () => {
+      frame = undefined;
       if (ref) observedWidth = ref.getBoundingClientRect().width;
       if (desktopMinMainProbe) {
         const probeWidth = desktopMinMainProbe.getBoundingClientRect().width;
@@ -179,11 +187,16 @@
         }
       }
     };
-    const observer = new ResizeObserver(updateWidth);
+    const observer = new ResizeObserver(() => {
+      frame ??= requestAnimationFrame(updateWidth);
+    });
     observer.observe(ref);
     if (desktopMinMainProbe) observer.observe(desktopMinMainProbe);
     updateWidth();
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (frame !== undefined) cancelAnimationFrame(frame);
+    };
   });
 
   onDestroy(() => {
@@ -417,6 +430,7 @@
   ): void {
     if (
       resolvedMode === "mobile" &&
+      !rootController.activeSurfaceLayer &&
       mobileStage !== "main" &&
       event.key === "Escape" &&
       !event.defaultPrevented
@@ -567,6 +581,7 @@
   </div>
 
   <div
+    bind:this={compositionElement}
     class="ui-minimal-app-shell__composition"
     data-ui-component="app-shell"
     data-ui-part="composition"

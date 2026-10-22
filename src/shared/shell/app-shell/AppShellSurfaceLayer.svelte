@@ -4,6 +4,7 @@
   import { useAppShell } from "./app-shell-context.svelte.js";
   import { appShellTeleport } from "./app-shell-teleport.js";
   import type { AppShellSurfaceLayerMobilePlacement } from "./app-shell-controller.svelte.js";
+  import { setSurfaceLayerContext } from "./app-shell-surface-layer-context.svelte.js";
 
   let {
     ref = $bindable(null),
@@ -43,6 +44,14 @@
   } = $props();
 
   const controller = useAppShell();
+  setSurfaceLayerContext({
+    get dismissLabel() {
+      return dismissLabel;
+    },
+    dismiss() {
+      onDismiss?.();
+    },
+  });
   const token = Symbol("app-shell-surface-layer");
   let surfaceElement = $state<HTMLElement | null>(null);
   let inlineStart = $state(0);
@@ -75,6 +84,7 @@
     untrack(() => controller.activateSurfaceLayer(registration));
     queueMicrotask(() => surfaceElement?.focus({ preventScroll: true }));
 
+    let active = true;
     const handleKeydown = (event: KeyboardEvent) => {
       if (
         !dismissOnEscape ||
@@ -83,11 +93,17 @@
       ) {
         return;
       }
-      event.preventDefault();
-      onDismiss?.();
+      // Portalled popovers can register their document listener after the page.
+      // Let the whole event dispatch finish before claiming an unhandled Escape.
+      queueMicrotask(() => {
+        if (!active || event.defaultPrevented) return;
+        event.preventDefault();
+        onDismiss?.();
+      });
     };
     document.addEventListener("keydown", handleKeydown);
     return () => {
+      active = false;
       document.removeEventListener("keydown", handleKeydown);
       untrack(() => controller.deactivateSurfaceLayer(token));
       queueMicrotask(() => {

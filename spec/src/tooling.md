@@ -1,5 +1,10 @@
 # Tooling
 
+The offline Shell guide documents opt-in Topbar.Target placement, attached
+sidebars, shared rail sections and SurfaceLayer page chrome. Its examples point
+back to the [Shell contract](shell.md) under DC-SHELL-004, DC-SHELL-006 and
+DC-SHELL-007; applications retain controller and persistence ownership.
+
 Release qualification uses published Mira 0.1.0 and Visual Delta 0.0.9 with
 Playwright 1.62.1. Maintained CI workflows run functional, interaction,
 accessibility and package checks; no CI workflow runs screenshot comparison.

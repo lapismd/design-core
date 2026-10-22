@@ -1,0 +1,141 @@
+[data-ui-component="app-shell"][data-ui-part="sidebar"][data-variant="attached"] {
+  margin-inline: 0;
+  margin-block: var(--ui-shell-main-block-inset);
+  border: var(--ui-shell-main-border);
+  border-radius: var(--ui-shell-main-radius);
+  background: var(--background);
+  box-shadow: var(--ui-shell-attached-shadow);
+}
+
+[data-ui-part="sidebar"][data-variant="attached"]
+  > [data-ui-part="sidebar-header"] {
+  display: flex;
+  flex: none;
+  box-sizing: border-box;
+  min-height: var(--ui-shell-toolbar-height);
+  align-items: center;
+  gap: 0.5rem;
+  padding: var(--ui-shell-attached-header-padding);
+  border-block-end: var(--ui-shell-attached-divider);
+}
+
+[data-ui-part="sidebar"][data-variant="attached"]
+  > [data-ui-part="sidebar-footer"] {
+  padding: var(--ui-shell-attached-footer-padding);
+  border-block-start: var(--ui-shell-attached-divider);
+}
+
+[data-ui-part="sidebar"][data-variant="attached"][data-state="collapsed"][data-presentation="inline"]
+  > [data-ui-part="sidebar-header"] {
+  padding-inline: 0.25rem;
+  justify-content: center;
+}
+
+[data-ui-part="root"][data-display-mode="desktop"]
+  > [data-ui-part="composition"]
+  > :is(
+    [data-ui-part="main"],
+    [data-ui-part="sidebar"][data-variant="attached"]
+  ):is([data-joined-start], [data-joined-end]) {
+  box-shadow: var(--ui-shell-attached-shadow);
+}
+
+[data-ui-part="root"][data-display-mode="desktop"]
+  > [data-ui-part="composition"]
+  > :is(
+    [data-ui-part="main"],
+    [data-ui-part="sidebar"][data-variant="attached"]
+  )[data-joined-start] {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  border-inline-start: var(--ui-shell-attached-divider);
+}
+
+[data-ui-part="root"][data-display-mode="desktop"]
+  > [data-ui-part="composition"]
+  > :is(
+    [data-ui-part="main"],
+    [data-ui-part="sidebar"][data-variant="attached"]
+  )[data-joined-end] {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border-inline-end: 0;
+}
+
+[data-ui-part="root"][data-display-mode="desktop"]
+  > [data-ui-part="composition"]
+  > [data-ui-part="sidebar"][data-attached-outer-start] {
+  margin-inline-start: var(--ui-shell-main-block-inset);
+}
+
+[data-ui-part="root"][data-display-mode="desktop"]
+  > [data-ui-part="composition"]
+  > [data-ui-part="sidebar"][data-attached-outer-end] {
+  margin-inline-end: var(--ui-shell-main-block-inset);
+}
+
+[data-ui-component="app-shell"][data-ui-part="sidebar"][data-variant="attached"]:is(
+    [data-presentation="overlay"],
+    [data-presentation="replace-main"],
+    [data-presentation="mobile"]
+  ) {
+  margin: 0;
+}
+
+[data-ui-component="app-shell"][data-ui-part="sidebar-section"] {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--ui-shell-sidebar-section-gap, 0.5rem);
+  padding: var(--ui-shell-sidebar-section-padding, 0.75rem);
+  overflow-wrap: anywhere;
+}
+
+[data-ui-part="sidebar-section-header"] {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--ui-shell-sidebar-section-gap, 0.5rem);
+}
+
+[data-ui-part="sidebar-section-heading"] {
+  flex: 1;
+  min-width: 0;
+}
+
+[data-ui-part="sidebar-section-actions"] {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 0.25rem;
+  margin-inline-start: auto;
+}
+
+[data-ui-component="app-shell"][data-ui-part="surface-layer-surface"]:has(
+    > [data-ui-part="surface-layer-footer"]
+  ) {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+[data-ui-component="app-shell"][data-ui-part="surface-layer-footer"] {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: var(--ui-shell-surface-layer-footer-padding);
+  border-block-start: var(--ui-shell-surface-layer-footer-border);
+}
+
+[data-ui-part="root"][data-display-mode="mobile"]
+  [data-ui-part="surface-layer-surface"] {
+  inset-inline-start: var(
+    --ui-shell-surface-layer-mobile-main-start-allowance,
+    var(--ui-shell-surface-layer-main-start-allowance)
+  );
+  inset-inline-end: var(
+    --ui-shell-surface-layer-mobile-inline-end-inset,
+    var(--ui-shell-surface-layer-inline-end-inset)
+  );
+}

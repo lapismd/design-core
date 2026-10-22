@@ -6,10 +6,14 @@
 
   let {
     ref = $bindable(null),
+    scrollable = true,
     class: className,
     children,
     ...restProps
-  }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
+  }: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
+    /** Disable the shell viewport when a bounded editor or chat owns scrolling. */
+    scrollable?: boolean;
+  } = $props();
 
   useAppShell();
 </script>
@@ -23,10 +27,10 @@
   data-ui-component="app-shell"
   data-ui-part="surface-layer-body"
 >
-  <ScrollArea
-    type="auto"
-    class="ui-minimal-app-shell__surface-layer-scroll-area"
-  >
-    {@render children?.()}
-  </ScrollArea>
+  {#if scrollable}<ScrollArea
+      type="auto"
+      class="ui-minimal-app-shell__surface-layer-scroll-area"
+    >
+      {@render children?.()}
+    </ScrollArea>{:else}{@render children?.()}{/if}
 </div>

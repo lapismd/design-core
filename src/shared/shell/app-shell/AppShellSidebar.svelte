@@ -47,8 +47,8 @@
     resizable?: boolean;
     /** Whether nested `AppShell.Sidebar.Close` actions may close this sidebar. */
     closeable?: boolean;
-    /** Full-height outer chrome or the default transparent shell sidebar. */
-    variant?: "default" | "outer" | "rail";
+    /** Outer chrome, a transparent rail, or an opt-in surface attached to Main. */
+    variant?: "default" | "outer" | "rail" | "attached";
     /** Lower values leave inline desktop flow before higher values. */
     constraintPriority?: number;
     /** Presentation used when protected main width displaces this panel. */
@@ -257,7 +257,9 @@
       APP_SHELL_SIDEBAR_LAYOUT_SYNC_EVENT,
       syncLayout,
     );
+    let frame: number | undefined;
     const updateRenderedWidth = () => {
+      frame = undefined;
       renderedWidth = Math.round(sidebarElement.getBoundingClientRect().width);
     };
     updateRenderedWidth();
@@ -269,10 +271,13 @@
           syncLayout,
         );
     }
-    const observer = new ResizeObserver(updateRenderedWidth);
+    const observer = new ResizeObserver(() => {
+      frame ??= requestAnimationFrame(updateRenderedWidth);
+    });
     observer.observe(sidebarElement);
     return () => {
       observer.disconnect();
+      if (frame !== undefined) cancelAnimationFrame(frame);
       sidebarElement.removeEventListener(
         APP_SHELL_SIDEBAR_LAYOUT_SYNC_EVENT,
         syncLayout,
