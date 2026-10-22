@@ -3,7 +3,10 @@
   import { expect, userEvent, within } from "storybook/test";
   import MarkdownComposer from "./MarkdownComposer.svelte";
   import Fixture from "./MarkdownComposer.status.stories.fixture.svelte";
-  import { AttachedStatus } from "./MarkdownComposer.example-sources.js";
+  import {
+    AttachedStatus,
+    ErrorMetadata,
+  } from "./MarkdownComposer.example-sources.js";
   const { Story } = defineMeta({
     title: "Chat/Markdown Composer",
     component: MarkdownComposer,
@@ -27,6 +30,8 @@
     const frame = getComputedStyle(body);
     expect(parseFloat(frame.borderTopWidth)).toBeGreaterThan(0);
     expect(frame.backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+    if (banner.getAttribute("data-status") === "error")
+      expect(getComputedStyle(banner).color).not.toBe(frame.color);
     if (banner.getAttribute("data-position") === "top")
       expect(banner.getBoundingClientRect().bottom).toBeGreaterThan(
         body.getBoundingClientRect().top,
@@ -49,6 +54,15 @@
     await userEvent.click(canvas.getByRole("button", { name: "Clear status" }));
     expect(getComputedStyle(body).borderTopWidth).toBe("0px");
     expect(editor).toHaveTextContent("Retain this exact draft.");
+  }
+  async function verifyMetadata(
+    context: Parameters<typeof verifyAttachedStatus>[0],
+  ) {
+    expect(
+      context.canvas.getByRole("group", { name: "Draft metadata" }),
+    ).toBeVisible();
+    expect(context.canvas.getAllByRole("alert")).toHaveLength(1);
+    await verifyAttachedStatus(context);
   }
 </script>
 
@@ -75,4 +89,24 @@
 </Story>
 <Story name="Document attached top status" play={verifyAttachedStatus}>
   {#snippet template()}<Fixture position="top" />{/snippet}
+</Story>
+
+<Story
+  name="Document error metadata"
+  parameters={{
+    docs: { source: { code: ErrorMetadata, language: "tsx", type: "code" } },
+  }}
+  play={verifyMetadata}
+>
+  {#snippet template()}<Fixture kind="error" custom />{/snippet}
+</Story>
+<Story
+  name="Document error metadata dark"
+  parameters={{
+    docs: { source: { code: ErrorMetadata, language: "tsx", type: "code" } },
+  }}
+  globals={{ colorMode: "dark" }}
+  play={verifyMetadata}
+>
+  {#snippet template()}<Fixture kind="error" custom />{/snippet}
 </Story>

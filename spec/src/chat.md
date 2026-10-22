@@ -90,6 +90,8 @@ Hosts MAY attach status to either edge with `statusPosition` (`top` by default),
 including a bottom warning behind the framed composer. Document presentation
 MUST retain the same opaque framed body and joined banner while status is
 attached, restoring its ordinary prose surface when that status clears.
+`statusContent` MAY compose host metadata/actions inside that same shell, with
+custom content owning its accessible announcement semantics.
 
 Hosts MAY omit the inline keyboard hint with `showHint=false` when they render
 the instruction in their own fixed row; the default hint remains visible.

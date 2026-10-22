@@ -42,6 +42,10 @@
   --_status-tone: var(--chart-4);
 }
 [data-ui-component="composer-status-banner"][data-status="error"] {
+  color: var(
+    --ui-composer-status-foreground,
+    color-mix(in srgb, var(--destructive) 80%, var(--foreground))
+  );
   --_status-tone: var(--destructive);
   background: var(
     --ui-composer-status-background,

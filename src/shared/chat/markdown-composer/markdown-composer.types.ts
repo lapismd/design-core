@@ -50,6 +50,8 @@ export type MarkdownComposerProps = Omit<
   busy?: boolean;
   onStop?: () => void;
   status?: ComposerStatus;
+  /** Custom status content inside the shared shell; owns its announcement semantics. */
+  statusContent?: Snippet;
   /** Attached status edge; defaults to the original top placement. */
   statusPosition?: "top" | "bottom";
   submitLabel?: string;

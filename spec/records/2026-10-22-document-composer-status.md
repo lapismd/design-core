@@ -45,3 +45,30 @@ Prepared archive:
 `fc39a4692378eee58376482e20e0ccd5d687441a5878ca63888cad0755bf5b1f`.
 The package compiler prepared three stylesheets and audited 267, with zero
 remaining utility references. No registry publication was performed.
+
+## Error metadata and red presentation follow-up
+
+The user requested the same attached treatment in Chat Error while retaining
+MessageMetadata, then explicitly requested red errors. Composer and
+MarkdownComposer now expose an optional `statusContent` snippet inside the shared
+status shell. The banner omits its default announcement when custom content owns
+it, avoiding duplicate alerts. Error text uses a semantic destructive/foreground
+mix on the existing pale destructive background; ordinary warnings are unchanged.
+
+The five-case status regression initially reported two failures/three passes for
+non-red error text. With the snippet extension, seven cases passed; widening to
+Composer, MarkdownComposer and Transcript families exposed three contrast
+failures (4.04:1 on the pale error background). An 80% destructive/20% foreground
+text mix repairs the owning stylesheet without reducing the 4.5:1 threshold.
+The final six-file lane passes 42 cases, including a single alert for custom
+MessageMetadata, source/Classic switches and draft retention. Types, native CSS,
+spec validation and original-base spec-first remain required before the follow-up
+commit. New public examples document the metadata slot and its announcement owner.
+
+Final follow-up qualification passes: 42 cases across six source story files,
+zero types/warnings, native CSS, spec validation and original-base spec-first.
+The public prepared review archive retains source for consumer token auditing:
+`lapismd-design-core-0.6.0-agent-requests-error-footer-review.tgz`, SHA-256
+`622536ff52aff1f97b790336da779b9608b0f7a67b0902cade993be612044f29`.
+Preparation audits 267 styles with no remaining utility references. Publication
+and broad qualification remain deferred for review.

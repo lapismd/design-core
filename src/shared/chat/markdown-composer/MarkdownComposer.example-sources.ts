@@ -55,3 +55,15 @@ export const AttachedStatus = `<script lang="ts">
   dockActions showSendButton={false} showHint={false} onSubmit={() => {}}>
   {#snippet avatar()}<Avatar name="You" initials="YO" size="sm" decorative />{/snippet}
 </MarkdownComposer>`;
+
+export const ErrorMetadata = `<script lang="ts">
+  import { MarkdownComposer, MessageMetadata } from "@lapismd/design-core/chat";
+  let draft = $state("Retain this exact draft.");
+  const reason = "Delivery failed. Your draft is retained.";
+</script>
+<MarkdownComposer bind:value={draft} presentation="document" statusPosition="bottom"
+  status={{ type: "error", message: reason }} showSendButton={false}
+  onSubmit={() => {}}>
+  {#snippet statusContent()}<MessageMetadata sender="assistant" status="error"
+    statusLabel={reason} role="group" aria-label="Draft metadata" />{/snippet}
+</MarkdownComposer>`;
