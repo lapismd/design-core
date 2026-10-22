@@ -4,3 +4,5 @@ export const Sizes =
   '<script lang="ts">\n  import { TagList } from "@lapismd/design-core/shadcn/tag-list";\n  let selected = $state("");\n  const tags = [\n    { id: "active", label: "Active", active: true, onClick: () => { selected = "active"; } },\n    { id: "disabled", label: "Unavailable", disabled: true, tooltip: "Try again later." }\n  ];\n</script>\n<TagList {tags} size="sm" />\n<TagList {tags} size="md" />\n<TagList {tags} size="lg" />\n<output>{selected}</output>';
 export const Empty =
   '<script lang="ts">\n  import { TagList } from "@lapismd/design-core/shadcn/tag-list";\n</script>\n<TagList tags={[]} />';
+export const Warning =
+  '<script lang="ts">\n  import { TagList } from "@lapismd/design-core/shadcn/tag-list";\n</script>\n<TagList tags={[{ id: "divergent", label: "Divergent", tone: "warning" }]} />';

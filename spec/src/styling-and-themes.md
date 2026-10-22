@@ -83,7 +83,7 @@ currentColor, reduced-motion preferences and Button focus semantics.
 
 - Consumers may override documented semantic tokens without depending on private selectors.
 - Styling validation must distinguish source ownership from Storybook-only presentation.
-- Small tool-failure text, destructive menu actions and deletion counts MUST retain at least 4.5:1 contrast on Lapis light and dark surfaces, using existing destructive and foreground semantics that remain effective beside generic dependency slot styles.
+- Small warning-tag labels, tool-failure text, destructive menu actions and deletion counts MUST retain at least 4.5:1 contrast on Lapis light and dark surfaces, using existing destructive and foreground semantics that remain effective beside generic dependency slot styles.
 - Transcript links MUST use foreground semantics and underlines so a primary fill colour cannot reduce text contrast on dark surfaces.
 
 ## DC-CSS-005 — No utility leakage

@@ -126,3 +126,23 @@
 >
   {#snippet template()}<TagList tags={[]} />{/snippet}
 </Story>
+<Story
+  name="Warning contrast dark"
+  globals={{ colorMode: "dark", theme: "lapis" }}
+  parameters={{
+    docs: { source: { code: sources.Warning, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvasElement }) => {
+    await waitFor(() =>
+      expect(
+        canvasElement.querySelector(
+          '[data-ui-part="row"] [data-tag-id="divergent"]',
+        ),
+      ).toBeVisible(),
+    );
+  }}
+>
+  {#snippet template()}<TagList
+      tags={[{ id: "divergent", label: "Divergent", tone: "warning" }]}
+    />{/snippet}
+</Story>

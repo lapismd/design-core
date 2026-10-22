@@ -27,6 +27,8 @@ Data and feedback primitives communicate state without taking ownership of consu
 
 **Requirement.** Tag List MUST present ordered, host-owned tags in one compact responsive row, composing existing Badge/Button, Tooltip, Popover and ScrollArea primitives.
 
+Warning-tag labels MUST retain at least 4.5:1 contrast on Lapis light and dark surfaces; warning colour remains on the border and background.
+
 ### Acceptance details
 
 - Tags MUST retain stable IDs, labels, optional component icons, variants, semantic tones, descriptions, disabled state, controlled active state and host callbacks; passive tags MUST remain text and disabled actions MUST never fire.
