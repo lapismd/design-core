@@ -9,9 +9,9 @@
     popover,
   }: {
     reference: ChatReference;
-    onActivate?: (reference: ChatReference) => void;
-    onRemove?: () => void;
-    popover?: Snippet<[ChatReference]>;
+    onActivate?: ((reference: ChatReference) => void) | undefined;
+    onRemove?: (() => void) | undefined;
+    popover?: Snippet<[ChatReference]> | undefined;
   } = $props();
 </script>
 
@@ -28,16 +28,18 @@
   {#snippet preview()}{@render popover?.(reference)}{/snippet}
   <ReferenceChip
     label={reference.label}
-    description={reference.description}
-    icon={reference.icon}
-    avatar={reference.avatar}
-    href={reference.href}
+    {...reference.description === undefined
+      ? {}
+      : { description: reference.description }}
+    {...reference.icon ? { icon: reference.icon } : {}}
+    {...reference.avatar ? { avatar: reference.avatar } : {}}
+    {...reference.href === undefined ? {} : { href: reference.href }}
     appearance={reference.appearance ??
       (onRemove || ["person", "agent"].includes(reference.kind)
         ? "mention"
         : "reference")}
-    {onRemove}
-    preview={popover ? preview : undefined}
+    {...onRemove ? { onRemove } : {}}
+    {...popover ? { preview } : {}}
     {...onActivate
       ? {
           onClick: (event: MouseEvent) => {

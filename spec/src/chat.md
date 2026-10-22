@@ -221,6 +221,8 @@ Classic composer, ignore pointer input and disappear at the end of content.
 Nested file disclosures MUST lead with the decorative FileTypeIcon resolved from
 the exact captured path, unless the host overrides it. Reasoning MUST retain a
 distinct lightbulb icon unless overridden by the host.
+Reactive presentation bindings MUST support cleared optional host values under
+strict exact-optional-property checking without changing message actions.
 
 Host-marked error or warning notices MUST remain inline with a tinted semantic
 surface and circular warning icon. Captured text stays immutable, and trailing
@@ -349,6 +351,10 @@ empty or pending active drafts omit Queue. Idle Send availability is unchanged.
 ## DC-CHAT-016 — Inline references
 
 **Requirement.** Chat references MUST share InlineReference/ReferenceChip rendering across composer widgets, Markdown preview and transcript readers through host-supplied codecs and activation callbacks.
+
+Absent chip and suggestion fields MUST be omitted at strict public boundaries;
+reactive optional activation and profile values MAY clear to undefined without
+weakening exact-optional-property checking.
 
 ### Acceptance details
 

@@ -78,9 +78,11 @@ export function chatReferenceTriggers(
         return results.map((reference) => ({
           id: reference.id,
           label: reference.label,
-          description: reference.description,
-          avatar: reference.avatar,
-          icon: reference.icon,
+          ...(reference.description === undefined
+            ? {}
+            : { description: reference.description }),
+          ...(reference.avatar ? { avatar: reference.avatar } : {}),
+          ...(reference.icon ? { icon: reference.icon } : {}),
         }));
       },
       onSelect: (item) => {

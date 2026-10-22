@@ -143,6 +143,22 @@ The archive is `lapismd-design-core-0.6.0-agent-icons-reference-review.tgz`, SHA
 `6f864a5ad9a77fb45255a8df9ceea10ec436ab2c39dfd9814bbec630f7b4baba`.
 Source package preparation audits 265 styles with zero utility references.
 
+The combined full quality lane passed root, shell-consumer and filter-consumer
+types but found five strict optional-property errors at the source-consumer
+boundary in the new reference code. InlineReference now omits absent chip fields,
+suggestions omit absent metadata, and reactive optional callbacks/profile/context
+values can clear without disabling exact optional checking. The exact
+`pnpm check:source-consumer` rerun reports zero errors and warnings. After the
+repair, all 904 units and all 32 affected reference/chat interaction/axe stories
+pass. Specification checks and focused formatting pass.
+
+The corrected prepared archive is
+`lapismd-design-core-0.6.0-agent-icons-reference-review-v2.tgz`, SHA-256
+`f0e8e1ce07be0f3495734b468983b668c639dcc27f19588243f058233872bdbf`.
+It supersedes the earlier combined archive for consumer acceptance. Package
+preparation and browser suites run sequentially because the temporary package
+tsconfig can invalidate an active Vite client.
+
 ## Review gate
 
 Storybook runs at http://localhost:9409 in the isolated source workspace.
