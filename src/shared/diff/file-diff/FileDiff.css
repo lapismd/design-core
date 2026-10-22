@@ -127,6 +127,12 @@
   padding: 0.125rem 0.25rem;
 }
 
+.ui-diff-file-diff__fold-row {
+  position: relative;
+  display: flex;
+  min-width: 0;
+}
+
 .ui-diff-file-diff__scroll,
 .ui-diff-file-diff__pane-scroll {
   flex: 1 1 auto;

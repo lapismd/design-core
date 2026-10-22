@@ -552,6 +552,26 @@
     await expect(canvas.queryAllByText(diffText("retained 32"))).toHaveLength(
       0,
     );
+    const viewport = paneViewport(left, "left")!;
+    expect(viewport.scrollWidth).toBeGreaterThan(viewport.clientWidth);
+    viewport.scrollLeft = 48;
+    viewport.dispatchEvent(new Event("scroll"));
+    await waitFor(() =>
+      expect(paneViewport(right, "right")!.scrollLeft).toBe(48),
+    );
+    for (const pane of [left, right]) {
+      const fold = pane.querySelector<HTMLElement>(
+        "[data-ui-part='collapsed-context']",
+      )!;
+      const paneBox = pane.getBoundingClientRect();
+      const foldBox = fold.getBoundingClientRect();
+      const front = pane.ownerDocument.elementFromPoint(
+        paneBox.left + 20,
+        foldBox.top + 16,
+      );
+      expect(front).toHaveClass("ui-diff-file-diff__gutter");
+      expect(cssAlpha(getComputedStyle(front!).backgroundColor)).toBe(1);
+    }
   }}
 >
   {#snippet template()}

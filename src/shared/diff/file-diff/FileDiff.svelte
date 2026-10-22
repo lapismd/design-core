@@ -372,7 +372,11 @@
                   )}
                 {:else}
                   <div data-ui-part="collapsed-context">
-                    {@render collapsedControls(item.block)}
+                    <div class="ui-diff-file-diff__fold-row">
+                      <span class="ui-diff-file-diff__gutter" aria-hidden="true"
+                      ></span>
+                      {@render collapsedControls(item.block)}
+                    </div>
                     {#if item.block.expanded}
                       {#each pairRowsForSplit(item.block.rows) as pair (pair.key)}
                         {@render splitCell(
