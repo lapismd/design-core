@@ -161,6 +161,11 @@ body reclaims the sidebar width.
 
 ## Mobile presentation
 
+Nested `AppShell.Root` instances resolve presentation independently. A completed
+screen inside an application Main may use mobile lanes while the outer shell
+keeps desktop navigation, or the reverse. Mode, drag and minimum-main selectors
+stay within their owning root; no consumer CSS reset is required.
+
 Mobile mode keeps one composition and presents it as left, main, and right
 stages. Outer sidebars and registered body sidebars join the matching edge
 lane. When an edge has more than one panel, an internal shadcn Select chooses
