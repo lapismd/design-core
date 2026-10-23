@@ -35,6 +35,10 @@
   border: 0;
   border-radius: 0;
 }
+.ui-markdown-composer[data-presentation="document"]
+  .ui-markdown-composer__editor.mira {
+  min-height: var(--ui-markdown-composer-document-min-height, 6rem);
+}
 .ui-markdown-composer__reply[data-ui-component="ai-chat-composer-drawer"] {
   padding-block-start: 0.625rem;
   background: color-mix(in srgb, var(--foreground) 4%, var(--background));

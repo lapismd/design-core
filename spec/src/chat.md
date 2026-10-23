@@ -102,6 +102,9 @@ Editor content MUST retain stock Mira typography, indentation, spacing and focus
 styles. Chat MAY remove only note-column centering; shell geometry and custom
 reference/suggestion components remain owned by Chat.
 The composer MUST disable Mira's line-number extension through `lineNumbers=false`.
+The document editor host MUST honor `--ui-markdown-composer-document-min-height`
+(default `6rem`) independently of framed height, without overriding Mira content
+styles.
 The shell owns its compact outer editor inset (0.25rem in Document, 0.5rem in
 Classic) and bounds the Classic scroll viewport without overriding content styles.
 
