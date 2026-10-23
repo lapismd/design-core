@@ -61,7 +61,7 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 ### Acceptance details
 
 - The catalog MUST demonstrate supported states through the public `@lapismd/design-core/workspace/core` boundary without introducing a second runtime contract.
-- Application workspace state transitions and consumer-adapter intents MUST remain typed and independent of consumer persistence, including Explorer's three activation intents, a consumer-controlled user-created-tab activation policy, and the DC-WS-061 default for the unsynchronized renderer.
+- Application workspace state transitions and consumer-adapter intents MUST remain typed and independent of consumer persistence, including Explorer's three activation intents with visible retryable UI open failures and preserved programmatic rejections, a consumer-controlled user-created-tab activation policy, and the DC-WS-061 default for the unsynchronized renderer.
 - Programmatic tab creation MUST render immediately, and implicit leaf opens MUST target the active or first main pane when a sidebar or dock has focus.
 - Imperative view registration MUST expose live context chrome before mounting and MUST react when instance-owned chrome becomes available.
 
