@@ -1,5 +1,10 @@
 # Workspace / Framework
 
+Explorer pointer rejection follows DC-WS-033 in [Panels](panels.md). Its complete
+source and pointer qualification is recorded in
+`spec/records/2026-10-23-explorer-pointer-qualification.md`; consumer native
+acceptance and visual approval remain separate from source qualification.
+
 Workspace sidebar and bottom-panel visibility controls compose PanelToggle under DC-SHA-053 with its default ghost button styling, fixed standard icon and hover/focus preview. Controller actions, drag exclusions, hint identity and mobile reveal state remain owned by Workspace; glyph consolidation introduces no new layout controller.
 
 The Workspace App Shell compound export retains explicit readonly types for
