@@ -55,6 +55,7 @@ test("busy-agent queues and footer retain host-owned cancellation and stop state
   await expect(
     page.getByRole("textbox", { name: "Message", exact: true }),
   ).toHaveText("");
+  await queue.getByRole("article").first().hover();
   await queue
     .getByRole("button", {
       name: "Cancel queued message for Assistant",
@@ -166,7 +167,7 @@ test("full document footer transitions between running, queueing and acknowledge
   await expect(queue).toBeEnabled();
 });
 
-test("quoted list rows retain compact spacing and the host foreground", async ({
+test("quoted list rows retain stock Mira spacing and the host foreground", async ({
   page,
 }) => {
   await open(page, "quoted-lists-and-typography");
@@ -180,17 +181,16 @@ test("quoted list rows retain compact spacing and the host foreground", async ({
       return {
         y: el.getBoundingClientRect().y,
         height: el.getBoundingClientRect().height,
-        leading: parseFloat(css.lineHeight),
-        margin: css.marginBlockStart,
         padding: css.paddingBlockStart,
         whiteSpace: css.whiteSpace,
       };
     }),
   );
-  expect(layout[1]!.y - layout[0]!.y).toBeLessThanOrEqual(
-    layout[0]!.leading + 1,
-  );
-  expect(layout[0]!.padding).toBe("0px");
+  // Mira owns inline typography; compare actual line boxes for gap/overlap.
+  const gap = layout[1]!.y - layout[0]!.y - layout[0]!.height;
+  expect(gap).toBeGreaterThanOrEqual(-1);
+  expect(gap).toBeLessThanOrEqual(1);
+  expect(layout[0]!.padding).toBe("1.05px");
   expect(layout[0]!.whiteSpace).toBe("normal");
 });
 
@@ -299,6 +299,11 @@ test("unknown queue outcomes remain visible after a host review request", async 
   page,
 }) => {
   await open(page, "queue-needs-attention");
+  await page
+    .getByRole("region", { name: "Queued messages" })
+    .getByRole("article")
+    .first()
+    .hover();
   await page
     .getByRole("button", {
       name: "Check message status for Assistant",

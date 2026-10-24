@@ -83,8 +83,10 @@ Hosts MAY supply a supplementary `drawer` snippet inside the Composer shell;
 submission remain blocked. Reply context and host drawer content compose without
 remounting the editor or changing the draft.
 
-Catalog collapse assertions await the closed drawer layout while retaining
-their existing geometry bounds and deadlines.
+Catalog acceptance measures the declared editor-host height and stock Mira
+typography, reveals hover actions before pointer activation and compares actual
+rendered line boxes. Collapse assertions await the closed drawer layout while
+retaining their existing geometry bounds and deadlines.
 
 Hosts MAY attach status to either edge with `statusPosition` (`top` by default),
 including a bottom warning behind the framed composer. Document presentation
