@@ -1,5 +1,10 @@
 # Tooling
 
+The repository agent guide requires a release workspace inventory and a
+Dependabot check before every push under DC-GOV-007. Dependency consolidation
+uses one separate verified pull request per repository; release evidence records
+workspace dispositions and links superseded requests to the merged replacement.
+
 The offline Shell guide documents opt-in Topbar.Target placement, attached
 sidebars, shared rail sections and SurfaceLayer page chrome. Its examples point
 back to the [Shell contract](shell.md) under DC-SHELL-004, DC-SHELL-006 and

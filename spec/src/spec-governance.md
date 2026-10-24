@@ -154,6 +154,7 @@ Published CLI script arguments are passed directly through pnpm without an extra
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
 - Agent testing guidance must document nonvisual release gates.
+- Agent release guidance must require workspace and Dependabot reconciliation before publication.
 
 ## DC-GOV-008 — Generated artifacts
 
