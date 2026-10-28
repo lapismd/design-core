@@ -1,5 +1,50 @@
 # @lapismd/design-core
 
+## 0.7.0
+
+### Minor Changes
+
+- [#33](https://github.com/lapismd/design-core/pull/33) [`1ec9aec`](https://github.com/lapismd/design-core/commit/1ec9aecb9127770fe20c42f1614b742712575c7b) Thanks [@stevejuma](https://github.com/stevejuma)! - Add the themed Radio Group foundation for single-choice forms, with native CSS,
+  public styling tokens and accessible keyboard interaction. Retain compound style
+  ownership and semantic FieldLabel relationships during registry conversion.
+
+- [#33](https://github.com/lapismd/design-core/pull/33) [`7e19dba`](https://github.com/lapismd/design-core/commit/7e19dbac457068094af452634575ffa3c7380260) Thanks [@stevejuma](https://github.com/stevejuma)! - Support custom statusContent in Composer and MarkdownComposer so hosts can compose shared message metadata inside the attached footer. Custom content owns its accessible announcement, and error banners use semantic red text and icons on a tinted background. Dark themes use a lighter semantic red for readable error contrast; shared MessageMetadata inherits the attached footer typography so it matches ordinary composer status feedback.
+
+- [#33](https://github.com/lapismd/design-core/pull/33) [`acf9a53`](https://github.com/lapismd/design-core/commit/acf9a53c935d91233893f29b78da135557100019) Thanks [@stevejuma](https://github.com/stevejuma)! - Add shared source-preserving chat reference rendering and host codecs, inline comment suggestions, and configurable transcript actions using MessageActions. Keep icon-only comment actions clear of tool controls and omit wholly unavailable hover bars.
+
+  Retain jj-store's filled author chip in preview and composer, optional host
+  profile hover cards, and source-preserving composer removal.
+
+- [#33](https://github.com/lapismd/design-core/pull/33) [`ce47a52`](https://github.com/lapismd/design-core/commit/ce47a523ab90bf83e1aa74bb2239d3526095b835) Thanks [@stevejuma](https://github.com/stevejuma)! - Add a CommentComposer actions slot and keep transcript hover controls in the same row before the formatting toggle. Hidden controls reserve no width, and visible controls stay within the comment without covering its text.
+
+- [#33](https://github.com/lapismd/design-core/pull/33) [`19bd7f8`](https://github.com/lapismd/design-core/commit/19bd7f8ded14d6eade213f97c417ebd69b79c5a5) Thanks [@stevejuma](https://github.com/stevejuma)! - Add a right-aligned formatting toggle to CommentComposer using shared Markdown actions and public Mira commands. Support semantic destructive disclosure tones and compact trailing tool/disclosure spacing in Transcript.
+
+- [#33](https://github.com/lapismd/design-core/pull/33) [`b70c26f`](https://github.com/lapismd/design-core/commit/b70c26fcc7a393040a86cce9143f5f43466ad46d) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep comment formatting controls at the far right without hidden hover-action width, align toolbar glyphs with the text, and include the shared emoji picker with optional host palettes and custom emoji serialization.
+
+- [#33](https://github.com/lapismd/design-core/pull/33) [`0620055`](https://github.com/lapismd/design-core/commit/0620055347d8c6aa3efc7a35b1163976d5f0f407) Thanks [@stevejuma](https://github.com/stevejuma)! - Extend diff collections with host content, intrinsic sizing, continuous sections, complete header disclosure, unchanged-context folding, conflict indicators and aggregate directory statistics. Preserve selected frames and opaque sticky headers.
+
+  Isolate nested AppShell responsive styles, support Column Canvas fit/default-width toggling, honor document composer host minima, retain retry after rejected Explorer opens, and improve warning-tag and themed search-placeholder contrast.
+
+- [#33](https://github.com/lapismd/design-core/pull/33) [`625f2da`](https://github.com/lapismd/design-core/commit/625f2da80084a76e51625846a1c4cfe1088bd185) Thanks [@stevejuma](https://github.com/stevejuma)! - Add a filename-based FileTypeIcon with xs, s, md and lg sizes, native styling tokens and a curated Material artwork subset covering developer and personal-vault files. Use it in default file listings, diff and merge headers, captured chat files, normalized tool read/edit/search results and default Explorer file rows while preserving host icon overrides, status indicators and exact navigation targets.
+
+- [#33](https://github.com/lapismd/design-core/pull/33) [`4bca9ab`](https://github.com/lapismd/design-core/commit/4bca9ab6e4d06d05fcd1a9bdc9bcc517d5945230) Thanks [@stevejuma](https://github.com/stevejuma)! - Add opt-in responsive topbar placement, attached sidebar surfaces and shared rail
+  sections, plus overlay-page footer and close controls with child-owned scrolling
+  and responsive inset tokens. Retain existing shell defaults and persistence.
+  Coalesce shell geometry measurements to prevent ResizeObserver loop diagnostics.
+
+### Patch Changes
+
+- [#33](https://github.com/lapismd/design-core/pull/33) [`6fe8ef0`](https://github.com/lapismd/design-core/commit/6fe8ef0c5ca5650c86320261fd5beacc2460ced3) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep Avatar image failures scoped to their original image request. Late failures no longer read destroyed parent state or replace a newer image with initials.
+
+- [#33](https://github.com/lapismd/design-core/pull/33) [`525b4bb`](https://github.com/lapismd/design-core/commit/525b4bb98aa1f29db98c13ed52e3496688933d2f) Thanks [@stevejuma](https://github.com/stevejuma)! - Retain the captured comment thread while its Markdown quote is being removed.
+
+- [#33](https://github.com/lapismd/design-core/pull/33) [`1c49b33`](https://github.com/lapismd/design-core/commit/1c49b33cf81a008b30b3cdcd0ff5d174d9d1ec4e) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep the Document MarkdownComposer input framed while an attached status is present, so warning/error banners join the same opaque body as Classic view. Restore the prose surface when feedback clears without remounting the editor or losing drafts.
+
+- [#33](https://github.com/lapismd/design-core/pull/33) [`36110ae`](https://github.com/lapismd/design-core/commit/36110ae43a965ed590dba8e795c15e06149060eb) Thanks [@stevejuma](https://github.com/stevejuma)! - Make expanded transcript comment quotes share their enclosing context background.
+  Request host removal on plain Backspace in an already empty editable comment,
+  retaining the editor when deleting its final character and protecting blocked or
+  composing editors.
+
 ## 0.6.0
 
 ### Minor Changes
