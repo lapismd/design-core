@@ -265,7 +265,9 @@ async function checkTranscriptAdditions(page) {
     .click();
   const queue = scope.locator('[data-ui-component="message-queue"]');
   assert.equal(await queue.getByRole("article").count(), 1);
-  await queue
+  const queued = queue.getByRole("article").first();
+  await queued.hover();
+  await queued
     .getByRole("button", {
       name: "Cancel queued message for Assistant",
       exact: true,

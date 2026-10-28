@@ -26,8 +26,10 @@ Link Preview acceptance retains the complete rendered host and title name.
 
 The packed public-runtime fixture exercises acknowledged versioned comment edits
 and the docked MarkdownComposer toolbar across teardown/remount, alongside
-Transcript timestamps. These checks run in both themes and development/production
-consumers without Tailwind tooling; fixtures remain outside the published package.
+Transcript timestamps. MessageQueue cancellation reveals hover actions before
+activation and keeps those controls clear of the author avatar. These checks run
+in both themes and development/production consumers without Tailwind tooling;
+fixtures remain outside the published package.
 The same fixture checks compact AvatarGroup composition, aligned member/overflow
 sizing, participant tooltips and keyboard activation of the separate reply button
 without nested focus targets.
