@@ -78,6 +78,9 @@
 }
 .ui-transcript-comment-links {
   position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  z-index: 1;
   display: flex;
   flex: 0 0 auto;
   gap: 0.125rem;
@@ -87,6 +90,8 @@
 .ui-transcript-comment-card:hover .ui-transcript-comment-links,
 .ui-transcript-comment-card:focus-within .ui-transcript-comment-links {
   position: static;
+  inset: auto;
+  z-index: auto;
   opacity: 1;
   pointer-events: auto;
 }

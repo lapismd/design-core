@@ -313,7 +313,7 @@ empty or pending active drafts omit Queue. Idle Send availability is unchanged.
 ### Acceptance details
 
 - TranscriptFooter MUST select Send, Queue or Stop from host-supplied busy/content/pending state, use jj-store's paper-plane icon for idle Send, upward arrow for Queue and square for Stop, preserve accessible names and keyboard activation, and accept custom actions, workspace content and controls without executing agent operations.
-- MessageQueue MUST retain exact immutable submission text/comments, recipients, cancellation/error/unknown states and expansion; callbacks request host actions and MUST NOT remove entries or infer delivery.
+- MessageQueue MUST retain exact immutable submission text/comments, recipients, cancellation/error/unknown states and expansion; callbacks request host actions and MUST NOT remove entries or infer delivery; hover cancel controls MUST reveal before activation and stay clear of the author avatar hit target.
 - Transcript examples MUST show busy-agent message queues, comments-only submission, retained/rejected drafts, extensible footer controls and reaction addition/toggling including custom emoji and disabled controls; the full conversation MUST demonstrate a host-acknowledged stop returning to idle and a new idle submission starting a busy response.
 - Footer and reactions MUST work with externally owned TranscriptController instances; MarkdownComposer MUST allow its send control to be omitted when the fixed footer owns sending, without losing editor identity or formatting controls.
 
