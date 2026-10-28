@@ -7,7 +7,9 @@ Every runtime dependency uses a valid semver version or range, including the
 exact qualified Vaul Svelte prerelease rather than a floating distribution tag.
 
 Root development tooling consumes `@lapismd/spec-validator` at `^0.2.0` from
-npm. That pin stays outside the published package graph.
+npm. That pin stays outside the published package graph. The release test
+script also covers the packed npm environment helper; that helper is not part
+of the published package graph.
 
 The additive `./forms/file-path-input` export and Forms barrel expose FilePathInput and its props; Workspace Settings exports quantity and filePicker metadata without changing existing persisted field kinds.
 

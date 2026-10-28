@@ -3,7 +3,8 @@
 Release 0.7.0 qualification consumes registry Mira `~0.1.1` and Visual Delta `0.0.9`,
 without temporary archive resolution. Catalog tooling uses patched Storybook
 10.6.3 and Vite 6.4.5 ranges. CI remains nonvisual; screenshot comparison is an
-explicit local command only.
+explicit local command only. Release tests cover the helper that drops
+pnpm-only `npm_config_*` values before packed npm commands.
 The Drawer runtime pins the already qualified `vaul-svelte@1.0.0-next.7` preview
 instead of its floating `next` tag; its resolved runtime graph is unchanged.
 

@@ -129,7 +129,10 @@ The staged compiler configuration keeps declaration output inside the archive
 fixture. `packages:pack` checks every exported runtime and type target, then
 starts a fresh Vite/Svelte consumer and exercises Button and reactive CodeEditor
 without consumer aliases or dependency overrides. The release artifact job
-installs Chromium before this check.
+installs Chromium before this check. Packed `npm` commands drop pnpm-only
+`npm_config_*` values (`verify-deps-before-run`, `npm-globalconfig`,
+`overrides`, `link-workspace-packages`, and `_jsr-registry`) so the consumer
+install does not warn about unknown npm configuration.
 The clean packed production graph is audited independently of workspace
 overrides; complete evidence is retained under `.release/` and blocks the gate
 unless it meets the explicit KaTeX policy in DC-PKG-009.
