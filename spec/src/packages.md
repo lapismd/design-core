@@ -28,7 +28,7 @@ The focused `shadcn/tag-list` family exports TagList and its item/props types.
 Strict source consumers cover the same existing wildcard export boundary.
 
 The app-component promotion batch adds the Chat entry point and qualifies
-published Mira `~0.1.0`, including its public TableReader contract.
+published Mira `~0.1.1`, including its public TableReader contract and `lineNumbers` opt-out.
 The Chat entry point also exports MarkdownComposer, MessageActions and the
 shared ReactionBar while retaining existing AI compatibility imports. CommentComposer
 and its neutral source, props and focus/selection handle are also exported from Chat.
