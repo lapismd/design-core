@@ -1,5 +1,8 @@
 <script lang="ts">
+  import * as Alert from "@lapismd/design-core/shadcn/alert";
+  import type { ExplorerOpenFileOptions } from "./types.js";
   import { Button } from "@lapismd/design-core/shadcn/button";
+  import { FileTypeIcon } from "@lapismd/design-core/shadcn/file-type-icon";
   import { Input } from "@lapismd/design-core/shadcn/input";
   import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
   import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
@@ -20,6 +23,9 @@
   } = $props();
 
   let rootEl = $state<HTMLElement | null>(null);
+  let openError = $state<string | null>(null);
+  let openAttempt = 0;
+  let mounted = false;
   let sortMenu = $state<WorkspaceMenu | null>(null);
   let sortMenuOpen = $state(false);
   let flashTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -31,8 +37,10 @@
   const rootMenu = $derived(controller.createItemMenu(controller.root));
 
   onMount(() => {
+    mounted = true;
     const stop = controller.start();
     return () => {
+      mounted = false;
       if (flashTimeout !== null) clearTimeout(flashTimeout);
       if (fileOpenTimeout !== null) clearTimeout(fileOpenTimeout);
       stop();
@@ -107,12 +115,26 @@
     fileOpenTimeout = null;
   }
 
+  async function requestFileOpen(
+    path: string,
+    options: ExplorerOpenFileOptions,
+  ) {
+    const attempt = ++openAttempt;
+    openError = null;
+    try {
+      await controller.openFile(path, options);
+    } catch (error) {
+      if (mounted && attempt === openAttempt)
+        openError = error instanceof Error ? error.message : String(error);
+    }
+  }
+
   function openFileFromPointer(event: MouseEvent, node: ExplorerNode) {
     controller.setSelectedPath(node.path);
     (event.currentTarget as HTMLElement).focus({ preventScroll: true });
     if (event.ctrlKey || event.metaKey || event.button === 1) {
       cancelPendingFileOpen();
-      void controller.openFile(node.path, { disposition: "new-tab" });
+      void requestFileOpen(node.path, { disposition: "new-tab" });
       return;
     }
     if (event.detail > 1) return;
@@ -120,9 +142,7 @@
     const path = node.path;
     fileOpenTimeout = setTimeout(() => {
       fileOpenTimeout = null;
-      void Promise.resolve(
-        controller.openFile(path, { disposition: "current" }),
-      ).finally(() => {
+      void requestFileOpen(path, { disposition: "current" }).then(() => {
         requestAnimationFrame(() => {
           focusExplorerRow(path);
           setTimeout(() => focusExplorerRow(path), 0);
@@ -135,7 +155,7 @@
     if (event.ctrlKey || event.metaKey || event.button !== 0) return;
     event.preventDefault();
     cancelPendingFileOpen();
-    void controller.openFile(node.path, {
+    void requestFileOpen(node.path, {
       disposition: "reveal-or-new-tab",
     });
   }
@@ -233,6 +253,10 @@
 {#snippet Tree({ node }: { node: ExplorerNode })}
   {@const menu = controller.createItemMenu(node)}
   {#if node.kind === "file"}
+    {@const icon = controller.customIconFor(
+      node,
+      controller.editingPath === node.path,
+    )}
     <li class="ui-workspace-explorer__item">
       {#if controller.editingPath === node.path}
         <div
@@ -242,10 +266,13 @@
         >
           <span class="ui-workspace-explorer__disclosure" aria-hidden="true"
           ></span>
-          <WorkspaceIcon
-            name={controller.iconFor(node, true)}
-            class="ui-workspace-explorer__type-icon"
-          />
+          {#if icon}<WorkspaceIcon
+              name={icon}
+              class="ui-workspace-explorer__type-icon"
+            />{:else}<FileTypeIcon
+              path={node.path}
+              class="ui-workspace-explorer__type-icon"
+            />{/if}
           <span class="ui-workspace-explorer__rename" use:focusRename>
             <Input
               class="ui-workspace-explorer__rename-input"
@@ -307,10 +334,13 @@
                   class="ui-workspace-explorer__disclosure"
                   aria-hidden="true"
                 ></span>
-                <WorkspaceIcon
-                  name={controller.iconFor(node, false)}
-                  class="ui-workspace-explorer__type-icon"
-                />
+                {#if icon}<WorkspaceIcon
+                    name={icon}
+                    class="ui-workspace-explorer__type-icon"
+                  />{:else}<FileTypeIcon
+                    path={node.path}
+                    class="ui-workspace-explorer__type-icon"
+                  />{/if}
                 <span class="ui-workspace-explorer__title">{node.name}</span>
               </button>
             {/snippet}
@@ -611,6 +641,13 @@
       </div>
     </Tooltip.Provider>
   </div>
+
+  {#if openError}
+    <Alert.Root variant="destructive">
+      <Alert.Title>Unable to open file</Alert.Title>
+      <Alert.Description>{openError}</Alert.Description>
+    </Alert.Root>
+  {/if}
 
   <ScrollArea class="ui-workspace-explorer__scroll">
     <ContextMenu.Root>

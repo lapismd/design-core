@@ -175,6 +175,17 @@ const recipes: Record<string, ComponentRecipe> = {
     attrs: { role: "alert", "data-slot": "alert" },
     shotSelector: '[data-ui-component="alert"]',
   }),
+  "radio-group": lightCompound("radio-group", "Shadcn/Forms/Radio Group", {
+    tag: "button",
+    attrs: {
+      type: "button",
+      role: "radio",
+      "data-slot": "radio-group-item",
+      "aria-checked": "false",
+    },
+    shotSelector:
+      '[data-ui-component="radio-group"][data-ui-part="radio-group-item"]',
+  }),
   checkbox: lightCompound("checkbox", "Shadcn/Forms/Checkbox", {
     tag: "button",
     attrs: {

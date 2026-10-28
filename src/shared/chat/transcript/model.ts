@@ -79,6 +79,8 @@ export interface TranscriptTurn {
 }
 export interface TranscriptItem {
   id: string;
+  /** Captured message outcome. Actions remain explicit metadataSupplement hooks. */
+  status?: (ComposerStatus & { label: string }) | undefined;
   /** Captured application context shown before this message, separate from authored text. */
   sentContext?: SentContextData | undefined;
   kind: "message" | "tools" | "context" | "reasoning" | "handoff";
@@ -87,6 +89,8 @@ export interface TranscriptItem {
   label: string;
   icon?: Component | undefined;
   role?: "user" | "assistant" | undefined;
+  /** Presentation of a captured disclosure outcome, independent of execution errors. */
+  tone?: "destructive" | undefined;
   turn?: TranscriptTurn | undefined;
   author?: TranscriptAuthor | undefined;
   blocks: readonly TranscriptBlock[];
@@ -175,6 +179,21 @@ export interface TranscriptSubmissionResult {
   error?: string | undefined;
 }
 export interface TranscriptHost {
+  commentComposer?: Pick<
+    import("../comment-composer/comment-composer.types.js").CommentComposerProps,
+    | "references"
+    | "triggers"
+    | "editorExtensions"
+    | "emojis"
+    | "customEmojis"
+    | "emojiText"
+  >;
+  /** Per-message actions; opaque IDs and execution remain host-owned. */
+  getMessageActions?: (
+    messageId: string,
+    block: TranscriptBlock,
+  ) => readonly import("../message-actions/message-actions.types.js").MessageAction[];
+  actionTooltips?: boolean;
   items: readonly TranscriptItem[];
   author?: TranscriptAuthor | undefined;
   canComment?: boolean | undefined;

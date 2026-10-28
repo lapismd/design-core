@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { tick } from "svelte";
+  import { getContext } from "svelte";
+  import {
+    presentationContext,
+    type TranscriptPresentationContext,
+  } from "./presentation-context.js";
+  import { tick, type Snippet } from "svelte";
   import CommentComposer from "../comment-composer/CommentComposer.svelte";
   import type { CommentComposerHandle } from "../comment-composer/comment-composer.types.js";
   import type { TranscriptController } from "./comments.svelte.js";
@@ -9,11 +14,13 @@
     thread,
     comment,
     location,
+    actions,
   }: {
     state: TranscriptController;
     thread: TranscriptCommentThread;
     comment: TranscriptComment;
     location: "inline" | "queue";
+    actions?: Snippet;
   } = $props();
   let focusedFor = "";
   let handle = $state<CommentComposerHandle | null>(null);
@@ -43,6 +50,9 @@
       });
     }
   });
+  const presentation = getContext<TranscriptPresentationContext | undefined>(
+    presentationContext,
+  );
 </script>
 
 <div
@@ -52,8 +62,10 @@
   onfocusin={() => controller.activate(thread, comment, location)}
 >
   <CommentComposer
+    {...presentation?.commentComposer ?? controller.props().commentComposer}
     bind:handle
     presentation="bare"
+    {...actions ? { actions } : {}}
     value={comment.text}
     onChange={(text) => controller.edit(comment.id, text)}
     onSelectionChange={(selection) =>

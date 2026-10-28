@@ -3,8 +3,21 @@
   import { MiraCodeEditor, type MiraCodeEditorHandle } from "@lapismd/mira";
   import { Prec } from "@codemirror/state";
   import { EditorView } from "@codemirror/view";
+  import { markdown } from "@codemirror/lang-markdown";
+  import {
+    applyMiraMarkdownAction,
+    type MiraMarkdownActionId,
+  } from "@lapismd/mira/core";
+  import { formatActions } from "../markdown-composer/format-actions.js";
+  import { composerSuggestions } from "../markdown-composer/composer-suggestions.js";
+  import { referenceEditor } from "../inline-reference/reference-widget.js";
   import CornerUpLeftIcon from "@lucide/svelte/icons/corner-up-left";
   import XIcon from "@lucide/svelte/icons/x";
+  import TypeIcon from "@lucide/svelte/icons/type";
+  import {
+    EmojiPicker,
+    type CustomEmoji,
+  } from "../../shadcn/emoji-picker/index.js";
   import { Button } from "../../shadcn/button/index.js";
   import { ScrollArea } from "../../shadcn/scroll-area/index.js";
   import { shouldSubmitComposerKey } from "../../ai/composer-behavior.js";
@@ -24,6 +37,7 @@
     sourceContent,
     presentation = "card",
     avatar,
+    actions,
     onChange,
     onSelectionChange,
     onSubmit,
@@ -37,10 +51,17 @@
     disabled = false,
     pending = false,
     readOnly = false,
+    references,
+    triggers = [],
+    editorExtensions = [],
+    emojis,
+    customEmojis = [],
+    emojiText,
     class: className,
     ...restProps
   }: CommentComposerProps = $props();
   let editor = $state<MiraCodeEditorHandle | undefined>();
+  let formattingOpen = $state(false);
   const blocked = $derived(disabled || pending || readOnly);
   const publicHandle: CommentComposerHandle = {
     focus: () => editor?.focus(),
@@ -57,7 +78,53 @@
     value = next;
     onChange?.(next);
   }
-  const extensions = [
+  function addEmoji(value: string, custom?: CustomEmoji) {
+    if (blocked) return;
+    editor?.replaceSelection(
+      emojiText?.(value, custom) ?? (custom ? `:${custom.shortcode}:` : value),
+    );
+    editor?.focus();
+  }
+  function format(action: MiraMarkdownActionId) {
+    const view = editor?.getView();
+    if (blocked || !view) return;
+    applyMiraMarkdownAction(view, action);
+    editor?.focus();
+  }
+  function removeEmptyDraft(event: KeyboardEvent) {
+    const view = editor?.getView();
+    if (
+      event.key !== "Backspace" ||
+      event.defaultPrevented ||
+      event.repeat ||
+      event.altKey ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.shiftKey ||
+      event.isComposing ||
+      event.keyCode === 229 ||
+      blocked ||
+      !view ||
+      view.composing ||
+      view.state.doc.length !== 0 ||
+      !view.contentDOM.contains(event.target as Node) ||
+      !(onRemove || onDismiss)
+    )
+      return;
+    event.preventDefault();
+    (onRemove ?? onDismiss)?.();
+  }
+  const suggestions = composerSuggestions({
+    triggers: () => triggers,
+    disabled: () => blocked,
+  });
+  const suggestionExtensions =
+    suggestions.codeMirror?.({ mode: "source", readonly: false }) ?? [];
+  const extensions = $derived([
+    markdown(),
+    suggestionExtensions,
+    ...(references ? [referenceEditor(references)] : []),
+    editorExtensions,
     EditorView.theme({
       "&.cm-editor": {
         fontSize: "var(--ui-comment-composer-font-size, 1rem)",
@@ -111,7 +178,7 @@
         },
       }),
     ),
-  ];
+  ]);
 </script>
 
 <div
@@ -168,7 +235,7 @@
     {#if avatar}<div class="ui-comment-composer__avatar">
         {@render avatar()}
       </div>{/if}
-    <div class="ui-comment-composer__input">
+    <div class="ui-comment-composer__input" onkeydowncapture={removeEmptyDraft}>
       <MiraCodeEditor
         bind:this={editor}
         {value}
@@ -194,17 +261,58 @@
         lineNumbers={false}
         spellcheck
       />
-    </div>
-    {#if onRemove}<div class="ui-comment-composer__actions">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-xs"
-          disabled={blocked}
-          aria-label="Remove comment"
-          title="Remove comment"
-          onclick={onRemove}><XIcon aria-hidden="true" /></Button
+      {#if formattingOpen}
+        <div
+          class="ui-comment-composer__toolbar"
+          role="group"
+          aria-label="Comment formatting"
         >
+          {#each formatActions as action (action.id)}
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-xs"
+              disabled={blocked}
+              aria-label={action.label}
+              title={action.label}
+              onmousedown={(event) => event.preventDefault()}
+              onclick={() => format(action.id)}
+              ><action.Icon aria-hidden="true" /></Button
+            >
+          {/each}
+          <EmojiPicker
+            {...emojis === undefined ? {} : { emojis }}
+            {customEmojis}
+            disabled={blocked}
+            triggerLabel="Add emoji to comment"
+            onSelect={addEmoji}
+          />
+        </div>
+      {/if}
+    </div>
+    {#if actions || onRemove}<div class="ui-comment-composer__actions">
+        {@render actions?.()}
+        {#if onRemove}<Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            disabled={blocked}
+            aria-label="Remove comment"
+            title="Remove comment"
+            onclick={onRemove}><XIcon aria-hidden="true" /></Button
+          >{/if}
       </div>{/if}
+    <Button
+      type="button"
+      variant={formattingOpen ? "secondary" : "ghost"}
+      size="icon-xs"
+      disabled={blocked}
+      aria-label="Comment formatting options"
+      title="Formatting options"
+      aria-pressed={formattingOpen}
+      onmousedown={(event) => event.preventDefault()}
+      onclick={() => (formattingOpen = !formattingOpen)}
+      ><TypeIcon aria-hidden="true" /></Button
+    >
   </div>
 </div>

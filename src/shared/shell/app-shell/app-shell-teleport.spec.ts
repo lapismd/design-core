@@ -60,4 +60,31 @@ describe("appShellTeleport", () => {
     expect(root.contains(node)).toBe(false);
     expect(target.contains(node)).toBe(false);
   });
+
+  it("preserves the mounted input, draft, selection and focus across fallback moves", () => {
+    const { root, node, target } = createTeleportFixture();
+    const input = document.createElement("input");
+    node.append(input);
+    input.value = "Retained draft";
+    input.focus();
+    input.setSelectionRange(2, 6);
+    const action = appShellTeleport(node, { enabled: true, target });
+    expect(document.activeElement).toBe(input);
+    expect(input.value).toBe("Retained draft");
+    expect([input.selectionStart, input.selectionEnd]).toEqual([2, 6]);
+    action.update({ enabled: false, target: null });
+    expect(node.parentElement).toBe(root);
+    expect(document.activeElement).toBe(input);
+    expect([input.selectionStart, input.selectionEnd]).toEqual([2, 6]);
+    action.destroy();
+  });
+
+  it("does not move the node again when its destination has not changed", () => {
+    const { node, target } = createTeleportFixture();
+    const action = appShellTeleport(node, { enabled: true, target });
+    const insert = vi.spyOn(target, "insertBefore");
+    action.update({ enabled: true, target });
+    expect(insert).not.toHaveBeenCalled();
+    action.destroy();
+  });
 });

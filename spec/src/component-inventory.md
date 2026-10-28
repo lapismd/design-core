@@ -24,9 +24,13 @@ exactly one owning shared layer before it becomes a public export.
 
 Generic primitives in `src/shared/shadcn/`:
 
+`file-type-icon/` owns filename-based Material file icons, exported through
+`@lapismd/design-core/shadcn/file-type-icon` (DC-SHA-064). Diff File Listing
+composes it without changing folder icons, row geometry or host-owned state.
+
 accordion, alert, alert-dialog, badge, button, card, code, code-block,
 collapsible, column-canvas, command, command-view, dialog, dropdown-menu, emoji-picker, empty, field, panel-toggle,
-input, input-group, label, hover-card, popover, resizable, scroll-area, select, separator,
+radio-group, input, input-group, label, hover-card, popover, resizable, scroll-area, select, separator,
 sheet, sidebar, skeleton, spinner, switch, swipe-item, tabs, textarea, toggle,
 toggle-group, tooltip, progress, slider, context-menu, drawer
 
@@ -147,6 +151,7 @@ network or host-store dependency. Storybook: `AI/...`.
   typing, and unread primitives. Every export is marked `@experimental`;
   import from `@lapismd/design-core/ai/experimental`.
 
+- `content-view-toggle/` owns the shared icon-only formatted/source control (DC-AI-027), used by tool detail and host inspectors; `/chat` re-exports it.
 - `tool-call-detail/` owns generic and rich tool details: formatted/raw shell, file read, file edit and search presentation. `/chat` re-exports this family. Provider adapters remain host-owned.
 
 Import: `@lapismd/design-core/ai`, `@lapismd/design-core/ai/chat`, and
@@ -176,6 +181,12 @@ guidance, tokens, and the package barrel):
   `Sidebar.Footer`, `Sidebar.Toggle`, `Sidebar.Close`, `Main`, `Toolbar`, and
   `Body`, `Body.Content`, `Body.Sidebar`, `Body.Toggle`, `SurfaceLayer`,
   `SurfaceLayer.Header`, and `SurfaceLayer.Body` surfaces
+- Opt-in responsive `Topbar` with a neutral `Topbar.Target`, retaining one
+  mounted set of controls and explicit native top placement
+- Opt-in `Sidebar variant="attached"` with derived logical joined edges,
+  independent rail siblings and a token-driven `Sidebar.Section`
+- `SurfaceLayer.Footer`, contextual `SurfaceLayer.Close`, optional child-owned
+  body scrolling and responsive inset tokens; still one active layer per root
 - Viewport-height root with overrideable structural geometry tokens
 - Independent reactive left and right expanded/collapsed/closed and width
   controllers
@@ -292,6 +303,11 @@ component-owned native CSS and host-owned display data. QuantityInput is a Forms
 input with exact unit conversion. MarkdownComposer trigger suggestions extend
 the existing Chat family; ThreadPanel adds nested human discussion presentation.
 These families contain no Community identities, repository models or transport.
+
+InlineReference is a shared Chat family composing ReferenceChip for person,
+agent and entity references and a compact custom-emoji presentation. Public Mira
+extensions and CodeMirror widgets share the renderer; host codecs own entity
+lookup, serialization and navigation. No application routing or dispatch is owned here.
 
 FilePathInput is a shared Forms primitive adapted from JJ Store, with optional
 host-owned file selection and no filesystem authority. Workspace Settings may

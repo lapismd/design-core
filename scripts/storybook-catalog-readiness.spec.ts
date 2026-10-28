@@ -48,6 +48,18 @@ describe("catalog client preparation", () => {
     await f.probe(repaired);
     expect(repaired.statusCode).toBe(200);
   });
+  it("refuses readiness until the pointer-test AppShell story can compile", async () => {
+    const f = fixture();
+    f.server.transformRequest.mockImplementation(async (entry) =>
+      entry === "/src/shared/shell/app-shell/AppShell.stories.svelte"
+        ? null
+        : { code: "export {};" },
+    );
+    const response = f.response();
+    await f.probe(response);
+    expect(response.statusCode).toBe(503);
+    expect(f.server.waitForRequestsIdle).not.toHaveBeenCalled();
+  });
   it("does not report ready before client imports settle", async () => {
     const f = fixture();
     let finish!: () => void;

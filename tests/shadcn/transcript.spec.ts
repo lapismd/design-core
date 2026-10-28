@@ -115,6 +115,7 @@ test("comments-only acknowledgement retains delivered text and uses source navig
     .first();
   await expect(input).toBeVisible();
   await input.fill("A second comment");
+  await page.locator(".ui-comment-composer__card").last().hover();
   await page
     .getByRole("button", {
       name: "Go to source: Implementation summary",
@@ -365,8 +366,19 @@ test("rendered comments retain jj-store spacing without an extra Markdown inset"
   await page.screenshot({ path: "/tmp/dc-transcript-padding-after.png" });
   const preview = content.locator(".ui-chat-markdown-preview");
   await expect(preview).toHaveCSS("padding", "0px");
-  await expect(preview).toHaveCSS("line-height", "21.7px");
+  await expect(preview).toHaveCSS("line-height", "21px");
   await expect(preview).toHaveCSS("font-size", "14px");
+  const stockGap = await preview.evaluate(
+    (node) => getComputedStyle(node).rowGap,
+  );
+  const stockParagraphMargins = await preview
+    .locator("p")
+    .evaluateAll((nodes) =>
+      nodes.map((node) => ({
+        start: getComputedStyle(node).marginBlockStart,
+        end: getComputedStyle(node).marginBlockEnd,
+      })),
+    );
   // Exercise actual published Mira defaults arriving after the shared family CSS.
   const styles = pathToFileURL(
     createRequire(import.meta.url).resolve("@lapismd/mira/styles.css"),
@@ -379,16 +391,16 @@ test("rendered comments retain jj-store spacing without an extra Markdown inset"
   });
   await expect(content).toHaveCSS("padding", "0px");
   await expect(preview).toHaveCSS("padding", "0px");
-  await expect(preview).toHaveCSS("row-gap", "7.2px");
+  await expect(preview).toHaveCSS("row-gap", stockGap);
 
-  await expect(preview.locator("p").first()).toHaveCSS(
-    "margin-block-start",
-    "0px",
-  );
-  await expect(preview.locator("p").last()).toHaveCSS(
-    "margin-block-end",
-    "0px",
-  );
+  expect(
+    await preview.locator("p").evaluateAll((nodes) =>
+      nodes.map((node) => ({
+        start: getComputedStyle(node).marginBlockStart,
+        end: getComputedStyle(node).marginBlockEnd,
+      })),
+    ),
+  ).toEqual(stockParagraphMargins);
 });
 
 test("embedded comments inherit the host palette across Mira reader boundaries", async ({
@@ -434,6 +446,7 @@ test("closing a host inspector restores navigation to the mounted transcript", a
   await page
     .getByRole("button", { name: "Close source inspector", exact: true })
     .click();
+  await page.locator(".ui-comment-composer__card").last().hover();
   await page
     .getByRole("button", {
       name: "Go to source: Implementation summary",

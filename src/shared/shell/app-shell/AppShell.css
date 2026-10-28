@@ -35,20 +35,34 @@
   > .ui-minimal-app-shell__mobile-stage
   > .ui-minimal-app-shell__mobile-track,
 .ui-minimal-app-shell[data-display-mode="desktop"]
-  .ui-minimal-app-shell__mobile-lane,
+  > .ui-minimal-app-shell__mobile-stage
+  > .ui-minimal-app-shell__mobile-track
+  > :is(
+    .ui-minimal-app-shell__mobile-lane,
+    .ui-minimal-app-shell__mobile-main-lane
+  ),
 .ui-minimal-app-shell[data-display-mode="desktop"]
-  .ui-minimal-app-shell__mobile-panel-host,
-.ui-minimal-app-shell[data-display-mode="desktop"]
-  .ui-minimal-app-shell__mobile-main-lane,
-.ui-minimal-app-shell[data-display-mode="desktop"]
-  .ui-minimal-app-shell__mobile-main-host {
+  > .ui-minimal-app-shell__mobile-stage
+  > .ui-minimal-app-shell__mobile-track
+  > :is(
+    .ui-minimal-app-shell__mobile-lane,
+    .ui-minimal-app-shell__mobile-main-lane
+  )
+  > :is(
+    .ui-minimal-app-shell__mobile-panel-host,
+    .ui-minimal-app-shell__mobile-main-host
+  ) {
   display: contents;
 }
 
 .ui-minimal-app-shell[data-display-mode="desktop"]
-  .ui-minimal-app-shell__mobile-panel-selector,
+  > .ui-minimal-app-shell__mobile-stage
+  > .ui-minimal-app-shell__mobile-track
+  > .ui-minimal-app-shell__mobile-lane
+  > .ui-minimal-app-shell__mobile-panel-selector,
 .ui-minimal-app-shell[data-display-mode="desktop"]
-  .ui-minimal-app-shell__mobile-stage-dismiss {
+  > .ui-minimal-app-shell__mobile-stage
+  > .ui-minimal-app-shell__mobile-stage-dismiss {
   display: none;
 }
 
@@ -349,7 +363,10 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.625rem 0.75rem 0.625rem 1rem;
+  padding: var(
+    --ui-shell-surface-layer-header-padding,
+    0.625rem 0.75rem 0.625rem 1rem
+  );
 }
 
 .ui-minimal-app-shell__surface-layer-body {
@@ -365,7 +382,9 @@
   min-height: 0;
 }
 
-.ui-minimal-app-shell[data-display-mode="desktop"] .ui-minimal-app-shell__main {
+.ui-minimal-app-shell[data-display-mode="desktop"]
+  > .ui-minimal-app-shell__composition
+  > .ui-minimal-app-shell__main {
   min-width: min(100%, var(--ui-shell-desktop-min-main-width));
 }
 
@@ -553,7 +572,8 @@
 }
 
 .ui-minimal-app-shell[data-mobile-dragging]
-  .ui-minimal-app-shell__mobile-track {
+  > .ui-minimal-app-shell__mobile-stage
+  > .ui-minimal-app-shell__mobile-track {
   transition: none;
 }
 
@@ -610,7 +630,6 @@
   pointer-events: none;
 }
 
-.ui-minimal-app-shell[data-display-mode="mobile"] .ui-minimal-app-shell__main,
 .ui-minimal-app-shell__mobile-main-host > .ui-minimal-app-shell__main {
   width: auto;
   height: auto;

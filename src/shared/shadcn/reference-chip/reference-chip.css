@@ -20,6 +20,10 @@
   font: inherit;
   cursor: pointer;
 }
+.ui-reference-chip[data-ui-component="reference-chip"]
+  a.ui-reference-chip__target[href] {
+  text-decoration: none;
+}
 .ui-reference-chip__target > [data-ui-component="badge"],
 .ui-reference-chip__target[data-ui-component="badge"] {
   max-width: 100%;
@@ -72,4 +76,63 @@
 }
 .ui-reference-chip[data-disabled="true"] button {
   cursor: default;
+}
+.ui-reference-chip__preview[hidden] {
+  display: none;
+}
+
+/* Adapted from jj-store CommunityChip/CommunityComposerRemovableChip. */
+.ui-reference-chip[data-appearance="mention"] {
+  align-items: stretch;
+  gap: 0;
+  height: 1lh;
+  vertical-align: baseline;
+  border-radius: var(
+    --ui-reference-mention-radius,
+    calc(var(--radius) - 0.2rem)
+  );
+  background: var(--ui-reference-mention-background, var(--secondary));
+  color: var(--secondary-foreground);
+}
+.ui-reference-chip[data-appearance="mention"] .ui-reference-chip__target {
+  align-items: baseline;
+  border-radius: inherit;
+  overflow: hidden;
+  color: inherit;
+  font-weight: var(--ui-reference-mention-font-weight, 600);
+  text-decoration: none;
+}
+.ui-reference-chip[data-appearance="mention"] .ui-reference-chip__label {
+  color: inherit;
+  font-weight: var(--ui-reference-mention-font-weight, 600);
+}
+.ui-reference-chip[data-appearance="mention"] [data-ui-component="badge"] {
+  align-items: baseline;
+  height: 100%;
+  gap: 0.22em;
+  border: 0;
+  border-radius: inherit;
+  padding: var(--ui-reference-mention-padding, 0 0.25em);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: var(--ui-reference-mention-font-weight, 600);
+  line-height: inherit;
+}
+.ui-reference-chip[data-appearance="mention"] [data-ui-component="avatar"] {
+  --ui-avatar-size: var(--ui-reference-mention-avatar-size, 1.25em);
+  align-self: center;
+}
+.ui-reference-chip[data-appearance="mention"] .ui-reference-chip__remove {
+  width: 1.2em;
+  min-height: 100%;
+  flex: none;
+  padding: 0 0.12em 0 0.16em;
+  border-radius: 0;
+  box-shadow: inset 1px 0 0 color-mix(in srgb, currentcolor 16%, transparent);
+  color: inherit;
+}
+.ui-reference-chip[data-appearance="mention"] .ui-reference-chip__remove svg {
+  width: 0.72em;
+  height: 0.72em;
 }

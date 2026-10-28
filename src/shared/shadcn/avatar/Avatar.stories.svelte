@@ -1,4 +1,5 @@
 <script module lang="ts">
+  import { tick } from "svelte";
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor } from "storybook/test";
   import {
@@ -16,6 +17,7 @@
     AuthorCards,
   } from "./AvatarGroup.example-sources.js";
   import { Basic, Contrast } from "./Avatar.example-sources.js";
+  import ImageLifecycleFixture from "./AvatarImageLifecycle.stories.fixture.svelte";
   const groupSizes = ["xs", "sm", "md", "lg", "xl", "2xl", "3xl"] as const;
   const groupPeople = [
     {
@@ -45,6 +47,53 @@
   let repliesOpened = $state(false);
   let showAuthorCards = $state(true);
 </script>
+
+<Story
+  name="Replacement image survives stale failure"
+  tags={["!autodocs", "visual-pending"]}
+  play={async ({ canvas }) => {
+    const old = canvas
+      .getByRole("img", { name: "Ada Lovelace" })
+      .querySelector("img")!;
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Replace image" }),
+    );
+    await waitFor(() =>
+      expect(
+        canvas
+          .getByRole("img", { name: "Ada Lovelace" })
+          .querySelector("img")
+          ?.getAttribute("src"),
+      ).toContain("#replacement"),
+    );
+    old.dispatchEvent(new Event("error"));
+    await tick();
+    await waitFor(() =>
+      expect(
+        canvas.getByRole("img", { name: "Ada Lovelace" }).querySelector("img"),
+      ).not.toBeNull(),
+    );
+  }}>{#snippet template()}<ImageLifecycleFixture />{/snippet}</Story
+>
+
+<Story
+  name="Late image failure after removal"
+  tags={["!autodocs", "visual-pending"]}
+  play={async ({ canvas }) => {
+    const image = canvas
+      .getByRole("img", { name: "Ada Lovelace" })
+      .querySelector("img")!;
+    await userEvent.click(canvas.getByRole("button", { name: "Toggle image" }));
+    await expect(
+      canvas.queryByRole("img", { name: "Ada Lovelace" }),
+    ).toBeNull();
+    image.dispatchEvent(new Event("error"));
+    await userEvent.click(canvas.getByRole("button", { name: "Toggle image" }));
+    await expect(
+      canvas.getByRole("img", { name: "Ada Lovelace" }).querySelector("img"),
+    ).not.toBeNull();
+  }}>{#snippet template()}<ImageLifecycleFixture />{/snippet}</Story
+>
 
 <Story
   name="Images emoji and initials"

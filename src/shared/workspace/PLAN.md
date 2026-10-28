@@ -1078,3 +1078,10 @@ broad matrices in favour of focused desktop archive acceptance. Evidence:
 rounded-window clearance and the centred status region. Source/consumer proof
 is recorded in `spec/records/2026-10-19-rounded-footer-and-xml-readers.md`;
 original native/release/visual gates remain unchanged.
+
+2026-10-23 follow-up: Explorer pointer failures now remain visible and retryable
+without changing programmatic rejection. Source qualification passes 914 units,
+972 Storybook interaction/accessibility cases across fresh process shards,
+all 16 workspace pointer cases, public consumer types and static build. Evidence:
+`spec/records/2026-10-23-explorer-pointer-qualification.md`. Desktop native
+acceptance and visual review remain separate.

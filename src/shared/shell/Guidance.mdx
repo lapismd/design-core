@@ -490,6 +490,27 @@ of the underlying main or side lane.
 
 ## Ownership boundary
 
+Opt in to joined document panes with `Sidebar variant="attached"`, placing them
+next to Main before an independent outer `variant="rail"`. The shell derives
+exposed logical edges from effective visible panels; keep their controllers,
+priorities, toggles and persistence unchanged. `Sidebar.Section` supplies shared
+spacing for host-owned headings, actions and content.
+
+For browser chrome that belongs in the body on narrow viewports, bind
+`Topbar.Target` as the first child of Main and pass that reference as
+`Topbar mobileTarget`, with the existing `controller` and
+`mobilePlacement="body"`. Keep the target outside Body and other scrolling
+content. Native hosts retain `mobilePlacement="top"`. Do not render a second
+copy of the application controls at the mobile breakpoint.
+
+Complete overlay pages through `SurfaceLayer.Header`, `Body`, `Footer` and
+`Close`. The existing single-layer owner retains dismissal and route policy.
+Choose `Body scrollable={false}` only when the bounded child owns scrolling.
+
+See **Attached sidebars and independent outer rail**, **Responsive topbar body
+target**, **Native topbar stays above the body**, and **Overlay page header body
+and footer** in **Shell/App Shell**.
+
 The shell owns:
 
 - column and body-region geometry;

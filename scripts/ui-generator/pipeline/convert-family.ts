@@ -170,7 +170,14 @@ function pickParityExtraction(
     recipe.parity.shotSelector?.match(/data-ui-part="([^"]+)"/)?.[1] ?? null;
   if (partFromSelector) {
     const part = family.parts.find((p) => p.part === partFromSelector);
-    if (part) return part.extraction;
+    if (part) {
+      // Compound files also contain styled descendants. The parity root must
+      // receive only its own classes, exactly as the converted semantic root.
+      const site = part.sites.find((site) => site.part === partFromSelector);
+      return site && part.extraction.kind !== "tv"
+        ? { ...part.extraction, baseClasses: site.baseClasses }
+        : part.extraction;
+    }
   }
   const root =
     family.parts.find((p) => p.part === family.component) ?? family.parts[0]!;

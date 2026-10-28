@@ -48,11 +48,11 @@
     "test:storybook": "vitest run --project storybook",
     "test:storybook:watch": "vitest --project storybook",
     "spec:build": "spec-validator build",
-    "spec:check": "spec-validator check",
+    "spec:check": "pnpm icons:check && spec-validator check",
     "spec:first": "spec-validator first",
     "spec:index": "spec-validator index",
     "spec:search": "spec-validator search",
-    "spec:validate": "spec-validator validate",
+    "spec:validate": "pnpm icons:check && spec-validator validate",
     "spec:serve": "spec-validator serve",
     "test:workspace:pointer": "node scripts/with-storybook-env.mjs playwright test -c playwright.workspace.config.ts",
     "test:shell:pointer": "node scripts/with-storybook-env.mjs playwright test -c playwright.shell.config.ts",
@@ -108,7 +108,9 @@
     "checks:release": "pnpm spec:check && pnpm check && pnpm check:no-tailwind && pnpm test:unit && pnpm test:release && pnpm build-storybook && pnpm workspace:visual:audit",
     "checks": "pnpm checks:nonvisual",
     "checks:visual": "pnpm checks:nonvisual && pnpm test:visual",
-    "filter:grammar": "node scripts/generate-filter-query-parser.mjs"
+    "filter:grammar": "node scripts/generate-filter-query-parser.mjs",
+    "icons:generate": "node scripts/generate-file-type-icons.mjs",
+    "icons:check": "node scripts/generate-file-type-icons.mjs --check"
   },
   "peerDependencies": {
     "svelte": "^5.0.0"
@@ -136,7 +138,7 @@
     "@iconify-json/lucide": "^1.2.63",
     "@iconify/utils": "^2.3.0",
     "@internationalized/date": "^3.12.2",
-    "@lapismd/mira": "~0.1.0",
+    "@lapismd/mira": "~0.1.1",
     "@lezer/common": "^1.2.3",
     "@lezer/highlight": "^1.2.3",
     "@lezer/lr": "^1.4.2",
@@ -159,7 +161,7 @@
   "devDependencies": {
     "@changesets/changelog-github": "^1.0.1",
     "@changesets/cli": "^3.0.3",
-    "@lapismd/spec-validator": "^0.1.4",
+    "@lapismd/spec-validator": "^0.2.0",
     "@lapismd/storybook-addon-visual-delta": "0.0.9",
     "@lezer/generator": "^1.7.0",
     "@playwright/test": "1.62.1",
@@ -186,13 +188,14 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/semver": "^7.7.1",
-    "@vitest/browser": "^4.1.11",
-    "@vitest/browser-playwright": "^4.1.11",
+    "@vitest/browser": "^4.1.12",
+    "@vitest/browser-playwright": "^4.1.12",
     "aria-query": "5.3.2",
     "execa": "^10.0.0",
     "highlight.js": "^11.11.1",
     "jsdom": "^29.1.1",
     "magic-string": "^1.0.0",
+    "material-file-icons": "2.4.0",
     "pixelmatch": "^7.2.0",
     "playwright": "^1.62.1",
     "pngjs": "^7.0.0",
@@ -217,8 +220,8 @@
     "tw-animate-css": "^1.4.0",
     "typescript": "^5.7.2",
     "vite": "^6.4.5",
-    "vitest": "^4.1.11",
-    "zod": "^4.4.3"
+    "vitest": "^4.1.12",
+    "zod": "^4.6.6"
   },
   "exports": {
     "./shadcn/*": "./src/shared/shadcn/*/index.ts",
@@ -323,5 +326,17 @@
     "./forms/avatar-picker": "./src/shared/forms/avatar-picker/index.ts",
     "./forms/quantity-input": "./src/shared/forms/quantity-input/index.ts",
     "./forms/file-path-input": "./src/shared/forms/file-path-input/index.ts"
+  },
+  "pnpm": {
+    "overrides": {
+      "undici": "7.30.1",
+      "valibot": ">=1.4.2",
+      "katex": ">=0.18.2"
+    },
+    "auditConfig": {
+      "ignoreGhsas": [
+        "GHSA-gcqx-w48m-w2h4"
+      ]
+    }
   }
 }

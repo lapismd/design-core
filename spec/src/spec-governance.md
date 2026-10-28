@@ -1,5 +1,14 @@
 # Specification governance
 
+The opt-in Shell layout additions extend DC-SHELL-004 and register
+DC-SHELL-005 through DC-SHELL-007. The offline Shell guide is classified under
+Tooling and agent guidance as well as pointing to its canonical Shell contract;
+these documentation updates retain the existing authority and change map.
+
+Radio Group family source, generated provenance and catalog artifacts map to
+Shadcn Forms under DC-SHA-065. Its converter keeps root and descendant style
+sites separate and maps external FieldLabel markers to semantic slots.
+
 The `forms/file-path-input` family maps to Forms Inputs, and its public export/catalog mappings select DC-FORM-049; declarative Settings composition maps to DC-WS-082.
 
 Panel visibility integration is governed by DC-SHA-053, DC-SHA-040 and DC-SHELL-003. The governed pointer examples cover the same native shared icon inside Workspace, AppShell, Sidebar and mobile controls; preview metadata stays visual-pending.
@@ -102,6 +111,9 @@ regressions; both entries map to one shared implementation.
 
 **Requirement.** The Spec-first classification family MUST fail closed when a production or tooling change lacks the owning canonical chapter in the same local or CI diff.
 
+New catalog controls MUST add one public-surface mapping and one owning chapter
+coverage row, alongside their canonical requirement and verification row.
+
 ### Acceptance details
 
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
@@ -142,6 +154,7 @@ Published CLI script arguments are passed directly through pnpm without an extra
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
 - Agent testing guidance must document nonvisual release gates.
+- Agent release guidance must require workspace and Dependabot reconciliation before publication.
 
 ## DC-GOV-008 — Generated artifacts
 
@@ -178,3 +191,8 @@ Published CLI script arguments are passed directly through pnpm without an extra
 ## Community component boundaries
 
 Community presentation families map to shadcn/data-and-feedback; QuantityInput maps to forms/inputs and composer suggestions and ThreadPanel map to Chat.
+InlineReference's codecs and editor lifecycle map to Chat; shared ReferenceChip
+mention appearance, removal controls and host profile previews additionally map
+to shadcn/data-and-feedback.
+
+The FileTypeIcon family maps to DC-SHA-064 in the Shadcn data-and-feedback chapter, with a governed standalone catalog and native token metadata.

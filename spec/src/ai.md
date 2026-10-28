@@ -1,5 +1,7 @@
 # AI
 
+RichToolCallDetail read/edit headers and search locations use the shared FileTypeIcon only when normalized presentation includes an explicit path. Open-file callbacks retain their exact path, line and column; unknown locations, raw payloads and status/action icons remain distinct.
+
 AI presentation contracts remain provider-neutral and leave transport, model selection, persistence, and product policy downstream. Historical implementation and visual-comparison evidence lives under `spec/records/`; this chapter remains authoritative.
 
 Composer disabled surfaces use the public
@@ -27,6 +29,7 @@ retaining disabled control semantics (DC-AI-009, DC-CHAT-002).
 | Composer Token          | `@lapismd/design-core/ai/chat`         | DC-AI-013   |
 | Tokenized Text          | `@lapismd/design-core/ai/chat`         | DC-AI-014   |
 | Tool Calls              | `@lapismd/design-core/ai/chat`         | DC-AI-015   |
+| Content View Toggle     | `@lapismd/design-core/chat`            | DC-AI-027   |
 | Tool Call Detail        | `@lapismd/design-core/ai/chat`         | DC-AI-025   |
 | Dictation Button        | `@lapismd/design-core/ai/chat`         | DC-AI-016   |
 | Emoji Picker            | `@lapismd/design-core/ai/experimental` | DC-AI-017   |
@@ -112,6 +115,11 @@ content retains its shared size, typography and centered alignment.
 
 **Requirement.** The Message Metadata family MUST present timestamps, status, model, and related message metadata accessibly.
 
+Hosts MAY override `statusLabel` and provide explicit status actions through the
+existing footer slot. The timestamp, actions and status retain dot separators.
+Error foreground MUST remain readable on light/dark tinted message surfaces;
+`--ui-ai-chat-metadata-error-foreground` is the host override.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
@@ -130,6 +138,14 @@ content retains its shared size, typography and centered alignment.
 ## DC-AI-009 — Composer
 
 **Requirement.** The Composer family MUST coordinate controlled input, tokens, attachments or drawers, and submit affordances. Its elevation and focus chrome MUST remain visible when host shadow tokens are absent and MUST NOT stack a focus border with its focus ring.
+
+Error banners MUST use semantic red text and icons with at least 4.5:1 text
+contrast in both light and dark brand themes, using the existing metadata
+foreground-mixing strategy for readable dark errors.
+`statusContent` MAY replace the default icon/message with host-owned metadata
+inside the existing attached shell, without duplicating live announcements.
+Shared MessageMetadata in that shell MUST inherit the banner's text size and
+line height, matching default status feedback rather than compact timestamps.
 
 ### Acceptance details
 
@@ -308,9 +324,27 @@ wrapper/keyboard behavior.
 
 **Requirement.** Tool Call Detail and Rich Tool Call Detail MUST provide provider-neutral formatted/raw presentation of normalized tool activity without executing tools or interpreting provider schemas.
 
+Unavailable normalized tool output MUST use the public shadcn Empty pattern
+with an icon, title and the recorded refusal reason. Raw capture stays reachable.
+
+Tool detail MUST use the shared ContentViewToggle as one icon-only button for
+formatted/raw switching. Code offers raw capture and BookOpen returns to formatted
+content, with accessible names and tooltips.
+
 ### Acceptance details
 
 - Public `/chat` and compatibility `/ai/chat` imports MUST expose the same detail family; existing generic payload props and formatter helpers MUST remain supported; Tool Calls MAY supply normalized `presentation`; an explicit detail snippet takes precedence.
 - Formatted views MUST cover shell command/stdout/stderr in one panel with recorded exit state, file reads, complete patches or old/new diffs, and search locations; file navigation MUST use host callbacks; a maximize control MUST fill the page with the same view and restore focus/state on Escape or restore.
 - Raw MUST retain the exact host-serialized payload, or exact generic input/output/error strings, without envelope unwrapping; both modes MUST retain host-reported partial, redacted and truncated notices; missing paths, incomplete diffs and unavailable output MUST NOT invent facts.
 - Text payloads MUST use public Code Block copy/wrapping/bounded-height presentation and diffs MUST compose public FileDiff; native CSS and catalog examples MUST cover each tool type and raw/formatted switching; one-line legacy errors MAY remain on the summary row.
+
+## DC-AI-027 — Content view toggle
+
+**Requirement.** ContentViewToggle MUST provide a reusable, host-controlled, icon-only switch between formatted content and captured source.
+
+### Acceptance details
+
+- Public `/chat` and `/ai/chat` imports MUST expose the same component and typed view/callback contract.
+- Code MUST offer source and BookOpen MUST offer formatted content; configurable action labels MUST supply the accessible name and tooltip, and aria-pressed MUST reflect source mode.
+- Native keyboard activation and disabled behavior MUST match Button; changing presentation MUST emit only the selected view without loading, mutating or executing content.
+- Native token-driven styling and consumer-ready documentation MUST accompany meaningful toggle, label and disabled stories.

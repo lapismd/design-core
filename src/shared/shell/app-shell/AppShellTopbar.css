@@ -28,3 +28,18 @@
   white-space: nowrap;
   min-width: 0;
 }
+
+[data-ui-component="app-shell"][data-ui-part="topbar-target"] {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  min-width: 0;
+}
+
+[data-ui-component="app-shell"][data-ui-part="topbar-target"]:empty {
+  display: none;
+}
+
+[data-ui-component="app-shell"][data-ui-part="topbar"][data-placement="body"] {
+  background: var(--ui-shell-topbar-body-background, var(--background));
+}

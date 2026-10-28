@@ -26,3 +26,12 @@ export const Bare = `<script lang="ts">
 <div style="padding: .5rem; border: 1px solid var(--border); border-radius: var(--radius)">
   <CommentComposer presentation="bare" bind:value />
 </div>`;
+
+export const EmptyDraft = `<script lang="ts">
+  import { CommentComposer } from "@lapismd/design-core/chat";
+  let value = $state("");
+  let visible = $state(true);
+</script>
+{#if visible}
+  <CommentComposer bind:value onRemove={() => { visible = false; }} />
+{/if}`;

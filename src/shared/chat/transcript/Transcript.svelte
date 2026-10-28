@@ -108,6 +108,23 @@
     },
   });
   setContext<TranscriptPresentationContext>(presentationContext, {
+    get commentComposer() {
+      return hostOptions.commentComposer ?? comments.props().commentComposer;
+    },
+    get inlineReferences() {
+      return hostOptions.inlineReferences ?? comments.props().inlineReferences;
+    },
+    get readerExtensions() {
+      return hostOptions.readerExtensions ?? comments.props().readerExtensions;
+    },
+    get getMessageActions() {
+      return (
+        hostOptions.getMessageActions ?? comments.props().getMessageActions
+      );
+    },
+    get actionTooltips() {
+      return hostOptions.actionTooltips ?? comments.props().actionTooltips;
+    },
     get markdown() {
       return hostOptions.markdown ?? comments.props().markdown;
     },
@@ -370,7 +387,9 @@
                       onOpenChange={(open) =>
                         (comments.disclosures[item.id] = open)}
                     >
-                      <Collapsible.Trigger class="ui-transcript-context-trigger"
+                      <Collapsible.Trigger
+                        class="ui-transcript-context-trigger"
+                        data-tone={item.tone}
                         ><Icon aria-hidden="true" /><span>{item.label}</span
                         ><ChatDisclosureIcon /></Collapsible.Trigger
                       >

@@ -13,7 +13,8 @@ MarkdownContent uses Mira's public embedded preview with safe HTML enabled.
 <Source code={Basic} language="tsx" />
 
 `content` can stream. Use `fullWidth` for a full conversation column or
-`compact={false}` for document spacing. Public Mira `extensions`, `components`,
+the embedded preview for stock Mira document spacing (`compact` is retained
+for compatibility and no longer overrides content spacing). Public Mira `extensions`, `components`,
 `sourcePath`, `linkResolver`, and `assetResolver` remain host-owned. Native click
 handlers can route links without putting application policy into the component.
 
@@ -24,15 +25,9 @@ its link renderer runs. This inherited upstream limitation remains visible here;
 reference examples use absolute links and injected public post-processors.
 Supporting safe relative references requires a Mira source fix and published release.
 
-Public tokens: `--ui-chat-markdown-font-size`, `--ui-chat-markdown-line-height`,
-`--ui-chat-markdown-max-width`, `--ui-chat-markdown-block-gap` and
-`--ui-chat-markdown-image-height`. Styles load with the family; Tailwind is not required.
-
-The default surface is transparent and left-aligned, with `0.5rem` padding. It
-composes Mira's public preview class and theme tokens to remove the note-style
-centred reading column. Override `--ui-chat-markdown-padding` to change the inset;
-backgrounds remain owned by the enclosing message or document.
-
-Compact content uses jj-store paragraph spacing and removes outer block margins.
-The `--ui-chat-markdown-padding` token composes the optional wrapper inset;
-Transcript supplies zero because its cards already own spacing.
+Mira owns content typography, lists, quotes, tables, images and block spacing.
+Chat removes only the centered reading column. The optional wrapper uses
+`--ui-chat-markdown-padding` (0.5rem) and `--ui-chat-markdown-max-width` (44rem);
+`fullWidth` removes that wrapper width limit. Use Mira's public theme tokens for
+explicit host theming. Transcript supplies zero wrapper inset because its cards
+already own spacing. Styles load with the family; Tailwind is not required.

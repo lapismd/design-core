@@ -1125,6 +1125,22 @@
     {
       "name": "UI Forms/File Path Input",
       "requirement": "DC-FORM-049"
+    },
+    {
+      "name": "AI/Chat/Content View Toggle",
+      "requirement": "DC-AI-027"
+    },
+    {
+      "name": "Chat/Inline Reference",
+      "requirement": "DC-CHAT-016"
+    },
+    {
+      "name": "Shadcn/Data/File Type Icon",
+      "requirement": "DC-SHA-064"
+    },
+    {
+      "name": "Shadcn/Forms/Radio Group",
+      "requirement": "DC-SHA-065"
     }
   ]
 }

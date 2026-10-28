@@ -1,5 +1,8 @@
 # Styling and themes
 
+Radio Group paints through public `--ui-radio-group-*` tokens and imports its
+family defaults from the shared stylesheet (DC-SHA-065).
+
 Prompt Context uses logical inline body padding beyond the parent disclosure
 label to make XML and nested Markdown hierarchy visible (DC-CHAT-010).
 
@@ -80,7 +83,7 @@ currentColor, reduced-motion preferences and Button focus semantics.
 
 - Consumers may override documented semantic tokens without depending on private selectors.
 - Styling validation must distinguish source ownership from Storybook-only presentation.
-- Small tool-failure text, destructive menu actions and deletion counts MUST retain at least 4.5:1 contrast on Lapis light and dark surfaces, using existing destructive and foreground semantics that remain effective beside generic dependency slot styles.
+- Small warning-tag labels, tool-failure text, destructive menu actions and deletion counts MUST retain at least 4.5:1 contrast on Lapis light and dark surfaces, using existing destructive and foreground semantics that remain effective beside generic dependency slot styles.
 - Transcript links MUST use foreground semantics and underlines so a primary fill colour cannot reduce text contrast on dark surfaces.
 
 ## DC-CSS-005 — No utility leakage
@@ -326,3 +329,5 @@ and `--ui-workspace-safe-area-block-end`. The larger inline inset protects both
 edges without shifting the centre. The bottom inset adds to the footer track,
 retaining the full-width background and ordinary content height. Hosts own
 platform/window values; plugins need no clearance padding.
+
+FileTypeIcon exposes `--ui-file-type-icon-size` (explicit override of the selected preset), named xs/s/md/lg preset tokens (12/14/16/24px, md default) and `--ui-file-type-icon-fallback-color` (`var(--muted-foreground)`). Material artwork retains its original colours; File Listing sets its existing 14px slot through the size token.

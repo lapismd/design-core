@@ -65,3 +65,19 @@ export {
 } from "./thread-panel/thread-tree.js";
 
 export { spoilerExtension } from "./markdown-content/spoiler-extension.js";
+export { default as InlineReference } from "./inline-reference/InlineReference.svelte";
+export {
+  createChatReferenceExtension,
+  chatReferenceTriggers,
+} from "./inline-reference/reference-extension.js";
+export {
+  chatReferenceRanges,
+  serializeChatReference,
+} from "./inline-reference/reference-ranges.js";
+export { chatReferenceDecorations } from "./inline-reference/reference-widget.js";
+export type {
+  ChatReference,
+  ChatReferenceMatch,
+  ChatReferenceOptions,
+  ChatReferenceSource,
+} from "./inline-reference/inline-reference.types.js";

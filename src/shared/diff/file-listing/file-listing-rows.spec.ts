@@ -8,6 +8,29 @@ const files = [
 ];
 
 describe("fileListingRows", () => {
+  it("aggregates loaded descendant counts and conflicts even when a folder is collapsed", () => {
+    const rows = fileListingRows(
+      [
+        { path: "src/a.ts", additions: 3, deletions: 1 },
+        { path: "src/lib/b.ts", additions: 7, deletions: 2, conflicted: true },
+        { path: "src/image.png" },
+        { path: "other/file.ts", additions: 100, deletions: 50 },
+      ],
+      "tree",
+      new Set(["src"]),
+    );
+    expect(
+      rows.find((row) => row.kind === "directory" && row.path === "src"),
+    ).toMatchObject({
+      summary: {
+        additions: 10,
+        deletions: 3,
+        knownFiles: 2,
+        fileCount: 3,
+        conflicted: true,
+      },
+    });
+  });
   it("keeps stable file rows in list mode", () => {
     expect(
       fileListingRows(files, "list", new Set()).map((row) => row.key),

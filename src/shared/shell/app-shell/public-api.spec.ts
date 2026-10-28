@@ -19,9 +19,14 @@ import {
   AppShellSidebarFooter,
   AppShellSidebarHeader,
   AppShellSidebarToggle,
+  AppShellSidebarSection,
   AppShellSurfaceLayer,
   AppShellSurfaceLayerBody,
   AppShellSurfaceLayerHeader,
+  AppShellSurfaceLayerFooter,
+  AppShellSurfaceLayerClose,
+  AppShellTopbar,
+  AppShellTopbarTarget,
   AppShellToolbar,
   Body,
   BodyContent,
@@ -38,6 +43,11 @@ import {
   SurfaceLayer,
   SurfaceLayerBody,
   SurfaceLayerHeader,
+  SurfaceLayerFooter,
+  SurfaceLayerClose,
+  SidebarSection,
+  Topbar,
+  TopbarTarget,
   Toolbar,
   createLocalStorageAppShellLayoutPersistence,
   shellTokenDefaults,
@@ -47,6 +57,16 @@ import {
 describe("@lapismd/design-core/shell public API", () => {
   it("keeps namespace and named compound exports aligned", () => {
     expect(AppShell.Root).toBe(AppShellRoot);
+    expect(AppShell.Topbar).toBe(AppShellTopbar);
+    expect(Topbar).toBe(AppShellTopbar);
+    expect(Topbar.Target).toBe(AppShellTopbarTarget);
+    expect(TopbarTarget).toBe(AppShellTopbarTarget);
+    expect(AppShell.Sidebar.Section).toBe(AppShellSidebarSection);
+    expect(SidebarSection).toBe(AppShellSidebarSection);
+    expect(AppShell.SurfaceLayer.Footer).toBe(AppShellSurfaceLayerFooter);
+    expect(AppShell.SurfaceLayer.Close).toBe(AppShellSurfaceLayerClose);
+    expect(SurfaceLayerFooter).toBe(AppShellSurfaceLayerFooter);
+    expect(SurfaceLayerClose).toBe(AppShellSurfaceLayerClose);
     expect(AppShell.Sidebar).toBe(AppShellSidebar);
     expect(AppShell.Sidebar.Header).toBe(AppShellSidebarHeader);
     expect(AppShell.Sidebar.Body).toBe(AppShellSidebarBody);
@@ -130,6 +150,21 @@ describe("@lapismd/design-core/shell public API", () => {
     );
     expect(createLocalStorageAppShellLayoutPersistence).toBeTypeOf("function");
     expect(shellTokenDefaults).toEqual({
+      topbarHeight: "2.75rem",
+      topbarPadding: "0.5rem",
+      topbarBackground: "initial",
+      topbarBodyBackground: "initial",
+      attachedDivider: "1px solid var(--border)",
+      attachedShadow: "none",
+      attachedHeaderPadding: "0.125rem 0.75rem",
+      attachedFooterPadding: "0.75rem",
+      sidebarSectionGap: "0.5rem",
+      sidebarSectionPadding: "0.75rem",
+      surfaceLayerHeaderPadding: "0.625rem 0.75rem 0.625rem 1rem",
+      surfaceLayerFooterPadding: "0.75rem 1rem",
+      surfaceLayerFooterBorder: "1px solid var(--border)",
+      surfaceLayerMobileMainStartAllowance: "initial",
+      surfaceLayerMobileInlineEndInset: "initial",
       height: "100vh",
       leftSidebarWidth: "18rem",
       rightSidebarWidth: "18rem",

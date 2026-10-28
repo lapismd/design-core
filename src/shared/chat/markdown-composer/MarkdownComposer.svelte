@@ -11,13 +11,7 @@
   import type { MiraExtension } from "@lapismd/mira/extensions";
   import { Prec } from "@codemirror/state";
   import { EditorView } from "@codemirror/view";
-  import BoldIcon from "@lucide/svelte/icons/bold";
-  import ItalicIcon from "@lucide/svelte/icons/italic";
-  import StrikeIcon from "@lucide/svelte/icons/strikethrough";
-  import CodeIcon from "@lucide/svelte/icons/code";
-  import ListIcon from "@lucide/svelte/icons/list";
-  import OrderedListIcon from "@lucide/svelte/icons/list-ordered";
-  import QuoteIcon from "@lucide/svelte/icons/quote";
+  import { formatActions } from "./format-actions.js";
   import TypeIcon from "@lucide/svelte/icons/type";
   import ArrowUpIcon from "@lucide/svelte/icons/arrow-up";
   import SquareIcon from "@lucide/svelte/icons/square";
@@ -56,6 +50,8 @@
     busy = false,
     onStop,
     status,
+    statusContent,
+    statusPosition = "top",
     submitLabel = "Send message",
     showSendButton = true,
     showHint = true,
@@ -85,15 +81,6 @@
   const blocked = $derived(disabled || busy);
   const enterSubmits = $derived(submitOnEnter ?? presentation === "framed");
   const hasDraft = $derived(value.trim().length > 0);
-  const formatActions = [
-    { id: "bold", label: "Bold", Icon: BoldIcon },
-    { id: "italic", label: "Italic", Icon: ItalicIcon },
-    { id: "strikethrough", label: "Strikethrough", Icon: StrikeIcon },
-    { id: "inlineCode", label: "Inline code", Icon: CodeIcon },
-    { id: "bulletList", label: "Bulleted list", Icon: ListIcon },
-    { id: "numberedList", label: "Numbered list", Icon: OrderedListIcon },
-    { id: "quote", label: "Quote", Icon: QuoteIcon },
-  ] as const;
 
   function submit() {
     if (!blocked && hasDraft) onSubmit(value);
@@ -138,29 +125,15 @@
   const composerExtension: MiraExtension = {
     name: "design-core-markdown-composer",
     codeMirror: () => [
-      // Compose public Mira tokens on the CodeMirror root, where its document
-      // surface defines its own margins and readable line width.
+      // Keep Mira's content styles; the chat shell owns column width and inset.
       EditorView.theme({
         "&.cm-editor": {
+          "--file-line-width": "100%",
           "--file-margins-x":
             "var(--ui-markdown-composer-editor-padding, var(--_composer-editor-padding, 0.5rem))",
           "--file-margins-y":
             "var(--ui-markdown-composer-editor-padding, var(--_composer-editor-padding, 0.5rem))",
-          "--file-line-width": "100%",
         },
-        "&.cm-editor > .cm-scroller > .cm-content": {
-          minHeight: "var(--_composer-content-min-height, 0px)",
-          paddingBlock: "var(--_composer-caret-padding-block, 0px)",
-          paddingInline: "var(--_composer-caret-padding-inline, 0px)",
-        },
-        ".ui-markdown-composer[data-presentation='document'] & .cm-cursor": {
-          borderInlineStartWidth: "2px",
-          borderInlineStartColor:
-            "var(--_composer-caret-color, var(--mira-foreground))",
-          marginInlineStart: "0",
-        },
-        "&.cm-focused": { outline: "none" },
-        ".cm-gutters": { display: "none" },
       }),
       Prec.highest(
         EditorView.contentAttributes.of(() => ({
@@ -389,6 +362,7 @@
   class={["ui-markdown-composer", className].filter(Boolean).join(" ")}
   data-ui-component="markdown-composer"
   data-presentation={presentation}
+  data-attached-status={status ? statusPosition : undefined}
   data-actions-docked={docked}
   data-send-hidden={!showSendButton}
   aria-busy={busy}
@@ -405,7 +379,8 @@
       elevation="none"
       isStopShown={busy && Boolean(onStop)}
       {...status === undefined ? {} : { status }}
-      statusPosition="top"
+      {statusPosition}
+      {statusContent}
       onSubmit={submit}
       {...drawer || reply ? { drawer: composerDrawer } : {}}
       {...context === undefined ? {} : { headerContext: context }}
@@ -422,6 +397,7 @@
               {value}
               onChange={change}
               mode="live-preview"
+              lineNumbers={false}
               readonly={blocked}
               placeholder={placeholder ??
                 (presentation === "document" ? "" : "Write a message…")}
@@ -429,7 +405,6 @@
               extensions={editorExtensions}
               toolbar={false}
               blockControls={false}
-              indentGuides={false}
               outline={false}
               htmlPolicy="safe"
               class="ui-markdown-composer__editor"

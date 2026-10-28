@@ -44,3 +44,26 @@ export const Form = `<script lang="ts">
   <Button type="submit">Submit form</Button>
 </form>
 <output>{submitted}</output>`;
+
+export const AttachedStatus = `<script lang="ts">
+  import { MarkdownComposer } from "@lapismd/design-core/chat";
+  import { Avatar } from "@lapismd/design-core/shadcn/avatar";
+  let draft = $state("Retain this exact draft.");
+</script>
+<MarkdownComposer bind:value={draft} presentation="document" statusPosition="bottom"
+  status={{ type: "warning", message: "Context window is 90% full." }}
+  dockActions showSendButton={false} showHint={false} onSubmit={() => {}}>
+  {#snippet avatar()}<Avatar name="You" initials="YO" size="sm" decorative />{/snippet}
+</MarkdownComposer>`;
+
+export const ErrorMetadata = `<script lang="ts">
+  import { MarkdownComposer, MessageMetadata } from "@lapismd/design-core/chat";
+  let draft = $state("Retain this exact draft.");
+  const reason = "Delivery failed. Your draft is retained.";
+</script>
+<MarkdownComposer bind:value={draft} presentation="document" statusPosition="bottom"
+  status={{ type: "error", message: reason }} showSendButton={false}
+  onSubmit={() => {}}>
+  {#snippet statusContent()}<MessageMetadata sender="assistant" status="error"
+    statusLabel={reason} role="group" aria-label="Draft metadata" />{/snippet}
+</MarkdownComposer>`;

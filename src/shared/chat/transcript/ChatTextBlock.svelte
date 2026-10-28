@@ -3,6 +3,7 @@
   import { MiraCodeEditor, type MiraCodeEditorHandle } from "@lapismd/mira";
   import { Compartment } from "@codemirror/state";
   import ChatHoverActions from "./ChatHoverActions.svelte";
+  import { FileTypeIcon } from "../../shadcn/file-type-icon/index.js";
   import type { EditorView } from "@codemirror/view";
   import { readingExtensions, refreshComments } from "./text-editor.js";
   import type { TranscriptBlock, TranscriptProps } from "./model.js";
@@ -52,9 +53,19 @@
   const replyPrefix = new Compartment();
   const reader = new Compartment();
   let configured = "";
+  let configuredReferences: TranscriptProps["inlineReferences"];
+  let configuredReader: TranscriptProps["readerExtensions"];
   const extensions = untrack(() => [
     reader.of(
-      readingExtensions(block, comments, contexts, fileView, source, markdown),
+      readingExtensions(
+        block,
+        comments,
+        contexts,
+        fileView,
+        source,
+        markdown,
+        presentation,
+      ),
     ),
     replyPrefix.of(reply ? replyIndicator : []),
   ]);
@@ -132,8 +143,19 @@
       block.emojis,
       fileView,
     ]);
-    if (view && signature !== configured) {
-      comments.sourceSelections.delete(block.id);
+    const references =
+      presentation?.inlineReferences ?? comments.props().inlineReferences;
+    const readerExtensions =
+      presentation?.readerExtensions ?? comments.props().readerExtensions;
+    if (
+      view &&
+      (signature !== configured ||
+        references !== configuredReferences ||
+        readerExtensions !== configuredReader)
+    ) {
+      if (signature !== configured) comments.sourceSelections.delete(block.id);
+      configuredReferences = references;
+      configuredReader = readerExtensions;
       configured = signature;
       const previous = view.state.doc.toString(),
         next = block.text;
@@ -164,6 +186,7 @@
             fileView,
             source,
             markdown,
+            presentation,
           ),
         ),
         filter: false,
@@ -213,7 +236,9 @@
   {#if showHeader && block.kind !== "markdown"}<div
       data-ui-part="capture-heading"
     >
-      {block.label}
+      {#if block.path}<FileTypeIcon path={block.path} size="s" />{/if}<span
+        >{block.label}</span
+      >
     </div>{/if}
   <div class="ui-transcript-text-reader">
     <MiraCodeEditor

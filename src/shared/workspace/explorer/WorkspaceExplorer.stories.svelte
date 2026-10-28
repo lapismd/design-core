@@ -82,6 +82,7 @@
   function mountExplorer(
     options: {
       seed?: ExplorerNode[];
+      rejectFirstOpen?: boolean;
       loading?: boolean;
       autoReveal?: boolean;
       showHiddenFiles?: boolean;
@@ -98,9 +99,17 @@
       showHiddenFiles: options.showHiddenFiles,
     });
     const extensionLog = options.extensionLog ?? { value: "" };
+    let openAttempts = 0;
     const controller = new ExplorerController({
       tree: memory.tree,
-      actions: memory.actions,
+      actions: {
+        ...memory.actions,
+        async openFile(path, intent) {
+          if (options.rejectFirstOpen && ++openAttempts === 1)
+            throw new Error("File editing is closing");
+          await memory.actions.openFile(path, intent);
+        },
+      },
       selection: memory.selection,
       preferences: memory.preferences,
       loading: options.loading,
@@ -140,6 +149,7 @@
 <script lang="ts">
   import "./WorkspaceExplorer.stories.css";
 
+  const rejectedOpen = mountExplorer({ rejectFirstOpen: true });
   const loaded = mountExplorer();
   const loadingFixture = mountExplorer({ loading: true });
   const autoRevealFixture = mountExplorer({ autoReveal: false });
@@ -997,5 +1007,35 @@
       overflowFixture.controller,
       "ui-workspace-explorer-story--overflow",
     )}
+  {/snippet}
+</Story>
+
+<Story
+  name="Rejected file open and retry"
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.OpenFailure,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const file = await canvas.findByText("readme.md");
+    await userEvent.click(file);
+    await expect(canvas.findByRole("alert")).resolves.toHaveTextContent(
+      "File editing is closing",
+    );
+    await userEvent.click(file);
+    await waitFor(() => {
+      expect(canvas.queryByRole("alert")).toBeNull();
+      expect(rejectedOpen.memory.openedPaths).toContain("readme.md");
+    });
+  }}
+>
+  {#snippet template()}
+    {@render Panel(rejectedOpen.controller)}
   {/snippet}
 </Story>

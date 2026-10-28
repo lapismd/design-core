@@ -127,6 +127,12 @@
   padding: 0.125rem 0.25rem;
 }
 
+.ui-diff-file-diff__fold-row {
+  position: relative;
+  display: flex;
+  min-width: 0;
+}
+
 .ui-diff-file-diff__scroll,
 .ui-diff-file-diff__pane-scroll {
   flex: 1 1 auto;
@@ -246,19 +252,38 @@
 .ui-diff-file-diff-composer {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--ui-diff-file-gap, 0.75rem);
 }
 
 .ui-diff-file-diff-composer__file {
-  border: var(--ui-diff-frame-border);
+  position: relative;
+  isolation: isolate;
+  border: var(--ui-diff-file-section-border, var(--ui-diff-frame-border));
+  border-bottom: var(
+    --ui-diff-file-section-separator,
+    var(--ui-diff-frame-border)
+  );
   border-radius: var(--ui-diff-frame-radius);
   overflow: clip;
   scroll-margin-top: var(--ui-diff-file-sticky-offset, 3.5rem);
 }
 
 .ui-diff-file-diff-composer__file[data-selected="true"] {
-  outline: 2px solid var(--ring);
-  outline-offset: 1px;
+  outline: var(--ui-diff-file-selection-outline, 2px solid var(--ring));
+  outline-offset: var(--ui-diff-file-selection-outline-offset, 1px);
+}
+
+/* Paint inset selection above opaque diff panes and sticky gutters. The outer
+   outline retains the default outward ring when hosts use a positive offset. */
+.ui-diff-file-diff-composer__file[data-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  outline: var(--ui-diff-file-selection-outline, 2px solid var(--ring));
+  outline-offset: var(--ui-diff-file-selection-outline-offset, 1px);
+  pointer-events: none;
 }
 
 .ui-diff-file-diff-composer__header {
@@ -269,7 +294,9 @@
   gap: 0.75rem;
   padding: 0.375rem 0.75rem;
   border-bottom: 1px solid var(--ui-diff-border);
-  background: var(--muted);
+  /* Header tints may contain alpha; sticky headers still obscure file content. */
+  background-color: var(--ui-diff-surface);
+  background-image: linear-gradient(var(--muted), var(--muted));
   font-weight: 650;
 }
 
@@ -307,4 +334,95 @@
   [class^="ui-code-token-"],
 .ui-diff-file-diff__text [data-tone] [class^="ui-code-token-"] {
   color: var(--ui-diff-changed-syntax-foreground, var(--foreground));
+}
+
+/* A collection owns vertical scrolling; each file retains horizontal panes. */
+.ui-diff-file-diff[data-sizing="content"],
+.ui-diff-file-diff[data-sizing="content"] .ui-diff-file-diff__split,
+.ui-diff-file-diff[data-sizing="content"] .ui-diff-file-diff__pane,
+.ui-diff-file-diff[data-sizing="content"] .ui-diff-file-diff__scroll,
+.ui-diff-file-diff[data-sizing="content"] .ui-diff-file-diff__pane-scroll,
+.ui-diff-file-diff[data-sizing="content"]
+  [data-ui-part="scroll-area-viewport"] {
+  height: auto;
+  flex: none;
+}
+
+.ui-diff-file-diff-composer__header[data-expand-on-click="true"] {
+  gap: 0;
+  padding: 0;
+}
+.ui-diff-file-diff-composer__header-toggle {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  flex: 1;
+  min-width: 0;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ui-diff-file-diff-composer__header-toggle:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+.ui-diff-file-diff-composer__header-toggle > svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+.ui-diff-file-diff-composer__path {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ui-diff-file-diff-composer__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-inline-start: auto;
+}
+.ui-diff-file-diff-composer__header[data-expand-on-click="true"]
+  .ui-diff-file-diff-composer__header-trailing {
+  padding-inline-end: 0.5rem;
+}
+.ui-diff-file-diff-composer__content {
+  padding-bottom: var(--ui-diff-file-content-padding-bottom, 0);
+}
+.ui-diff-file-diff-composer__file[data-selected="true"]
+  > .ui-diff-file-diff-composer__header {
+  background-image: linear-gradient(
+    var(--ui-diff-file-selected-header, var(--muted)),
+    var(--ui-diff-file-selected-header, var(--muted))
+  );
+}
+
+.ui-diff-file-diff-composer__header:is(:hover, :focus-within) {
+  background-image: linear-gradient(
+    var(--ui-diff-file-header-hover),
+    var(--ui-diff-file-header-hover)
+  );
+}
+
+.ui-diff-file-diff-composer__file[data-selected="true"]
+  > .ui-diff-file-diff-composer__header:is(:hover, :focus-within) {
+  background-image: linear-gradient(
+    var(--ui-diff-file-selected-header-hover),
+    var(--ui-diff-file-selected-header-hover)
+  );
+}
+
+.ui-diff-file-diff-composer__action {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

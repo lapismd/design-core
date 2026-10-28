@@ -1,6 +1,6 @@
 # Architecture
 
-Release 0.6.0 qualification consumes registry Mira `~0.1.0` and Visual Delta `0.0.9`,
+Release 0.7.0 qualification consumes registry Mira `~0.1.1` and Visual Delta `0.0.9`,
 without temporary archive resolution. Catalog tooling uses patched Storybook
 10.6.3 and Vite 6.4.5 ranges. CI remains nonvisual; screenshot comparison is an
 explicit local command only.
@@ -45,7 +45,7 @@ AI experimental entry points re-export that implementation. Hosts retain emoji
 identity and asset policy. Emoji Mart and its dataset are lazy dependencies,
 with the runtime prebundled by catalog hosts to avoid first-open reloads.
 
-Release preparation uses the published Spec Validator 0.1.4 range and Changesets 3. Optional QMD search remains available when installed by the developer; normal
+Release preparation uses the published Spec Validator 0.2.0 range and Changesets 3. Optional QMD search remains available when installed by the developer; normal
 validation does not install its model/native dependency graph. The supported Node
 range follows Changesets 3. Declared renderer and tooling overrides retain patched
 workspace graphs, while packed consumers audit their own dependency resolution.
@@ -134,3 +134,5 @@ patched; every other finding remains blocking and complete evidence is retained.
 ## Community component boundaries
 
 Community presentation additions remain source-owned generic families with no runtime or consumer imports; the focused Forms quantity entry point shares the existing Forms implementation.
+
+FileTypeIcon is a generic Shadcn-layer primitive. Diff composes its public family; application-specific state and file access remain host-owned.

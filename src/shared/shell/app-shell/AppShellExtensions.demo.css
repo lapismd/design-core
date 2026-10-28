@@ -1,0 +1,69 @@
+.shell-extensions-controls {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  flex-wrap: wrap;
+}
+.shell-extensions-demo {
+  --ui-shell-height: 100%;
+  --ui-shell-surface-layer-main-start-allowance: 4rem;
+  --ui-shell-surface-layer-mobile-main-start-allowance: 0.5rem;
+  --ui-shell-surface-layer-mobile-inline-end-inset: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  height: 640px;
+  min-width: 0;
+  min-height: 0;
+  background: var(--sidebar);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+}
+.shell-extensions-top {
+  display: contents;
+}
+.shell-extensions-demo :is(h1, h2, h3, p) {
+  margin: 0;
+}
+.shell-extensions-demo h1 {
+  flex: 1;
+  min-width: 0;
+  font-size: 1rem;
+}
+.shell-extensions-demo h2 {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.9375rem;
+}
+.shell-extensions-demo h3 {
+  font-size: 0.875rem;
+}
+.shell-extensions-demo label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.shell-extensions-content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  min-width: 0;
+  padding: 1rem;
+}
+.shell-extensions-content p {
+  overflow-wrap: anywhere;
+}
+.shell-extensions-child-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.shell-extensions-location {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

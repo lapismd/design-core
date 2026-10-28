@@ -1,5 +1,7 @@
 # Chat
 
+Transcript captured-file headings and disclosures compose FileTypeIcon from an explicit block path. Default tool titles use their captured target path; host-supplied icons and error/running status indicators take precedence. Pathless context labels and host-owned reference/suggestion content are not treated as filenames. Labelled tool disclosure bodies MUST expose a group role so their accessible names remain valid.
+
 Chat is the host-neutral presentation family. Existing stable AI chat primitives
 remain implemented in their current owners and are re-exported through `/chat`,
 including ToolCallDetail, RichToolCallDetail and their normalized presentation types
@@ -59,6 +61,7 @@ compact fold row with a trailing divider.
 
 | Composer Suggestions | `@lapismd/design-core/chat` | DC-CHAT-013 |
 | Thread Panel | `@lapismd/design-core/chat` | DC-CHAT-014 |
+| Inline Reference | `@lapismd/design-core/chat` | DC-CHAT-016 |
 
 ## DC-CHAT-001 — Markdown Content
 
@@ -67,8 +70,8 @@ compact fold row with a trailing divider.
 ### Acceptance details
 
 - The Chat entry point MUST re-export stable chat primitives without breaking existing AI imports.
-- Transcript reply prose, quoted context and comments MUST share the host prose font and foreground across Mira reader boundaries, with comments defaulting to the transcript prose size (0.875rem) rather than a separate 1rem; retain no additional Markdown inset, compact quoted lists and no first/last block margins while standalone MarkdownContent keeps its configurable small outer padding.
-- Markdown MUST retain transparent parent-composed backgrounds, left-aligned compact/full-width presentation with small token-driven padding, streaming updates, public preview hooks and late stylesheet loading without copying Mira internals.
+- Mira MUST own MarkdownContent typography, lists, quotes, tables, images and block spacing without Chat content overrides; the enclosing message owns its optional wrapper inset.
+- Markdown MUST retain left-aligned full-width presentation with optional token-driven wrapper padding, streaming updates, public preview hooks and late stylesheet loading without copying Mira internals.
 - Published Mira 0.0.5 MUST be qualified before the new preview is added; domain-specific references and authorization remain consumer extensions.
 
 ## DC-CHAT-002 — Markdown Composer
@@ -80,18 +83,36 @@ Hosts MAY supply a supplementary `drawer` snippet inside the Composer shell;
 submission remain blocked. Reply context and host drawer content compose without
 remounting the editor or changing the draft.
 
-Catalog collapse assertions await the closed drawer layout while retaining
-their existing geometry bounds and deadlines.
+Catalog acceptance measures the declared editor-host height and stock Mira
+typography, reveals hover actions before pointer activation and compares actual
+rendered line boxes. Collapse assertions await the closed drawer layout while
+retaining their existing geometry bounds and deadlines.
+
+Hosts MAY attach status to either edge with `statusPosition` (`top` by default),
+including a bottom warning behind the framed composer. Document presentation
+MUST retain the same opaque framed body and joined banner while status is
+attached, restoring its ordinary prose surface when that status clears.
+`statusContent` MAY compose host metadata/actions inside that same shell, with
+custom content owning its accessible announcement semantics. Error feedback
+MUST retain its shared red treatment across Default/Lapis light and dark themes.
+Custom MessageMetadata MUST use the same typography as ordinary status feedback.
 
 Hosts MAY omit the inline keyboard hint with `showHint=false` when they render
 the instruction in their own fixed row; the default hint remains visible.
 
-Editor focus MUST keep the resting shell border and omit its focus shadow and
-editor outline in both presentations; the caret and toolbar focus cues remain.
+Editor content MUST retain stock Mira typography, indentation, spacing and focus
+styles. Chat MAY remove only note-column centering; shell geometry and custom
+reference/suggestion components remain owned by Chat.
+The composer MUST disable Mira's line-number extension through `lineNumbers=false`.
+The document editor host MUST honor `--ui-markdown-composer-document-min-height`
+(default `6rem`) independently of framed height, without overriding Mira content
+styles.
+The shell owns its compact outer editor inset (0.25rem in Document, 0.5rem in
+Classic) and bounds the Classic scroll viewport without overriding content styles.
 
 ### Acceptance details
 
-- The component MUST support framed and document presentations with left-aligned editor content, top reply quotes, form serialization, contextual content, host actions, disabled/busy state and bottom formatting actions with accessible tooltips; document presentation uses a transparent prose surface, a host-supplied avatar vertically centred beside the first draft line and a tall writing area.
+- The component MUST support framed and document presentations with left-aligned editor content, top reply quotes, form serialization, contextual content, host actions, disabled/busy state and bottom formatting actions with accessible tooltips; document presentation uses a transparent prose surface unless status is attached, a host-supplied avatar vertically centred beside the first draft line and a tall writing area
 - Formatting, emoji insertion, optional host-owned reply cancellation and presentation changes MUST retain the draft and editor selection through public Mira and CodeMirror APIs, with custom emoji syntax and editor extensions supplied through host hooks.
 - Keyboard submission MUST distinguish Enter, Shift+Enter, modifier submission and IME composition, while disabled/busy controls MUST block submission and editing.
 - Submission MUST emit the exact draft snapshot without clearing it, leaving acknowledgement, failed delivery feedback, persistence and any clearing to the host.
@@ -99,6 +120,11 @@ editor outline in both presentations; the caret and toolbar focus cues remain.
 ## DC-CHAT-003 — Message Actions
 
 **Requirement.** MessageActions MUST expose host-supplied message actions through hover, keyboard focus and touch without embedding application policy.
+
+Transcript hover actions MUST compose MessageActions, use an icon-only Comment,
+and omit the toolbar when no enabled action exists. Invisible controls MUST NOT
+intercept pointer input; their position MUST leave tool header actions usable.
+Hosts MAY disable action tooltips entirely while retaining accessible labels.
 
 ### Acceptance details
 
@@ -122,6 +148,18 @@ editor outline in both presentations; the caret and toolbar focus cues remain.
 
 **Requirement.** CommentComposer MUST present a controlled compact comment editor with optional captured source context and host-owned navigation and delivery.
 
+An accessible T toggle at the editor's right edge MUST open and close a compact
+formatting strip below the input, including the shared emoji picker. It MUST use the same public Mira Markdown
+commands as MarkdownComposer, preserve the exact editor/selection and draft,
+and block formatting while disabled, pending or read-only.
+The T control MUST be the last row action; hover actions MUST stay inside the
+same first row before the T and reserve no inline width while hidden. The first
+formatting glyph MUST align with the editor text.
+Hosts MAY supply emoji palettes and custom emoji serialization through public props.
+Plain, non-repeated Backspace on an already empty editable draft MUST request
+`onRemove`, falling back to `onDismiss`; deleting the final character MUST keep
+the editor open. Modified keys, IME and blocked editors MUST NOT request removal.
+
 ### Acceptance details
 
 - Captured code or safe Markdown quotes MUST appear above the avatar/editor card, retain their original text and expose optional source navigation and unavailable-source explanation without relocating anchors.
@@ -134,6 +172,18 @@ editor outline in both presentations; the caret and toolbar focus cues remain.
 Hosts MAY request `surface="plain"` on a custom block to omit its default
 border and padding while preserving exact text, comments and host interaction.
 Other custom blocks retain their frame.
+
+Context, handoff and rootless content readers MUST inherit the transcript prose
+font and size (including host overrides), with independent Markdown spacing.
+Hosts MAY declare a destructive disclosure tone for captured outcomes without
+turning them into execution errors. Its text and icon MUST use readable red in
+both themes; a final compact disclosure/tool row MUST retain the ordinary tool
+row gap before the composer rather than the full message margin.
+Retained unavailable-source comments MUST have a small token-controlled gap
+between cards while keeping each status attached to its own quote.
+Message `status` MUST appear below its body in the shared metadata row, alongside
+the timestamp and explicit host actions. Error labels and details MUST use the
+destructive foreground in both views; status presentation never retries a turn.
 
 **Requirement.** Transcript MUST present immutable host-owned conversations in document and classic views, preserving jj-store reference geometry, exact source text and reader identity during streaming and history loading.
 
@@ -174,6 +224,9 @@ Hosts MAY opt into a fixed Classic composer through `classicComposerPlacement`.
 The composer, pending comments and queued messages MUST stay adjacent to the
 footer as history scrolls, without remounting the editor or changing Document
 placement. The default Classic placement remains inline.
+Document composers MUST retain the document's trailing writing space after the
+draft: 4rem, or 3rem below 600px, controlled by
+`--ui-transcript-composer-trailing-space`. Classic composer spacing is unchanged.
 Captured GFM task lists MUST render checked and unchecked read-only checkboxes,
 including nested and ordered tasks. Their original markers and UTF-16 comment
 offsets MUST remain unchanged; inline and fenced examples stay literal.
@@ -192,6 +245,16 @@ Transcripts with a fixed footer MUST fade the trailing scroll edge into the host
 background while more content remains below. The fade MUST sit above any pinned
 Classic composer, ignore pointer input and disappear at the end of content.
 
+Nested file disclosures MUST lead with the decorative FileTypeIcon resolved from
+the exact captured path, unless the host overrides it. Reasoning MUST retain a
+distinct lightbulb icon unless overridden by the host.
+Reactive presentation bindings MUST support cleared optional host values under
+strict exact-optional-property checking without changing message actions.
+Transcript-owned font sizing MUST configure Mira through its public
+`--mira-font-size` theme variable, including rootless context and handoff readers;
+Mira's content styles MUST remain stock. Hover-only actions MUST become usable
+through their owning block's hover or focus state.
+
 Host-marked error or warning notices MUST remain inline with a tinted semantic
 surface and circular warning icon. Captured text stays immutable, and trailing
 metadata actions request an explicit host retry without dispatching implicitly.
@@ -199,7 +262,7 @@ metadata actions request an explicit host retry without dispatching implicitly.
 ### Acceptance details
 
 - Stable item and block identities MUST retain selection, folds and scroll anchors across append, prepend and source updates, and overlapping inspector readers MUST restore still-mounted source registrations under either teardown order; host extensions own application syntax and authorized navigation.
-- Markdown, code, captured line numbers, patches, compact grouped tools with host-supplied icons, uniform disclosure heights and activity gaps, raw captures, metadata and custom blocks MUST use native CSS with family-owned tokens and keyboard-accessible controls, with optional author details/actions through the shared AuthorCard in hover or popover mode across messages, comments, queues and composer avatars; nested file disclosures MUST lead with file/patch icons and reasoning MUST have a distinct lightbulb icon unless overridden by the host.
+- Markdown, code, captured line numbers, patches, compact grouped tools with host-supplied icons, uniform disclosure heights and activity gaps, raw captures, metadata and custom blocks MUST use native CSS with family-owned tokens and keyboard-accessible controls, with optional author details/actions through the shared AuthorCard in hover or popover mode across messages, comments, queues and composer avatars.
 - HistoryEdge MUST expose loading, empty, load and retry presentation without discarding retained content or executing transport.
 - Controlled document/classic switching MUST reuse the same items and controller, retain captured readers, comments, drafts and disclosures, defer through IME composition and supply the applied view to the composer snippet, as demonstrated by the full-conversation example.
 
@@ -210,10 +273,14 @@ metadata actions request an explicit host retry without dispatching implicitly.
 Custom-section annotation handlers MUST ignore input already handled by a nested editor, retaining each typed or pasted character exactly once.
 Hosts setting `canComment` to false MUST omit comment actions, including empty hover-action surfaces, while preserving existing comments and independent reaction or host actions. Commentable hosts MUST retain the disabled waiting-for-source action for unpublished blocks.
 
+Expanded queued/history/reply quotes MUST share their enclosing context background
+without an additional prose, list or captured-code highlight. The original
+source's selection highlighting MUST remain independent.
+
 ### Acceptance details
 
 - Selection, keyboard, typing, paste and IME MUST create equivalent exact anchors; multiple comments and whole-section anchors MUST retain drafts through folding and raw/rich transitions, and collapsed files/tools/sections MUST show only the last nonempty current root comment per anchored discussion, with earlier comments restored on expansion and agent responses retained in their linked messages.
-- Changed or missing sources MUST retain quotes and unavailable explanations, and source navigation MUST reveal folded content before restoring selection and focus.
+- Changed or missing sources MUST retain quotes and unavailable explanations, and source navigation MUST reveal folded content before restoring selection and focus, while removing a host-owned thread MUST release its rendered quote without reading an absent thread during child teardown.
 - Comment editors MUST compose CommentComposer, retain host typography and block edits/submission while disabled or sending.
 - Unavailable-source status MUST reuse Composer's curved status banner with host-selected semantic colour and top/bottom placement, while retaining the exact quote and explanation.
 
@@ -315,3 +382,18 @@ empty or pending active drafts omit Queue. Idle Send availability is unchanged.
 - The separate labelled reply control MUST own keyboard activation and navigation callbacks while participant details remain outside it without nested buttons.
 - Optional author presentation MUST compose the same shared AuthorCard for reply participants, retaining host-owned descriptions, details and actions.
 - Reply-link decoration MUST apply only to the count label, leaving participant avatars separate and undecorated.
+
+## DC-CHAT-016 — Inline references
+
+**Requirement.** Chat references MUST share InlineReference/ReferenceChip rendering across composer widgets, Markdown preview and transcript readers through host-supplied codecs and activation callbacks.
+
+Absent chip and suggestion fields MUST be omitted at strict public boundaries;
+reactive optional activation and profile values MAY clear to undefined without
+weakening exact-optional-property checking.
+
+### Acceptance details
+
+- Public extension and suggestion helpers MUST preserve source text and UTF-16 offsets, ignore code/images and leave unresolved links readable; Markdown serialization is the default and explicit host codecs MUST NOT widen safe-link policy or dispatch work.
+- Person/agent mentions MUST retain jj-store's filled inline chip geometry in preview and composer, with optional host profile popovers and exact-range composer removal; mounted references MUST release owned components and selection MUST reveal source.
+- Removable references MUST contain their removal button within the filled chip and align inline text baselines; Document composer insets MUST retain fully visible task checkboxes.
+- Paired stories MUST render the same source and configuration, including person/agent avatars, repository icons, custom emoji and ordinary links; token defaults and public usage MUST be documented.

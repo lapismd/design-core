@@ -6,6 +6,7 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 
 | Surface              | Public boundary                            | Requirement |
 | -------------------- | ------------------------------------------ | ----------- |
+| Radio Group          | `@lapismd/design-core/shadcn/radio-group`  | DC-SHA-065  |
 | Checkbox             | `@lapismd/design-core/shadcn/checkbox`     | DC-SHA-024  |
 | Command              | `@lapismd/design-core/shadcn/command`      | DC-SHA-025  |
 | Command View         | `@lapismd/design-core/shadcn/command-view` | DC-SHA-051  |
@@ -171,3 +172,13 @@ option semantics; custom-child hosts own the corresponding native markup.
 
 - The public boundary is `@lapismd/design-core/shadcn/textarea`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-SHA-065 — Radio Group
+
+**Requirement.** Radio Group MUST provide controlled single-choice selection through the public shadcn family, retaining native CSS, upstream keyboard behavior and semantic theme tokens.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/shadcn/radio-group`, with Root and Item composed together.
+- Selection, disabled and invalid states MUST remain accessible through pointer, focus and arrow-key navigation in light and dark themes.
+- Generated parts, token metadata and provenance MUST use the owning conversion pipeline; focused catalog examples MUST show public consumer imports.

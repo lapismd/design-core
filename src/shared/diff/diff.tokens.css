@@ -4,6 +4,23 @@
  */
 :root,
 .ui-diff {
+  --ui-diff-file-gap: 0.75rem;
+  --ui-diff-file-section-border: var(--ui-diff-frame-border);
+  --ui-diff-file-section-separator: var(--ui-diff-frame-border);
+  --ui-diff-file-selection-outline-offset: 1px;
+  --ui-diff-file-selection-outline: 2px solid var(--ring);
+  --ui-diff-file-content-padding-bottom: 0;
+  --ui-diff-file-selected-header: var(--muted);
+  --ui-diff-file-header-hover: color-mix(
+    in srgb,
+    var(--foreground) 6%,
+    var(--muted)
+  );
+  --ui-diff-file-selected-header-hover: color-mix(
+    in srgb,
+    var(--foreground) 6%,
+    var(--ui-diff-file-selected-header)
+  );
   --ui-diff-added-background: color-mix(
     in srgb,
     var(--chart-2, oklch(0.7 0.15 145)) 16%,
@@ -46,6 +63,11 @@
   --ui-diff-gutter-wash: color-mix(in srgb, var(--muted) 76%, transparent);
   --ui-diff-mono: var(--font-mono, ui-monospace, monospace);
   --ui-diff-file-listing-row-gap: 2px;
+  --ui-diff-file-conflict-background: color-mix(
+    in srgb,
+    var(--destructive) 8%,
+    var(--background)
+  );
   --ui-diff-row-hover: color-mix(in srgb, var(--muted) 40%, transparent);
   --ui-diff-selected: var(
     --ui-workspace-selection,

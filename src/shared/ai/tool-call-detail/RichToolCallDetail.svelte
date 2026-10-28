@@ -1,12 +1,15 @@
 <script lang="ts">
+  import * as Empty from "@lapismd/design-core/shadcn/empty";
+  import FileQuestionIcon from "@lucide/svelte/icons/file-question-mark";
   import { tick } from "svelte";
   import * as Dialog from "@lapismd/design-core/shadcn/dialog";
   import MaximizeIcon from "@lucide/svelte/icons/maximize";
   import MinimizeIcon from "@lucide/svelte/icons/minimize";
   import { FileDiff, resolveDiffLanguage } from "@lapismd/design-core/diff";
   import { Button } from "@lapismd/design-core/shadcn/button";
+  import { FileTypeIcon } from "@lapismd/design-core/shadcn/file-type-icon";
   import { CodeBlock } from "@lapismd/design-core/shadcn/code-block";
-  import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
+  import ContentViewToggle from "../content-view-toggle/ContentViewToggle.svelte";
   import * as Alert from "@lapismd/design-core/shadcn/alert";
   import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
   import TerminalIcon from "@lucide/svelte/icons/terminal";
@@ -99,17 +102,12 @@
     <div class="tool-detail__toolbar">
       <span class="tool-detail__title">{toolName ?? "Tool details"}</span>
       <div class="tool-detail__actions">
-        <ToggleGroup.Root
-          type="single"
-          size="sm"
-          variant="outline"
-          value={view}
-          onValueChange={setView}
-          aria-label="Tool output view"
-        >
-          <ToggleGroup.Item value="formatted">Formatted</ToggleGroup.Item>
-          <ToggleGroup.Item value="raw">Raw</ToggleGroup.Item>
-        </ToggleGroup.Root>
+        <ContentViewToggle
+          view={view === "raw" ? "source" : "formatted"}
+          sourceLabel="Show raw capture"
+          onViewChange={(next) =>
+            setView(next === "source" ? "raw" : "formatted")}
+        />
         {#if maximized}
           <Button
             variant="ghost"
@@ -199,7 +197,11 @@
         <section class="tool-detail__panel" aria-label="File contents">
           <header class="tool-detail__panel-header">
             <span class="tool-detail__path"
-              >{detail.path ?? "Captured file contents"}</span
+              >{#if detail.path}<FileTypeIcon
+                  path={detail.path}
+                  size="s"
+                />{/if}<span>{detail.path ?? "Captured file contents"}</span
+              ></span
             >
             {#if detail.path && onOpen}<Button
                 variant="ghost"
@@ -241,7 +243,10 @@
           >
             <header class="tool-detail__panel-header">
               <span class="tool-detail__path"
-                >{file.path ?? "Captured change"}</span
+                >{#if file.path}<FileTypeIcon
+                    path={file.path}
+                    size="s"
+                  />{/if}<span>{file.path ?? "Captured change"}</span></span
               >
               {#if file.path && onOpen}<Button
                   variant="ghost"
@@ -324,18 +329,30 @@
                       if (match.path)
                         open(match.path, match.line, match.column);
                     }}
-                    >{match.path}{match.line === undefined
-                      ? ""
-                      : `:${match.line}`}{match.column === undefined
-                      ? ""
-                      : `:${match.column}`}</Button
+                    ><FileTypeIcon
+                      path={match.path}
+                      size="s"
+                      data-icon="inline-start"
+                    /><span
+                      >{match.path}{match.line === undefined
+                        ? ""
+                        : `:${match.line}`}{match.column === undefined
+                        ? ""
+                        : `:${match.column}`}</span
+                    ></Button
                   >
                 {:else}<span class="tool-detail__location"
-                    >{match.path ?? "Unknown location"}{match.line === undefined
-                      ? ""
-                      : `:${match.line}`}{match.column === undefined
-                      ? ""
-                      : `:${match.column}`}</span
+                    >{#if match.path}<FileTypeIcon
+                        path={match.path}
+                        size="s"
+                      />{/if}<span
+                      >{match.path ?? "Unknown location"}{match.line ===
+                      undefined
+                        ? ""
+                        : `:${match.line}`}{match.column === undefined
+                        ? ""
+                        : `:${match.column}`}</span
+                    ></span
                   >{/if}
                 <code>{match.text}</code>
               </li>
@@ -345,9 +362,15 @@
               No matches were captured.
             </p>{/if}
         </section>
-      {:else if detail?.kind === "unavailable"}<p class="tool-detail__notice">
-          {detail.reason}
-        </p>
+      {:else if detail?.kind === "unavailable"}<Empty.Root role="status"
+          ><Empty.Header
+            ><Empty.Media variant="icon"
+              ><FileQuestionIcon aria-hidden="true" /></Empty.Media
+            ><Empty.Title>Tool output unavailable</Empty.Title
+            ><Empty.Description>{detail.reason}</Empty.Description
+            ></Empty.Header
+          ></Empty.Root
+        >
       {:else if input !== undefined || output !== undefined || error !== undefined}
         <ToolCallPayloads
           {...input === undefined ? {} : { input }}

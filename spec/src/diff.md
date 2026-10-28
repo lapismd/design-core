@@ -1,5 +1,7 @@
 # Diff
 
+File Diff Composer headers and Merge Editor titles with an explicit path compose the shared FileTypeIcon at size s. A host fileHeaderLeading snippet replaces the default icon. Missing paths do not invent file types; truncation, sticky headers and merge controls retain their original behavior.
+
 Diff contracts keep change-set listing, file comparison, and merge presentation separate from version-control commands, file I/O, and review policy. Headless tree, unified-diff, and merge models live under `src/shared/diff/core`.
 
 ## Public surface coverage
@@ -40,9 +42,19 @@ in list, folder and package modes. Eager rows split that space across their
 block margins; virtual row wrappers include it in their measured height so
 scroll offsets, continuation and keyboard navigation retain the same spacing.
 
+Default file rows compose the public FileTypeIcon primitive (DC-SHA-064) at
+14px, preserving the original icon slot and folder/disclosure geometry. The
+legacy `fileIconNameForPath` helper retains its public Lucide-name contract.
+
 Default file-row accessible names retain the full path and every visible signed
 change count. Custom leading, label or meta snippets use their native text as
 the accessible name rather than an overriding path-only label.
+
+Host-issued `conflicted` file metadata MUST remain visible through selection and
+hover as a semantic conflict tint and trailing accessible icon. Default directory
+metadata MUST sum all loaded descendants, including collapsed descendants, while
+distinguishing unknown counts from measured zero and leaving custom metadata
+snippets authoritative. Totals describe loaded files only.
 
 ### Acceptance details
 
@@ -57,11 +69,16 @@ the accessible name rather than an overriding path-only label.
 
 Highlighted additions/removals MUST retain readable syntax foreground on row and intraline washes through `--ui-diff-changed-syntax-foreground` (default `--foreground`), while unchanged rows retain readable normal syntax colors in both light and dark modes.
 
+Multi-file headers MUST expose semantic hover and keyboard-focus backgrounds,
+retaining selected tint over an opaque diff surface so sticky headers obscure
+scrolled content, including with translucent theme tints. Inset selection outlines MUST paint all four edges
+above opaque file content and sticky gutters without intercepting input.
+
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/diff`, and unchanged context MUST collapse with incremental expand controls.
+- The public boundary is `@lapismd/design-core/diff`, and unchanged context MUST collapse with incremental expand controls in both unified and split layouts; split panes MUST share expansion state, keep changed-row pairing and old/new line numbers, and reveal or hide the same context when either pane's controls are used.
 - Line identity MUST be exposed through `data-diff-line-*`, a `lineAccessory` snippet, and a host-owned `lineAnnotation` seam after unified rows; line accessories MUST occupy the number gutter and reveal on row hover or keyboard focus, while split gutters MUST show old-file numbers on the left and new-file numbers on the right, each aligned with its row.
-- Multi-file composition MUST expose controlled selection/collapse, host-owned headers, optional sticky headers and repeatable path scrolling without persistence; File Diff accepts an optional host label distinguishing previous/later pane landmarks across files or hunks while preserving default names when omitted.
+- Multi-file composition MUST support opt-in header-wide disclosure excluding interactive trailing actions, presentational header metadata, and public spacing/border/selection tokens for continuous square sections and MUST accept a typed host-owned file body for loading, unavailable and domain previews while retaining disclosure semantics and controlled selection/collapse, host-owned headers, optional sticky headers and repeatable path scrolling without persistence; File Diff accepts an optional host label distinguishing previous/later pane landmarks across files or hunks while preserving default names when omitted.
 - The catalog MUST demonstrate unified, split, collapsed-context, binary, empty, multi-file composer, and wrap-text states without introducing a second runtime contract.
 
 ## DC-DIFF-004 — Merge Editor
@@ -110,11 +127,11 @@ Highlighted additions/removals MUST retain readable syntax foreground on row and
 
 ## DC-DIFF-008 — Diff scroll surfaces
 
-**Requirement.** File Diff and Merge Editor MUST scroll through the public shadcn ScrollArea, fill the host height, and keep unwrapped horizontal scrollbars at the bottom of that filled surface. File Diff MAY override the host scroll strategy for unified and split panes.
+**Requirement.** File Diff and Merge Editor MUST scroll through the public shadcn ScrollArea, fill the host height, and keep unwrapped horizontal scrollbars at the bottom of that filled surface. File Diff MAY override the host scroll strategy for unified and split panes. An explicit content-sizing option MUST let an outer multi-file collection own vertical scrolling while preserving horizontal split synchronization; fill sizing remains the default.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`.
 - File Diff and Merge Editor MUST mount shadcn `scroll-area` viewports instead of native overflow panes.
-- The editor MUST fill the host height, paint line-number gutters through unused space below the last line, keep those sticky gutters opaque so scrolled line text cannot show through, and keep unwrapped horizontal scrollbars at the bottom of that surface, just above any merge footer.
+- The editor MUST fill the host height, paint line-number gutters through unused space below the last line and split context-fold rows, keep those sticky gutters opaque so scrolled line text and fold controls cannot show through, and keep unwrapped horizontal scrollbars at the bottom of that surface, just above any merge footer.
 - The catalog MUST demonstrate the filled ScrollArea on File Diff and Merge Editor, with Merge Editor horizontal synchronization enabled by default and overridable through `syncHorizontalScroll`, and scrolled editable text and current-hunk overlays remaining beneath opaque gutters.

@@ -24,6 +24,19 @@
     title: "Shell/App Shell",
     tags: ["visual-pending"],
     component: AppShellRoot,
+    beforeEach: () => {
+      const resizeErrors: string[] = [];
+      const recordError = (event: ErrorEvent) => {
+        if (event.message.includes("ResizeObserver loop")) {
+          resizeErrors.push(event.message);
+        }
+      };
+      window.addEventListener("error", recordError);
+      return () => {
+        window.removeEventListener("error", recordError);
+        expect(resizeErrors).toEqual([]);
+      };
+    },
     parameters: {
       layout: "fullscreen",
       docs: {

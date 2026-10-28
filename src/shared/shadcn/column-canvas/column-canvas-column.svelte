@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy, onMount, untrack } from "svelte";
+  import { onDestroy, onMount, untrack, tick } from "svelte";
   import type { Action } from "svelte/action";
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
@@ -12,6 +12,11 @@
   import Count from "./column-canvas-count.svelte";
   import Toggle from "./column-canvas-toggle.svelte";
   import Close from "./column-canvas-close.svelte";
+  import {
+    measureColumnContentWidth,
+    constrainColumnFitWidth,
+  } from "./column-canvas-fit.js";
+  import { allocateColumnCanvasPair } from "./column-canvas-layout.js";
   import type { ColumnCanvasCollapsedRailContext } from "./column-canvas-types.js";
 
   let {
@@ -35,6 +40,7 @@
     edgeRevealLabel,
     width: widthOverride,
     onWidthChange,
+    fitMaxWidth = 720,
     class: className,
     children,
     ...restProps
@@ -99,6 +105,8 @@
     width?: number;
     /** Test/override resize callback. Prefer controller-owned widths. */
     onWidthChange?: (width: number) => void;
+    /** Maximum width for an explicit fit gesture; column min/max still apply. Defaults 720px. */
+    fitMaxWidth?: number;
     children?: Snippet;
   } = $props();
 
@@ -531,6 +539,7 @@
     ) {
       return;
     }
+    fitRequest++;
     const gestureBehavior = canvas.activateResizePair(id);
     if (gestureBehavior.kind === "hidden") return;
     event.preventDefault();
@@ -601,7 +610,104 @@
     ownerDocument.defaultView?.addEventListener("pointercancel", stopResize);
   }
 
+  let fitRequest = 0;
+  onDestroy(() => {
+    fitRequest++;
+  });
+  async function fitContents(event: MouseEvent | KeyboardEvent): Promise<void> {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!ref || !previewRef || collapsed || closed || !resolvedResizable)
+      return;
+    const behavior = canvas.activateResizePair(id);
+    if (behavior.kind === "hidden") return;
+    const request = ++fitRequest;
+    const structure = controller.structuralRevision;
+    const path = controller.path.join("\u0000");
+    const mode = canvas.displayMode;
+    const currentWidth =
+      behavior.kind === "pair" ? behavior.leadingWidth : width;
+    const bounds = (columnId: string) => ({
+      preferredWidth: controller.getWidth(columnId),
+      minWidth: controller.getMinWidth(columnId),
+      maxWidth: controller.getMaxWidth(columnId),
+    });
+    // Wide columns use their normal stage allocation, rather than the pixel
+    // preference, as the default. Reset restores that allocation's ratio.
+    const defaultWidth =
+      behavior.kind === "pair"
+        ? allocateColumnCanvasPair(
+            behavior.leadingWidth + behavior.trailingWidth,
+            bounds(behavior.leadingColumnId),
+            bounds(behavior.trailingColumnId),
+          ).leadingWidth
+        : controller.getDefaultWidth(id);
+    if (Math.abs(currentWidth - defaultWidth) > 1) {
+      resetResize();
+      return;
+    }
+    try {
+      // A bounded second pass accommodates metadata revealed by the new width.
+      for (let pass = 0; pass < 3 && request === fitRequest; pass++) {
+        if (
+          !ref ||
+          !previewRef ||
+          !ref.isConnected ||
+          collapsed ||
+          closed ||
+          controller.structuralRevision !== structure ||
+          controller.path.join("\u0000") !== path ||
+          canvas.displayMode !== mode
+        )
+          return;
+        const chrome = Math.max(
+          0,
+          ref.getBoundingClientRect().width -
+            previewRef.getBoundingClientRect().width,
+        );
+        const required = Math.max(
+          currentWidth,
+          measureColumnContentWidth(previewRef) + chrome,
+        );
+        const next = constrainColumnFitWidth(
+          required,
+          Math.max(currentWidth, resizeMinimum),
+          resizeMaximum,
+          fitMaxWidth,
+        );
+        if (Math.abs(ref.getBoundingClientRect().width - next) <= 1) break;
+        if (behavior.kind === "pair") {
+          const total = behavior.leadingWidth + behavior.trailingWidth;
+          if (total > 0)
+            controller.setPairSplit(
+              behavior.leadingColumnId,
+              behavior.trailingColumnId,
+              next / total,
+            );
+        } else if (onWidthChange) onWidthChange(next);
+        else controller.setWidth(id, next);
+        canvas.requestStickyLayout();
+        await tick();
+        // Pair allocation is applied in the canvas animation frame.
+        if (behavior.kind === "pair")
+          await new Promise<void>((resolve) =>
+            requestAnimationFrame(() => resolve()),
+          );
+      }
+      canvas.requestStickyLayout();
+    } finally {
+      if (request === fitRequest) canvas.finishResizePair();
+    }
+  }
+  function doubleClickResize(event: MouseEvent): void {
+    void fitContents(event);
+  }
   function resizeWithKeyboard(event: KeyboardEvent): void {
+    if (event.key === "Enter") {
+      void fitContents(event);
+      return;
+    }
+    fitRequest++;
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
     const keyboardBehavior = canvas.activateResizePair(id);
     if (keyboardBehavior.kind === "hidden") return;
@@ -638,6 +744,8 @@
         resetBehavior.leadingColumnId,
         resetBehavior.trailingColumnId,
       );
+    } else if (onWidthChange) {
+      onWidthChange(controller.getDefaultWidth(id));
     } else {
       controller.resetWidth(id);
     }
@@ -648,12 +756,12 @@
   const resizeHandleInteractions: Action<HTMLElement> = (node) => {
     node.addEventListener("pointerdown", startHorizontalResize);
     node.addEventListener("keydown", resizeWithKeyboard);
-    node.addEventListener("dblclick", resetResize);
+    node.addEventListener("dblclick", doubleClickResize);
     return {
       destroy() {
         node.removeEventListener("pointerdown", startHorizontalResize);
         node.removeEventListener("keydown", resizeWithKeyboard);
-        node.removeEventListener("dblclick", resetResize);
+        node.removeEventListener("dblclick", doubleClickResize);
       },
     };
   };
@@ -787,9 +895,7 @@
         aria-valuenow={Math.round(
           resizeBehavior.kind === "pair" ? resizeBehavior.leadingWidth : width,
         )}
-        title={resizeBehavior.kind === "pair"
-          ? `Resize ${resolvedTitle} and ${resizeBehavior.trailingTitle}`
-          : `Resize ${resolvedTitle}`}
+        title={`${resizeBehavior.kind === "pair" ? `Resize ${resolvedTitle} and ${resizeBehavior.trailingTitle}` : `Resize ${resolvedTitle}`}. Double-click or press Enter to expand to contents or reset to default width.`}
         data-ui-component="column-canvas"
         data-ui-part="resize-handle"
         data-resize-mode={resizeBehavior.kind}

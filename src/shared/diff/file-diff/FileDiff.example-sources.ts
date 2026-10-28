@@ -180,3 +180,18 @@ export const LineAnnotation = `<script lang="ts">
   lineAccessory={lineAction}
   lineAnnotation={lineComment}
 />`;
+
+export const HostContent = `<script lang="ts">
+  import { FileDiffComposer, FileDiff } from "@lapismd/design-core/diff";
+  let collapsedFilePaths = $state<string[]>(["image.png"]);
+</script>
+<FileDiffComposer expandOnHeaderClick files={[{ path: "note.md" }, { path: "image.png" }]}
+  {collapsedFilePaths}
+  onFileToggle={(path, collapsed) => collapsedFilePaths = collapsed
+    ? [...collapsedFilePaths, path]
+    : collapsedFilePaths.filter(value => value !== path)}>
+  {#snippet fileContent({ path })}
+    {#if path === "image.png"}<p>Host-owned binary preview</p>
+    {:else}<FileDiff {path} oldText="Before" newText="After" sizing="content" />{/if}
+  {/snippet}
+</FileDiffComposer>`;

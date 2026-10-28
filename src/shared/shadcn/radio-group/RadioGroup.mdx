@@ -1,0 +1,27 @@
+import { Meta, Canvas, Source, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./RadioGroup.stories.svelte";
+import { Basic } from "./RadioGroup.example-sources";
+
+<Meta of={Stories} />
+
+# Radio Group
+
+A controlled, single-choice form primitive using Bits UI keyboard behavior and semantic theme tokens.
+
+## Usage
+
+<Source code={Basic} language="tsx" />
+
+Use Root and Item together. Associate each Item with a visible Label. Keep values stable and assign a name to the group. Arrow keys move selection; disabled groups cannot change.
+
+## Variations
+
+<Canvas of={Stories.KeyboardSelection} />
+<Canvas of={Stories.Disabled} />
+<Canvas of={Stories.Invalid} />
+
+## Styling and API
+
+The generated `radio-group.tokens.css` binds background, foreground, border, radius and focus to Design Core semantics. Override its documented `--ui-radio-group-*` tokens on an ancestor. Invalid state uses `aria-invalid`; selection uses the controlled value. Generic request layouts and permission semantics belong to their host components.
+
+<Controls />

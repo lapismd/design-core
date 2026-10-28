@@ -580,7 +580,7 @@
 .cv-search-filter-bar__editor .cm-placeholder {
   color: color-mix(
     in srgb,
-    var(--ui-form-foreground) 62%,
+    var(--ui-form-foreground) 70%,
     var(--ui-form-background)
   );
   font-weight: 700;

@@ -166,13 +166,15 @@ test("Markdown survives narrow layout and late stylesheet updates without replac
   });
   const handle = await heading.elementHandle();
   await page.addStyleTag({
-    content:
-      '[data-ui-component="chat-markdown"] { --ui-chat-markdown-font-size: 19px; }',
+    content: '[data-ui-component="chat-markdown"] { --mira-font-size: 19px; }',
   });
   await expect(page.locator('[data-ui-component="chat-markdown"]')).toHaveCSS(
     "--mira-font-size",
     "19px",
   );
+  await expect(
+    page.locator('[data-ui-component="chat-markdown"] p').first(),
+  ).toHaveCSS("font-size", "19px");
   expect(await handle!.evaluate((node) => node.isConnected)).toBe(true);
   await page.getByRole("button", { name: "Append streamed content" }).click();
   await expect(page.getByText("update", { exact: true })).toHaveCount(2);

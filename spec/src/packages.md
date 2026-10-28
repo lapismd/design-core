@@ -6,6 +6,9 @@ paths remain available; package publication still requires the verified archive.
 Every runtime dependency uses a valid semver version or range, including the
 exact qualified Vaul Svelte prerelease rather than a floating distribution tag.
 
+Root development tooling consumes `@lapismd/spec-validator` at `^0.2.0` from
+npm. That pin stays outside the published package graph.
+
 The additive `./forms/file-path-input` export and Forms barrel expose FilePathInput and its props; Workspace Settings exports quantity and filePicker metadata without changing existing persisted field kinds.
 
 The clean archive consumer exercises reconciled ToolCalls disclosure names and
@@ -25,7 +28,7 @@ The focused `shadcn/tag-list` family exports TagList and its item/props types.
 Strict source consumers cover the same existing wildcard export boundary.
 
 The app-component promotion batch adds the Chat entry point and qualifies
-published Mira `~0.1.0`, including its public TableReader contract.
+published Mira `~0.1.1`, including its public TableReader contract and `lineNumbers` opt-out.
 The Chat entry point also exports MarkdownComposer, MessageActions and the
 shared ReactionBar while retaining existing AI compatibility imports. CommentComposer
 and its neutral source, props and focus/selection handle are also exported from Chat.
@@ -207,3 +210,5 @@ clean packed fixture, including aligned member/overflow sizing and activation of
 a separate reply control without nested buttons.
 Workspace sidebar and bottom-panel imports are also exercised with both states,
 retaining the default PanelToggle button and fixed standard icon without Tailwind.
+
+The FileTypeIcon wildcard family uses the framework-neutral MIT `material-file-icons` development-only asset source pinned to 2.4.0; it adds no React dependency or consumer source scan.

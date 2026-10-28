@@ -45,7 +45,7 @@ test("composer text starts near the leading edge in both presentations and viewp
   }
 });
 
-test("document composition uses the jj-store writing area, transparent surface and avatar gutter", async ({
+test("document composition retains the public host height, transparent shell and stock Mira editor", async ({
   page,
 }) => {
   await open(page, "chat-markdown-composer--document-reply");
@@ -54,31 +54,17 @@ test("document composition uses the jj-store writing area, transparent surface a
     exact: true,
   });
   const editor = page.getByRole("textbox", { name: "Message", exact: true });
-  const minimum = await page.evaluate(() =>
-    Math.max(
-      16 * parseFloat(getComputedStyle(document.documentElement).fontSize),
-      innerHeight * 0.45,
+  // The public host defaults to 6rem; Mira owns the content inset and typography.
+  const host = composer.locator(".ui-markdown-composer__editor.mira");
+  await expect(host).toHaveCSS("min-height", "96px");
+  expect((await host.boundingBox())!.height).toBeGreaterThanOrEqual(96);
+  await expect(
+    composer.locator(
+      '[data-ui-component="ai-chat-composer"] > [data-ui-part="body"]',
     ),
-  );
-  expect
-    .soft((await editor.boundingBox())!.height)
-    .toBeGreaterThanOrEqual(minimum);
-  const opaqueSurfaces = await editor.evaluate((content) => {
-    const surfaces = [];
-    for (
-      let node: Element | null = content;
-      node && !node.matches(".ui-markdown-composer");
-      node = node.parentElement
-    ) {
-      const background = getComputedStyle(node).backgroundColor;
-      if (background !== "transparent" && !background.endsWith(", 0)"))
-        surfaces.push({ name: node.className, background });
-    }
-    return surfaces;
-  });
-  expect.soft(opaqueSurfaces).toEqual([]);
-  await expect.soft(editor).toHaveCSS("font-size", "14px");
-  await expect.soft(editor).toHaveCSS("line-height", "23.1px");
+  ).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await expect(editor).toHaveCSS("font-size", "14px");
+  await expect(editor).toHaveCSS("line-height", "22.4px");
   await expect
     .soft(composer.locator('[data-ui-component="avatar"]'))
     .toHaveCount(1);

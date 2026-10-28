@@ -207,3 +207,32 @@ and right edges, with content inset below them. The outer workspace-inspector
 toggle sits at the right of the document header.
 
 Prefer `PanelToggleIcon` for sidebar visibility icons, `PanelToggle` for a standalone controlled button, and the existing Workspace/AppShell toggle when controller integration is needed.
+
+## Opt-in chrome and joined surfaces
+
+For a browser topbar that belongs in the body header at narrow widths, place
+`AppShell.Topbar.Target bind:ref={target}` first inside Main, outside Body and
+other scrolling regions. Pass the existing `controller`, `mobileTarget={target}`
+and `mobilePlacement="body"` to Topbar. The root's resolved mode moves one mounted
+bar, retaining all snippets, focus and open widgets. Missing targets fall back to
+the original position. The default is `"top"`; native hosts retain it and supply
+their own window-drag attributes and control clearance.
+
+Compose `Sidebar variant="attached"` next to Main for one shared surface with
+internal dividers and exposed outer corners. Keep an independent outer
+`variant="rail"` after attached right panels. Existing controllers, priorities,
+widths and persistence stay authoritative. `Sidebar.Section` accepts heading,
+actions and content snippets with public spacing tokens; hosts keep headings and
+verbose content out of collapsed icon rails.
+
+Use `SurfaceLayer.Footer` outside its body viewport and `SurfaceLayer.Close`
+for contextual dismissal through the existing `onDismiss`. Choose
+`SurfaceLayer.Body scrollable={false}` when a bounded child owns scrolling.
+The `--ui-shell-surface-layer-mobile-main-start-allowance` and
+`--ui-shell-surface-layer-mobile-inline-end-inset` tokens fall back to the ordinary
+layer insets. The shell still supports one active structural page per root.
+
+See **Attached sidebars and independent outer rail**, **Responsive topbar body
+target**, **Native topbar stays above the body**, and **Overlay page header body
+and footer**. The App Shell Docs page includes complete public-import examples
+and the exported token defaults.

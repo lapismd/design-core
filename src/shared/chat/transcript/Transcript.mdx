@@ -34,10 +34,20 @@ inset, including in rootless inspectors and standalone queues. Its tokens are
 `--ui-transcript-markdown-line-height` (1.55) and
 `--ui-transcript-paragraph-spacing` (0.45rem). Editable comments use the bare
 CommentComposer presentation inside the existing comment card.
+In expanded pending/sent/reply contexts, captured quotes use the enclosing muted
+surface without an extra prose, list or captured-code fill. Markdown previews use
+Mira's public `--mira-preview-background` variable; source selection highlights
+remain unchanged. Plain Backspace in an already empty draft closes and removes
+that comment through the existing controller, retaining other comments.
 Reply prose, quoted context and comment cards inherit the same host font and
 foreground. Comments and their editors default to the transcript's prose size
 (0.875rem), with `--ui-transcript-comment-font-size` available for an explicit
 override. This replaces the earlier, larger 1rem default following visual review.
+
+Document mode keeps the trailing document buffer after the inline draft: 4rem
+on desktop and 3rem below 600px. Override
+`--ui-transcript-composer-trailing-space` to change this writing space. Classic
+keeps its existing 1rem composer inset, including when fixed.
 
 Collapsed file, tool and context headers show only the last nonempty current root
 comment per discussion. Expanding restores earlier comments; agent responses stay
@@ -141,3 +151,45 @@ conflict resolution in the host. Published results can return `commentVersions`
 keyed by submitted comment ID. Only acknowledgement retires the exact replaced
 version; queued/unknown/rejected changes retain it, and newer drafts are preserved.
 Without a returned version, further editing waits for a host data refresh.
+
+## Message outcomes
+
+Set `item.status={{ type: "error", label: "Failed", message: "Your message is retained." }}`
+to place status below the message body. The shared MessageMetadata row keeps the
+time, `metadataSupplement` action buttons and outcome in that order. Supply retry
+through the supplement; rendering or changing views never dispatches a retry.
+Classic retains the same metadata and red error detail below its prompt.
+
+Style metadata with `--ui-transcript-metadata-font-size` (0.75rem),
+`--ui-transcript-metadata-gap` (0.4rem) and the shared
+`--ui-ai-chat-metadata-error-foreground` (a readable semantic destructive/foreground mix).
+Context, handoff and rootless content use `--ui-transcript-font-size` (0.875rem)
+and the host sans font; the existing Markdown tokens retain independent spacing.
+
+Retained unavailable-source comment cards use `--ui-transcript-stale-gap` (0.5rem)
+between cards, keeping each status banner attached to its own captured quote.
+
+Captured file headers and disclosures use the shared FileTypeIcon when `path` is supplied. Tool titles retain an explicit host icon or error/running indicator before falling back to the captured path icon. No filename is inferred from prose labels.
+
+## Host references and actions
+
+Use `markdown.references` and `inlineReferences={block => chatReferenceDecorations(block.text, references)}`
+with the same host codec for preview and retained CodeMirror readers. Reader
+hooks also apply with an externally owned TranscriptController.
+`commentComposer` accepts the same reference codec, trigger suggestions and
+CodeMirror extensions; comment previews use the transcript Markdown configuration.
+
+`getMessageActions(messageId, block)` returns shared MessageAction descriptors.
+Primary actions use icon buttons; other actions use the kebab menu alongside
+Comment and optional reactions. The default Comment is icon-only, hidden bars
+never intercept tool controls, and a wholly unavailable bar is omitted. Set
+`actionTooltips={false}` to omit tooltips. The older messageActions snippet remains
+available for custom host controls.
+
+## Captured disclosure outcomes
+
+Set `tone: "destructive"` on a captured context/reasoning/handoff item to render
+its disclosure label and icon in readable red. This presentation does not turn a
+permission decision into an execution error or change its captured content.
+Final compact rows retain `--ui-transcript-tool-row-gap` (0.25rem) below them.
+Inline draft comments use CommentComposer's T toggle and formatting strip.

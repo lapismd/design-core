@@ -15,6 +15,7 @@
     scenario?:
       | "framed"
       | "document"
+      | "compact"
       | "narrow"
       | "disabled"
       | "busy"
@@ -35,7 +36,9 @@
   };
   let reply = $state<MarkdownComposerReply | undefined>(replyTarget);
   const documentMode = $derived(
-    scenario === "document" || presentation === "document",
+    scenario === "document" ||
+      scenario === "compact" ||
+      presentation === "document",
   );
   function submit(snapshot: string) {
     submitted = snapshot;
@@ -43,7 +46,13 @@
   }
 </script>
 
-<div class="markdown-composer-review" data-narrow={scenario === "narrow"}>
+<div
+  class="markdown-composer-review"
+  data-narrow={scenario === "narrow"}
+  style={scenario === "compact"
+    ? "--ui-markdown-composer-document-min-height:42px"
+    : undefined}
+>
   <h2>
     {scenario === "form"
       ? "Compose inside a form"

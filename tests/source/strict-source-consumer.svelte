@@ -1,4 +1,9 @@
 <script lang="ts">
+  import {
+    FileTypeIcon,
+    type FileTypeIconSize,
+  } from "@lapismd/design-core/shadcn/file-type-icon";
+  const fileIconSizes: readonly FileTypeIconSize[] = ["xs", "s", "md", "lg"];
   import { Button } from "@lapismd/design-core/shadcn/button";
   import {
     AvatarGroup,
@@ -286,3 +291,8 @@
   messages={[]}
   onSubmit={() => {}}
 />
+
+{#each fileIconSizes as size}<FileTypeIcon
+    path="Documents/report.pdf"
+    {size}
+  />{/each}

@@ -134,3 +134,30 @@ controller.setSelectedPath(path);
 controller.refresh();
 controller.toggleShowHiddenFiles();
 controller.setLoading(false);`;
+
+export const OpenFailure = `<script lang="ts">
+  import { WorkspaceExplorer, ExplorerController, createMemoryExplorerAdapter }
+    from "@lapismd/design-core/workspace/explorer";
+
+  const memory = createMemoryExplorerAdapter([
+    { path: "readme.md", name: "readme.md", kind: "file" },
+  ]);
+  let firstOpen = true;
+  const controller = new ExplorerController({
+    tree: memory.tree,
+    actions: {
+      ...memory.actions,
+      async openFile(path, intent) {
+        if (firstOpen) {
+          firstOpen = false;
+          throw new Error("File editing is closing");
+        }
+        await memory.actions.openFile(path, intent);
+      },
+    },
+    selection: memory.selection,
+    preferences: memory.preferences,
+  });
+</script>
+
+<WorkspaceExplorer {controller} />`;

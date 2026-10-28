@@ -24,6 +24,7 @@
     isStopShown = false,
     clearOnSubmit = true,
     status,
+    statusContent,
     statusPosition = "bottom",
     triggers = [],
     drawer,
@@ -48,6 +49,8 @@
     /** Keep false when the host owns acknowledgement and draft clearing. */
     clearOnSubmit?: boolean;
     status?: ComposerStatus;
+    /** Optional custom status content, retaining the shared semantic shell. */
+    statusContent?: Snippet | undefined;
     statusPosition?: "top" | "bottom";
     triggers?: ComposerTrigger[];
     drawer?: Snippet;
@@ -120,7 +123,7 @@
   onclick={handleShellClick}
 >
   {#if status && statusPosition === "top"}
-    <ComposerStatusBanner {status} position="top" />
+    <ComposerStatusBanner {status} position="top" children={statusContent} />
   {/if}
 
   {#if drawer}
@@ -177,6 +180,6 @@
   </div>
 
   {#if status && statusPosition === "bottom"}
-    <ComposerStatusBanner {status} position="bottom" />
+    <ComposerStatusBanner {status} position="bottom" children={statusContent} />
   {/if}
 </div>

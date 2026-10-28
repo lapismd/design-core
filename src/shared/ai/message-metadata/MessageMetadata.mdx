@@ -60,3 +60,12 @@ Timestamp-only metadata on user and assistant messages. Supports
 absolute time and relative formats via Timestamp.
 
 <Canvas of={MessageMetadataStories.Timestamps} meta={MessageMetadataStories} />
+
+### Host labels and status actions
+
+`statusLabel` optionally replaces the standard delivery label. Pass explicit
+status buttons through `footer`; they appear between the timestamp and status
+with the existing dot separators. The component never initiates a retry.
+`--ui-ai-chat-metadata-error-foreground` overrides the error text and glyph.
+Its default mixes destructive with foreground (80% destructive in light, 60%
+in dark) to keep small text readable on tinted message surfaces.

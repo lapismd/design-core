@@ -3,6 +3,22 @@
  * `AppShell.Root` ancestor without changing component source.
  */
 :root {
+  --ui-shell-topbar-height: 2.75rem;
+  --ui-shell-topbar-padding: 0.5rem;
+  --ui-shell-topbar-background: initial;
+  --ui-shell-topbar-body-background: initial;
+  --ui-shell-attached-divider: 1px solid var(--border);
+  --ui-shell-attached-shadow: none;
+  --ui-shell-attached-header-padding: 0.125rem 0.75rem;
+  --ui-shell-attached-footer-padding: 0.75rem;
+  --ui-shell-sidebar-section-gap: 0.5rem;
+  --ui-shell-sidebar-section-padding: 0.75rem;
+  --ui-shell-surface-layer-header-padding: 0.625rem 0.75rem 0.625rem 1rem;
+  --ui-shell-surface-layer-footer-padding: 0.75rem 1rem;
+  --ui-shell-surface-layer-footer-border: 1px solid var(--border);
+  --ui-shell-surface-layer-mobile-main-start-allowance: initial;
+  --ui-shell-surface-layer-mobile-inline-end-inset: initial;
+
   --ui-shell-height: 100vh;
   --ui-shell-left-sidebar-width: 18rem;
   --ui-shell-right-sidebar-width: 18rem;

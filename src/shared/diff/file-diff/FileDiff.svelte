@@ -21,6 +21,7 @@
     type UnifiedDiffRow,
   } from "../core/unified-diff.js";
   import { expandAll, expandBottom, expandTop } from "./expand.js";
+  import { buildSplitDisplayItems } from "./split-display.js";
   import { highlightText } from "./highlight.js";
   import { resolveDiffLanguage } from "./language.js";
   import type {
@@ -39,6 +40,7 @@
     patch,
     viewMode = "unified",
     wrap = false,
+    sizing = "fill",
     language,
     scrollTo,
     lineAccessory,
@@ -55,6 +57,8 @@
     patch?: string;
     viewMode?: FileDiffViewMode;
     wrap?: boolean;
+    /** Content sizing lets an outer file collection own vertical scrolling. */
+    sizing?: "fill" | "content";
     language?: string;
     scrollTo?: FileDiffScrollTarget | null;
     lineAccessory?: Snippet<[FileDiffLineContext]>;
@@ -75,7 +79,7 @@
     return buildUnifiedDiffRows(oldText, newText ?? "");
   });
   const displayItems = $derived(buildDisplayItems(rows, expandedBlocks));
-  const splitPairs = $derived(pairRowsForSplit(rows));
+  const splitItems = $derived(buildSplitDisplayItems(displayItems));
   const empty = $derived(!binary && rows.length === 0);
 
   onMount(() => {
@@ -339,6 +343,7 @@
   data-ui-part="file-diff"
   data-view-mode={viewMode}
   data-wrap={wrap ? "true" : undefined}
+  data-sizing={sizing}
   data-diff-file-path={path}
 >
   {#if binary}
@@ -362,12 +367,31 @@
             orientation={wrap ? "vertical" : "both"}
           >
             <div class="ui-diff-file-diff__pane-stack">
-              {#each splitPairs as pair (pair.key)}
-                {@render splitCell(
-                  paneSide === "left" ? pair.left : pair.right,
-                  paneSide,
-                  pair.key,
-                )}
+              {#each splitItems as item (item.type === "pair" ? item.pair.key : item.block.id)}
+                {#if item.type === "pair"}
+                  {@render splitCell(
+                    paneSide === "left" ? item.pair.left : item.pair.right,
+                    paneSide,
+                    item.pair.key,
+                  )}
+                {:else}
+                  <div data-ui-part="collapsed-context">
+                    <div class="ui-diff-file-diff__fold-row">
+                      <span class="ui-diff-file-diff__gutter" aria-hidden="true"
+                      ></span>
+                      {@render collapsedControls(item.block)}
+                    </div>
+                    {#if item.block.expanded}
+                      {#each pairRowsForSplit(item.block.rows) as pair (pair.key)}
+                        {@render splitCell(
+                          paneSide === "left" ? pair.left : pair.right,
+                          paneSide,
+                          pair.key,
+                        )}
+                      {/each}
+                    {/if}
+                  </div>
+                {/if}
               {/each}
             </div>
           </ScrollArea.Root>

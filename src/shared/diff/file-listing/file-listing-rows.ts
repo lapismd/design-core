@@ -7,6 +7,7 @@ import type {
   FileListingDirectory,
   FileListingFile,
   FileListingViewMode,
+  FileListingSummary,
 } from "./types.js";
 
 export type FileListingRow<TFile extends FileListingFile = FileListingFile> =
@@ -25,6 +26,7 @@ export type FileListingRow<TFile extends FileListingFile = FileListingFile> =
       depth: number;
       node: FileTreeNode;
       collapsed: boolean;
+      summary: FileListingSummary;
     };
 
 export function fileListingRows<TFile extends FileListingFile>(
@@ -57,6 +59,28 @@ export function fileListingRows<TFile extends FileListingFile>(
       ? buildPackageFileEntryTree(entries)
       : buildFileEntryTree(entries);
   const rows: FileListingRow<TFile>[] = [];
+  const summaries = new Map<string, FileListingSummary>();
+  for (const file of files) {
+    const parts = file.path.split("/");
+    for (let depth = 1; depth < parts.length; depth++) {
+      const path = parts.slice(0, depth).join("/");
+      const summary = summaries.get(path) ?? {
+        additions: 0,
+        deletions: 0,
+        knownFiles: 0,
+        fileCount: 0,
+        conflicted: false,
+      };
+      summary.fileCount++;
+      if (file.additions !== undefined && file.deletions !== undefined) {
+        summary.additions += file.additions;
+        summary.deletions += file.deletions;
+        summary.knownFiles++;
+      }
+      summary.conflicted ||= Boolean(file.conflicted);
+      summaries.set(path, summary);
+    }
+  }
 
   const visit = (node: FileTreeNode, depth: number): void => {
     if (node.type === "file") {
@@ -82,6 +106,13 @@ export function fileListingRows<TFile extends FileListingFile>(
       depth,
       node,
       collapsed,
+      summary: summaries.get(node.path) ?? {
+        additions: 0,
+        deletions: 0,
+        knownFiles: 0,
+        fileCount: 0,
+        conflicted: false,
+      },
     });
     if (!collapsed) {
       for (const child of node.children) visit(child, depth + 1);

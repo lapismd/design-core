@@ -7,6 +7,8 @@ import type {
 } from "@lapismd/mira/extensions";
 export type MarkdownContentProps = HTMLAttributes<HTMLDivElement> & {
   content: string;
+  /** Shared reference codec; navigation and lookup remain host-owned. */
+  references?: import("../inline-reference/inline-reference.types.js").ChatReferenceOptions;
   compact?: boolean;
   fullWidth?: boolean;
   sourcePath?: string;

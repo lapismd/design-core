@@ -1,9 +1,5 @@
 .ui-markdown-composer {
   --ui-ai-chat-composer-disabled-opacity: 1;
-  --_composer-font-family: var(
-    --ui-markdown-composer-font-family,
-    var(--font-sans, system-ui)
-  );
   min-width: 0;
   width: 100%;
   color: var(--foreground);
@@ -14,7 +10,7 @@
   > [data-ui-part="body"]:focus-within {
   box-shadow: none;
 }
-.ui-markdown-composer[data-presentation="framed"]
+.ui-markdown-composer:is([data-presentation="framed"], [data-attached-status])
   > [data-ui-component="ai-chat-composer"]
   > [data-ui-part="body"]:focus-within {
   border-color: var(--border);
@@ -28,24 +24,20 @@
 .ui-markdown-composer__scroll {
   min-width: 0;
   max-height: var(--ui-markdown-composer-max-height, 18rem);
+  overflow: hidden;
+}
+.ui-markdown-composer__scroll > [data-ui-part="scroll-area-viewport"] {
+  max-height: inherit;
 }
 .ui-markdown-composer__editor.mira {
-  --mira-background: transparent;
-  --mira-editor-background: transparent;
-  --mira-preview-background: transparent;
-  --mira-code-editor-background: transparent;
-  --mira-code-editor-min-height: var(--ui-markdown-composer-min-height, 6rem);
-  --mira-code-editor-padding: var(
-    --ui-markdown-composer-editor-padding,
-    0.5rem
-  );
-  --mira-editor-padding: var(--ui-markdown-composer-editor-padding, 0.5rem);
-  --file-line-width: 100%;
   min-height: var(--ui-markdown-composer-min-height, 6rem);
   height: auto;
   border: 0;
   border-radius: 0;
-  background: transparent;
+}
+.ui-markdown-composer[data-presentation="document"]
+  .ui-markdown-composer__editor.mira {
+  min-height: var(--ui-markdown-composer-document-min-height, 6rem);
 }
 .ui-markdown-composer__reply[data-ui-component="ai-chat-composer-drawer"] {
   padding-block-start: 0.625rem;
@@ -114,21 +106,14 @@
   font-size: 0.75rem;
 }
 .ui-markdown-composer[data-presentation="document"] {
-  --_composer-editor-padding: 0px;
-  --_composer-content-min-height: var(
-    --ui-markdown-composer-document-min-height,
-    max(16rem, 45vh)
-  );
-  --_composer-caret-padding-block: 4px;
-  --_composer-caret-padding-inline: 2px;
-  --_composer-caret-color: var(--primary);
+  --_composer-editor-padding: 0.25rem;
   --_composer-avatar-width: var(--ui-markdown-composer-avatar-width, 1.5rem);
   --_composer-avatar-gap: var(--ui-markdown-composer-avatar-gap, 0.5rem);
   --_composer-gutter: calc(
     var(--_composer-avatar-width) + var(--_composer-avatar-gap)
   );
 }
-.ui-markdown-composer[data-presentation="document"]
+.ui-markdown-composer[data-presentation="document"]:not([data-attached-status])
   > [data-ui-component="ai-chat-composer"] {
   gap: 0.5rem;
 }
@@ -145,12 +130,8 @@
   align-self: start;
   box-sizing: border-box;
   min-width: 0;
-  height: calc(
-    var(--ui-markdown-composer-font-size, 0.875rem) *
-      var(--ui-markdown-composer-line-height, 1.65) +
-      var(--_composer-caret-padding-block)
-  );
-  padding-block-start: var(--_composer-caret-padding-block);
+  height: calc(var(--mira-font-size, 14px) * var(--mira-line-height, 1.6));
+  margin-block-start: var(--ui-markdown-composer-editor-padding, 0.25rem);
 }
 .ui-markdown-composer[data-presentation="document"]
   .ui-markdown-composer__scroll {
@@ -162,7 +143,7 @@
   padding-block-end: 0.625rem;
   border-radius: 0.75rem;
 }
-.ui-markdown-composer[data-presentation="document"]
+.ui-markdown-composer[data-presentation="document"]:not([data-attached-status])
   > [data-ui-component="ai-chat-composer"]
   > [data-ui-part="body"] {
   --ui-ai-chat-composer-padding: 0;
@@ -171,13 +152,6 @@
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-}
-.ui-markdown-composer[data-presentation="document"]
-  .ui-markdown-composer__editor {
-  --mira-font-sans: var(--_composer-font-family);
-  --mira-font-size: var(--ui-markdown-composer-font-size, 0.875rem);
-  --mira-line-height: var(--ui-markdown-composer-line-height, 1.65);
-  min-height: 1.75rem;
 }
 .ui-markdown-composer[data-presentation="document"] [data-ui-part="footer"] {
   margin-inline-start: var(--_composer-gutter);
@@ -188,7 +162,7 @@
   padding-inline: 0.125rem;
 }
 @media (forced-colors: active) {
-  .ui-markdown-composer[data-presentation="framed"]
+  .ui-markdown-composer:is([data-presentation="framed"], [data-attached-status])
     > [data-ui-component="ai-chat-composer"]
     > [data-ui-part="body"] {
     border-color: CanvasText;

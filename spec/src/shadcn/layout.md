@@ -38,6 +38,15 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 Collapsed rail names retain their full visible title and count. Rich catalog
 rows use their complete rendered text rather than title-only naming overrides.
 
+Double-clicking a resize rail, or pressing Enter while it is focused, MUST
+expand a default-sized column to fit its currently mounted contents without
+shrinking it. At any other width the same gesture MUST reset the default.
+Content fitting MUST respect column and neighbour bounds and a finite 720px
+cap, configurable through `Column.fitMaxWidth`. Wide pairs toggle against their
+normal allocated width and reset their split without changing the pair total.
+Controlled widths MUST notify the host for both expansion and reset. Fitting
+MUST retain mounted content, selection and scroll position without loading data.
+
 **Requirement.** Column Canvas MUST provide horizontally scrollable columns with consumer-owned items and responsive sizing. Wide auto mode MUST allocate scrolling pairs within bounds through inverse resizing and durable pair ratios. Leading `fixed` columns MUST pin their original expanded panels or collapsed rails, releasing trailing pins when scrolling minimums cannot fit. External Scroll Area viewports, custom rails, transient previews and accessible trailing content MUST preserve compact behavior and persistence.
 
 ### Acceptance details

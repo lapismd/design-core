@@ -1,12 +1,16 @@
 <script lang="ts">
-  import { Button } from "../../shadcn/button/index.js";
   import { getContext } from "svelte";
+  import MessageActions from "../message-actions/MessageActions.svelte";
+  import type { MessageAction } from "../message-actions/message-actions.types.js";
   import {
     reactionContext,
     type TranscriptReactionContext,
   } from "./reaction-context.js";
+  import {
+    presentationContext,
+    type TranscriptPresentationContext,
+  } from "./presentation-context.js";
   import MessageCircleIcon from "@lucide/svelte/icons/message-circle";
-  import { EmojiPicker } from "../../shadcn/emoji-picker/index.js";
   import type { TranscriptBlock, TranscriptProps } from "./model.js";
   import type { TranscriptController } from "./comments.svelte.js";
   let {
@@ -25,51 +29,72 @@
   const inherited = getContext<TranscriptReactionContext | undefined>(
     reactionContext,
   );
+  const presentation = getContext<TranscriptPresentationContext | undefined>(
+    presentationContext,
+  );
   const reactions = $derived(inherited ?? state.props());
-  const commentsEnabled = $derived(state.props().canComment !== false);
+  const commentsEnabled = $derived(
+    state.props().canComment !== false && block.commentable !== false,
+  );
+  const actions = $derived<MessageAction[]>([
+    ...(commentsEnabled
+      ? [
+          {
+            id: "comment",
+            label: `Comment on ${block.label}`,
+            primary: true,
+            icon: commentIcon,
+            onSelect: onComment,
+          },
+        ]
+      : []),
+    ...(reactionTarget
+      ? ((presentation?.getMessageActions ?? state.props().getMessageActions)?.(
+          reactionTarget,
+          block,
+        ) ?? [])
+      : []),
+  ]);
+  const canReact = $derived(
+    !!reactionTarget && !!reactions.onReact && !reactions.reactionsDisabled,
+  );
   const visible = $derived(
-    commentsEnabled ||
-      !!(reactionTarget && (reactions.onReact || messageActions)),
+    canReact ||
+      actions.some(
+        (action) =>
+          !action.hidden && !action.disabled && !action.disabledReason,
+      ) ||
+      !!(reactionTarget && messageActions),
   );
 </script>
 
-{#if visible}<div
-    class="ui-transcript-text-actions"
-    role="group"
-    aria-label={`Actions for ${block.label}`}
-  >
-    {#if reactionTarget && reactions.onReact}
-      <EmojiPicker
-        customEmojis={reactions.customEmojis ?? []}
-        disabled={reactions.reactionsDisabled ?? false}
-        {...reactions.reactionEmojis === undefined
-          ? {}
-          : { emojis: reactions.reactionEmojis }}
-        triggerLabel={`Add reaction to ${block.label}`}
-        presets={reactions.reactionOptions ?? []}
-        onSelect={(emoji, custom) =>
-          reactions.onReact?.(
-            reactionTarget!,
-            emoji,
-            custom ??
-              reactions.customEmojis?.find(
-                (item) =>
-                  item.id === emoji ||
-                  item.shortcode === emoji ||
-                  `:${item.shortcode}:` === emoji,
-              ),
-          )}
-      />
-    {/if}
-    {#if commentsEnabled}<Button
-        variant="ghost"
-        size="sm"
-        aria-label={`Comment on ${block.label}`}
-        disabled={block.commentable === false}
-        title={block.commentable === false
-          ? "Waiting for an exact published source"
-          : undefined}
-        onclick={onComment}><MessageCircleIcon size={14} /> Comment</Button
-      >{/if}
-    {#if reactionTarget}{@render messageActions?.(reactionTarget)}{/if}
+{#snippet commentIcon()}<MessageCircleIcon aria-hidden="true" />{/snippet}
+{#snippet legacyActions()}{#if reactionTarget}{@render messageActions?.(
+      reactionTarget,
+    )}{/if}{/snippet}
+{#if visible}<div class="ui-transcript-text-actions">
+    <MessageActions
+      {actions}
+      presentation="inline"
+      label={`Actions for ${block.label}`}
+      moreLabel={`More actions for ${block.label}`}
+      tooltips={presentation?.actionTooltips ??
+        state.props().actionTooltips ??
+        true}
+      customEmojis={reactions.customEmojis ?? []}
+      {...reactions.reactionEmojis === undefined
+        ? {}
+        : { emojis: reactions.reactionEmojis }}
+      reactionLabel={`Add reaction to ${block.label}`}
+      reactionOptions={reactions.reactionOptions ?? []}
+      {...canReact
+        ? {
+            onAddReaction: (emoji, custom) =>
+              reactions.onReact?.(reactionTarget!, emoji, custom),
+          }
+        : {}}
+      {...reactionTarget && messageActions
+        ? { additionalActions: legacyActions }
+        : {}}
+    />
   </div>{/if}

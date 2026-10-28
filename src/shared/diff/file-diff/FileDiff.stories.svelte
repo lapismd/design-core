@@ -25,6 +25,7 @@
   const { Story } = defineMeta({
     title: "Diff/File Diff",
     component: FileDiff,
+    tags: ["visual-pending"],
     parameters: {
       docs: {
         description: {
@@ -60,6 +61,14 @@
   }
 
   const largeChange = paddedChange(24);
+  const splitContext = Array.from(
+    { length: 64 },
+    (_, i) => `retained ${i + 1}`,
+  ).join("\n");
+  const splitChange = {
+    oldText: `old value\n${splitContext}\nold tail\n`,
+    newText: `new value\ninserted line\n${splitContext}\nnew tail\n`,
+  };
   const wrapOld = `export const note = "${"alpha ".repeat(24).trim()}";\n`;
   const wrapNew = `export const note = "${"beta ".repeat(24).trim()}";\n`;
   const fillOld = Array.from(
@@ -488,6 +497,90 @@
         path="src/padded.ts"
         oldText={largeChange.oldText}
         newText={largeChange.newText}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Expands collapsed context in split panes"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: Split, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    await expect(canvas.queryAllByText(diffText("retained 32"))).toHaveLength(
+      0,
+    );
+    await userEvent.click(
+      canvas.getAllByRole("button", { name: /↓ 20 lines/ })[1],
+    );
+    await expect(canvas.getAllByText(diffText("retained 5"))).toHaveLength(2);
+    await expect(canvas.queryAllByText(diffText("retained 32"))).toHaveLength(
+      0,
+    );
+    await userEvent.click(
+      canvas.getAllByRole("button", { name: /Show \d+ unmodified lines/ })[0],
+    );
+    await expect(canvas.getAllByText(diffText("retained 32"))).toHaveLength(2);
+    const left = canvasElement.querySelector(
+      "[data-side='left'][data-ui-part='file-diff-pane']",
+    )!;
+    const right = canvasElement.querySelector(
+      "[data-side='right'][data-ui-part='file-diff-pane']",
+    )!;
+    await expect(
+      left.querySelector("[data-diff-line-number='34']"),
+    ).toHaveTextContent("retained 32");
+    await expect(
+      left.querySelector(
+        "[data-diff-line-number='34'] .ui-diff-file-diff__gutter",
+      ),
+    ).toHaveTextContent("33");
+    await expect(
+      right.querySelector("[data-diff-line-number='34']"),
+    ).toHaveTextContent("retained 32");
+    await expect(
+      right.querySelector(
+        "[data-diff-line-number='34'] .ui-diff-file-diff__gutter",
+      ),
+    ).toHaveTextContent("34");
+    await userEvent.click(
+      canvas.getAllByRole("button", { name: /Hide \d+ unmodified lines/ })[1],
+    );
+    await expect(canvas.queryAllByText(diffText("retained 5"))).toHaveLength(0);
+    await expect(canvas.queryAllByText(diffText("retained 32"))).toHaveLength(
+      0,
+    );
+    const viewport = paneViewport(left, "left")!;
+    expect(viewport.scrollWidth).toBeGreaterThan(viewport.clientWidth);
+    viewport.scrollLeft = 48;
+    viewport.dispatchEvent(new Event("scroll"));
+    await waitFor(() =>
+      expect(paneViewport(right, "right")!.scrollLeft).toBe(48),
+    );
+    for (const pane of [left, right]) {
+      const fold = pane.querySelector<HTMLElement>(
+        "[data-ui-part='collapsed-context']",
+      )!;
+      const paneBox = pane.getBoundingClientRect();
+      const foldBox = fold.getBoundingClientRect();
+      const front = pane.ownerDocument.elementFromPoint(
+        paneBox.left + 20,
+        foldBox.top + 16,
+      );
+      expect(front).toHaveClass("ui-diff-file-diff__gutter");
+      expect(cssAlpha(getComputedStyle(front!).backgroundColor)).toBe(1);
+    }
+  }}
+>
+  {#snippet template()}
+    <div style="height:24rem;width:50rem;max-width:100%">
+      <FileDiff
+        path="src/padded.ts"
+        oldText={splitChange.oldText}
+        newText={splitChange.newText}
+        viewMode="split"
       />
     </div>
   {/snippet}

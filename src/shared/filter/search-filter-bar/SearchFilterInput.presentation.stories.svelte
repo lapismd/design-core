@@ -175,3 +175,63 @@
     </div>
   {/snippet}
 </Story>
+
+<Story
+  name="Placeholder contrast on themed form surfaces"
+  tags={["visual-pending", "test"]}
+  play={async ({ canvasElement }) => {
+    const view = canvasElement.ownerDocument.defaultView!;
+    const ctx = canvasElement.ownerDocument
+      .createElement("canvas")
+      .getContext("2d")!;
+    function luminance(color: string) {
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, 1, 1);
+      const rgb = Array.from(ctx.getImageData(0, 0, 1, 1).data)
+        .slice(0, 3)
+        .map((value) => {
+          const channel = value / 255;
+          return channel <= 0.04045
+            ? channel / 12.92
+            : ((channel + 0.055) / 1.055) ** 2.4;
+        });
+      return rgb[0]! * 0.2126 + rgb[1]! * 0.7152 + rgb[2]! * 0.0722;
+    }
+    for (const scope of canvasElement.querySelectorAll(
+      "[data-placeholder-case]",
+    )) {
+      const placeholder = scope.querySelector(".cm-placeholder")!;
+      const pill = scope.querySelector(".cv-search-filter-bar__search-pill")!;
+      const foreground = luminance(view.getComputedStyle(placeholder).color);
+      const background = luminance(view.getComputedStyle(pill).backgroundColor);
+      await expect(
+        (Math.max(foreground, background) + 0.05) /
+          (Math.min(foreground, background) + 0.05),
+      ).toBeGreaterThanOrEqual(4.5);
+      await expect(placeholder).toBeVisible();
+    }
+  }}
+>
+  {#snippet template()}
+    <div style="display: grid; gap: 1rem; padding: 1rem;">
+      {#each [false, true] as dark}
+        <section
+          data-placeholder-case
+          class:dark
+          style={`padding: 1rem; --ui-form-foreground: ${dark ? "#eeeeee" : "#282e36"}; --ui-form-background: ${dark ? "#222222" : "#f7f7f7"}; --muted-foreground: ${dark ? "#aaaaaa" : "#666666"}; background: var(--ui-form-background);`}
+        >
+          <Input
+            aria-label="Reference placeholder"
+            placeholder="Find revisions"
+          />
+          <SearchFilterInput
+            inputMode="custom"
+            density="compact"
+            ariaLabel="Revision query"
+            placeholder="e.g. bookmarks(main)"
+          />
+        </section>
+      {/each}
+    </div>
+  {/snippet}
+</Story>

@@ -111,11 +111,7 @@
   );
 }
 .ui-tag-list__tag[data-tone="warning"] {
-  color: color-mix(
-    in srgb,
-    var(--ui-tag-list-warning, var(--color-amber-700, #b45309)) 78%,
-    var(--foreground)
-  );
+  color: var(--foreground);
   border-color: color-mix(
     in srgb,
     var(--ui-tag-list-warning, var(--color-amber-700, #b45309)) 42%,

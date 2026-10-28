@@ -96,6 +96,9 @@ export function composerSuggestions(options: {
         this.schedule();
       }
       destroy() {
+        version++;
+        pending?.abort();
+        pending = undefined;
         cancelAnimationFrame(this.frame);
         for (const instance of this.entries.values()) void unmount(instance);
         this.entries.clear();

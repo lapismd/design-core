@@ -20,11 +20,14 @@ Data and feedback primitives communicate state without taking ownership of consu
 | Reference Chip | `@lapismd/design-core/shadcn/reference-chip` | DC-SHA-059 |
 | Link Preview | `@lapismd/design-core/shadcn/link-preview` | DC-SHA-060 |
 | Spoiler | `@lapismd/design-core/shadcn/spoiler` | DC-SHA-061 |
+| File Type Icon | `@lapismd/design-core/shadcn/file-type-icon` | DC-SHA-064 |
 | Relative Time | `@lapismd/design-core/shadcn/relative-time` | DC-SHA-062 |
 
 ## DC-SHA-057 — Tag List
 
 **Requirement.** Tag List MUST present ordered, host-owned tags in one compact responsive row, composing existing Badge/Button, Tooltip, Popover and ScrollArea primitives.
+
+Warning-tag labels MUST retain at least 4.5:1 contrast on Lapis light and dark surfaces; warning colour remains on the border and background.
 
 ### Acceptance details
 
@@ -140,8 +143,9 @@ matching visible text order when avatar images are unavailable.
 
 ### Acceptance details
 
-- Full labels and descriptions MUST remain available through accessible tooltips while long inline labels truncate without changing supplied text, and trigger names MUST include visible avatar fallbacks before the label.
+- Full labels and descriptions MUST remain available through accessible tooltips or optional host profile previews while long inline labels truncate without changing supplied text, and trigger names MUST include visible avatar fallbacks before the label.
 - Optional removal MUST be a separate labelled button and disabled references MUST never navigate or invoke callbacks.
+- Mention appearance MUST preserve filled jj-store inline author geometry and semantic foreground color in Markdown; default reference appearance and native link semantics MUST remain intact.
 
 ## DC-SHA-060 — Link Preview
 
@@ -171,3 +175,31 @@ matching visible text order when avatar images are unavailable.
 - Invalid dates MUST retain a readable fallback and never throw during rendering.
 - Live updates MUST stop on disposal while supplied clocks, locale and absolute-date thresholds remain deterministic.
 - Interactive accessible names MUST contain the visible date text together with the exact date or host-supplied context label.
+
+## DC-SHA-063 — Avatar image request lifetime
+
+**Requirement.** Avatar image failures MUST remain bound to their originating image request rather than live parent identity state.
+
+### Acceptance details
+
+- Late resource events during owner teardown MUST NOT read destroyed reactive state.
+- Failure of a replaced image MUST NOT hide a newer image or select its fallback.
+- Current-image failure MUST retain the existing accessible initials fallback.
+
+## DC-SHA-064 — File Type Icon
+
+**Requirement.** FileTypeIcon MUST render the shared Material file icon for a host-supplied filename or path without accessing file contents, filesystem or network.
+
+The reviewed implementation MUST ship a reproducible curated artwork subset,
+with the full pinned catalogue confined to development tooling. Canonical spec
+checks MUST reject stale generated assets; focused bundle acceptance MUST cap
+the standalone resolver at 48 KiB gzip and reject a full-catalogue runtime import.
+Developer categories and personal notes, PDF/EPUB, office, media, archives,
+calendars and diagrams MUST resolve without filesystem or MIME inspection.
+
+### Acceptance details
+
+- POSIX and Windows basenames MUST match case-insensitively, preferring special filenames and the longest supported extension; unknown or empty names MUST retain the generic file icon.
+- SVG markup MUST come only from the installed icon library; icons MUST be decorative by default and expose a named image only when a title is supplied.
+- The family MUST export typed props with xs/s/md/lg sizes (12/14/16/24px, md default) and audited native size/fallback-colour tokens, retain original Material colours, and document all supported variations with public-import examples.
+- Default File Listing rows MUST compose this primitive at their existing 14px size in eager/virtual list, tree and package views without changing folder disclosure, selection, paging, drag or keyboard behavior.

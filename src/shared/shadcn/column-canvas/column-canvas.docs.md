@@ -180,6 +180,18 @@ The boundary affordance is a thin neutral-grey strip. Override
 different geometry or contrast; preview content paints the ordinary column
 background by default.
 
+### Resize rail toggle
+
+Double-click a resize rail (or focus it and press Enter) to expand a default-sized
+column to its currently rendered contents. The same gesture at any other width
+resets the default, including after a manual drag or arrow-key resize. Fitting
+never shrinks below the starting default and is capped at 720px; pass
+`fitMaxWidth` on `Column` to choose another finite cap. Column minimums and
+maximums still apply. Wide pairs use their normal allocated width as the default
+and retain inverse resizing at a constant total. Controlled widths receive
+`onWidthChange` for expansion and reset. Content is measured in place; hidden
+content and unloaded data are not fetched and mounted editors are retained.
+
 ### Column props
 
 `Column` accepts these family-specific props in addition to native section
@@ -200,6 +212,7 @@ attributes and a bindable `ref`:
 | `fixed`             | Pins the original expanded panel or collapsed rail; overrides sticky                                 |
 | `sticky`            | Registers a leading floating return rail in wide and fixed modes                                     |
 | `stickyRail`        | Named snippet rendered inside the sticky return button                                               |
+| `fitMaxWidth`       | Finite content-fit cap in CSS pixels (default `720`); column and neighbour bounds still apply        |
 | `width`             | Test or harness width override; prefer controller widths in products                                 |
 | `onWidthChange`     | Test or harness resize callback; prefer controller updates in products                               |
 

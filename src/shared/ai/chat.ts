@@ -91,3 +91,6 @@ export type {
 export type { ComposerToken as ComposerTokenValue } from "./types.js";
 
 export type { MessageListPosition } from "./message-list/position.js";
+
+export { default as ContentViewToggle } from "./content-view-toggle/ContentViewToggle.svelte";
+export type { ContentViewToggleProps } from "./content-view-toggle/content-view-toggle.types.js";

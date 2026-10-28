@@ -1,5 +1,15 @@
 # Tooling
 
+The repository agent guide requires a release workspace inventory and a
+Dependabot check before every push under DC-GOV-007. Dependency consolidation
+uses one separate verified pull request per repository; release evidence records
+workspace dispositions and links superseded requests to the merged replacement.
+
+The offline Shell guide documents opt-in Topbar.Target placement, attached
+sidebars, shared rail sections and SurfaceLayer page chrome. Its examples point
+back to the [Shell contract](shell.md) under DC-SHELL-004, DC-SHELL-006 and
+DC-SHELL-007; applications retain controller and persistence ownership.
+
 Release qualification uses published Mira 0.1.0 and Visual Delta 0.0.9 with
 Playwright 1.62.1. Maintained CI workflows run functional, interaction,
 accessibility and package checks; no CI workflow runs screenshot comparison.
@@ -35,6 +45,8 @@ rendering or composer mounting cannot invalidate a running story through late de
 The offline component catalog includes the Chat layer alongside legacy AI, with
 public imports and colocated examples for MarkdownContent.
 It also discovers the CommentComposer presentation family and its public examples.
+InlineReference and its public Chat import MUST appear in the exact family
+inventory alongside the existing Chat components.
 PromptContext adds safe XML-style prompt presentation to the same Chat catalog;
 its recorded-session data and reference adapters are catalog-only `.stories.fixture.*`
 files and MUST remain outside consumer archives.
@@ -79,6 +91,10 @@ Repository tools keep source generation, discovery, documentation, validation, C
 **Requirement.** The UI catalog CLI family MUST list and inspect guides and component families in human-readable and JSON forms.
 
 The AI catalog derives stable public chat components, including shared tool-call detail, from their colocated stories and public subpath exports.
+
+The stable AI catalog inventory MUST include ContentViewToggle under its public
+AI/chat import; catalog count checks retain exact inventory assertions when a
+new independently documented family is added.
 
 ### Acceptance details
 
@@ -125,7 +141,8 @@ The gate MUST retain diagnostics caught during component teardown and fail
 after the story or final suite cleanup instead of relying only on the
 immediately thrown error.
 The development catalog readiness probe MUST prepare representative client
-entries, including the shared Workspace AppShell export graph, and await pending
+entries, including the shared Workspace AppShell export graph and the Shell
+AppShell story module used by pointer acceptance, and await pending
 import requests before browser acceptance begins.
 Compilation failures return an unavailable response and allow a later retry.
 Workspace pointer acceptance MUST await the requested story's render and play
@@ -180,3 +197,12 @@ host acknowledgement in both cold development and production output.
 Community component discovery includes the ThreadPanel Chat family and the
 new Shadcn/Forms families through colocated docs and stories. Public archive
 runtime acceptance exercises their exported styles and controls without Tailwind.
+
+The project-authored FileTypeIcon family uses `pnpm icons:generate` to extract
+curated artwork and filename tables from pinned development data. `pnpm icons:check`
+compares generated assets without writing; both spec validation and check lanes
+run it before the shared validator. Runtime modules import only generated data.
+
+Radio Group conversion maps upstream FieldLabel group relationships to the
+existing semantic `data-slot="field-label"` boundary (DC-SHA-065), preserving
+focus behavior without publishing utility marker selectors.

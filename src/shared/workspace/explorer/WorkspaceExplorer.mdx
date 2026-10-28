@@ -517,3 +517,5 @@ When wiring `packages/workspace` file-explorer onto this family:
 - No Lapis `App` / `TFile` types in design-core.
 
 <Controls of={Stories.LoadedTree} />
+
+File rows default to the shared filename-based FileTypeIcon, including while renaming. Host `getIcon` overrides remain authoritative; folder disclosure and same-depth icon alignment are unchanged. `customIconFor` returns only the optional host override, while `iconFor` retains its legacy fallback names.

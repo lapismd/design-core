@@ -487,6 +487,15 @@ attributes and a bindable `ref`:
     </tr>
     <tr>
       <td>
+        <code>fitMaxWidth</code>
+      </td>
+      <td>
+        Finite content-fit cap in CSS pixels (default 720); column and neighbour
+        bounds still apply
+      </td>
+    </tr>
+    <tr>
+      <td>
         <code>width</code>
       </td>
       <td>
@@ -503,6 +512,15 @@ attributes and a bindable `ref`:
     </tr>
   </tbody>
 </table>
+
+Double-click a resize rail, or focus it and press Enter, to toggle sizing. At the
+default width, the column expands to fit its mounted contents; at any other width,
+it resets to the default. Fitting never shrinks below the default and is capped
+at 720px. Set `Column.fitMaxWidth` to choose another finite cap; column and
+neighbour bounds still apply. Wide pairs use their normal allocation as the
+default and preserve the pair total. Controlled widths notify `onWidthChange`
+on expansion and reset. Fitting measures the existing DOM without loading hidden
+content or replacing mounted editors.
 
 `CollapsedColumn` is a low-level escape hatch with `label`, optional `count`,
 and `onExpand`. It must remain inside `Root`. Prefer controller-owned collapse

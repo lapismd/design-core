@@ -4,10 +4,15 @@
   import { Button } from "../../shadcn/button/index.js";
   import ArrowLeftIcon from "@lucide/svelte/icons/arrow-left";
   import ArrowRightIcon from "@lucide/svelte/icons/arrow-right";
+  import type { AppShellController } from "./app-shell-controller.svelte.js";
+  import { appShellTeleport } from "./app-shell-teleport.js";
   import "./AppShellTopbar.css";
   let {
     ref = $bindable(null),
     mainElement,
+    controller,
+    mobilePlacement = "top",
+    mobileTarget,
     leading,
     center,
     trailing,
@@ -20,6 +25,12 @@
     ref?: HTMLElement | null;
     /** Explicit main surface used to align centre content across sidebars. */
     mainElement?: HTMLElement | null;
+    /** Existing shell owner used only for opt-in responsive placement. */
+    controller?: AppShellController;
+    /** Keep native chrome above Root, or move the mounted bar into a body target. */
+    mobilePlacement?: "top" | "body";
+    /** Explicit Topbar.Target element inside Main; null retains the original position. */
+    mobileTarget?: HTMLElement | null;
     leading?: Snippet;
     center?: Snippet;
     trailing?: Snippet;
@@ -32,7 +43,13 @@
     end = $state<HTMLDivElement | null>(null);
   let centerX = $state<number | undefined>(),
     available = $state<number | undefined>();
+  const inBody = $derived(
+    mobilePlacement === "body" &&
+      controller?.mobile.resolvedMode === "mobile" &&
+      Boolean(mobileTarget),
+  );
   $effect(() => {
+    void inBody;
     const host = ref,
       main = mainElement,
       left = start,
@@ -42,13 +59,13 @@
     const measure = () => {
       frame = undefined;
       const bounds = host.getBoundingClientRect();
-      const startEdge = Math.max(
-        8,
-        left.getBoundingClientRect().right - bounds.left + 8,
-      );
+      const rtl = getComputedStyle(host).direction === "rtl";
+      const physicalLeft = (rtl ? right : left).getBoundingClientRect();
+      const physicalRight = (rtl ? left : right).getBoundingClientRect();
+      const startEdge = Math.max(8, physicalLeft.right - bounds.left + 8);
       const endEdge = Math.min(
         bounds.width - 8,
-        right.getBoundingClientRect().left - bounds.left - 8,
+        physicalRight.left - bounds.left - 8,
       );
       const mainBounds = main?.getBoundingClientRect();
       const desired = mainBounds
@@ -79,9 +96,11 @@
 
 <div
   bind:this={ref}
+  use:appShellTeleport={{ enabled: inBody, target: mobileTarget ?? null }}
   {...restProps}
   data-ui-component="app-shell"
   data-ui-part="topbar"
+  data-placement={inBody ? "body" : "top"}
 >
   <div bind:this={start} data-ui-part="topbar-leading">
     {@render leading?.()}

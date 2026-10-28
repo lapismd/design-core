@@ -55,3 +55,23 @@ composers and conversations without moving review policy into Design Core.
 - **Diff/File Change Stats** — added and removed line counts
 - **Diff/File Diff** — unified, split, collapse, multi-file stack, and filled ScrollArea
 - **Diff/Merge Editor** — one-way, three-way, editable overlay, MisMerge-style insert/reject, syntax highlighting, filled ScrollArea, and a Changeyard-style settings demo
+
+## Multi-file sections
+
+`FileDiffComposer` retains controlled collapse and repeatable path scrolling.
+Use `expandOnHeaderClick` to expand through the full header label area and
+presentational `fileHeaderMeta`; keep interactive menus in `fileHeaderTrailing`.
+`fileContent` renders host loading, binary or domain previews. Set FileDiff
+`sizing="content"` inside a vertically scrolling collection.
+
+| Variable                                  | Default                                                                         | Purpose                                                                                    |
+| ----------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `--ui-diff-file-gap`                      | `0.75rem`                                                                       | Space between file sections.                                                               |
+| `--ui-diff-file-section-border`           | `var(--ui-diff-frame-border)`                                                   | Outer section border.                                                                      |
+| `--ui-diff-file-section-separator`        | `var(--ui-diff-frame-border)`                                                   | Bottom separator between sections.                                                         |
+| `--ui-diff-file-selection-outline-offset` | `1px`                                                                           | Use a negative offset to retain all four outline edges inside a clipping column.           |
+| `--ui-diff-file-selection-outline`        | `2px solid var(--ring)`                                                         | Selected section outline; inset edges paint above file content without intercepting input. |
+| `--ui-diff-file-content-padding-bottom`   | `0`                                                                             | Space after expanded file content.                                                         |
+| `--ui-diff-file-selected-header`          | `var(--muted)`                                                                  | Selected header tint over the opaque diff surface.                                         |
+| `--ui-diff-file-header-hover`             | `color-mix(in srgb, var(--foreground) 6%, var(--muted))`                        | Header hover and keyboard focus background.                                                |
+| `--ui-diff-file-selected-header-hover`    | `color-mix(in srgb, var(--foreground) 6%, var(--ui-diff-file-selected-header))` | Hover and focus tint retaining selection over the opaque diff surface.                     |

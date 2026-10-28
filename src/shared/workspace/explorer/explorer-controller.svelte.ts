@@ -302,13 +302,24 @@ export class ExplorerController {
   }
 
   iconFor(node: ExplorerNode, editing: boolean): WorkspaceIconName {
-    const resolved = this.#getIcon?.(node, {
-      selectedPath: this.selectedPath,
-      opened: node.kind === "folder" && this.expandedPaths.has(node.path),
-      editing,
-    });
-    if (resolved) return resolved;
-    return node.kind === "folder" ? "folder" : "file";
+    return (
+      this.customIconFor(node, editing) ??
+      (node.kind === "folder" ? "folder" : "file")
+    );
+  }
+
+  /** Host override only; the renderer owns its generic filename-based fallback. */
+  customIconFor(
+    node: ExplorerNode,
+    editing: boolean,
+  ): WorkspaceIconName | undefined {
+    return (
+      this.#getIcon?.(node, {
+        selectedPath: this.selectedPath,
+        opened: node.kind === "folder" && this.expandedPaths.has(node.path),
+        editing,
+      }) || undefined
+    );
   }
 
   createSortMenu(): WorkspaceMenu {

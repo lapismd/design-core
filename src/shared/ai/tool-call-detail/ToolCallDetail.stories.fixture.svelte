@@ -42,8 +42,8 @@
     />
   {:else if scenario === "gallery"}
     <p class="tool-review__intro">
-      Each tool uses the same Formatted / Raw control. Maximize dense output to
-      fill the page, then restore it inline. File actions stay with the host.
+      Each tool uses the same Code / BookOpen view toggle. Maximize dense output
+      to fill the page, then restore it inline. File actions stay with the host.
     </p>
     {#each gallery as key (key)}
       <section aria-label={`${titles[key]} example`}>

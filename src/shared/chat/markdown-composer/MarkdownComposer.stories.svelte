@@ -255,3 +255,18 @@
     },
   }}>{#snippet template()}<SuggestionsFixture narrow />{/snippet}</Story
 >
+
+<Story
+  name="Host document minimum height"
+  play={async ({ canvas }) => {
+    const editor = await canvas.findByRole("textbox", { name: "Message" });
+    await userEvent.click(editor);
+    await waitFor(() =>
+      expect(
+        getComputedStyle(editor.closest(".ui-markdown-composer__editor")!)
+          .minHeight,
+      ).toBe("42px"),
+    );
+    expect(editor).toHaveTextContent("Draft a **shared** message.");
+  }}>{#snippet template()}<Fixture scenario="compact" />{/snippet}</Story
+>
