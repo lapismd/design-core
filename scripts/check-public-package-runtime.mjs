@@ -14,6 +14,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { chromium } from "playwright";
 import { fileURLToPath } from "node:url";
+import { npmCommandEnv } from "./npm-command-env.mjs";
 import { assertBrowserCss } from "./prepare-styles.mjs";
 
 async function checkPrimitiveStates(page) {
@@ -792,7 +793,12 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
         "--registry",
         registry,
       ],
-      { cwd: fixture, encoding: "utf8", timeout: 240_000 },
+      {
+        cwd: fixture,
+        encoding: "utf8",
+        env: npmCommandEnv(),
+        timeout: 240_000,
+      },
     );
     assert.equal(install.status, 0, install.stderr || String(install.error));
     for (const dependency of [

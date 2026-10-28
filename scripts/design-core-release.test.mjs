@@ -163,6 +163,10 @@ test("pack-check does not skip packaging failures when the version is published"
     const fixtureScript = path.join(scriptsDir, "design-core-release.mjs");
     copyFileSync(releaseScript, fixtureScript);
     copyFileSync(
+      path.join(root, "scripts", "npm-command-env.mjs"),
+      path.join(scriptsDir, "npm-command-env.mjs"),
+    );
+    copyFileSync(
       path.join(root, "scripts", "pack-local.mjs"),
       path.join(scriptsDir, "pack-local.mjs"),
     );

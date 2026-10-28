@@ -13,6 +13,7 @@ import {
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { npmCommandEnv } from "./npm-command-env.mjs";
 import { packLocal } from "./pack-local.mjs";
 
 const scriptPath = fileURLToPath(import.meta.url);
@@ -65,7 +66,7 @@ function writeJson(filePath, value) {
 function run(commandName, commandArgs, options = {}) {
   return execFileSync(commandName, commandArgs, {
     cwd: options.cwd ?? root,
-    env: { ...process.env, ...(options.env ?? {}) },
+    env: npmCommandEnv(options.env ?? {}),
     encoding: options.encoding ?? "utf8",
     stdio: options.stdio ?? "pipe",
   });
@@ -74,7 +75,7 @@ function run(commandName, commandArgs, options = {}) {
 function runInherited(commandName, commandArgs, options = {}) {
   execFileSync(commandName, commandArgs, {
     cwd: options.cwd ?? root,
-    env: { ...process.env, ...(options.env ?? {}) },
+    env: npmCommandEnv(options.env ?? {}),
     stdio: "inherit",
   });
 }
@@ -96,7 +97,7 @@ function npmViewVersions(name) {
   const result = spawnSync(
     "npm",
     ["view", name, "versions", "--json", `--registry=${registry}`],
-    { cwd: root, encoding: "utf8" },
+    { cwd: root, encoding: "utf8", env: npmCommandEnv() },
   );
   if (result.status === 0) {
     const text = result.stdout.trim();
@@ -357,6 +358,7 @@ function verifyTarballConsumer(tarballPath) {
       {
         cwd: tmp,
         encoding: "utf8",
+        env: npmCommandEnv(),
         timeout: 120_000,
       },
     );
