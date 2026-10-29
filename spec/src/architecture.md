@@ -1,7 +1,8 @@
 # Architecture
 
-Release 0.7.0 qualification consumes registry Mira `~0.1.1` and Visual Delta `0.0.9`,
-without temporary archive resolution. Catalog tooling uses patched Storybook
+Release 0.7.0 qualification consumed registry Mira `~0.1.1` and Visual Delta `0.0.9`,
+without temporary archive resolution. The source manifest requires published Mira
+`~0.1.2`. Catalog tooling uses patched Storybook
 10.6.3 and Vite 6.4.5 ranges. CI remains nonvisual; screenshot comparison is an
 explicit local command only. Release tests cover the helper that drops
 pnpm-only `npm_config_*` values before packed npm commands.
