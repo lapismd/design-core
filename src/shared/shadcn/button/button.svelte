@@ -203,6 +203,10 @@
       [data-ui-component="button"][data-variant="secondary"] {
         color: var(--secondary-foreground);
       }
+      [data-ui-component="button"][data-variant="outline"],
+      [data-ui-component="button"][data-variant="ghost"] {
+        color: var(--foreground);
+      }
       [data-ui-component="button"][data-variant="destructive"] {
         color: var(--destructive-foreground, #ffffff);
       }

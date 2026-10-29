@@ -33,6 +33,7 @@ Action and content primitives adapt shadcn-svelte semantics to Design Core styli
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 - Ghost and outline Button controls MUST provide visible hover feedback in both colour modes, and ghost keyboard focus MUST include background feedback.
+- Outline and ghost Button labels MUST use the theme foreground colour so they remain readable when nested under muted chrome.
 
 ## DC-SHA-003 — Button Group
 
