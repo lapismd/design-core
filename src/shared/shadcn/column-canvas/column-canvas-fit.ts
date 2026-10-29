@@ -1,6 +1,16 @@
 /** Fit only the currently rendered content; never clone editors or load hidden data. */
 export function measureColumnContentWidth(root: HTMLElement): number {
-  let remaining = 4096;
+  // Deep column trees (branch cards, graphs, icons) can exceed a small walk
+  // budget before truncated labels are visited. Scan visible overflow first,
+  // then refine with the structured walk.
+  let overflowMax = 0;
+  for (const node of root.querySelectorAll("*")) {
+    if (!(node instanceof HTMLElement)) continue;
+    if (!node.getClientRects().length) continue;
+    if (node.scrollWidth > node.clientWidth + 1)
+      overflowMax = Math.max(overflowMax, node.scrollWidth);
+  }
+  let remaining = 65536;
   const number = (value: string) => Number.parseFloat(value) || 0;
   function measure(node: Element): number {
     const style = getComputedStyle(node);
@@ -72,7 +82,7 @@ export function measureColumnContentWidth(root: HTMLElement): number {
       ) + margin,
     );
   }
-  return measure(root);
+  return Math.max(measure(root), overflowMax);
 }
 
 /** A finite default also bounds columns configured with maxWidth:null. */
