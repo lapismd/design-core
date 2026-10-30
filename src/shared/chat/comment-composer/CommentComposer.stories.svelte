@@ -3,6 +3,7 @@
   import { expect, userEvent, within } from "storybook/test";
   import CommentComposer from "./CommentComposer.svelte";
   import Fixture from "./CommentComposer.stories.fixture.svelte";
+  import Lifecycle from "./CommentComposer.lifecycle.stories.fixture.svelte";
   import * as sources from "./CommentComposer.example-sources.js";
   const { Story } = defineMeta({
     title: "Chat/Comment Composer",
@@ -17,6 +18,39 @@
 <script lang="ts">
   let bareValue = $state("Review this capture.");
 </script>
+
+<Story
+  name="Focused editor teardown and remount"
+  parameters={{
+    docs: {
+      source: { code: sources.Lifecycle, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    for (let generation = 1; generation <= 3; generation++) {
+      const editor = await canvas.findByRole("textbox", { name: "Comment" });
+      await userEvent.click(editor);
+      await userEvent.keyboard("Retained comment ");
+      await userEvent.click(
+        canvas.getByRole("button", { name: "Replace composer" }),
+      );
+      await expect(
+        canvas.findByRole("textbox", { name: "Comment" }),
+      ).resolves.toHaveTextContent(
+        "Retained comment ".repeat(generation).trim(),
+      );
+      await expect(canvas.getByTestId("composer-generation")).toHaveTextContent(
+        String(generation),
+      );
+    }
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+    await expect(canvas.getByTestId("retained-comment")).toHaveTextContent(
+      "Retained comment ".repeat(3).trim(),
+    );
+  }}>{#snippet template()}<Lifecycle />{/snippet}</Story
+>
 
 <Story
   name="Code selection reply"
