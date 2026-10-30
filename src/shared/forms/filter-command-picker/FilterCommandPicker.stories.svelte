@@ -45,6 +45,25 @@
 </script>
 
 <Story
+  name="Selected label in Lapis dark"
+  tags={["visual-pending"]}
+  globals={{ theme: "lapis", colorMode: "dark" }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", { name: "Search scope: Current files" }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <FilterCommandPicker
+      label="Search scope"
+      value="current"
+      options={[{ value: "current", label: "Current files" }]}
+    />
+  {/snippet}
+</Story>
+
+<Story
   name="Single selection"
   tags={["skip-visual"]}
   play={async ({ canvas, canvasElement }) => {

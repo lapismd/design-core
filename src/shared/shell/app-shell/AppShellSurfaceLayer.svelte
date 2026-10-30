@@ -58,6 +58,10 @@
   let inlineEnd = $state(0);
   let blockStart = $state(0);
   let blockEnd = $state(0);
+  let latestReturnFocus: HTMLElement | null | undefined;
+  $effect(() => {
+    latestReturnFocus = returnFocus;
+  });
   const mobileHost = $derived.by(() => {
     if (controller.mobile.resolvedMode !== "mobile") return null;
     if (mobilePlacement === "root") return controller.mobile.getRootElement();
@@ -82,9 +86,10 @@
       },
     }));
     untrack(() => controller.activateSurfaceLayer(registration));
-    queueMicrotask(() => surfaceElement?.focus({ preventScroll: true }));
-
     let active = true;
+    queueMicrotask(() => {
+      if (active) surfaceElement?.focus({ preventScroll: true });
+    });
     const handleKeydown = (event: KeyboardEvent) => {
       if (
         !dismissOnEscape ||
@@ -106,8 +111,8 @@
       active = false;
       document.removeEventListener("keydown", handleKeydown);
       untrack(() => controller.deactivateSurfaceLayer(token));
+      const target = latestReturnFocus ?? focusTarget;
       queueMicrotask(() => {
-        const target = returnFocus ?? focusTarget;
         if (target?.isConnected) target.focus({ preventScroll: true });
         else controller.mobile.getMainElement()?.focus({ preventScroll: true });
       });

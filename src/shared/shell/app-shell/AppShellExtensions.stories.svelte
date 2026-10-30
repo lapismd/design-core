@@ -3,6 +3,7 @@
   import { expect, userEvent, waitFor, within } from "storybook/test";
   import { AppShellRoot } from "./index.js";
   import Demo from "./AppShellExtensions.demo.svelte";
+  import Lifetime from "./AppShellSurfaceLifetime.stories.fixture.svelte";
   import * as sources from "./AppShellExtensions.example-sources.js";
 
   const { Story } = defineMeta({
@@ -36,6 +37,29 @@
     return element;
   }
 </script>
+
+<Story
+  name="Surface owner teardown retains latest focus target"
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.findByRole("region", { name: "Owned preview" }),
+    ).resolves.toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Change focus target" }),
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Remove layer owner" }),
+    );
+    await waitFor(() =>
+      expect(
+        canvas.getByRole("button", { name: "Latest focus target" }),
+      ).toHaveFocus(),
+    );
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => resolve()),
+    );
+  }}>{#snippet template()}<Lifetime />{/snippet}</Story
+>
 
 <Story
   name="Attached sidebars and independent outer rail"

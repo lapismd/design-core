@@ -191,7 +191,9 @@ Hosts MAY opt into `scrollButton` in either transcript presentation. The shared
 Layout Scroll Button MUST appear only beyond the latest-content threshold, sit
 above a pinned Classic composer and jump within the owning viewport. Host `busy`
 controls its running glyph. Resize and late reader measurement MUST retain a
-bottom lock after the user returns, while upward reading keeps its position.
+bottom lock after the user returns, including a delayed scroll event delivered
+after content growth; only actual upward movement releases that lock. Upward
+reading keeps its position.
 Neither navigation nor the indicator may dispatch work or change source data.
 
 Reader links MUST retain foreground contrast on light/dark host surfaces and an

@@ -14,6 +14,7 @@
   let visible = $state(false),
     bottom = $state(0);
   let following = false;
+  let previousTop = 0;
   const atEnd = (node: HTMLElement) =>
     node.scrollHeight - node.clientHeight - node.scrollTop <= 8;
   function measure(node: HTMLElement, composer: HTMLElement | null) {
@@ -31,9 +32,14 @@
       composer = pinnedComposer;
     if (!node) return;
     let frame = 0;
+    previousTop = node.scrollTop;
     following = atEnd(node);
     const scrolled = () => {
-      following = atEnd(node);
+      const top = node.scrollTop;
+      // A delayed jump event can arrive after content has grown. Only actual
+      // upward movement releases following; changed height alone does not.
+      following = atEnd(node) || (following && top >= previousTop);
+      previousTop = top;
       measure(node, composer);
     };
     const resized = () => {
@@ -82,6 +88,7 @@
     if (!node) return;
     following = true;
     node.scrollTo({ top: node.scrollHeight, behavior: "instant" });
+    previousTop = node.scrollTop;
     const draft = node.querySelector<HTMLElement>(
       "[data-transcript-composer] :is([role='textbox'], textarea):not([aria-readonly='true']):not([contenteditable='false']):not(:disabled):not([aria-disabled='true'])",
     );
