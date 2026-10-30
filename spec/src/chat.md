@@ -357,7 +357,7 @@ empty or pending active drafts omit Queue. Idle Send availability is unchanged.
 ### Acceptance details
 
 - Suggestions MUST retain existing ComposerTrigger search and insertion contracts with keyboard navigation, selection replacement and host-supplied labels; each label occupies the first row, with its description wrapping beneath it without shrinking the label to zero width or overlapping it.
-- Completion tooltips MUST mount outside clipped editor ancestors in the owner document, remain pointer-selectable in Chromium and WebKit, and be removed on teardown, with aborted, stale, disabled or disposed searches unable to replace newer results or mutate the retained draft.
+- Completion tooltips MUST mount outside clipped editor ancestors in the owner document, remain pointer-selectable in Chromium and WebKit, and be removed on teardown, with aborted, stale, disabled or disposed searches unable to replace newer results or mutate the retained draft; destroyed editors MUST also reject queued sources, late results and retained actions before reading retired reactive callbacks.
 - IME composition and escaped inline or fenced code MUST not trigger unintended insertion or message submission.
 - Completion handling MUST claim Enter only for a registered trigger query and accept its selected item with unmodified Tab; Shift+Enter, Shift+Tab, Tab without a selected suggestion and ordinary document newlines MUST retain their existing behavior without submitting a message.
 

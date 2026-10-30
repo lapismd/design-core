@@ -77,11 +77,15 @@ export function composerSuggestions(options: {
 }): MiraExtension {
   let version = 0;
   let pending: AbortController | undefined;
+  const retired = new WeakSet<EditorView>();
+  const isRetired = (view?: EditorView) => !!view && retired.has(view);
   const mounts = ViewPlugin.fromClass(
     class {
       entries = new Map<HTMLElement, ReturnType<typeof mount>>();
       frame = 0;
-      constructor(readonly view: EditorView) {}
+      constructor(readonly view: EditorView) {
+        retired.delete(view);
+      }
       schedule() {
         cancelAnimationFrame(this.frame);
         this.frame = requestAnimationFrame(() => {
@@ -96,6 +100,7 @@ export function composerSuggestions(options: {
         this.schedule();
       }
       destroy() {
+        retired.add(this.view);
         version++;
         pending?.abort();
         pending = undefined;
@@ -106,7 +111,12 @@ export function composerSuggestions(options: {
     },
   );
   async function source(context: CompletionContext) {
-    if (options.disabled() || context.view?.composing) return null;
+    if (
+      isRetired(context.view) ||
+      options.disabled() ||
+      context.view?.composing
+    )
+      return null;
     const query = composerTriggerQuery(
       context.state,
       options.triggers().map((t) => t.character),
@@ -130,6 +140,7 @@ export function composerSuggestions(options: {
       return null;
     }
     if (
+      isRetired(context.view) ||
       controller.signal.aborted ||
       context.aborted ||
       request !== version ||
@@ -150,7 +161,7 @@ export function composerSuggestions(options: {
           from: number,
           to: number,
         ) {
-          if (options.disabled() || view.composing) return;
+          if (isRetired(view) || options.disabled() || view.composing) return;
           const selected = trigger.onSelect(item);
           const text = typeof selected === "string" ? selected : selected.value;
           view.dispatch({
