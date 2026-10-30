@@ -1,5 +1,18 @@
 # @lapismd/design-core
 
+## 0.7.1
+
+### Patch Changes
+
+- [#38](https://github.com/lapismd/design-core/pull/38) [`e03b677`](https://github.com/lapismd/design-core/commit/e03b6776d20e7506eacb6e048c9726a0bc77d64c) Thanks [@stevejuma](https://github.com/stevejuma)! - Fence composer completion callbacks after their owning editor is destroyed so
+  conversation switching and comment teardown do not read retired reactive state.
+
+- [#40](https://github.com/lapismd/design-core/pull/40) [`86f0182`](https://github.com/lapismd/design-core/commit/86f01828f129eae21536b1ea94a01897c3081649) Thanks [@stevejuma](https://github.com/stevejuma)! - Restore the latest focus target without reading destroyed surface-owner props,
+  and retain accessible selected Filter Command Picker text in Lapis dark mode.
+
+- [#40](https://github.com/lapismd/design-core/pull/40) [`3b0392c`](https://github.com/lapismd/design-core/commit/3b0392ca4a15a2e88cc7ce43a3bf4f0ea58e99fa) Thanks [@stevejuma](https://github.com/stevejuma)! - Retain the transcript's bottom lock when a delayed scroll event arrives after
+  captured output grows, while preserving deliberate upward reading.
+
 ## 0.7.0
 
 ### Minor Changes
