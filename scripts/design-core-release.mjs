@@ -505,7 +505,7 @@ function tarballPathFromManifest(entry) {
   return path.resolve(releaseDir, entry.tarball);
 }
 
-function waitForPublishedVersion(entry) {
+function registryVisibilityOptions() {
   const attempts = positiveIntegerOption(
     "--registry-visibility-attempts",
     process.env.DESIGN_CORE_RELEASE_VERIFY_ATTEMPTS ?? "30",
@@ -514,6 +514,11 @@ function waitForPublishedVersion(entry) {
     "--registry-visibility-delay-ms",
     process.env.DESIGN_CORE_RELEASE_VERIFY_DELAY_MS ?? "10000",
   );
+  return { attempts, delayMs };
+}
+
+function waitForPublishedVersion(entry) {
+  const { attempts, delayMs } = registryVisibilityOptions();
   let lastError = null;
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     try {
@@ -540,6 +545,50 @@ function waitForPublishedVersion(entry) {
     }
   }
   throw lastError;
+}
+
+function installPublishedVersion(entry) {
+  const { attempts, delayMs } = registryVisibilityOptions();
+  const tarballPath = `/${entry.name}/-/${entry.name.split("/").pop()}-${entry.version}.tgz`;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    const tmp = mkdtempSync(path.join(tmpdir(), "design-core-registry-"));
+    try {
+      runInherited("npm", ["init", "--yes"], { cwd: tmp });
+      const result = spawnSync(
+        "npm",
+        [
+          "install",
+          "--ignore-scripts",
+          "--package-lock=true",
+          "--prefer-online",
+          "--registry",
+          registry,
+          `${entry.name}@${entry.version}`,
+        ],
+        { cwd: tmp, encoding: "utf8" },
+      );
+      process.stdout.write(result.stdout ?? "");
+      process.stderr.write(result.stderr ?? "");
+      if (result.error) throw result.error;
+      if (result.status !== 0) {
+        throw Object.assign(
+          new Error(`npm install failed for ${entry.name}@${entry.version}`),
+          { stdout: result.stdout, stderr: result.stderr },
+        );
+      }
+      return tmp;
+    } catch (error) {
+      rmSync(tmp, { recursive: true, force: true });
+      const diagnostics = `${error.stdout ?? ""}\n${error.stderr ?? ""}`;
+      const tarballMissing =
+        /\bE404\b/.test(diagnostics) && diagnostics.includes(tarballPath);
+      if (!tarballMissing || attempt === attempts) throw error;
+      console.log(
+        `${entry.name}@${entry.version} tarball is not visible on ${registry}; retrying a clean install in ${delayMs}ms (${attempt}/${attempts}).`,
+      );
+      sleep(delayMs);
+    }
+  }
 }
 
 function publish() {
@@ -577,21 +626,8 @@ function verify() {
   const auditPath = args[2] ? path.resolve(root, args[2]) : null;
   for (const entry of manifest.packages) {
     waitForPublishedVersion(entry);
-    const tmp = mkdtempSync(path.join(tmpdir(), "design-core-registry-"));
+    const tmp = installPublishedVersion(entry);
     try {
-      runInherited("npm", ["init", "--yes"], { cwd: tmp });
-      runInherited(
-        "npm",
-        [
-          "install",
-          "--ignore-scripts",
-          "--package-lock=true",
-          "--registry",
-          registry,
-          `${entry.name}@${entry.version}`,
-        ],
-        { cwd: tmp },
-      );
       const installed = readJson(
         path.join(
           tmp,

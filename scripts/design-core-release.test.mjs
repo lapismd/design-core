@@ -66,6 +66,17 @@ if (args[0] === "install") {
     console.error("missing design-core install spec");
     process.exit(1);
   }
+  const state = readState();
+  state.installCalls = (state.installCalls ?? 0) + 1;
+  state.installDirs = [...(state.installDirs ?? []), process.cwd()];
+  writeState(state);
+  if (state.installCalls < Number(process.env.FAKE_NPM_INSTALL_VISIBLE_AFTER ?? "1")) {
+    const code = process.env.FAKE_NPM_INSTALL_ERROR ?? "E404";
+    const target = process.env.FAKE_NPM_INSTALL_TARGET ?? "@lapismd/design-core";
+    console.error(\`npm error code \${code}\`);
+    console.error(\`npm error 404 Not Found - GET https://registry.npmjs.org/\${target}/-/\${target.split("/").pop()}-\${version}.tgz - Not found\`);
+    process.exit(1);
+  }
   const installedVersion = spec.split("@").pop();
   const packageDir = path.join(process.cwd(), "node_modules", "@lapismd", "design-core");
   mkdirSync(packageDir, { recursive: true });
@@ -77,6 +88,13 @@ if (args[0] === "install") {
 }
 
 if (args[0] === "audit" && args[1] === "signatures") {
+  const state = readState();
+  state.auditCalls = (state.auditCalls ?? 0) + 1;
+  writeState(state);
+  if (process.env.FAKE_NPM_AUDIT_ERROR) {
+    console.error("npm error code EINTEGRITY: signature verification failed");
+    process.exit(1);
+  }
   console.log(JSON.stringify({ ok: true, attestations: [] }));
   process.exit(0);
 }
@@ -103,7 +121,14 @@ function writeManifest(dir, version = "0.2.1") {
   return manifestPath;
 }
 
-function runVerify({ visibleAfter, attempts = 4 }) {
+function runVerify({
+  visibleAfter = 1,
+  attempts = 4,
+  installVisibleAfter = 1,
+  installError = "E404",
+  installTarget = "@lapismd/design-core",
+  auditError = "",
+}) {
   const tmp = mkdtempSync(path.join(tmpdir(), "design-core-release-test-"));
   const binDir = path.join(tmp, "bin");
   mkdirSync(binDir);
@@ -121,6 +146,10 @@ function runVerify({ visibleAfter, attempts = 4 }) {
         PATH: `${binDir}${path.delimiter}${process.env.PATH}`,
         FAKE_NPM_STATE: statePath,
         FAKE_NPM_VISIBLE_AFTER: String(visibleAfter),
+        FAKE_NPM_INSTALL_VISIBLE_AFTER: String(installVisibleAfter),
+        FAKE_NPM_INSTALL_ERROR: installError,
+        FAKE_NPM_INSTALL_TARGET: installTarget,
+        FAKE_NPM_AUDIT_ERROR: auditError,
         DESIGN_CORE_RELEASE_VERIFY_ATTEMPTS: String(attempts),
         DESIGN_CORE_RELEASE_VERIFY_DELAY_MS: "1",
       },
@@ -151,6 +180,63 @@ test("release verify stops after bounded npm registry visibility attempts", () =
     result.stderr,
     /@lapismd\/design-core@0\.2\.1 is not published on https:\/\/registry\.npmjs\.org/,
   );
+});
+
+test("release verify waits for the tarball after metadata becomes visible", () => {
+  const { result, state, auditPath } = runVerify({ installVisibleAfter: 3 });
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(state.viewCalls, 1);
+  assert.equal(state.installCalls, 3);
+  assert.equal(state.auditCalls, 1);
+  assert.equal(new Set(state.installDirs).size, 3);
+  assert.ok(state.installDirs.every((dir) => !existsSync(dir)));
+  assert.equal(existsSync(auditPath), true);
+});
+
+test("release verify bounds tarball visibility retries without signature evidence", () => {
+  const { result, state, auditPath } = runVerify({
+    installVisibleAfter: 99,
+    attempts: 2,
+  });
+
+  assert.notEqual(result.status, 0);
+  assert.equal(state.installCalls, 2);
+  assert.equal(state.auditCalls, undefined);
+  assert.ok(state.installDirs.every((dir) => !existsSync(dir)));
+  assert.equal(existsSync(auditPath), false);
+});
+
+for (const installError of ["EINTEGRITY", "E401"]) {
+  test(`release verify does not retry ${installError} failures`, () => {
+    const { result, state } = runVerify({
+      installVisibleAfter: 99,
+      installError,
+    });
+
+    assert.notEqual(result.status, 0);
+    assert.equal(state.installCalls, 1);
+    assert.equal(state.auditCalls, undefined);
+  });
+}
+
+test("release verify does not retry another package's missing tarball", () => {
+  const { result, state } = runVerify({
+    installVisibleAfter: 99,
+    installTarget: "@example/missing-dependency",
+  });
+
+  assert.notEqual(result.status, 0);
+  assert.equal(state.installCalls, 1);
+});
+
+test("release verify does not retry or accept failed signature checks", () => {
+  const { result, state, auditPath } = runVerify({ auditError: "EINTEGRITY" });
+
+  assert.notEqual(result.status, 0);
+  assert.equal(state.installCalls, 1);
+  assert.equal(state.auditCalls, 1);
+  assert.equal(existsSync(auditPath), false);
 });
 
 test("pack-check does not skip packaging failures when the version is published", () => {

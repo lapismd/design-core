@@ -168,7 +168,7 @@ artifact, including when a reported finding fails the gate.
 - Machine-readable output must be stable enough for repository automation.
 - Tooling failures must report an actionable source path or command.
 - Specification commands must retain separate validation, build, spec-first, index, search, and serve entry points through the configured shared CLI.
-- Release-safe aggregate gates must use bootstrap-safe validation and bounded post-publication npm visibility waits; cold Storybook tests must prebundle parser dependencies, lifecycle-sensitive checks must run serially, cold runs must have bounded windows, formatting must exclude `.local/` artifacts while preserving evidence, and packaging must reject local cache artifacts.
+- Release-safe aggregate gates must use bootstrap-safe validation and bounded post-publication npm metadata and released-tarball visibility waits with clean install attempts and fatal integrity/signature failures; cold Storybook tests must prebundle parser dependencies, lifecycle-sensitive checks must run serially, cold runs must have bounded windows, formatting must exclude `.local/` artifacts while preserving evidence, and packaging must reject local cache artifacts.
 
 ## DC-TOOL-004 — Offline documentation
 
