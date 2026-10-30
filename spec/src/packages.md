@@ -181,7 +181,7 @@ and workspace audits remain unchanged.
 
 - Mira must resolve through the published npm range `~0.1.2`, which admits compatible pre-1.0 patch releases; Bits UI MUST resolve from `^2.19.5` or a compatible range retaining its Scroll Area and text-selection teardown fixes; optional search tooling remains outside the normal validation dependency graph.
 - Published development tooling dependencies must use npm semver ranges; pull requests and pushes to `main` must run the complete nonvisual check suite before the full and production-only dependency audits, using GitHub Actions that do not depend on the deprecated Node.js 20 action runtime.
-- The tarball must omit repository-only files and tolerate bounded npm registry visibility delay during post-publication verification.
+- The tarball must omit repository-only files and tolerate bounded npm metadata and released-tarball visibility delays during post-publication verification; each tarball retry must use a clean consumer, and unrelated install failures, integrity failures and signature/provenance failures must remain fatal.
 - Package checks must pack source even when its version is already published; registry and local archives must prepare rune modules and declarations, preserve public import names, and pass cold Svelte dependency prebundling plus bound Composer Input handle teardown with declared dependencies and zero Svelte diagnostics; the clean packed production graph must pass its independent audit or the recorded advisory-specific KaTeX exception.
 
 ## DC-PKG-010 — Diff exports
