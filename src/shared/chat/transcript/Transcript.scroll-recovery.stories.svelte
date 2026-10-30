@@ -88,3 +88,9 @@
 <Story name="Classic scroll recovery" play={verify}>
   {#snippet template()}<Fixture view="classic" />{/snippet}
 </Story>
+<Story name="Document delayed scroll recovery" play={verify}>
+  {#snippet template()}<Fixture view="document" delayedScroll />{/snippet}
+</Story>
+<Story name="Classic delayed scroll recovery" play={verify}>
+  {#snippet template()}<Fixture view="classic" delayedScroll />{/snippet}
+</Story>
