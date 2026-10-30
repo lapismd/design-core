@@ -98,6 +98,7 @@ Form inputs provide higher-level controlled editing patterns composed from share
 - The public boundary is `@lapismd/design-core/forms`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - Selection acceptance MUST confirm that the option popup has closed before auditing the settled accessible state.
+- Selected labels MUST retain at least 4.5:1 text contrast on Lapis light and dark surfaces, with accent colour retained in their border and background.
 
 ## DC-FORM-013 — Inline Option Picker
 

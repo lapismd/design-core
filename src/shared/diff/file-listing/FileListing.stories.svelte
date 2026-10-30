@@ -368,11 +368,13 @@
     await waitFor(() => expectRowSeparation(listing));
     first.focus();
     await userEvent.keyboard("{ArrowDown}");
-    await expect(
-      canvas.getByRole("button", {
-        name: /^src\/generated\/file\-0001\.ts(?: [+-][0-9]+)*$/,
-      }),
-    ).toHaveFocus();
+    await waitFor(() =>
+      expect(
+        canvas.getByRole("button", {
+          name: /^src\/generated\/file\-0001\.ts(?: [+-][0-9]+)*$/,
+        }),
+      ).toHaveFocus(),
+    );
 
     viewport.style.overflowY = "auto";
     viewport.scrollTop = viewport.scrollHeight;

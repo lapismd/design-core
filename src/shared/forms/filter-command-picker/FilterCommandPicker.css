@@ -61,7 +61,7 @@
     var(--ui-form-accent) 9%,
     var(--ui-form-background)
   );
-  color: var(--ui-form-accent);
+  color: var(--ui-form-foreground);
 }
 
 .ui-filter-command-picker__trigger[data-full-width="true"] {
