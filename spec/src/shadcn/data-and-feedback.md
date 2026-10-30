@@ -4,17 +4,18 @@ Data and feedback primitives communicate state without taking ownership of consu
 
 ## Public surface coverage
 
-| Surface  | Public boundary                        | Requirement |
-| -------- | -------------------------------------- | ----------- |
-| Badge    | `@lapismd/design-core/shadcn/badge`    | DC-SHA-010  |
-| Table    | `@lapismd/design-core/shadcn/table`    | DC-SHA-011  |
-| Alert    | `@lapismd/design-core/shadcn/alert`    | DC-SHA-012  |
-| Empty    | `@lapismd/design-core/shadcn/empty`    | DC-SHA-013  |
-| Progress | `@lapismd/design-core/shadcn/progress` | DC-SHA-014  |
-| Skeleton | `@lapismd/design-core/shadcn/skeleton` | DC-SHA-015  |
-| Spinner  | `@lapismd/design-core/shadcn/spinner`  | DC-SHA-016  |
-| Avatar   | `@lapismd/design-core/shadcn/avatar`   | DC-SHA-056  |
-| Tag List | `@lapismd/design-core/shadcn/tag-list` | DC-SHA-057  |
+| Surface      | Public boundary                            | Requirement |
+| ------------ | ------------------------------------------ | ----------- |
+| Badge        | `@lapismd/design-core/shadcn/badge`        | DC-SHA-010  |
+| Table        | `@lapismd/design-core/shadcn/table`        | DC-SHA-011  |
+| Alert        | `@lapismd/design-core/shadcn/alert`        | DC-SHA-012  |
+| Empty        | `@lapismd/design-core/shadcn/empty`        | DC-SHA-013  |
+| Progress     | `@lapismd/design-core/shadcn/progress`     | DC-SHA-014  |
+| Skeleton     | `@lapismd/design-core/shadcn/skeleton`     | DC-SHA-015  |
+| Spinner      | `@lapismd/design-core/shadcn/spinner`      | DC-SHA-016  |
+| Avatar       | `@lapismd/design-core/shadcn/avatar`       | DC-SHA-056  |
+| Canvas Table | `@lapismd/design-core/shadcn/canvas-table` | DC-SHA-066  |
+| Tag List     | `@lapismd/design-core/shadcn/tag-list`     | DC-SHA-057  |
 
 | Author Card | `@lapismd/design-core/shadcn/author-card` | DC-SHA-058 |
 | Reference Chip | `@lapismd/design-core/shadcn/reference-chip` | DC-SHA-059 |
@@ -203,3 +204,36 @@ calendars and diagrams MUST resolve without filesystem or MIME inspection.
 - SVG markup MUST come only from the installed icon library; icons MUST be decorative by default and expose a named image only when a title is supplied.
 - The family MUST export typed props with xs/s/md/lg sizes (12/14/16/24px, md default) and audited native size/fallback-colour tokens, retain original Material colours, and document all supported variations with public-import examples.
 - Default File Listing rows MUST compose this primitive at their existing 14px size in eager/virtual list, tree and package views without changing folder disclosure, selection, paging, drag or keyboard behavior.
+
+## DC-SHA-066 — Canvas Table
+
+**Requirement.** CanvasTable MUST provide host-controlled string-cell spreadsheet presentation through `@lapismd/design-core/shadcn/canvas-table`, without application or CSV dependencies.
+
+### Acceptance details
+
+- Stable host row IDs, controlled column widths and optional filtered row order MUST drive fixed headers, column letters, sheet row numbers (including the fixed header as 1 and retaining source positions after filtering), bounded canvas painting and virtualized grid semantics.
+- Cell editing, range selection, address navigation, resize/autofit, wrapping, column colours, sorting, menus, and toolbar commands MUST retain the reference sheet behavior; all data mutations and undo/redo MUST remain host callbacks, and unavailable actions MUST be disabled or omitted.
+- Independent numbered and checkbox gutters, cell editors and sort overlays MUST share one geometry model, keep body editors below fixed headers and track scrolling and resizing in the next rendering frame without positional transition lag.
+- Native CSS and documented `--ui-canvas-table-*` tokens MUST support both themes, keyboard focus and multiple independent instances; new stories MUST remain `visual-pending` without baseline changes.
+
+## DC-SHA-067 — Canvas Table row selection
+
+**Requirement.** Optional controlled checkbox selection MUST remain independent of spreadsheet cell and range selection.
+
+### Acceptance details
+
+- Selection MUST use stable row IDs, survive sorting, edits and filtering, exclude a fixed first header, and prune IDs absent from the dataset.
+- The header checkbox MUST toggle all filtered data rows, including offscreen rows, preserve hidden selections and derive checked/mixed state only from the filtered result; an empty result MUST disable it.
+- Real Checkbox controls MUST provide accessible row names and Space activation without triggering cell edits or row commands, exclude offscreen controls from sequential focus and recover grid focus when a focused control leaves the viewport.
+- A toolbar snippet MUST receive selected IDs for host actions; the component MUST NOT add built-in bulk mutations.
+
+## DC-SHA-068 — Canvas Table module and viewport lifetime
+
+**Requirement.** Canvas Table MUST keep its implementation modular and release every owned viewport resource on teardown.
+
+### Acceptance details
+
+- Every newly authored JavaScript, TypeScript and Svelte file for this family, including stories and tests, MUST contain at most 300 physical lines after formatting; a focused automated audit MUST enforce the limit.
+- Geometry, painting, theme resolution, state, pointer handling, keyboard editing and visual controls MUST have distinct ownership without moving application policy into shared code.
+- Canvas painting, accessible cells and row controls MUST remain bounded by the visible row/column window, with at most one additional active row for accessibility.
+- Scroll and theme listeners, observers and pointer state MUST be disposed on unmount; cold browser runs MUST verify remount and independent-instance behavior.

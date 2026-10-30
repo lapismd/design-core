@@ -1,0 +1,135 @@
+[data-ui-component="canvas-table"] {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  background: var(--ui-canvas-table-background, var(--background));
+  color: var(--ui-canvas-table-foreground, var(--foreground));
+  font: 13px var(--ui-canvas-table-font, ui-monospace, monospace);
+}
+.canvas-table__body {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+.canvas-table__scroller {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  outline-offset: -2px;
+}
+.canvas-table__scroller:focus-visible {
+  outline: 2px solid var(--ui-canvas-table-accent, var(--ring));
+}
+.canvas-table__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  font: inherit;
+}
+.canvas-table__toolbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--ui-canvas-table-border, var(--border));
+  font-family: var(--font-sans, system-ui, sans-serif);
+}
+.canvas-table__address {
+  width: 5rem;
+  flex: none;
+  background: transparent;
+  color: inherit;
+  border: 1px solid var(--ui-canvas-table-border, var(--border));
+  border-radius: 4px;
+  padding: 3px 6px;
+  font: inherit;
+}
+.canvas-table__selection-actions {
+  margin-inline-start: auto;
+  white-space: nowrap;
+}
+.canvas-table__overlays {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.canvas-table__sort-anchor {
+  position: absolute;
+}
+.canvas-table__sort {
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  padding: 1px;
+  min-width: 0;
+  min-height: 0;
+}
+.canvas-table__sort svg {
+  width: 14px;
+  height: 14px;
+}
+.canvas-table__editor {
+  position: absolute;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 6px;
+  border: 2px solid var(--ui-canvas-table-accent, var(--primary));
+  background: var(--ui-canvas-table-background, var(--background));
+  color: inherit;
+  font: inherit;
+  pointer-events: auto;
+}
+.canvas-table__row-controls {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+.canvas-table__checkbox {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+.canvas-table__checkbox--all {
+  top: 0;
+  height: 22px;
+}
+.canvas-table__body-checks {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  overflow: hidden;
+}
+.canvas-table__semantics {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.canvas-table__menu-trigger {
+  position: absolute;
+  inset: 0;
+}
+
+.canvas-table__editor-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}

@@ -24,6 +24,12 @@ exactly one owning shared layer before it becomes a public export.
 
 Generic primitives in `src/shared/shadcn/`:
 
+`canvas-table/` is a project-authored Data Display family providing a canvas
+spreadsheet, toolbar, menus and independent optional row checkboxes. It consumes
+host-owned string-cell rows, stable IDs and mutation callbacks. Import
+`CanvasTable` and its types from `@lapismd/design-core/shadcn/canvas-table`.
+It has no application or CSV runtime dependency (DC-SHA-066–068).
+
 `file-type-icon/` owns filename-based Material file icons, exported through
 `@lapismd/design-core/shadcn/file-type-icon` (DC-SHA-064). Diff File Listing
 composes it without changing folder icons, row geometry or host-owned state.
