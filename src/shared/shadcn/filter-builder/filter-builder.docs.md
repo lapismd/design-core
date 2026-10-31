@@ -44,13 +44,13 @@ controls. It imposes no outer overlay, persistent storage or data evaluator.
 
 ## Tokens
 
-| Token                            | Default                      | Purpose                          |
-| -------------------------------- | ---------------------------- | -------------------------------- |
-| `--ui-filter-builder-background` | `var(--popover)`             | Panel background                 |
-| `--ui-filter-builder-border`     | `var(--border)`              | Segmented rows and nested groups |
-| `--ui-filter-builder-radius`     | `var(--radius)`              | Row and group corners            |
-| `--ui-filter-builder-gap`        | `0.5rem`                     | Condition spacing                |
-| `--ui-filter-builder-width`      | `clamp(22rem, 45svw, 48rem)` | Suggested popover width          |
+| Token                            | Default                           | Purpose                          |
+| -------------------------------- | --------------------------------- | -------------------------------- |
+| `--ui-filter-builder-background` | `var(--popover)`                  | Panel background                 |
+| `--ui-filter-builder-border`     | `var(--border)`                   | Segmented rows and nested groups |
+| `--ui-filter-builder-radius`     | `var(--radius)`                   | Row and group corners            |
+| `--ui-filter-builder-gap`        | `0.5rem`                          | Condition spacing                |
+| `--ui-filter-builder-width`      | `min(48rem, calc(100svw - 1rem))` | Suggested popover width          |
 
 Controls inherit the normal Input, Button, Select, Checkbox and focus tokens.
 Canvas Table bounds the popover to the viewport and uses the suggested width.

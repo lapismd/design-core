@@ -83,6 +83,7 @@
   border: 1px solid var(--ui-filter-builder-border, var(--border));
   border-radius: var(--ui-filter-builder-radius, 0.5rem);
   background: var(--background);
+  overflow: hidden;
 }
 .filter-builder__segments:focus-within {
   outline: 2px solid var(--ring);
@@ -109,7 +110,7 @@
   max-width: 13rem;
   flex-shrink: 0;
   border: none;
-  border-inline: 1px solid var(--ui-filter-builder-border, var(--border));
+  border-inline-start: 1px solid var(--ui-filter-builder-border, var(--border));
   box-shadow: none;
   border-radius: 0;
   height: auto;
@@ -226,19 +227,33 @@
 }
 @container (max-width: 32rem) {
   .filter-builder__segments {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 2.5rem;
   }
   .filter-builder__segments > .filter-builder__field {
-    flex: 1;
+    grid-column: 1;
+    min-width: 0;
     width: auto;
   }
   .filter-builder__segments > [data-ui-component="select"] {
-    flex: 1;
+    grid-column: 2 / 4;
+    min-width: 0;
     max-width: none;
   }
   .filter-builder__value {
-    flex-basis: calc(100% - 2.5rem);
-    border-top: 1px solid var(--border);
+    grid-column: 1 / 3;
+    min-width: 0;
+    border-top: 1px solid var(--ui-filter-builder-border, var(--border));
+  }
+  .filter-builder__segments > [data-ui-component="button"]:last-child {
+    grid-column: 3;
+    grid-row: 2;
+    align-self: stretch;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    border-radius: 0;
+    border-top: 1px solid var(--ui-filter-builder-border, var(--border));
   }
   .filter-builder__group[data-nested="true"] {
     margin-left: 0.7rem;

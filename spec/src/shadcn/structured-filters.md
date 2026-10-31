@@ -23,7 +23,7 @@ persistence, publication or consumer migration are included.
 ### Acceptance details
 
 - The Shadcn family MUST export FilterBuilder, field/operator/value/node/state types and state helpers, with the Filter entry point re-exporting the same implementation.
-- Nested All, Any and None groups MUST support searchable field selection, segmented field/operator/value rows, adding and removing conditions and groups, and Clear filters.
+- Nested All, Any and None groups MUST support searchable field selection, segmented field/operator/value rows with continuous full-width wrapped dividers and no predicate end border, adding and removing conditions and groups, and Clear filters.
 - Host field descriptors MUST supply stable IDs, labels, types, optional choices and optional custom operators/value editors without importing application contracts.
 - The family MUST compose existing Shadcn primitives and native CSS with documented `--ui-filter-builder-*` tokens, without importing Forms, Filter, Canvas Table, raw-query parsers or application APIs.
 
@@ -55,7 +55,7 @@ persistence, publication or consumer migration are included.
 
 ### Acceptance details
 
-- One Filter rows icon in the fixed top toolbar MUST expose a viewport-bounded opaque popover with active-condition count and clear action, and opening MUST commit cell editing first.
+- One Filter rows icon in the fixed top toolbar MUST expose an opaque popover with a 48rem desktop default capped to the viewport, active-condition count and clear action, and opening MUST commit cell editing first.
 - Matching IDs MUST intersect host visibleRowIds in host order, exclude the fixed header, retain source row numbers and preserve hidden checkbox selections.
 - Header select-all MUST cover all matching filtered body rows including offscreen rows, and committed edits MUST update matches with safe cell and checkbox focus recovery.
 - Generic cell matching MUST remain in the Canvas Table family, with stable host column IDs supporting reordered columns and existing sort/resize/scroll alignment remaining unchanged.

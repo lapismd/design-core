@@ -187,3 +187,68 @@ test("keeps narrow popovers in the viewport and tears down an open panel", async
   await expect(page.getByRole("grid")).toBeVisible();
   expect(errors).toEqual([]);
 });
+
+test("keeps wrapped filter dividers continuous without a predicate end border", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 480, height: 800 });
+  await open(page);
+  await choose(page, "Name filter operator", "contains any of");
+  const geometry = await page
+    .locator(".filter-builder__segments")
+    .evaluate((row) => {
+      const predicate = row.querySelector<HTMLElement>(
+        '[data-ui-component="select"]',
+      )!;
+      const value = row.querySelector<HTMLElement>(".filter-builder__value")!;
+      const remove = row.querySelector<HTMLElement>(
+        ':scope > [data-ui-component="button"]:last-child',
+      )!;
+      const p = predicate.getBoundingClientRect();
+      const v = value.getBoundingClientRect();
+      const r = remove.getBoundingClientRect();
+      return {
+        predicateEndBorder: parseFloat(
+          getComputedStyle(predicate).borderInlineEndWidth,
+        ),
+        actionDivider: parseFloat(getComputedStyle(remove).borderTopWidth),
+        actionDividerColor: getComputedStyle(remove).borderTopColor,
+        valueDividerColor: getComputedStyle(value).borderTopColor,
+        seamGap: r.left - v.right,
+        seamOffset: Math.abs(r.top - v.top),
+        headerEndGap: row.getBoundingClientRect().right - p.right,
+      };
+    });
+  expect.soft(geometry.predicateEndBorder).toBe(0);
+  expect.soft(geometry.actionDivider).toBe(1);
+  expect.soft(geometry.actionDividerColor).toBe(geometry.valueDividerColor);
+  expect.soft(Math.abs(geometry.seamGap)).toBeLessThanOrEqual(1);
+  expect.soft(geometry.seamOffset).toBeLessThanOrEqual(1);
+  expect.soft(geometry.headerEndGap).toBeLessThanOrEqual(1);
+});
+
+test("uses desktop room to keep field, predicate and value on one line", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1000, height: 800 });
+  await open(page);
+  const panel = page.getByRole("dialog", { name: "Filter table rows" });
+  const panelBox = (await panel.boundingBox())!;
+  const tops = await page
+    .locator(".filter-builder__segments")
+    .evaluate((row) => [
+      row
+        .querySelector<HTMLElement>(".filter-builder__field")!
+        .getBoundingClientRect().top,
+      row
+        .querySelector<HTMLElement>('[data-ui-component="select"]')!
+        .getBoundingClientRect().top,
+      row
+        .querySelector<HTMLElement>(".filter-builder__value")!
+        .getBoundingClientRect().top,
+    ]);
+  expect.soft(panelBox.width).toBeGreaterThanOrEqual(760);
+  expect.soft(Math.max(...tops) - Math.min(...tops)).toBeLessThanOrEqual(1);
+  expect.soft(panelBox.x).toBeGreaterThanOrEqual(0);
+  expect.soft(panelBox.x + panelBox.width).toBeLessThanOrEqual(1000);
+});

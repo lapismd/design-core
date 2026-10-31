@@ -73,19 +73,19 @@ Final focused combined results and review links are recorded below. Full pnpm ch
 UI review pending; full qualification deferred. No user UI approval has been
 recorded. Do not run the deferred lanes merely because focused checks pass.
 
-| Exact command                                                                                                                                                                                                                         | Final result                                                                                     |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| pnpm test:unit src/shared/shadcn/filter-builder src/shared/shadcn/canvas-table                                                                                                                                                        | 151 passed across 7 files; 0 failed                                                              |
-| pnpm exec svelte-check --tsconfig .local/structured-filters-tsconfig.json --fail-on-warnings                                                                                                                                          | 0 errors, 0 warnings; standalone, table, examples and fixtures                                   |
-| VITEST_MAX_WORKERS=2 pnpm test:storybook src/shared/shadcn/filter-builder/FilterBuilder.stories.svelte src/shared/shadcn/canvas-table/CanvasTableFilters.stories.svelte src/shared/shadcn/canvas-table/CanvasTable.stories.svelte     | 27 passed across 3 story files; 0 failed; interaction, accessibility and runtime guards retained |
-| pnpm test:shadcn:pointer tests/shadcn/filter-builder.spec.ts tests/shadcn/canvas-table-filter.spec.ts tests/shadcn/canvas-table-filter-types.spec.ts tests/shadcn/canvas-table.spec.ts tests/shadcn/canvas-table-interactions.spec.ts | 28 passed; 0 failed; includes original next-frame sort alignment regressions                     |
-| pnpm spec:first                                                                                                                                                                                                                       | Passed: 46 protected files, 9 canonical chapters after final evidence update                     |
-| pnpm spec:check                                                                                                                                                                                                                       | All 3 specification lanes passed; 0 diagnostics                                                  |
-| pnpm exec tsx scripts/check-no-tailwind-utilities.ts src/shared/shadcn/filter-builder src/shared/shadcn/canvas-table                                                                                                                  | Passed: 0 utility references                                                                     |
+| Exact command                                                                                                                                                                                                                         | Final result                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| pnpm test:unit src/shared/shadcn/filter-builder src/shared/shadcn/canvas-table                                                                                                                                                        | 151 passed across 7 files; 0 failed                                                                  |
+| pnpm exec svelte-check --tsconfig .local/structured-filters-tsconfig.json --fail-on-warnings                                                                                                                                          | 0 errors, 0 warnings; standalone, table, examples and fixtures                                       |
+| VITEST_MAX_WORKERS=2 pnpm test:storybook src/shared/shadcn/filter-builder/FilterBuilder.stories.svelte src/shared/shadcn/canvas-table/CanvasTableFilters.stories.svelte src/shared/shadcn/canvas-table/CanvasTable.stories.svelte     | 27 passed across 3 story files; 0 failed; interaction, accessibility and runtime guards retained     |
+| pnpm test:shadcn:pointer tests/shadcn/filter-builder.spec.ts tests/shadcn/canvas-table-filter.spec.ts tests/shadcn/canvas-table-filter-types.spec.ts tests/shadcn/canvas-table.spec.ts tests/shadcn/canvas-table-interactions.spec.ts | 30 passed; 0 failed; includes original next-frame sort alignment and review border/width regressions |
+| pnpm spec:first                                                                                                                                                                                                                       | Passed: 46 protected files, 9 canonical chapters after final evidence update                         |
+| pnpm spec:check                                                                                                                                                                                                                       | All 3 specification lanes passed; 0 diagnostics                                                      |
+| pnpm exec tsx scripts/check-no-tailwind-utilities.ts src/shared/shadcn/filter-builder src/shared/shadcn/canvas-table                                                                                                                  | Passed: 0 utility references                                                                         |
 
 Focused Prettier covers every changed file. The source-length audit covers the
 whole new builder, Canvas Table family, new browser files and strict consumer.
-Largest newly authored JS/TS/Svelte file: 189 physical lines. The existing modified
+Largest newly authored JS/TS/Svelte file after review regressions: 254 physical lines. The existing modified
 table story fixture is 240 lines. No new source file exceeds 300.
 
 The final accessibility pass associates invalid multi-value, boolean and option
@@ -132,4 +132,39 @@ integrated cold probe scripts remain in ignored .local for reproduction.
 
 ## UI review feedback
 
-The user requested a continuous wrapped-row divider and removal of the predicate right-edge border. This is pending as a focused follow-up to the verified UI slice; it is not UI approval or authorization for full qualification.
+The user requested a continuous wrapped-row divider and removal of the predicate right-edge border. This is resolved in the focused review follow-up below; it is not UI approval or authorization for full qualification.
+
+### Border review regression
+
+Initial narrow source command: pnpm test:shadcn:pointer tests/shadcn/canvas-table-filter.spec.ts --grep "keeps wrapped filter dividers". Before the fix: 1 failed case, including an unwanted 1px predicate end border, a 2.390625px seam gap and 3.6875px vertical seam mismatch. The test also checks that the remove control paints the same divider color as the value region. This feedback remains UI review, not approval for broad runs.
+
+### Popover width review regression
+
+The inherited 45svw token was relative to Storybook's iframe viewport; at a 1000px preview the popover measured 450px, below the builder's 512px wrapping breakpoint. The exact `pnpm test:shadcn:pointer tests/shadcn/canvas-table-filter.spec.ts --grep 'uses desktop room'` target failed (1 case; width 450px and 34.5625px wrapped-row offset). The new token uses a 48rem desktop default bounded by the viewport. Compact border coverage now explicitly uses a 480px viewport; desktop coverage requires a single-line row at 1000px. Standalone stories remain independent and fully covered.
+
+### Review follow-up results
+
+The original UI slice is committed as a3da6581. The complete specification was
+committed first as 565b1ba2. No broad qualification or user UI approval occurred.
+
+The exact compact-border target changed from 1 failed case (4 assertions: 1px
+predicate end border, transparent remove-control divider, 2.390625px gap,
+3.6875px vertical offset) to 1 passed case after shared row tracks and a continuous
+painted divider. The desktop-width target changed from 1 failed case (450px
+panel and 34.5625px row wrap offset) to 1 passed case. Their combined exact command
+passes both cases. Compact coverage uses 480px; desktop coverage uses 1000px.
+
+Final exact commands retained above were rerun after the CSS/token changes:
+151 unit/audit cases, 27 story interaction/accessibility cases (including all 7
+standalone stories), and 30 focused browser cases pass with 0 failures. Native
+CSS audit passes. Spec-first and all 3 spec-check lanes pass. Types remain clean
+from the UI slice; this follow-up changes CSS, tokens, documentation and browser
+regressions only. The new test file remains below the 300-line limit at 254 lines.
+
+The width token is now min(48rem, calc(100svw - 1rem)); hosts can override it and
+the table still enforces a viewport maximum. Desktop controls stay on one line;
+compact rows retain the full-width divider and no predicate end border. No
+screenshot comparison, baseline update, full check, static build or packed
+consumer run was performed. Review server remains on 10329. Full qualification
+still awaits explicit UI approval. Raw follow-up logs use the
+/tmp/structured-filters-border-_, width-_ and review-\* prefixes.
