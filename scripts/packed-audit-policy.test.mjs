@@ -43,25 +43,25 @@ const result = (value, status = 1) => ({
   status,
 });
 
-test("accepts KaTeX and its complete propagation chain for preparation and release", () => {
+test("rejects the former KaTeX exception and its complete propagation chain", () => {
   for (const version of ["0.2.0", "0.3.0"]) {
-    assert.match(
-      checkPackedAudit(result(report()), version),
-      /Accepted release exception: GHSA-238p-pmpm-9mq7/,
+    assert.throws(
+      () => checkPackedAudit(result(report()), version),
+      /zero findings/,
     );
   }
 });
 
-test("known KaTeX acceptance persists across subsequent package releases", () => {
+test("rejects the former KaTeX finding across subsequent package releases", () => {
   for (const version of ["0.2.1", "0.3.1", "0.4.0", undefined]) {
-    assert.match(
-      checkPackedAudit(result(report()), version),
-      /Accepted release exception: GHSA-238p-pmpm-9mq7/,
+    assert.throws(
+      () => checkPackedAudit(result(report()), version),
+      /zero findings/,
     );
   }
 });
 
-test("rejects other advisories at every severity alongside the accepted advisory", () => {
+test("rejects other advisories at every severity alongside the former finding", () => {
   for (const severity of ["info", "low", "moderate", "high", "critical"]) {
     const value = report();
     value.vulnerabilities.other = {
@@ -79,7 +79,7 @@ test("rejects other advisories at every severity alongside the accepted advisory
     value.metadata.vulnerabilities.total += 1;
     assert.throws(
       () => checkPackedAudit(result(value), "0.3.0"),
-      /unaccepted|severity/,
+      /zero findings|severity/,
     );
   }
 });
@@ -94,7 +94,10 @@ test("rejects escalated or changed direct advisory", () => {
   })) {
     const value = report();
     value.vulnerabilities.katex.via[0][key] = changed;
-    assert.throws(() => checkPackedAudit(result(value), "0.3.0"), /unaccepted/);
+    assert.throws(
+      () => checkPackedAudit(result(value), "0.3.0"),
+      /zero findings/,
+    );
   }
 });
 
@@ -133,7 +136,7 @@ test("rejects failed commands, malformed responses, and inconsistent metadata", 
   assert.throws(() => checkPackedAudit(result(value), "0.3.0"), /total/);
 });
 
-test("clean audits pass without using the exception", () => {
+test("clean audits pass only when the audit command succeeds", () => {
   const value = report();
   value.vulnerabilities = {};
   value.metadata.vulnerabilities.low = 0;
