@@ -21,7 +21,7 @@ focused Shadcn review port: 10329.
 | Implemented     | Complete UI implementation                                                        |
 | Focused-tested  | Complete; final scoped commands pass                                              |
 | UI-approved     | User authorized full qualification and PR on 2026-10-31                           |
-| Fully-qualified | In progress on current remote main                                                |
+| Fully-qualified | In progress on combined release candidate                                         |
 
 ## Tooling evidence
 
@@ -176,3 +176,8 @@ cleanup, then requested a GitHub PR and push instead of advancing local main.
 The earlier approval gate is lifted for full verification. Current results,
 branch disposition and resume instructions are in
 2026-10-31-canvas-filters-qualification.md. Prior deferred entries are historical.
+
+The final user-selected release scope includes default-workspace Button and
+Column Canvas fixes, Canvas Table and Filter Builder. The initial PR may be
+pushed while local qualification runs, as explicitly requested. A minor 0.8.0
+release is authorized after the required checks. Other workspace work is excluded.

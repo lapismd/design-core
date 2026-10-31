@@ -1,5 +1,34 @@
 /** Fit only the currently rendered content; never clone editors or load hidden data. */
 export function measureColumnContentWidth(root: HTMLElement): number {
+  // Preserve the main-workspace overflow scan without measuring scroll extents
+  // contaminated by descendants that the structured walk excludes.
+  const hidden = new Set<Element>();
+  const contaminated = new Set<Element>();
+  const visible: HTMLElement[] = [];
+  for (const node of [root, ...root.querySelectorAll("*")]) {
+    if (!(node instanceof HTMLElement)) continue;
+    const style = getComputedStyle(node);
+    if (
+      (node.parentElement && hidden.has(node.parentElement)) ||
+      node.hasAttribute("inert") ||
+      style.display === "none" ||
+      style.visibility === "hidden" ||
+      (style.display !== "contents" && !node.getClientRects().length)
+    ) {
+      hidden.add(node);
+      let parent = node === root ? null : node.parentElement;
+      while (parent && !contaminated.has(parent)) {
+        contaminated.add(parent);
+        if (parent === root) break;
+        parent = parent.parentElement;
+      }
+    } else visible.push(node);
+  }
+  let overflowMax = 0;
+  for (const node of visible) {
+    if (!contaminated.has(node) && node.scrollWidth > node.clientWidth + 1)
+      overflowMax = Math.max(overflowMax, node.scrollWidth);
+  }
   let remaining = 65536;
   const number = (value: string) => Number.parseFloat(value) || 0;
   function measure(node: Element): { width: number; excluded: boolean } {
@@ -106,7 +135,7 @@ export function measureColumnContentWidth(root: HTMLElement): number {
       excluded,
     };
   }
-  return measure(root).width;
+  return Math.max(measure(root).width, overflowMax);
 }
 
 /** A finite default also bounds columns configured with maxWidth:null. */
