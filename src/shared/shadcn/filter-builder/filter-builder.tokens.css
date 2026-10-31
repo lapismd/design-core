@@ -1,0 +1,7 @@
+:root {
+  --ui-filter-builder-background: var(--popover);
+  --ui-filter-builder-border: var(--border);
+  --ui-filter-builder-radius: var(--radius);
+  --ui-filter-builder-gap: 0.5rem;
+  --ui-filter-builder-width: min(48rem, calc(100svw - 1rem));
+}

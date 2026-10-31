@@ -203,3 +203,10 @@ mention appearance, removal controls and host profile previews additionally map
 to shadcn/data-and-feedback.
 
 The FileTypeIcon family maps to DC-SHA-064 in the Shadcn data-and-feedback chapter, with a governed standalone catalog and native token metadata.
+
+Canvas Table maps its family and catalog title to DC-SHA-066–068 in Shadcn Data
+and feedback; the explicit package export and public surface map share that ownership.
+
+Structured Filter Builder source maps to shadcn/structured-filters.md (DC-SHA-069–074); Canvas Table filtering extends that chapter and its existing data-and-feedback contract. Verification stays In progress through UI review and deferred full qualification.
+
+The actual shadcn/filter-builder package export and Shadcn/Forms/Filter Builder catalog group map to DC-SHA-069. Canvas Table filter scenarios remain within its existing primary catalog title.

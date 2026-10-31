@@ -4,5 +4,9 @@
     "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": ["tests/source/strict-source-consumer.svelte"]
+  "include": [
+    "tests/source/strict-source-consumer.svelte",
+    "tests/source/canvas-table-consumer.svelte",
+    "tests/source/structured-filter-consumer.svelte"
+  ]
 }

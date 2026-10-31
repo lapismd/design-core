@@ -5,6 +5,11 @@ import {
 } from "@lapismd/spec-validator";
 
 const shadcnChapters = {
+  "canvas-table": [
+    "spec/src/shadcn/data-and-feedback.md",
+    "spec/src/shadcn/structured-filters.md",
+  ],
+  "filter-builder": ["spec/src/shadcn/structured-filters.md"],
   "file-type-icon": ["spec/src/shadcn/data-and-feedback.md"],
   "author-card": ["spec/src/shadcn/data-and-feedback.md"],
   "reference-chip": ["spec/src/shadcn/data-and-feedback.md"],

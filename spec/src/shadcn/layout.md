@@ -47,6 +47,8 @@ normal allocated width and reset their split without changing the pair total.
 Controlled widths MUST notify the host for both expansion and reset. Fitting
 MUST retain mounted content, selection and scroll position without loading data.
 
+The combined main-workspace integration retains the overflow-first scan while excluding scroll extents contaminated by hidden or inert descendants; dense-tree and transparent-wrapper scenarios qualify both sides of the merge.
+
 Fit measurement MUST include late clipped labels in deeply nested rendered
 content and traverse transparent `display: contents` wrappers. Hidden or inert
 subtrees MUST NOT contribute to the fit width; measurement work remains bounded.
