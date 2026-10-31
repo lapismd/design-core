@@ -1360,7 +1360,7 @@
     await expect(filesSidebar).toHaveFocus();
     await expect(projectsSidebar).toHaveAttribute("aria-hidden", "true");
 
-    const leftSelector = canvas.getByRole("button", {
+    const leftSelector = canvas.getByRole("combobox", {
       name: /^Choose left sidebar panel: /,
     });
     await expect(leftSelector).toHaveTextContent("Files");
@@ -1400,7 +1400,7 @@
       expect(mobileStage.scrollLeft).toBe(0);
     });
 
-    const rightSelector = canvas.getByRole("button", {
+    const rightSelector = canvas.getByRole("combobox", {
       name: /^Choose right sidebar panel: /,
     });
     await expect(rightSelector).toHaveTextContent("AI conversation");

@@ -1,5 +1,8 @@
 # Forms / Inputs
 
+Quantity unit selectors retain Bits UI 2.20.2's native combobox role while
+preserving unit labels, canonical values and edit-count assertions.
+
 Picker option and preview types are exported from TypeScript modules so strict source consumers can use the Forms barrel without Svelte type synthesis.
 
 Form inputs provide higher-level controlled editing patterns composed from shared primitives. Cross-family composition follows the canonical [`Forms guidance`](guidance.md). Strict source-consumer compatibility for shared input helpers follows the shared Forms invariants in [`Forms / Core and orchestrators`](core-and-orchestrators.md#dc-form-001--shared-forms-invariants).

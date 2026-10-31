@@ -1,5 +1,13 @@
 # Required reader and Swipe lifecycle release
 
+This record retains earlier qualification attempts and their original gates.
+The later user-authorized tracked Bits UI 2.20.2 patch supersedes the external
+upstream-publication prerequisite below for this scoped release. Its exact
+provenance, installed postimages, complete source qualification and remaining
+publication gates are maintained in
+[the temporary patch record](2026-10-31-temporary-bits-patch.md). Earlier failed
+receipts remain historical evidence and are not waived or rewritten.
+
 ## Released state and scope
 
 Core 0.7.2 is available on npm from `3ee2b016e453f159b376a69a19e0f5680dda3f65`
@@ -18,7 +26,8 @@ unit/native, build and audit lanes pass. Consumer receipt:
 This change ports only the required captured JSON and Swipe lifecycle owner
 repairs from the retained PR #42 source. It preserves released main's Notebook,
 Explorer, Button, column-fit, status and patched Minimatch behavior. Package
-manifests, dependency ranges and the frozen registry lock remain unchanged.
+manifests, dependency ranges and the frozen registry lock remained unchanged in
+that initial preparation; the later authorized patch intake updates them.
 The Changeset requests the next Core patch, expected 0.7.3.
 
 DC-CHAT-006 retains exact immutable source and UTF-16 coordinates. DC-SHA-004

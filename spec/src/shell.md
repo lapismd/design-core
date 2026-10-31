@@ -1,5 +1,9 @@
 # Shell
 
+The Bits UI 2.20.2 dependency intake retains native combobox semantics for panel
+selectors and the existing focus, selected-panel and completed-pointer-admission
+assertions. The authorized dependency patch does not change Shell ownership.
+
 The App Shell owns application structure and responsive layout while consumers own navigation and domain state.
 
 ## Public surface coverage

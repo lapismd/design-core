@@ -9,6 +9,11 @@ overrides:
   valibot: '>=1.4.2'
   katex: '>=0.18.2'
 
+patchedDependencies:
+  bits-ui@2.20.2:
+    hash: debd3bc7d43917f0967f0cc1e212fc5c7721c751d3b92bf8f31030d1c96289ad
+    path: patches/bits-ui@2.20.2.patch
+
 importers:
 
   .:
@@ -104,8 +109,8 @@ importers:
         specifier: ^3.4.2
         version: 3.7.2
       bits-ui:
-        specifier: ^2.19.5
-        version: 2.19.5(@internationalized/date@3.12.2)(svelte@5.56.6)
+        specifier: ^2.20.2
+        version: 2.20.2(patch_hash=debd3bc7d43917f0967f0cc1e212fc5c7721c751d3b92bf8f31030d1c96289ad)(@internationalized/date@3.12.2)(svelte@5.56.6)
       chrono-node:
         specifier: ^2.10.1
         version: 2.10.1
@@ -2305,13 +2310,6 @@ packages:
 
   bidi-js@1.0.3:
     resolution: {integrity: sha512-RKshQI1R3YQ+n9YJz2QQ147P66ELpa1FQEg20Dk8oW9t2KgLbpDLLp9aGZ7y8WHSshDknG0bknqGw5/tyCs5tw==}
-
-  bits-ui@2.19.5:
-    resolution: {integrity: sha512-TEwkLSYElE5SE0fIdcItiFPfyg9vrR67N1Mt6VvZCqZo24dwTA1MpGVV3WeyIg7rfVAaZ0So8a0/dcnPngCoew==}
-    engines: {node: '>=20'}
-    peerDependencies:
-      '@internationalized/date': ^3.8.1
-      svelte: ^5.33.0
 
   bits-ui@2.20.2:
     resolution: {integrity: sha512-cb1eQD1wZEhJWb1dTLiAdYWqeUI5v7f+7EAHmetxBuELI9lo4cpAIfGEjald/PR4wTR80Fu5DFH+IaY1OKn+tg==}
@@ -4855,7 +4853,7 @@ snapshots:
       '@lezer/highlight': 1.2.3
       '@lezer/markdown': 1.8.0
       '@lucide/svelte': 0.525.0(svelte@5.56.6)
-      bits-ui: 2.20.2(@internationalized/date@3.12.2)(svelte@5.56.6)
+      bits-ui: 2.20.2(patch_hash=debd3bc7d43917f0967f0cc1e212fc5c7721c751d3b92bf8f31030d1c96289ad)(@internationalized/date@3.12.2)(svelte@5.56.6)
       clsx: 2.1.1
       hast-util-to-text: 4.0.2
       katex: 0.18.10
@@ -5883,20 +5881,7 @@ snapshots:
     dependencies:
       require-from-string: 2.0.2
 
-  bits-ui@2.19.5(@internationalized/date@3.12.2)(svelte@5.56.6):
-    dependencies:
-      '@floating-ui/core': 1.8.0
-      '@floating-ui/dom': 1.8.0
-      '@internationalized/date': 3.12.2
-      esm-env: 1.2.2
-      runed: 0.35.1(svelte@5.56.6)
-      svelte: 5.56.6
-      svelte-toolbelt: 0.10.6(svelte@5.56.6)
-      tabbable: 6.5.0
-    transitivePeerDependencies:
-      - '@sveltejs/kit'
-
-  bits-ui@2.20.2(@internationalized/date@3.12.2)(svelte@5.56.6):
+  bits-ui@2.20.2(patch_hash=debd3bc7d43917f0967f0cc1e212fc5c7721c751d3b92bf8f31030d1c96289ad)(@internationalized/date@3.12.2)(svelte@5.56.6):
     dependencies:
       '@floating-ui/core': 1.8.0
       '@floating-ui/dom': 1.8.0

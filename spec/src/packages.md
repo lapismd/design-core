@@ -172,17 +172,33 @@ changelog. Historical workspace integration must not reintroduce consumed
 changesets or repeat their version bumps and release notes.
 
 Current release backlog: npm Core 0.7.2 lacks the captured JSON and Swipe teardown
-repairs. Their next patch candidate passes the exact owner regressions, but its
-Linux RestrictedReactions boundary remains blocked by the upstream FocusScope
-defect. [Bits UI PR #2264](https://github.com/huntabyte/bits-ui/pull/2264) has
+repairs. The next patch candidate passes the exact owner regressions. Its Linux
+RestrictedReactions boundary changes from 31 passes/one failure to 32 passes
+with the authorized tracked Bits patch. Combined complete source/browser and
+corrected public-package qualification pass; protected source/version PRs,
+actual publication/provenance and final registry consumers remain pending.
+[Bits UI PR #2264](https://github.com/huntabyte/bits-ui/pull/2264) has
 passing primary checks and awaits maintainer merge and an actual npm release.
-Consume that released dependency through a normal range, then rerun the exact
+The user authorizes a temporary tracked pnpm patch against released Bits UI
+2.20.2 while that upstream release is unavailable. The shared patch MUST retain
+the existing Link Preview timer/listener and Slider teardown corrections and add
+the exact identical-container FocusScope guard from owner commit `692fbdf5`.
+Every application or package-test root MUST explicitly configure the same
+version-bound patch and freeze its lockfile; Core's published pnpm metadata does
+not propagate into downstream installations. Both retained-source release and
+prepared local archive profiles MUST ship the checksum-bound patch and
+installation/removal provenance with their public artifacts. Remove the
+patch only after a released dependency contains all retained fixes and complete
+source/public-consumer acceptance passes without it. Qualification with the
+explicit temporary patch MUST rerun the exact
 32-case Linux family boundary, complete nonvisual/package qualification and
 protected source/version PR checks before publication. Prepared owner archives
 MUST NOT satisfy the registry gate. Commands, counts and retained cross-browser
 limits are in [the pending patch record](../records/2026-10-31-required-reader-swipe-release.md).
 Local preparation commits preserve source and evidence; they do not qualify
 publication or bypass any pending acceptance gate.
+The [temporary patch record](../records/2026-10-31-temporary-bits-patch.md)
+retains exact registry identities, source snapshots and before/after receipts.
 
 **Requirement.** Design Core MUST be packable as a public versioned source artifact whose manifest uses semver for runtime dependencies, and release automation MUST stop for manual bootstrap until the npm package exists.
 
@@ -202,7 +218,7 @@ and workspace audits remain unchanged.
 
 ### Acceptance details
 
-- Mira must resolve through the published npm range `~0.1.2`, which admits compatible pre-1.0 patch releases; Bits UI MUST resolve from `^2.19.5` or a compatible range retaining its Scroll Area and text-selection teardown fixes; optional search tooling remains outside the normal validation dependency graph.
+- Mira must resolve through the published npm range `~0.1.2`, which admits compatible pre-1.0 patch releases; the authorized temporary Bits UI patch MUST bind released `2.20.2`, retaining its Scroll Area and text-selection teardown fixes; optional search tooling remains outside the normal validation dependency graph.
 - Published development tooling dependencies must use npm semver ranges; pull requests and pushes to `main` must run the complete nonvisual check suite before the full and production-only dependency audits, using GitHub Actions that do not depend on the deprecated Node.js 20 action runtime.
 - The tarball must omit repository-only files and tolerate bounded npm metadata and released-tarball visibility delays during post-publication verification; each tarball retry must use a clean consumer, and unrelated install failures, integrity failures and signature/provenance failures must remain fatal.
 - Package checks must pack source even when its version is already published; registry and local archives must prepare rune modules and declarations, preserve public import names, and pass cold Svelte dependency prebundling plus bound Composer Input handle teardown with declared dependencies and zero Svelte diagnostics; the clean packed production graph must pass its independent audit or the recorded advisory-specific KaTeX exception.

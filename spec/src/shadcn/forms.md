@@ -38,6 +38,10 @@ Keyboard acceptance verifies initial search focus before dispatching navigation
 without an extra pointer click, then retains the immediate option-focus
 assertion. Completion checks that the captured input leaves the document and
 that focus returns to the trigger.
+The authorized Bits UI 2.20.2 patch retains these focus assertions. Select
+catalog checks use the dependency's native combobox role, named listbox and
+option group, then verify pointer admission and a real follow-up action after
+completed closure.
 
 **Requirement.** Emoji Picker MUST provide host-neutral full and restricted emoji selection through the shared Popover or an inline panel, with native CSS and lazy-loaded Emoji Mart data.
 
