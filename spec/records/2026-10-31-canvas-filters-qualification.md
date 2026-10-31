@@ -4,8 +4,9 @@
 
 The user authorized full verification on 2026-10-31, then explicitly requested
 a GitHub pull request with Changesets and push instead of advancing main.
-The local main bookmark remains unchanged; the default checkout will match the
-pushed feature revision after qualification. Only
+The local main bookmark was initially left unchanged. After the user requested
+merging the green PR, it was synchronized to that approved merge. The default
+checkout matches the pushed feature source and will track the released version. Only
 the two task workspaces may be retired after their work is safely pushed.
 The user subsequently authorized a new minor release (0.8.0). Plugin changes,
 screenshot comparisons and baseline updates remain excluded.
@@ -23,7 +24,8 @@ Both public additions have minor Changesets. Stories remain visual-pending.
 A preliminary candidate combining the feature with the default workspace's
 existing local changes passed focused units, story interactions, strict types,
 package checks and an isolated production consumer. Its full run is recorded in
-`/tmp/canvas-filters-full-checks.log`; it is retained locally, not the PR source.
+`/tmp/canvas-filters-full-checks.log`; its commit is included by the final merge,
+but those results apply to the preliminary 0.7.3 dependency baseline.
 After discovering current remote main, the actual PR candidate is independently
 qualified on the released dependency baseline. Do not use preliminary results
 to claim the final candidate passes.
@@ -102,3 +104,45 @@ using the newer PR record. The complete local suite is explicitly pending at
 initial push. Do not publish until the final source is qualified. The preliminary
 combined run is green (183 Shadcn browser passes and 1 existing skip); the newer
 remote-main-only baseline was cancelled without failures to finalize this scope.
+
+## Complete combined-source results
+
+Qualified source: 892ca102ea181aa7ba76933b9115a33bde33a6bf. It contains the
+reviewed table/filter features, current main and both requested local fixes.
+`TURBO_CONCURRENCY=1 VITEST_MAX_WORKERS=2 pnpm checks` exits 0.
+
+| Lane                                            | Final result                                                 |
+| ----------------------------------------------- | ------------------------------------------------------------ |
+| Unit                                            | 1,071 passed in 151 files                                    |
+| Concurrency/cache and release tooling           | 3 + 35 passed                                                |
+| Types                                           | All 4 projects: 0 errors, 0 warnings                         |
+| Formatting/native CSS/specification             | Passed; all 3 spec lanes                                     |
+| Cold static Storybook and metadata              | Passed; 0 contract errors                                    |
+| Storybook interactions/accessibility            | 1,022 passed in 282 files                                    |
+| Workspace browser                               | 16 passed                                                    |
+| Shell browser                                   | 17 passed                                                    |
+| AI browser                                      | 3 passed                                                     |
+| Shadcn Chromium/WebKit browser                  | 183 passed, 1 intentional WebKit-only guard skip in Chromium |
+| Package configuration and clean packed consumer | Passed; 0 production audit findings                          |
+| Isolated standalone/table production consumer   | Passed; strict types 0 errors/warnings and 0 runtime errors  |
+| GitHub CI 41230710139                           | All 11 required contexts pass                                |
+
+No functional, interaction or accessibility failures occurred on this final
+combined source. The superseded baseline cancellation is recorded separately.
+No assertion, timeout, diagnostic, screenshot threshold or baseline was weakened.
+All new handwritten family and regression files remain within 300 physical lines.
+The browser lanes each launch fresh owned Storybook processes. Public imports,
+selection outside the viewport, actual filtering, hidden selections, focus,
+scrolling/resizing and teardown remain covered. No screenshot comparison ran.
+
+Exact final package commands: `pnpm packages:check`, `pnpm packages:pack`,
+`node .local/qualify-canvas-filters.mjs`. Logs use
+`/tmp/canvas-filters-release-{full-checks,packages-check,packages-pack,consumer}.log`.
+The default checkout's ignored `.local/qualification/canvas-filters-20261031`
+retains logs, source archive, audit, probes and an isolated consumer fixture.
+
+The user authorized merge of PR #49 after all required GitHub checks passed.
+It merged as db893ff770248acd7b5be1346980c0b60220b9d6. Version PR #50 applies
+the two minor Changesets to 0.8.0. Product qualification is complete; publication
+and registry/provenance confirmation are tracked separately in
+2026-10-31-canvas-filters-release.md.
