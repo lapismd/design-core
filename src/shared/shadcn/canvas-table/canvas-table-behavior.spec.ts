@@ -23,8 +23,15 @@ const rows = [
   { id: "b", cells: ["Beta", "Closed"] },
 ];
 function context(patch: Partial<CanvasTableProps> = {}): TableContext {
-  const props = { rows, columnWidths: [120, 100], ...patch };
+  const props = {
+    rows,
+    columnWidths: [120, 100],
+    onCellChange: vi.fn(),
+    ...patch,
+  };
   const state: TableState = {
+    detailHeights: new Map(),
+    rowSelectionIds: [],
     active: null,
     range: null,
     target: "cell",
@@ -132,7 +139,7 @@ describe("Canvas Table host-controlled editing and commands", () => {
     expect(rows[1]!.cells[0]).toContain("Long text");
   });
   it("does not edit or offer mutations without host callbacks", () => {
-    const ctx = context();
+    const ctx = context({ onCellChange: undefined });
     const nav = createNavigation(ctx);
     nav.selectCell(0, 0);
     nav.beginEdit("Ignored");

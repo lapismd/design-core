@@ -266,7 +266,7 @@ Its only scrolling viewport MUST compose the public ScrollArea in both axes; sty
 
 ### Acceptance details
 
-- Existing boolean rowSelection MUST preserve its behavior, while single selection MUST use real radio controls; optional single selection MUST permit clearing while required selection MUST reject clearing the final row.
+- Existing boolean rowSelection MUST preserve its checkbox-control behavior, while single selection MUST use real radio controls; optional single selection MUST permit clearing while required selection MUST reject clearing the final row.
 - A supplied selectionRowIds scope MUST cover filtered loaded rows across pages; select-all MUST preserve selections outside that scope and derive checked/mixed state from that scope.
 - Disabled selection MUST suppress all selection callbacks without disabling scrolling, filtering or cell navigation; deleted IDs MUST still be pruned.
 - Source row numbering and stable identity MUST survive page changes, sort, filter and column reorder, with no duplicate accessible representation.
@@ -282,3 +282,23 @@ The disclosure fixture uses the compact 24px icon-xs control and a realistic acc
 CanvasTable display settings MAY be host-controlled through `wrapText` and `columnColours`, with matching change callbacks; omitted flags retain the sheet toolbar's local state. Custom cell content MUST inherit the chosen column colour and wrapping, while the central row geometry accounts for up to four wrapped text lines. Explicit child control colours remain authoritative. Hosts omitting the default toolbar MAY compose their own display toggles.
 
 Custom header snippets replacing the letter band MUST receive the same column text colour and eight-percent background tint as fixed sheet headers when column colours are enabled, restoring the normal header surface when disabled.
+
+The approved Notebook composition is now in full qualification. Verification fixtures supply measured detail state alongside existing viewport state, and optional single-selection stories match the complete row name so row 2 cannot match row 20.
+
+DC-SHA-075 rich-cell backgrounds, row/range selection and active/search outlines MUST share the cells' native scrolling coordinate system. Delayed viewport scroll notifications MUST NOT detach the selection paint from its content or expose stale selected rows. Default canvas-only painting remains unchanged, and custom/fallback rich cells retain the same tokens, borders and accessible grid.
+
+DC-SHA-075–076: omitting onCellChange defines read-only row navigation. Data-cell
+clicks and vertical keyboard navigation MUST select whole data rows, never cells,
+column ranges or fixed header rows. Plain click selects one row; Ctrl/Meta-click
+toggles additional rows, and Shift-click selects the visible-order anchor range.
+Single/required/disabled rules MUST apply. Repeated unchanged selections MUST NOT
+emit callbacks. Interactive descendants retain their own actions.
+
+With row controls enabled, read-only row actions MUST update controlled selectedRowIds.
+Without row controls, the component MUST retain local stable-ID row selection.
+Sorting/filtering MUST preserve selected identities; deleted IDs MUST be pruned.
+Ctrl/Meta+A MUST cover the filtered selection scope and preserve hidden selections.
+Keyboard focus MUST identify the row, Tab MUST leave the grid normally, and editable
+tables MUST retain cell editing, cell/range selection and independent checkboxes.
+
+Read-only rich-cell row identity MUST come from its owned DOM grid cell, including coordinate-free synthetic/assistive pointers; canvas-only rows use central hit testing. Nested grids and interactive descendants MUST keep their actions isolated. Browser assertions MUST wait for the story render boundary before checking viewport attributes.

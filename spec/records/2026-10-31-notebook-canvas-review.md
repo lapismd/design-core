@@ -7,8 +7,8 @@
   the overall migration remains in progress.
 - Focused-tested: source families and consumer review as recorded below;
   full qualification is not claimed.
-- UI-approved: pending.
-- Fully-qualified: deferred until UI approval.
+- UI-approved: approved by the user on 31 October 2026.
+- Fully-qualified: in progress; full lanes authorized after UI approval.
 
 ## Source and ownership
 
@@ -256,3 +256,110 @@ Full qualification, publication, push and merge remain deferred.
 - `pnpm test:shadcn:pointer canvas-table`: cold focused run, 33 passed/0 failed, covering scrolling, resizing, wrapped/filter interactions, focus and teardown.
 - Final `pnpm spec:check`: all 3 lanes passed plus icon audit.
 - Final rich-grid/story formatting passed. Notebook's final review archive supersedes the intermediate `a2f26500…` archive.
+
+## UI approved — full qualification resumed (31 October 2026)
+
+The user approved the integrated UI and requested the remaining plan work. Full
+qualification, remaining migration cleanup and release preparation are authorized.
+Keep stories visual-pending; no screenshot comparisons or baseline updates.
+Publication, pushing and merging still require separate authorization. Historical
+UI-pending statements above describe their original checkpoints. The current
+fully-qualified state remains incomplete until all required evidence passes.
+
+## Post-approval qualification and rich-selection regression
+
+Node 24; latest Deno-free spec-validator 0.2.0. Doctor/search receipts remain
+under `.local/qualification/doctor.log` and `search.log`; QMD worked under Node 24.
+
+- `pnpm spec:first --base f16631c7 --head @`: passed, 45 protected files/10 chapters.
+- `pnpm spec:check`: passed before the selection follow-up.
+- First `pnpm checks`: 1 formatter finding in verification.md; exact
+  `pnpm exec prettier --check spec/src/verification.md` failed once, then passed.
+- Next root type check: 2 errors (detailHeights fixture and unsupported story
+  query option); exact `pnpm exec svelte-check --tsconfig ./tsconfig.json
+--fail-on-warnings` then passed with 0 errors/0 warnings. Exact behavior tests
+  passed 17/0; OptionalSingleSelection passed 1/0 (4 unselected stories).
+- Spec-first initially reported 2 missing mapped chapters; corresponding
+  qualification contracts were added. `checks-after-governance.log` retains
+  the full run, including 1,103 units, 1,030 interaction/axe stories and static
+  Storybook success. Workspace (16), shell (17) and AI (3) browser lanes passed.
+  Shadcn remains in progress; an unchanged Column Canvas manual-scroll target
+  failed once and its exact fresh-process reproduction is retained separately.
+- `pnpm packages:pack` passed clean public types, cold development/production
+  consumers and production audit (0 findings) before the selection follow-up.
+- User reported selected rich-row scrolling flicker. Native rich content moved
+  before the canvas selection repainted. The fix keeps rich-cell fill, grid
+  borders and row/range/active/search paint in the native content coordinates.
+  Canvas-only sheets retain their painter. No new public props or tokens.
+- An initial `pnpm test:shadcn:pointer -- tests/shadcn/canvas-table-rich-selection.spec.ts`
+  forwarded `--` as an end-of-options separator and selected the full suite;
+  it was stopped, not counted as a pass. Exact before command:
+  `SHADCN_STORYBOOK_PORT=11029 node scripts/with-storybook-env.mjs pnpm exec
+playwright test -c playwright.shadcn.config.ts
+tests/shadcn/canvas-table-rich-selection.spec.ts`: 2 failed. Same target
+  after the source fix with `--output=.local/qualification/rich-selection-results`:
+  2 passed/0 failed from a fresh process, including delayed scroll events.
+- `pnpm exec vitest run --project unit src/shared/shadcn/canvas-table`:
+  141 passed/0 failed after the fix, including the focused 300-line guard.
+
+Final type/spec/full checks and refreshed packed-consumer evidence are pending.
+The Changesets status CLI cannot read Git HEAD in this non-colocated JJ checkout
+(with either explicit base or default main); this is an invocation limitation,
+not release qualification. Keep minor Changesets and prepare from the JJ tree.
+No push, merge, publication, screenshot comparisons or baseline updates.
+
+The first full native run completed with 3 Shadcn failures, 190 passed and
+1 platform-specific skip: Column Canvas manual-scroll width preservation,
+Column Canvas fixed rail scroll preservation, and Comment Composer readiness.
+The Comment Composer exact fresh target passed (1/0). The first Column Canvas
+focused rerun stopped during readiness/reload (ERR_ABORTED), before its product
+assertion; it is not a pass. No Column Canvas source or tests differ from the
+fetched-main base. Re-run both exact targets against stable source before the
+final full lane; do not waive their assertions.
+
+Rich selection strict typing initially found 1 unreachable optional-chain error
+in the canvas-only paint branch; removing the obsolete guard gave 0 errors/0
+warnings. Specification validation and the refreshed packed-consumer lane passed
+(0 audit findings), including cold development/production lifecycle coverage.
+The actual Notebook LargeTypedResults regression passed against that verified
+archive (1/0, 6 unselected stories). Full qualification remains incomplete.
+
+## Read-only row navigation and final source qualification
+
+Read-only means `onCellChange` is omitted. Data-cell clicks now select rows;
+editable tables retain cell/range selection. Plain click replaces selection,
+Ctrl/Meta-click toggles rows and Shift-click selects the displayed-order range.
+Single, required and disabled modes remain authoritative. Without checkbox
+controls the table owns stable row IDs locally. Keyboard navigation selects rows;
+Ctrl/Meta+A covers the filtered selection scope while preserving hidden IDs.
+Rich cells resolve their owned DOM row identity for coordinate-free pointer
+input, and interactive descendants retain their own actions. Repeated unchanged
+ID sets emit no selection callback. Selected rich-cell paint now scrolls in the
+same native coordinates as its content, removing the asynchronous canvas flash.
+
+- Focused read-only baseline: 3 unit failures; final complete canvas family
+  `pnpm exec vitest run --project unit src/shared/shadcn/canvas-table`:
+  155 passed/0 failed, including the physical-line guard.
+- Focused read-only browser baseline: 2 failures; final exact read-only plus
+  ScrollArea targets: 5 passed/0 failed (`readonly-target-after.log`).
+- Complete final browser lane includes 38 CanvasTable cases, all passing.
+- `pnpm packages:pack`: strict public types and cold development/production
+  runtime checks passed; production audit 0 findings. Receipt
+  `packed-consumer-final.log`; verified archive SHA256
+  `0f576a6684698a4dbb41684d53aa1583f0e01b57b1c84cfc4c5b2c69554199c8`.
+- First final `pnpm checks`: 2 AI story readiness failures/1 passed, after
+  1,118 unit tests, 1,031 interaction/axe stories, static Storybook, 16 workspace
+  and 17 shell browser tests passed. Exact fresh
+  `pnpm test:ai-chat-browser tests/ai-chat/ai-chat-interactions.spec.ts
+tests/ai-chat/reasoning-motion.spec.ts`: 3 passed/0 failed. No AI source or
+  assertions changed.
+- Exact `pnpm checks` rerun (`checks-final-retry.log`) passed every required
+  lane: 1,118 units; 1,031 interaction/accessibility stories; static Storybook;
+  16 workspace, 17 shell, 3 AI and 196 Shadcn browser tests. One existing
+  platform-specific WebKit case is governed as skipped. No new skips or waived
+  failures. Governance/spec-first/type/format checks passed.
+
+States: specified yes; implemented yes; focused-tested yes; migration UI-approved
+by the user; complete source qualification yes. Final Notebook and released
+registry-cohort acceptance remain separately owned gates. Minor Changesets are
+retained. No push, merge, publication, screenshot comparison or baseline update.

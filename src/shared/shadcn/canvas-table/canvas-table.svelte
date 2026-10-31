@@ -60,7 +60,12 @@
   const pointer = createPointer(ctx, nav);
   const keyboard = createKeyboard(ctx, nav);
   const activeDescendant = $derived.by(() => {
-    if (!tableState.active || tableTarget(ctx) !== "cell") return undefined;
+    if (!tableState.active) return undefined;
+    if (!props.onCellChange) {
+      const entry = layout.byId.get(tableState.active.rowId);
+      return entry ? instanceId + "-row-" + (entry.number - 1) : undefined;
+    }
+    if (tableTarget(ctx) !== "cell") return undefined;
     const entry = layout.byId.get(tableState.active.rowId);
     return entry
       ? instanceId + "-cell-" + (entry.number - 1) + "-" + tableState.active.col
@@ -93,6 +98,9 @@
       for (const id of tableState.detailHeights.keys())
         if (!ids.has(id)) tableState.detailHeights.delete(id);
     });
+    const local = tableState.rowSelectionIds.filter((id) => ids.has(id));
+    if (local.length !== tableState.rowSelectionIds.length)
+      tableState.rowSelectionIds = local;
     const selected = props.selectedRowIds ?? [];
     const next = [...new Set(selected.filter((id) => ids.has(id)))];
     if (next.length !== selected.length)
@@ -154,9 +162,10 @@
           "aria-colcount": layout.widths.length,
           "aria-readonly": !props.onCellChange,
           "aria-activedescendant": activeDescendant,
-          "aria-multiselectable": props.rowSelection
-            ? rowSelectionOptions(props.rowSelection).mode !== "single"
-            : undefined,
+          "aria-multiselectable":
+            props.rowSelection || !props.onCellChange
+              ? rowSelectionOptions(props.rowSelection).mode !== "single"
+              : undefined,
           "data-gutter-width": layout.gutter,
           "data-scroll-left": tableState.left,
           "data-scroll-top": tableState.top,

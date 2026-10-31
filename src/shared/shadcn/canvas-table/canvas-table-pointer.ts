@@ -29,9 +29,37 @@ export function createPointer(ctx: TableContext, nav: TableNavigation) {
       return;
     s.menu = null;
     nav.commitEdit();
+    const cell =
+      event.target instanceof Element
+        ? event.target.closest<HTMLElement>("[data-rich-row-id]")
+        : null;
+    if (!ctx.props().onCellChange && cell) {
+      if (cell.closest('[role="grid"]') !== s.scroller) return;
+      const index = ctx
+        .layout()
+        .bodyIndex.get(JSON.parse(cell.dataset.richRowId!));
+      if (index != null) {
+        s.scroller?.focus();
+        nav.selectCell(index, 0, {
+          extend: event.shiftKey,
+          toggle: event.ctrlKey || event.metaKey,
+        });
+        return;
+      }
+    }
     const target = hit(event);
     if (!target) return;
     s.scroller?.focus();
+    if (
+      !ctx.props().onCellChange &&
+      (target.kind === "body" || target.kind === "row")
+    ) {
+      nav.selectCell(target.index, 0, {
+        extend: event.shiftKey,
+        toggle: event.ctrlKey || event.metaKey,
+      });
+      return;
+    }
     if (target.kind === "resize") {
       if (!ctx.props().onColumnWidthsChange) return;
       s.drag = {

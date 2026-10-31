@@ -208,18 +208,30 @@
   align-items: center;
   box-sizing: border-box;
   padding-inline: 6px;
+  background-color: var(--ui-canvas-table-background);
+  border-inline-end: 1px solid var(--ui-canvas-table-border);
+  border-bottom: 1px solid var(--ui-canvas-table-border);
   overflow: hidden;
   pointer-events: auto;
+}
+.canvas-table__rich-cell[data-selected="true"] {
+  background-image: linear-gradient(
+    var(--ui-canvas-table-selection),
+    var(--ui-canvas-table-selection)
+  );
+}
+.canvas-table__rich-cell[data-search="true"] {
+  box-shadow: inset 0 0 0 2px var(--ui-canvas-table-search);
+}
+.canvas-table__rich-cell[data-active="true"] {
+  box-shadow: inset 0 0 0 2px var(--ui-canvas-table-accent);
 }
 .canvas-table__fallback-cell {
   pointer-events: none;
 }
 .canvas-table__cell-text {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  clip-path: inset(50%);
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 .canvas-table__resize-handle {
   position: absolute;

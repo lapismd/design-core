@@ -1,3 +1,7 @@
+import {
+  createRowNavigation,
+  type RowModifiers,
+} from "./canvas-table-readonly.js";
 import type { TableContext } from "./canvas-table-context.js";
 import type { Cell } from "./canvas-table-types.js";
 import { cellRect } from "./canvas-table-layout.js";
@@ -11,6 +15,7 @@ import {
 
 export function createNavigation(ctx: TableContext) {
   const s = ctx.state;
+  const rowNav = createRowNavigation(ctx);
   function row(index: number) {
     return index < 0 ? ctx.props().rows[0] : ctx.layout().body[index]?.row;
   }
@@ -19,7 +24,15 @@ export function createNavigation(ctx: TableContext) {
       return -1;
     return ctx.layout().bodyIndex.get(cell.rowId) ?? -2;
   }
-  function selectCell(index: number, col: number) {
+  function selectCell(
+    index: number,
+    col: number,
+    modifiers: RowModifiers = {},
+  ) {
+    if (!ctx.props().onCellChange) {
+      rowNav.select(index, modifiers);
+      return;
+    }
     const entry = row(index);
     if (!entry || !ctx.layout().widths[col]) return;
     s.active = { rowId: entry.id, col };
@@ -28,6 +41,10 @@ export function createNavigation(ctx: TableContext) {
     s.target = "cell";
   }
   function selectRows(from: number, to: number) {
+    if (!ctx.props().onCellChange) {
+      rowNav.range(from, to);
+      return;
+    }
     selectCell(Math.min(from, to), 0);
     s.target = "row";
     s.range = {
@@ -38,6 +55,7 @@ export function createNavigation(ctx: TableContext) {
     };
   }
   function selectColumns(from: number, to: number) {
+    if (!ctx.props().onCellChange) return;
     selectCell(ctx.layout().body.length ? 0 : -1, Math.min(from, to));
     s.target = "column";
     s.range = {
@@ -48,6 +66,10 @@ export function createNavigation(ctx: TableContext) {
     };
   }
   function selectAll() {
+    if (!ctx.props().onCellChange) {
+      rowNav.all();
+      return;
+    }
     selectColumns(0, ctx.layout().widths.length - 1);
     s.target = "sheet";
   }
@@ -70,8 +92,24 @@ export function createNavigation(ctx: TableContext) {
       node.scrollTop =
         top + rect.height - Math.max(1, node.clientHeight - layout.chrome);
   }
-  function move(rowDelta: number, colDelta: number): boolean {
+  function move(
+    rowDelta: number,
+    colDelta: number,
+    modifiers: RowModifiers = {},
+  ): boolean {
     const layout = ctx.layout();
+    if (!ctx.props().onCellChange) {
+      if (!layout.widths.length || !layout.body.length) return false;
+      if (s.active && !rowDelta) return false;
+      const current = s.active ? index(s.active) : -1;
+      const next = Math.max(
+        0,
+        Math.min(layout.body.length - 1, current < 0 ? 0 : current + rowDelta),
+      );
+      rowNav.select(next, modifiers);
+      reveal(next, 0);
+      return current !== next;
+    }
     if (!layout.widths.length || (!layout.body.length && !layout.headerRow))
       return false;
     if (!s.active) {

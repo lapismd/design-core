@@ -64,6 +64,7 @@ export interface CanvasTableProps {
   rowSelection?: boolean | CanvasTableSelection | undefined;
   selectedRowIds?: readonly CanvasTableRowId[] | undefined;
   onSelectedRowIdsChange?: ((ids: CanvasTableRowId[]) => void) | undefined;
+  /** Omit for read-only row navigation; provide to enable cell selection/editing. */
   onCellChange?:
     | ((rowId: CanvasTableRowId, column: number, value: string) => void)
     | undefined;

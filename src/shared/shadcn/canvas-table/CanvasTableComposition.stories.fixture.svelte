@@ -13,9 +13,16 @@
   } from "./index.js";
   let {
     large = false,
+    editable = false,
     single = false,
     optional = false,
-  }: { large?: boolean; single?: boolean; optional?: boolean } = $props();
+  }: {
+    large?: boolean;
+    editable?: boolean;
+    single?: boolean;
+    optional?: boolean;
+  } = $props();
+  let edits = $state<Record<string, string>>({});
   const rows = $derived(
     Array.from({ length: large ? 4000 : 40 }, (_, index) => ({
       id: index + 1,
@@ -24,7 +31,7 @@
         String(index * 125),
         "Details " + index,
         ...Array.from({ length: large ? 37 : 0 }, (_, col) => "Cell " + col),
-      ],
+      ].map((value, col) => edits[index + 1 + ":" + col] ?? value),
     })),
   );
   let widths = $state(
@@ -87,6 +94,11 @@
     {#if mounted}<CanvasTable
         {rows}
         {columns}
+        onCellChange={editable
+          ? (id, col, value) => {
+              edits = { ...edits, [id + ":" + col]: value };
+            }
+          : undefined}
         columnWidths={widths}
         onColumnWidthsChange={(next) => {
           widths = next;

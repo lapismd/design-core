@@ -9,6 +9,7 @@ export function createTableState(
   const display = $state({ wrap: false, colours: false });
   const state = $state<TableState>({
     detailHeights: new SvelteMap(),
+    rowSelectionIds: [],
     active: null,
     range: null,
     target: "cell",

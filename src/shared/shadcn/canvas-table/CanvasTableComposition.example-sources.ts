@@ -26,3 +26,11 @@ export const Display = `<script lang="ts">
   <CanvasTable {rows} columnWidths={[180]} headerRow={false} toolbar={false}
     columns={[{ id: "summary", label: "Summary", cell }]} {wrapText} {columnColours} />
 </div>`;
+
+export const Editable = Composable.replace(
+  'const rows = [{ id: "alpha", cells: ["Alpha", "125"] }];',
+  'let rows = $state([{ id: "alpha", cells: ["Alpha", "125"] }]);',
+).replace(
+  "    rowSelection selectedRowIds=",
+  "    onCellChange={(id, column, value) => { rows = rows.map(row => row.id === id ? { ...row, cells: row.cells.map((cell, index) => index === column ? value : cell) } : row); }}\n    rowSelection selectedRowIds=",
+);

@@ -1,3 +1,4 @@
+import { selectedRows } from "./canvas-table-readonly.js";
 import { tableTarget } from "./canvas-table-commands.js";
 import type { TableContext } from "./canvas-table-context.js";
 import type { Cell } from "./canvas-table-types.js";
@@ -41,8 +42,8 @@ export function paintTable(context: TableContext): void {
       "monospace");
   const rows = visibleRows(layout, s.top, height);
   const cols = visibleColumns(layout, s.left, width);
-  const selectedIds = new Set(props.rowSelection ? props.selectedRowIds : []);
-  const range = s.range;
+  const selectedIds = new Set(selectedRows(context));
+  const range = props.onCellChange ? s.range : null;
   const selected = (index: number, col: number) =>
     Boolean(
       range &&
@@ -60,7 +61,7 @@ export function paintTable(context: TableContext): void {
     () => {
       for (let index = rows.start; index < rows.end; index++) {
         const entry = layout.body[index];
-        if (!entry) continue;
+        if (!entry || props.columns) continue;
         for (let col = cols.start; col < cols.end; col++) {
           const box = cellRect(layout, index, col);
           const x = box.x - s.left;
@@ -71,16 +72,15 @@ export function paintTable(context: TableContext): void {
           ctx.fillStyle = s.colours
             ? (theme.columns[col % theme.columns.length] ?? theme.text)
             : theme.text;
-          if (!props.columns?.[col]?.cell)
-            paintText(
-              ctx,
-              entry.row.cells[col] ?? "",
-              x,
-              y,
-              box.width,
-              box.height,
-              s.wrap,
-            );
+          paintText(
+            ctx,
+            entry.row.cells[col] ?? "",
+            x,
+            y,
+            box.width,
+            box.height,
+            s.wrap,
+          );
           fill(ctx, theme.grid, x, y + box.height - 1, box.width, 1);
           fill(ctx, theme.grid, x + box.width - 1, y, 1, box.height);
         }
@@ -222,11 +222,12 @@ export function paintTable(context: TableContext): void {
       },
     );
   }
-  if (props.searchCell)
+  if (!props.columns && props.searchCell)
     outline(
       { rowId: props.searchCell.rowId, col: props.searchCell.column },
       theme.search,
     );
-  if (tableTarget(context) === "cell") outline(s.active, theme.accent);
+  if (!props.columns && tableTarget(context) === "cell")
+    outline(s.active, theme.accent);
   paintFrozenGutter(canvas, s.gutterCanvas, layout.gutter, scale);
 }

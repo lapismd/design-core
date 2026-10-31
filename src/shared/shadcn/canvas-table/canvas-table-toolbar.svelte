@@ -31,7 +31,7 @@
 <div class="canvas-table__toolbar" role="toolbar" aria-label="Sheet">
   <input
     class="canvas-table__address"
-    aria-label="Cell address"
+    aria-label={config.onCellChange ? "Cell address" : "Row address"}
     value={draft ?? reference}
     spellcheck="false"
     onfocus={(event) => event.currentTarget.select()}

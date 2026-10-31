@@ -1,3 +1,4 @@
+import { waitForVisualStoryFinished } from "@lapismd/storybook-addon-visual-delta/playwright";
 import { expect, test } from "@playwright/test";
 
 for (const strategy of ["styled", "native"] as const) {
@@ -22,6 +23,10 @@ for (const strategy of ["styled", "native"] as const) {
       });
     await page.goto(
       "/iframe.html?id=shadcn-data-display-canvas-table--large-rich-table&viewMode=story",
+    );
+    await waitForVisualStoryFinished(
+      page,
+      "shadcn-data-display-canvas-table--large-rich-table",
     );
     const grid = page.getByRole("grid");
     await expect(grid).toHaveAttribute("data-ui-part", "scroll-area-viewport", {
@@ -65,9 +70,12 @@ for (const strategy of ["styled", "native"] as const) {
     ).toBeLessThan(2);
     await grid.focus();
     await page.keyboard.press("ArrowDown");
+    await expect(grid).toHaveAttribute("aria-activedescendant", /-row-\d+$/);
+    const selected = grid.getByRole("row", { selected: true });
+    await expect(selected).toHaveCount(1);
     await expect(grid).toHaveAttribute(
       "aria-activedescendant",
-      /-cell-\d+-\d+/,
+      (await selected.getAttribute("id"))!,
     );
     expect(await grid.getByRole("gridcell").count()).toBeLessThan(300);
     await page.getByRole("button", { name: "Toggle table" }).click();

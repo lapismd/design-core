@@ -197,3 +197,5 @@ CSS-owned expanded-detail anchoring leaves controlled filter application and row
 Host-controlled CanvasTable `wrapText` and `columnColours` presentation settings MUST preserve the controlled filter tree, last valid applied conditions, selected IDs and host ordering. Hosts replacing the toolbar may place independent display toggles beside the filter trigger.
 
 Column-colour header tints apply equally with structured filtering enabled; filtering MUST NOT reset controlled display state.
+
+The integrated Notebook filter UI was approved on 31 October 2026. Broad qualification retains controlled-state, source-consumer, interaction and accessibility checks; screenshot comparison and baseline updates remain excluded.

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { selectedRows } from "./canvas-table-readonly.js";
   import { visibleRows, visibleColumns } from "./canvas-table-layout.js";
   import { columnLetter } from "./canvas-table-text.js";
   import type { TableContext } from "./canvas-table-context.js";
@@ -48,9 +49,10 @@
   {#each entries as entry (entry.row.id)}
     <div
       role="row"
+      id={instanceId + "-row-" + (entry.number - 1)}
       aria-rowindex={entry.number}
-      aria-selected={config.rowSelection
-        ? (config.selectedRowIds ?? []).includes(entry.row.id)
+      aria-selected={config.rowSelection || !config.onCellChange
+        ? selectedRows(ctx).includes(entry.row.id)
         : undefined}
     >
       {#each columns as col (col)}

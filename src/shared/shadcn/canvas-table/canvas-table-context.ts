@@ -6,6 +6,7 @@ import type {
 import type { TableLayout } from "./canvas-table-layout.js";
 
 export interface TableState {
+  rowSelectionIds: import("./canvas-table-types.js").CanvasTableRowId[];
   detailHeights: Map<
     import("./canvas-table-types.js").CanvasTableRowId,
     number

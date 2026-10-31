@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { selectedRows } from "./canvas-table-readonly.js";
   import { untrack } from "svelte";
+  import { tableTarget } from "./canvas-table-commands.js";
   import {
     cellRect,
     visibleColumns,
@@ -12,6 +14,23 @@
   let { ctx, instanceId }: { ctx: TableContext; instanceId: string } = $props();
   const p = $derived(ctx.props());
   const layout = $derived(ctx.layout());
+  const selectedIds = $derived(new Set(selectedRows(ctx)));
+  const active = $derived(
+    p.onCellChange && tableTarget(ctx) === "cell" ? ctx.state.active : null,
+  );
+  function selected(index: number, col: number, id: CanvasTableRowId) {
+    const range = p.onCellChange ? ctx.state.range : null;
+    return (
+      selectedIds.has(id) ||
+      Boolean(
+        range &&
+          index >= range.startIndex &&
+          index <= range.endIndex &&
+          col >= range.startCol &&
+          col <= range.endCol,
+      )
+    );
+  }
   const columns = $derived.by(() => {
     const range = visibleColumns(layout, ctx.state.left, ctx.state.width);
     const result = Array.from(
@@ -141,9 +160,10 @@
     {@const index = layout.bodyIndex.get(entry.row.id) ?? 0}
     <div
       role="row"
+      id={instanceId + "-row-" + (entry.number - 1)}
       aria-rowindex={entry.number + 1}
-      aria-selected={p.rowSelection
-        ? (p.selectedRowIds ?? []).includes(entry.row.id)
+      aria-selected={p.rowSelection || !p.onCellChange
+        ? selectedIds.has(entry.row.id)
         : undefined}
     >
       {#each columns as col (p.columns?.[col]?.id ?? col)}
@@ -158,6 +178,10 @@
           id={instanceId + "-cell-" + (entry.number - 1) + "-" + col}
           class:canvas-table__fallback-cell={!c?.cell}
           class="canvas-table__rich-cell"
+          data-selected={selected(index, col, entry.row.id)}
+          data-active={active?.rowId === entry.row.id && active.col === col}
+          data-search={p.searchCell?.rowId === entry.row.id &&
+            p.searchCell.column === col}
           style:white-space={ctx.state.wrap ? "pre-wrap" : "nowrap"}
           style:overflow-wrap={ctx.state.wrap ? "anywhere" : undefined}
           style:color={ctx.state.colours

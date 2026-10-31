@@ -6,6 +6,7 @@
   import Demo from "./CanvasTableComposition.stories.fixture.svelte";
   import {
     Composable,
+    Editable,
     Display,
   } from "./CanvasTableComposition.example-sources.js";
   const { Story } = defineMeta({
@@ -62,8 +63,7 @@
   play={async ({ canvasElement }) => {
     const c = within(canvasElement);
     const radio = await c.findByRole("radio", {
-      name: "Select row 2",
-      exact: true,
+      name: /^Select row 2$/,
     });
     await userEvent.click(radio);
     await expect(c.getByLabelText("Selected IDs")).toHaveTextContent(/^2$/);
@@ -100,4 +100,11 @@
     await expect(cell.getBoundingClientRect().height).toBe(height);
     await expect(getComputedStyle(cell).color).toBe(colour);
   }}>{#snippet template()}<DisplayDemo />{/snippet}</Story
+>
+
+<Story
+  name="Editable rich table"
+  parameters={{
+    docs: { source: { code: Editable, language: "tsx", type: "code" } },
+  }}>{#snippet template()}<Demo editable />{/snippet}</Story
 >
