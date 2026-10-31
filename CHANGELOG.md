@@ -12,6 +12,12 @@
   editors. Add opt-in controlled Canvas Table filtering, conservative column-type
   inference and user type overrides.
 
+### Patch Changes
+
+- Keep outline and ghost Button labels aligned with the active theme foreground.
+- Include visible overflowing content when fitting Column Canvas widths, while
+  excluding hidden and inert descendants.
+
 ## 0.7.4
 
 ### Patch Changes

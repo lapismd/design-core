@@ -1,12 +1,14 @@
 # Structured filters progress and resume record
 
-## Authorization and workspace
+## Initial authorization and workspace (historical)
 
 The user approved a specification-first, UI-first implementation on 2026-10-31.
 Full checks, repository-wide tests, static Storybook, package/release qualification
 and isolated packed consumers are deferred until explicit UI approval. This is
 an explicit task-specific exception to the normal AGENTS full-check-before-commit
-rule. No push, publication, plugin changes or visual baselines are authorized.
+rule. Push and release were subsequently authorized; the current state below and
+2026-10-31-canvas-filters-release.md supersede these initial limits. Plugin
+changes and visual baselines remain excluded.
 
 Workspace: /Users/stevejuma/code/lapismd/design-core-structured-filters.
 Parents: current main 8e9b3f29 plus Canvas Table 50c94a6b. Original Canvas Table
@@ -15,13 +17,13 @@ focused Shadcn review port: 10329.
 
 ## State
 
-| Stage           | Status                                                                            |
-| --------------- | --------------------------------------------------------------------------------- |
-| Specified       | Complete; DC-SHA-069–074 and full public contract in shadcn/structured-filters.md |
-| Implemented     | Complete UI implementation                                                        |
-| Focused-tested  | Complete; final scoped commands pass                                              |
-| UI-approved     | User authorized full qualification and PR on 2026-10-31                           |
-| Fully-qualified | In progress on combined release candidate                                         |
+| Stage           | Status                                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Specified       | Complete; DC-SHA-069–074 and full public contract in shadcn/structured-filters.md                                  |
+| Implemented     | Complete UI implementation                                                                                         |
+| Focused-tested  | Complete; final scoped commands pass                                                                               |
+| UI-approved     | User authorized full qualification and PR on 2026-10-31                                                            |
+| Fully-qualified | Complete on combined source 892ca102; full local checks, all 11 GitHub checks, packages and isolated consumer pass |
 
 ## Tooling evidence
 
@@ -181,3 +183,19 @@ The final user-selected release scope includes default-workspace Button and
 Column Canvas fixes, Canvas Table and Filter Builder. The initial PR may be
 pushed while local qualification runs, as explicitly requested. A minor 0.8.0
 release is authorized after the required checks. Other workspace work is excluded.
+
+## Final combined-source qualification
+
+The full local command `TURBO_CONCURRENCY=1 VITEST_MAX_WORKERS=2 pnpm checks`
+passes on pushed source 892ca102ea181aa7ba76933b9115a33bde33a6bf: 1,071 unit
+cases, 38 tooling cases, 1,022 Storybook interaction/accessibility cases and 219
+browser cases. One Chromium case is intentionally skipped because it is guarded
+for WebKit, where it runs. Functional, interaction and accessibility failure
+counts are all 0. Package configuration, clean packed consumers and the isolated
+filter/table production consumer pass. All 11 required GitHub contexts pass.
+
+The user requested merging after GitHub checks passed; PR #49 is merged. PR #50
+versions the fully qualified source to 0.8.0 and carries these evidence updates.
+Publication remains governed by the protected release workflow. The current
+release record includes workspace disposition, commands, source identity and
+remaining publication checks. All earlier deferred entries are historical.
