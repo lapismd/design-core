@@ -11,7 +11,9 @@
       | "bounded"
       | "pair"
       | "controlled"
-      | "ellipsis";
+      | "contents"
+      | "ellipsis"
+      | "dense";
   } = $props();
   const initial = 320;
   let controlledWidth = $state(initial);
@@ -62,8 +64,35 @@
           }
         : undefined}
     >
-      <ColumnCanvas.Body orientation="both">
-        {#if scenario === "ellipsis"}<div class="fit-row">
+      <ColumnCanvas.Body
+        orientation={scenario === "dense" ? "vertical" : "both"}
+      >
+        {#if scenario === "dense"}<div
+            aria-hidden="true"
+            style="height:0;overflow:hidden"
+          >
+            {#each Array.from({ length: 4200 }) as _}<span></span>{/each}
+          </div>{/if}
+        {#if scenario === "contents"}
+          <div style="display: contents">
+            <div style="display: contents">
+              <div style="width: 520px" data-testid="fit-content">
+                Visible content inside transparent wrappers.
+              </div>
+            </div>
+          </div>
+          <div style="display: contents; visibility: hidden">
+            <div style="position: absolute; width: 2000px">Hidden content.</div>
+          </div>
+          <div style="display: contents" inert>
+            <div style="position: absolute; width: 2000px">Inert content.</div>
+          </div>
+          <div hidden>
+            <div style="display: contents; width: 2000px">Hidden subtree.</div>
+          </div>
+        {:else if scenario === "ellipsis" || scenario === "dense"}<div
+            class="fit-row"
+          >
             <span class="fit-label"
               >feature/a-long-recorded-branch-name-with-portable-controller-context</span
             ><span>Local</span>

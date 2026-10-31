@@ -47,6 +47,7 @@
       };
     },
   };
+  let metadataItem = $state.raw<WorkspaceStatusItemModel>(customItem);
   const actionItem: WorkspaceStatusItemModel = {
     id: "ready",
     icon: "circle-check",
@@ -191,5 +192,37 @@
     >
     {#if mounted}<WorkspaceStatusItem item={customItem} />{/if}
     <output class="sr-only">{result} · Disposed {disposals}</output>
+  {/snippet}
+</Story>
+
+<Story
+  name="Custom metadata preserves mounted state"
+  tags={["visual-pending", "!autodocs"]}
+  play={async ({ canvas }) => {
+    const original = canvas.getByRole("button", {
+      name: "Custom status details",
+    });
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Update status metadata" }),
+    );
+    await waitFor(() =>
+      expect(canvas.getByRole("status")).toHaveTextContent("Updated metadata"),
+    );
+    expect(canvas.getByRole("button", { name: "Custom status details" })).toBe(
+      original,
+    );
+    expect(canvas.getByRole("status")).toHaveTextContent("Disposed 0");
+  }}
+>
+  {#snippet template()}
+    <button
+      onclick={() => {
+        metadataItem = { ...metadataItem, tooltip: "Updated metadata" };
+      }}>Update status metadata</button
+    >
+    <WorkspaceStatusItem item={metadataItem} />
+    <output
+      >{metadataItem.tooltip ?? "Original metadata"} · Disposed {disposals}</output
+    >
   {/snippet}
 </Story>

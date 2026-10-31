@@ -41,4 +41,25 @@ describe("EditorViewRegistry", () => {
       valid: false,
     });
   });
+
+  it("keeps basename, path, brace and literal matching with bounded validation", () => {
+    for (const [pattern, path, expected] of [
+      ["*.notebook.md", "Notes/Example.notebook.md", true],
+      ["*.notebook.md", "Notes/Example.md", false],
+      ["Notes/**/*.{md,csv}", "Notes/.hidden/data.csv", true],
+      ["Notes/**/*.md", "Other/Example.md", false],
+      ["*.md", "Notes\\\\Example.md", true],
+      ["!draft.md", "!draft.md", true],
+      ["!draft.md", "published.md", false],
+    ] as const) {
+      expect(matchesEditorAssociationGlob(pattern, path)).toBe(expected);
+    }
+    expect(validateEditorAssociationGlob("Notes/**/*.{md,csv}")).toEqual({
+      valid: true,
+    });
+    expect(validateEditorAssociationGlob("a".repeat(65_537))).toEqual({
+      valid: false,
+      message: "Glob pattern is invalid.",
+    });
+  });
 });

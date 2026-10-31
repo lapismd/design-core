@@ -1,5 +1,15 @@
 # Package exports
 
+The Notebook support patch retains all public exports. Stable custom status
+mounts, Explorer reveal-focus ownership, themed Button foreground and visible
+column fitting are included together from the independently verified Notebook
+source candidate. Publication requires the combined source and packed-consumer
+gates; unrelated unfinished feature and release candidates remain preserved.
+The editor-association matcher consumes registry `minimatch@^11.0.3`, excluding
+the globparts-amplification advisory affecting older majors. Matching,
+validation and specificity retain the existing public behavior; the packed
+production audit keeps its existing fail-closed policy.
+
 Version 0.6.0 consumes the consolidated transcript, footer and presentation
 Changesets through the normal release-version command. Existing public import
 paths remain available; package publication still requires the verified archive.

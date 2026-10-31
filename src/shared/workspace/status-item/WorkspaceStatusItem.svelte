@@ -9,9 +9,9 @@
 
   let { item }: { item: WorkspaceStatusItemModel } = $props();
   let host: HTMLDivElement | undefined = $state();
+  const mountContent = $derived(item.mount);
   $effect(() => {
-    const mount = item.mount;
-    if (host && mount) return untrack(() => mount(host!));
+    if (host && mountContent) return untrack(() => mountContent(host!));
   });
   let open = $state(false);
   let menu = $state(new WorkspaceMenu());

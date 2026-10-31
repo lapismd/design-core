@@ -50,16 +50,20 @@
   $effect(() => {
     const reveal = controller.revealState;
     if (!reveal.path || !reveal.isFlashing) return;
+    const previousFocus = rootEl?.ownerDocument.activeElement;
     void tick().then(() => {
       requestAnimationFrame(() => {
+        if (!mounted) return;
         const el = rootEl?.querySelector(
           `[data-path=${JSON.stringify(reveal.path)}]`,
         ) as HTMLElement | null;
         el?.scrollIntoView({ block: "center", inline: "nearest" });
+        if (el?.ownerDocument.activeElement === previousFocus) {
+          el?.focus({ preventScroll: true });
+        }
         if (flashTimeout !== null) clearTimeout(flashTimeout);
         flashTimeout = setTimeout(() => {
           controller.clearRevealFlash();
-          el?.focus();
         }, 2000);
       });
     });
