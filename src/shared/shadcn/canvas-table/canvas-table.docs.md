@@ -173,3 +173,5 @@ uses displayed body rows. Hidden selected IDs survive scope changes. `true`
 retains the existing multiple checkbox behavior.
 
 `fillWidth` stretches the last column only when the actual scroller has unused space, preserving normal horizontal scrolling for wide tables and accounting for reserved scrollbar space.
+
+CanvasTable composes Design Core ScrollArea as its only two-axis scrolling viewport. The viewport owns grid semantics, keyboard and pointer handlers, and all layout measurements; it inherits ScrollArea visibility preferences and its native/WebKit strategy. No additional scroll wrapper is needed.

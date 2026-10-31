@@ -165,3 +165,5 @@ Structured filters (DC-SHA-069–074) place the standalone builder in Shadcn, wi
 The structured filter UI review slice preserves the Filter query-language FilterType enum by exporting the standalone union as StructuredFilterType through that higher-layer facade. Matching remains exclusively in Canvas Table; the standalone public entry point has no table import.
 
 Composable CanvasTable snippets retain host data/evaluation ownership and share the canvas geometry and virtualized grid; no Notebook dependency enters Design Core (DC-SHA-075–077).
+
+CanvasTable composes the shared ScrollArea viewport directly, using its public viewportProps and bound viewport ref rather than a second scrolling wrapper; both strategies retain one accessible grid and one geometry owner (DC-SHA-038, DC-SHA-075).

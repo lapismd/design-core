@@ -251,6 +251,8 @@ The review slice connects the controlled filtering configuration to the existing
 
 **Requirement.** CanvasTable MUST support host-authored column headers, rich cells and expanded details through public snippets while retaining one geometry and accessible grid.
 
+Its only scrolling viewport MUST compose the public ScrollArea in both axes; styled and native strategies MUST preserve grid semantics, scrollbar interaction, virtualized alignment, editing, keyboard operation and teardown.
+
 ### Acceptance details
 
 - Optional stable-ID column descriptors MUST supply labels and header/cell snippets that replace letters/painted text, while omitted descriptors MUST preserve spreadsheet behavior.

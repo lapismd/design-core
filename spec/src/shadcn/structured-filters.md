@@ -187,3 +187,5 @@ axe and cold browser checks run before integrated Notebook UI review. Full
 `pnpm checks`, static catalog, packed qualification and publication remain
 explicitly deferred until UI approval. Archive preparation for the isolated
 review is not packed-consumer qualification or publication.
+
+CanvasTable filter application and focus recovery use the same public ScrollArea viewport as cell navigation; replacing the scroller MUST NOT introduce nested scrolling or change controlled filter draft/application semantics (DC-SHA-072).

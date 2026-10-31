@@ -19,6 +19,7 @@ describe("Canvas Table maintained source boundaries", () => {
     "canvas-table.spec.ts",
     "canvas-table-interactions.spec.ts",
     "canvas-table-composition.spec.ts",
+    "canvas-table-scrollarea.spec.ts",
   ])("keeps %s below 300 lines", (file) => {
     const source = readFileSync(
       new URL("../../../../tests/shadcn/" + file, import.meta.url),
@@ -36,6 +37,17 @@ describe("Canvas Table maintained source boundaries", () => {
       ),
       "utf8",
     );
+    expect(
+      source.split("\n").length - Number(source.endsWith("\n")),
+    ).toBeLessThanOrEqual(300);
+  });
+  it.each([
+    "../scroll-area/scroll-area-viewport-props.ts",
+    "../scroll-area/ScrollAreaViewport.fixture.svelte",
+    "../scroll-area/ScrollAreaViewport.stories.svelte",
+    "../../../../tests/source/scroll-area-viewport-consumer.svelte",
+  ])("keeps viewport composition source %s below 300 lines", (file) => {
+    const source = readFileSync(new URL(file, family), "utf8");
     expect(
       source.split("\n").length - Number(source.endsWith("\n")),
     ).toBeLessThanOrEqual(300);
