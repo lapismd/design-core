@@ -1,5 +1,17 @@
 # @lapismd/design-core
 
+## 0.8.0
+
+### Minor Changes
+
+- [#49](https://github.com/lapismd/design-core/pull/49) [`3fe4519`](https://github.com/lapismd/design-core/commit/3fe4519fb15a05ea4462c58dd59e93d6b686fc75) Thanks [@stevejuma](https://github.com/stevejuma)! - Add a host-controlled CanvasTable with spreadsheet editing, toolbar and menus,
+  optional sheet row numbers and independent checkbox row selection. Keep CSV
+  integration and data persistence in consumers.
+
+- [#49](https://github.com/lapismd/design-core/pull/49) [`a31f9ff`](https://github.com/lapismd/design-core/commit/a31f9ff7ca959ff23ae8aa242575780b753ae922) Thanks [@stevejuma](https://github.com/stevejuma)! - Add a standalone structured FilterBuilder with nested groups and typed condition
+  editors. Add opt-in controlled Canvas Table filtering, conservative column-type
+  inference and user type overrides.
+
 ## 0.7.4
 
 ### Patch Changes
