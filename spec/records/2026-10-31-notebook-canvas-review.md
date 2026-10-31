@@ -236,3 +236,23 @@ Temporary review archive preparation is `pnpm package:local`; this is isolated
 review intake only, not packed-consumer or release qualification. Notebook must
 refresh its checksum record and fresh Docker worker before consumer acceptance.
 No full suites, baselines, push, merge or publication.
+
+## Review follow-up: custom header tints
+
+Specified and implemented; UI-approved and fully-qualified remain pending. Rich
+column headers now receive the column text colour and the same eight-percent
+background tint as fixed sheet headers. No Notebook-specific styling is in the
+shared owner. The existing controlled-display Changeset includes this behavior.
+
+- `pnpm test:storybook src/shared/shadcn/canvas-table/CanvasTableComposition.stories.svelte -t ControlledDisplay`: new header assertion before fix 1 failed/4 skipped; exact rerun after background fix 1 passed/4 skipped; final text-colour assertion rerun also 1 passed/4 skipped.
+- `pnpm test:storybook src/shared/shadcn/canvas-table`: 25 passed/0 failed after tint fix, accessibility retained.
+- `pnpm check:source-consumer`: 0 errors/0 warnings.
+- `pnpm spec:check`: 3 lanes passed plus icon audit.
+- `pnpm package:local`: succeeded; final archive SHA256 `302c454246d97b355b8f2556eab7af9d797de4b18f78fa1f85437d5b160f207b`. Preparation is temporary Docker review intake, not release qualification.
+
+Focused pointer check and Notebook consumer results follow in their owning records.
+Full qualification, publication, push and merge remain deferred.
+
+- `pnpm test:shadcn:pointer canvas-table`: cold focused run, 33 passed/0 failed, covering scrolling, resizing, wrapped/filter interactions, focus and teardown.
+- Final `pnpm spec:check`: all 3 lanes passed plus icon audit.
+- Final rich-grid/story formatting passed. Notebook's final review archive supersedes the intermediate `a2f26500…` archive.

@@ -110,6 +110,12 @@
         tabindex="-1"
         aria-colindex={col + 1}
         class="canvas-table__rich-heading"
+        style:color={ctx.state.colours
+          ? `var(--ui-canvas-table-column-${(col % 5) + 1})`
+          : undefined}
+        style:background-color={ctx.state.colours
+          ? `color-mix(in oklab, var(--ui-canvas-table-column-${(col % 5) + 1}) 8%, var(--ui-canvas-table-header))`
+          : undefined}
         style:left="{x}px"
         style:width="{layout.widths[col]}px"
         style:clip-path={"inset(0 0 0 " +

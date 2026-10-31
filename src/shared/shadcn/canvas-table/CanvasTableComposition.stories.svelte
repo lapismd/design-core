@@ -83,11 +83,18 @@
     const cell = c.getByRole("gridcell");
     const height = cell.getBoundingClientRect().height;
     const colour = getComputedStyle(cell).color;
+    const header = c.getByRole("columnheader");
+    const headerColour = getComputedStyle(header).backgroundColor;
+    const headerText = getComputedStyle(header).color;
     await userEvent.click(c.getByRole("button", { name: "Wrap text" }));
     await expect(cell.getBoundingClientRect().height).toBeGreaterThan(height);
     await expect(getComputedStyle(cell).whiteSpace).toBe("pre-wrap");
     await userEvent.click(c.getByRole("button", { name: "Column colours" }));
     await expect(getComputedStyle(cell).color).not.toBe(colour);
+    await expect(getComputedStyle(header).backgroundColor).not.toBe(
+      headerColour,
+    );
+    await expect(getComputedStyle(header).color).not.toBe(headerText);
     await userEvent.click(c.getByRole("button", { name: "Wrap text" }));
     await userEvent.click(c.getByRole("button", { name: "Column colours" }));
     await expect(cell.getBoundingClientRect().height).toBe(height);

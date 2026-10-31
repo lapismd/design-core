@@ -195,3 +195,5 @@ Filtered rich-cell and header content MUST remain below the frozen gutter paint 
 CSS-owned expanded-detail anchoring leaves controlled filter application and row-identity semantics unchanged; filtering and closing details retain the owning grid focus recovery path (DC-SHA-072, DC-SHA-075).
 
 Host-controlled CanvasTable `wrapText` and `columnColours` presentation settings MUST preserve the controlled filter tree, last valid applied conditions, selected IDs and host ordering. Hosts replacing the toolbar may place independent display toggles beside the filter trigger.
+
+Column-colour header tints apply equally with structured filtering enabled; filtering MUST NOT reset controlled display state.

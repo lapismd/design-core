@@ -280,3 +280,5 @@ Composable table stories use decorative Lucide right/down disclosure chevrons wi
 The disclosure fixture uses the compact 24px icon-xs control and a realistic account-review detail with owner, renewal value, review date, reference and activity; expanded content stays mounted with stable height and horizontal position during scrolling (DC-SHA-075).
 
 CanvasTable display settings MAY be host-controlled through `wrapText` and `columnColours`, with matching change callbacks; omitted flags retain the sheet toolbar's local state. Custom cell content MUST inherit the chosen column colour and wrapping, while the central row geometry accounts for up to four wrapped text lines. Explicit child control colours remain authoritative. Hosts omitting the default toolbar MAY compose their own display toggles.
+
+Custom header snippets replacing the letter band MUST receive the same column text colour and eight-percent background tint as fixed sheet headers when column colours are enabled, restoring the normal header surface when disabled.
