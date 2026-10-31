@@ -77,7 +77,8 @@ remain; no delays, retry changes or diagnostic exceptions are added.
 The exact four cases remain green, and the four complete affected story families
 pass all 32 cases in a fresh native process. The same actual registry Bits
 2.19.5 dependency remains installed. A new complete cold Linux aggregate is
-required before source commit or push.
+required before the source can be pushed or merged as qualified. Local prepared
+commits preserve the repair and its evidence without satisfying that gate.
 
 The next fresh Linux candidate `65cf6b237112d1523528200c8b400989983c24f6`
 passes JSON and Swipe again, then reports 31 passes/one failure in the 32-case

@@ -181,6 +181,8 @@ Consume that released dependency through a normal range, then rerun the exact
 protected source/version PR checks before publication. Prepared owner archives
 MUST NOT satisfy the registry gate. Commands, counts and retained cross-browser
 limits are in [the pending patch record](../records/2026-10-31-required-reader-swipe-release.md).
+Local preparation commits preserve source and evidence; they do not qualify
+publication or bypass any pending acceptance gate.
 
 **Requirement.** Design Core MUST be packable as a public versioned source artifact whose manifest uses semver for runtime dependencies, and release automation MUST stop for manual bootstrap until the npm package exists.
 
