@@ -139,3 +139,78 @@ Storybook build and canonical checks. Reports remain under
 bytes remain unchanged from the reviewed version candidate. The updated
 version PR still requires fresh current-head hosted checks and a new approval
 before merge and actual publication.
+
+## Verified 0.7.3 publication
+
+The preceding pending statements describe their historical checkpoints. Source
+PR [#42](https://github.com/lapismd/design-core/pull/42) and version PR
+[#45](https://github.com/lapismd/design-core/pull/45) are now merged. The complete
+version diff is reviewed and formally approved at
+`02bccb71aee8fe82101c0d95fb689bdd19302f1a`; CI
+[`41194051276`](https://github.com/lapismd/design-core/actions/runs/41194051276)
+passes all 11 checks, including all 995 interaction/accessibility cases and
+153 Shadcn browser passes with the existing single platform skip. PR #45 merges
+at `1ff36f37c165a3496be4826be48b048fc812e38e`, whose tree equals that reviewed
+head. Main CI
+[`41194948181`](https://github.com/lapismd/design-core/actions/runs/41194948181)
+also passes all 11 checks.
+
+Release workflow
+[`41194948225`](https://github.com/lapismd/design-core/actions/runs/41194948225)
+passes all five jobs: version planning, verified artifact, protected trusted
+publication, clean registry install/signatures/provenance, and tag/release.
+The downloaded manifest binds the artifact to that exact merged source.
+Independent registry download equals the approved artifact byte for byte:
+
+- Package: `@lapismd/design-core@0.7.3`.
+- Tarball SHA-256:
+  `4c07fdaa8fecc6d7f1ede2f03f89b5afb0728dae82b25dc0e55ec6ddda7ab6ca`.
+- Registry integrity:
+  `sha512-mXDhs+c6kdMZ8E3krwXTxzVavb/b4UVEVrNDlM3eQ6ILgfeOHeFiXfrP29QKZ2JXAIKwcqDPIS3WNElL94fH3w==`.
+- Registry SHA-1: `57737d2537067cb532408db987b5039a86ee0311`.
+- `npm audit signatures --json --include-attestations`: 44 verified packages,
+  zero invalid and zero missing signatures. Core has both npm publish and SLSA
+  v1 attestations. The decoded SLSA subject SHA-512, resolved source commit,
+  canonical repository, `.github/workflows/release.yml` and invocation
+  `41194948225/attempts/1` match the manifest and registry bytes.
+- Public tag `design-core@0.7.3` and
+  [GitHub release](https://github.com/lapismd/design-core/releases/tag/design-core%400.7.3)
+  (`429885999`) target the exact merged source, with no draft/prerelease flag.
+
+The first independent metadata probe returns 404 after the successful publish;
+the full packument exposes a cached pre-publication snapshot with a 300-second
+TTL. The unchanged bounded verifier subsequently succeeds. No rerun, retry
+increase, assertion change or acceptance waiver is used to finish publication.
+Receipts, original publish diagnostics, downloaded artifact, registry metadata/
+tarball, decoded provenance and signature report remain under
+`/tmp/lapis-core-073-published-receipt-20261031`.
+
+The actual registry artifact contains `patches/bits-ui@2.20.2.patch` and
+`patches/manifest.json`. The payload remains SHA-256
+`debd3bc7d43917f0967f0cc1e212fc5c7721c751d3b92bf8f31030d1c96289ad`, with
+all three qualified postimages. Each consumer still configures its own explicit
+version-bound patch and frozen lock; dependency metadata does not propagate it.
+
+The packed-consumer audit retains the existing six low propagation rows ending
+solely in KaTeX GHSA-238p-pmpm-9mq7. The
+[2026-10-11 acceptance](2026-10-11-known-katex-acceptance.md) and DC-PKG-009
+remain unchanged: remove that Core-only packed-audit acceptance when upstream
+math ranges admit patched KaTeX. It grants no exception to any consumer audit.
+Full production-audit JSON remains alongside the release manifest.
+
+Release preflight rechecks all 23 registered workspaces, including 14 available
+roots. Other workspace heads remain unchanged; missing roots and the stale
+read-only Linux checkout remain untouched. Open Dependabot count is zero.
+The refreshed inventory is
+`/tmp/lapis-core-version45-workspaces-20261031.json`.
+
+## Remaining consumer and upstream acceptance
+
+The actual release identities are handed to the Plugins/Desktop, Tasks and
+Agent UI/Repository UI owners for their final registry cohorts. Those checks
+remain governed by the owning consumer specifications and audits. Prepared
+archives and Core's successful publication do not prove those consumers.
+Removing the temporary Bits patch still requires a released upstream version
+with all retained repairs plus the exact and complete unpatched source/public/
+consumer checks. Deferred Canvas Table, icon-service API and independent
+Notebook work remain outside this release.

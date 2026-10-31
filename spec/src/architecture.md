@@ -30,7 +30,7 @@ prepared output, while the local archive profile does not publish releases.
 Both archive profiles prepare browser CSS before packing. Tailwind remains an
 internal authoring tool; published styles require no consumer compiler or scan.
 
-The 0.7.3 version candidate retains the qualified public runtime/export surface
+Release 0.7.3 retains the qualified public runtime/export surface
 and frozen registry graph. Its Shell acceptance uses the existing immediate
 preview API for consumer-forced cleanup, while pointer/focus retention keeps the
 separate scheduled-dismissal contract cancellable. This private catalog

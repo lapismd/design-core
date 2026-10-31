@@ -171,17 +171,22 @@ Release inputs retain only changesets not already represented in the published
 changelog. Historical workspace integration must not reintroduce consumed
 changesets or repeat their version bumps and release notes.
 
-Current release backlog: npm Core 0.7.2 lacks the captured JSON and Swipe teardown
-repairs. The next patch candidate passes the exact owner regressions. Its Linux
-RestrictedReactions boundary changes from 31 passes/one failure to 32 passes
-with the authorized tracked Bits patch. Combined complete source/browser and
-corrected public-package qualification pass; protected source/version PRs,
-actual publication/provenance and final registry consumers remain pending.
-The 0.7.3 version candidate consumes the qualified patch Changeset without
-changing runtime dependencies or the frozen graph. Its corrected Shell
-acceptance uses the documented immediate public cleanup action after selection;
-fresh complete interaction/current-head protected checks remain release gates,
-as recorded in [the popup evidence](../records/2026-10-31-shell-preview-readiness.md).
+Current published release: npm Core **0.7.3** contains the captured JSON, Swipe
+teardown and Problems Escape repairs plus the authorized tracked Bits patch.
+Source PR #42 and version PR #45 are merged. The version head and merged release
+source each pass all 11 protected CI checks; clean packed-consumer validation,
+trusted publication, registry-byte/integrity verification, npm signatures and
+source-bound SLSA provenance pass. The package tag and GitHub release point to
+`1ff36f37c165a3496be4826be48b048fc812e38e`. Its corrected Shell acceptance uses
+the documented immediate cleanup action after selection, preserving the separate
+cancellable scheduled-dismissal contract and its assertions. Exact identities
+and retained failure history are in
+[the publication evidence](../records/2026-10-31-shell-preview-readiness.md#verified-073-publication).
+
+Remaining acceptance belongs to the final registry cohorts in the consuming
+repositories. Core's remaining dependency backlog is removal of the temporary
+patch after the upstream registry and complete acceptance gates below pass.
+
 [Bits UI PR #2264](https://github.com/huntabyte/bits-ui/pull/2264) has
 passing primary checks and awaits maintainer merge and an actual npm release.
 The user authorizes a temporary tracked pnpm patch against released Bits UI
@@ -199,9 +204,9 @@ explicit temporary patch MUST rerun the exact
 32-case Linux family boundary, complete nonvisual/package qualification and
 protected source/version PR checks before publication. Prepared owner archives
 MUST NOT satisfy the registry gate. Commands, counts and retained cross-browser
-limits are in [the pending patch record](../records/2026-10-31-required-reader-swipe-release.md).
-Local preparation commits preserve source and evidence; they do not qualify
-publication or bypass any pending acceptance gate.
+limits are in [the original repair record](../records/2026-10-31-required-reader-swipe-release.md).
+Historical preparation archives preserve source evidence; they do not satisfy
+the separate final registry-consumer gate.
 The [temporary patch record](../records/2026-10-31-temporary-bits-patch.md)
 retains exact registry identities, source snapshots and before/after receipts.
 
