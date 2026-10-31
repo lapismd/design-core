@@ -100,3 +100,42 @@ Open Dependabot count is zero. Fresh production/full pnpm audits both exit zero,
 with zero advisory records; production has zero vulnerabilities, and full
 metadata retains the existing low count under the unchanged policy. Raw audit
 JSON remains in `/tmp/lapis-core-popup-audit-{prod,full}-20261031.json`.
+
+## Version-candidate forced cleanup
+
+Source PR #42 merges after all 11 hosted checks pass on `b70aff4c`; main
+`14618457` also passes all 11. The three-file 0.7.3 version candidate `2b4b61f2`
+then reports 994 passes and one repeated NestedProjectAndFileSidebars failure
+in run `41192239991`, job `124511467680`. Raw diagnostics remain in
+`/tmp/lapis-core-version45-storybook-20261031.log`. The DOM matcher discards its
+optional expect message, so the generated source location remains ambiguous.
+
+The owning public controller explicitly distinguishes cancellable
+`schedulePreviewDismiss` from immediate `dismissPreview`. The final phase
+already proves the preview remains open through selection, then performs forced
+cleanup before keyboard expansion/closing. It now uses `dismissPreview` for
+that intended action. All selector settlement, zero-tick, state/geometry and
+focus assertions remain; earlier 160/100/260/620-millisecond hover phases still
+verify delayed departure and cancellation. No production implementation,
+dependency, timeout, retry or visual baseline changes.
+
+The four inline assertions retain the same DOM matcher through one local helper
+that rethrows phase and public controller state on failure. Exact cold target,
+complete Shell family/catalog, strict/static/spec checks and fresh current-head
+protected version CI remain required. The version PR is unmerged until green;
+this test-only correction does not claim that the prior version run passed.
+
+The initial isolated setup source `9bbf8931` stops at explicit spec-first before
+any test runs: the mixed version/test diff also requires the mapped architecture
+and package chapters. Those chapters now describe the unchanged runtime/graph
+and the existing immediate cleanup contract. The guard remains intact; its
+failed setup receipt is retained under `version-preview/results`.
+
+Corrected version source `130b80f6a31afba1e988b55d33e3407924e116ab` passes ten
+independent cold exact Nested runs, all 16 Shell family cases, all 995 catalog/
+accessibility cases, four strict surfaces with zero errors/warnings, the static
+Storybook build and canonical checks. Reports remain under
+`version-preview-r2/results`. Production/runtime, dependency and frozen-lock
+bytes remain unchanged from the reviewed version candidate. The updated
+version PR still requires fresh current-head hosted checks and a new approval
+before merge and actual publication.

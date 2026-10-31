@@ -21,11 +21,12 @@ The App Shell owns application structure and responsive layout while consumers o
 ## DC-SHELL-001 — Shared Shell invariants
 
 Catalog interactions after closing a portalled selector wait for pointer
-hit-testing to return to the owned sidebar control. Before deliberately
-dismissing its preview, selection acceptance also proves physical portal removal
-and restored selector focus: a late legitimate focus event keeps an owned
-preview open and cancels its pending dismissal. A listbox leaving the
-accessibility tree alone does not prove that its exit transition has finished.
+hit-testing to return to the owned sidebar control. Selection acceptance also
+proves physical portal removal and restored selector focus, then uses the public
+immediate dismissal for consumer-forced cleanup. Scheduled preview dismissal
+remains cancellable when owned pointer/focus returns; earlier departure and
+short-hover phases verify that separate grace-period contract. A listbox leaving
+the accessibility tree alone does not prove that its exit transition has finished.
 
 **Requirement.** Shell contracts MUST own responsive application structure and transient layout state while leaving routing, domain data, and persistence adapters to consumers.
 

@@ -30,6 +30,12 @@ prepared output, while the local archive profile does not publish releases.
 Both archive profiles prepare browser CSS before packing. Tailwind remains an
 internal authoring tool; published styles require no consumer compiler or scan.
 
+The 0.7.3 version candidate retains the qualified public runtime/export surface
+and frozen registry graph. Its Shell acceptance uses the existing immediate
+preview API for consumer-forced cleanup, while pointer/focus retention keeps the
+separate scheduled-dismissal contract cancellable. This private catalog
+correction adds no runtime adapter, dependency or public API.
+
 Design Core is a shared presentation and controller library. Consumer applications retain domain policy, persistence, transport, routing, and environment adapters. Component ownership and public-layer classification are maintained in the canonical [`component inventory`](component-inventory.md).
 
 Bits UI resolves from the published `^2.20.2` range, including upstream Scroll

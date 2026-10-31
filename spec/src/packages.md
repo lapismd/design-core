@@ -177,6 +177,11 @@ RestrictedReactions boundary changes from 31 passes/one failure to 32 passes
 with the authorized tracked Bits patch. Combined complete source/browser and
 corrected public-package qualification pass; protected source/version PRs,
 actual publication/provenance and final registry consumers remain pending.
+The 0.7.3 version candidate consumes the qualified patch Changeset without
+changing runtime dependencies or the frozen graph. Its corrected Shell
+acceptance uses the documented immediate public cleanup action after selection;
+fresh complete interaction/current-head protected checks remain release gates,
+as recorded in [the popup evidence](../records/2026-10-31-shell-preview-readiness.md).
 [Bits UI PR #2264](https://github.com/huntabyte/bits-ui/pull/2264) has
 passing primary checks and awaits maintainer merge and an actual npm release.
 The user authorizes a temporary tracked pnpm patch against released Bits UI
