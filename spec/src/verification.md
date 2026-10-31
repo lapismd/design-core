@@ -682,8 +682,9 @@ The [temporary Bits patch qualification](../records/2026-10-31-temporary-bits-pa
 retains the original Linux 31-pass/one-failure boundary, its unchanged 32-pass
 repair, combined complete source/browser counts and corrected public-package
 acceptance. It distinguishes missing WebKit OS prerequisites and the repaired
-archive omission from product assertions. Protected PRs, actual publication and
-final registry consumers remain separate gates; visual baselines are unchanged.
+archive omission from product assertions. The source/version PRs and actual
+0.7.3 publication now pass their separate gates; final registry consumers remain
+owned by their repositories, and visual baselines are unchanged.
 
 Initial hosted qualification exposes one nested Shell preview dismissal failure
 among 994 interaction cases. The corrected owner source passes all 995 cases,
@@ -691,6 +692,11 @@ the complete nonvisual aggregate and clean public-package acceptance; independen
 tree/table host coverage also passes. Original failures, phase diagnostics and
 exact commands remain in
 [the popup record](../records/2026-10-31-shell-preview-readiness.md).
-Fresh current-head protected source/version checks remain required before merge.
+Source PR #42 and version PR #45 are merged after their current-head checks pass.
+The final version head and merged release source each pass all 11 CI checks.
+The same record's [publication receipt](../records/2026-10-31-shell-preview-readiness.md#verified-073-publication)
+binds registry bytes, verified signatures/provenance and the public tag/release
+to source `1ff36f37`. No prepared archive substitutes for downstream registry
+acceptance.
 
 [required-patch]: ../records/2026-10-31-required-reader-swipe-release.md
