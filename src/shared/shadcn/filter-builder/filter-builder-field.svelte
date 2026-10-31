@@ -39,7 +39,7 @@
     {/snippet}
   </Popover.Trigger>
   <Popover.Content align="start" class="filter-builder__field-menu">
-    <Command.Root>
+    <Command.Root label="Find filter field">
       <Command.Input
         aria-label="Find filter field"
         aria-controls={listId}

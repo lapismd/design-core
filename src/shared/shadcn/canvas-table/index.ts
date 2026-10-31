@@ -19,3 +19,12 @@ export type {
   CanvasTableFiltering,
   CanvasTableFilterColumn,
 } from "./canvas-table-filter-types.js";
+
+export type {
+  CanvasTableColumn,
+  CanvasTableColumnContext,
+  CanvasTableCellContext,
+  CanvasTableRowContext,
+  CanvasTableSelection,
+  CanvasTableToolbarContext,
+} from "./canvas-table-composition-types.js";

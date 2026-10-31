@@ -19,6 +19,8 @@ export interface TableLayout {
   widths: number[];
   edges: number[];
   offsets: number[];
+  rowHeights: number[];
+  letterHeight: number;
   gutter: number;
   numberWidth: number;
   checkboxWidth: number;
@@ -33,6 +35,8 @@ export function createLayout(
   props: CanvasTableProps,
   wrap = false,
   measure: (text: string) => number = (text) => text.length * 7.8,
+  detailHeights: ReadonlyMap<CanvasTableRowId, number> = new Map(),
+  viewportWidth = 0,
 ): TableLayout {
   const headerRow = props.headerRow ?? true;
   const byId = new Map<CanvasTableRowId, BodyEntry>();
@@ -58,9 +62,16 @@ export function createLayout(
       : 0;
   const checkboxWidth = props.rowSelection ? 32 : 0;
   const gutter = numberWidth + checkboxWidth;
+  const spare =
+    viewportWidth - gutter - widths.reduce((sum, width) => sum + width, 0);
+  if (props.fillWidth && spare > 0 && widths.length)
+    widths[widths.length - 1]! += spare;
   const edges = [gutter];
   for (const width of widths) edges.push((edges.at(-1) ?? gutter) + width);
   const offsets = [0];
+  const rowHeights: number[] = [];
+  const expanded = new Set(props.expandedRowIds ?? []);
+  const baseHeight = Math.max(20, props.rowHeight ?? ROW_HEIGHT);
   for (const entry of body) {
     let lines = 1;
     if (wrap)
@@ -71,12 +82,15 @@ export function createLayout(
             .length,
         );
       });
-    offsets.push(
-      (offsets.at(-1) ?? 0) +
-        Math.max(ROW_HEIGHT, 12 + Math.min(lines, 4) * 16),
-    );
+    const cellHeight = Math.max(baseHeight, 12 + Math.min(lines, 4) * 16);
+    rowHeights.push(cellHeight);
+    const detail = expanded.has(entry.row.id)
+      ? Math.max(0, detailHeights.get(entry.row.id) ?? 48)
+      : 0;
+    offsets.push((offsets.at(-1) ?? 0) + cellHeight + detail);
   }
-  const chrome = LETTER_HEIGHT + (headerRow ? HEADER_HEIGHT : 0);
+  const letterHeight = Math.max(20, props.columnHeaderHeight ?? LETTER_HEIGHT);
+  const chrome = letterHeight + (headerRow ? HEADER_HEIGHT : 0);
   return {
     body,
     byId,
@@ -84,6 +98,8 @@ export function createLayout(
     widths,
     edges,
     offsets,
+    rowHeights,
+    letterHeight,
     gutter,
     numberWidth,
     checkboxWidth,
@@ -136,14 +152,14 @@ export function visibleColumns(
 
 export function cellRect(layout: TableLayout, index: number, col: number) {
   const top =
-    index < 0 ? LETTER_HEIGHT : layout.chrome + (layout.offsets[index] ?? 0);
+    index < 0
+      ? layout.letterHeight
+      : layout.chrome + (layout.offsets[index] ?? 0);
   return {
     x: layout.edges[col] ?? layout.gutter,
     y: top,
     width: layout.widths[col] ?? 0,
     height:
-      index < 0
-        ? HEADER_HEIGHT
-        : (layout.offsets[index + 1] ?? 0) - (layout.offsets[index] ?? 0),
+      index < 0 ? HEADER_HEIGHT : (layout.rowHeights[index] ?? ROW_HEIGHT),
   };
 }

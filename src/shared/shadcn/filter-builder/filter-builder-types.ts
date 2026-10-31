@@ -12,6 +12,8 @@ export interface FilterOperator {
   id: string;
   label: string;
   value: "none" | "single" | "multiple";
+  /** Custom mode requires validate and skips built-in field coercion checks. */
+  validation?: "field" | "custom" | undefined;
   validate?: ((value: FilterValue) => string | null) | undefined;
 }
 export interface FilterOption {
@@ -19,6 +21,8 @@ export interface FilterOption {
   label: string;
 }
 export interface FilterValueEditorProps {
+  invalid?: boolean | undefined;
+  describedBy?: string | undefined;
   value: FilterValue;
   field: FilterField;
   operator: FilterOperator;

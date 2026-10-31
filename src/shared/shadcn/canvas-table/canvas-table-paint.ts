@@ -6,12 +6,7 @@ import {
   visibleColumns,
   cellRect,
 } from "./canvas-table-layout.js";
-import {
-  columnLetter,
-  LETTER_HEIGHT,
-  HEADER_HEIGHT,
-  SORT_HIT,
-} from "./canvas-table-text.js";
+import { columnLetter, HEADER_HEIGHT, SORT_HIT } from "./canvas-table-text.js";
 import { readTableTheme } from "./canvas-table-theme.js";
 import { clip, fill, paintText } from "./canvas-table-paint-text.js";
 
@@ -75,15 +70,16 @@ export function paintTable(context: TableContext): void {
           ctx.fillStyle = s.colours
             ? (theme.columns[col % theme.columns.length] ?? theme.text)
             : theme.text;
-          paintText(
-            ctx,
-            entry.row.cells[col] ?? "",
-            x,
-            y,
-            box.width,
-            box.height,
-            s.wrap,
-          );
+          if (!props.columns?.[col]?.cell)
+            paintText(
+              ctx,
+              entry.row.cells[col] ?? "",
+              x,
+              y,
+              box.width,
+              box.height,
+              s.wrap,
+            );
           fill(ctx, theme.grid, x, y + box.height - 1, box.width, 1);
           fill(ctx, theme.grid, x + box.width - 1, y, 1, box.height);
         }
@@ -101,18 +97,19 @@ export function paintTable(context: TableContext): void {
         range.endIndex >= layout.body.length - 1 &&
         col >= range.startCol &&
         col <= range.endCol;
-      if (picked) fill(ctx, theme.selection, x, 0, w, LETTER_HEIGHT);
+      if (picked) fill(ctx, theme.selection, x, 0, w, layout.letterHeight);
       ctx.fillStyle = theme.muted;
-      paintText(
-        ctx,
-        columnLetter(col),
-        x,
-        0,
-        w - (props.onSort ? SORT_HIT : 0),
-        LETTER_HEIGHT,
-        false,
-        true,
-      );
+      if (!props.columns?.[col]?.header)
+        paintText(
+          ctx,
+          props.columns?.[col]?.label ?? columnLetter(col),
+          x,
+          0,
+          w - (props.onSort ? SORT_HIT : 0),
+          layout.letterHeight,
+          false,
+          true,
+        );
       if (layout.headerRow) {
         fill(
           ctx,
@@ -121,12 +118,12 @@ export function paintTable(context: TableContext): void {
                 theme.header)
             : theme.header,
           x,
-          LETTER_HEIGHT,
+          layout.letterHeight,
           w,
           HEADER_HEIGHT,
         );
         if (picked || selected(-1, col))
-          fill(ctx, theme.selection, x, LETTER_HEIGHT, w, HEADER_HEIGHT);
+          fill(ctx, theme.selection, x, layout.letterHeight, w, HEADER_HEIGHT);
         ctx.fillStyle = s.colours
           ? (theme.columns[col % theme.columns.length] ?? theme.text)
           : theme.text;
@@ -134,14 +131,14 @@ export function paintTable(context: TableContext): void {
           ctx,
           props.rows[0]?.cells[col] ?? "",
           x,
-          LETTER_HEIGHT,
+          layout.letterHeight,
           w,
           HEADER_HEIGHT,
         );
       }
       fill(ctx, theme.grid, x + w - 1, 0, 1, layout.chrome);
     }
-    fill(ctx, theme.grid, layout.gutter, LETTER_HEIGHT - 1, width, 1);
+    fill(ctx, theme.grid, layout.gutter, layout.letterHeight - 1, width, 1);
     fill(ctx, theme.grid, layout.gutter, layout.chrome - 1, width, 1);
   });
   // Paint the frozen gutter after the scrolling body so grid lines cannot bleed through.
@@ -173,14 +170,14 @@ export function paintTable(context: TableContext): void {
     }
   });
   if (tableTarget(context) === "sheet" && range)
-    fill(ctx, theme.selection, 0, 0, layout.gutter, LETTER_HEIGHT);
+    fill(ctx, theme.selection, 0, 0, layout.gutter, layout.letterHeight);
   if (layout.headerRow) {
     if (selected(-1, 0))
       fill(
         ctx,
         theme.selection,
         0,
-        LETTER_HEIGHT,
+        layout.letterHeight,
         layout.gutter,
         HEADER_HEIGHT,
       );
@@ -189,14 +186,14 @@ export function paintTable(context: TableContext): void {
       ctx,
       "1",
       0,
-      LETTER_HEIGHT,
+      layout.letterHeight,
       layout.numberWidth,
       HEADER_HEIGHT,
       false,
       true,
     );
   }
-  fill(ctx, theme.grid, 0, LETTER_HEIGHT - 1, layout.gutter, 1);
+  fill(ctx, theme.grid, 0, layout.letterHeight - 1, layout.gutter, 1);
   fill(ctx, theme.grid, 0, layout.chrome - 1, layout.gutter, 1);
   if (layout.gutter) fill(ctx, theme.grid, layout.gutter - 1, 0, 1, height);
   function outline(cell: Cell | null, color: string) {
@@ -209,7 +206,7 @@ export function paintTable(context: TableContext): void {
     clip(
       ctx!,
       layout.gutter,
-      isHeader ? LETTER_HEIGHT : layout.chrome,
+      isHeader ? layout.letterHeight : layout.chrome,
       width - layout.gutter,
       isHeader ? HEADER_HEIGHT : height - layout.chrome,
       () => {

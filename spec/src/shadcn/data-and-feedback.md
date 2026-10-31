@@ -256,7 +256,7 @@ The review slice connects the controlled filtering configuration to the existing
 - Optional stable-ID column descriptors MUST supply labels and header/cell snippets that replace letters/painted text, while omitted descriptors MUST preserve spreadsheet behavior.
 - Controlled expanded row IDs and detail snippets MUST use measured heights shared by layout, painting, hit testing and navigation; observers MUST disconnect on recycling and teardown.
 - Rich content MUST be bounded by visible rows and columns, with at most one active accessibility row; native interactive descendants MUST remain operable without triggering spreadsheet commands.
-- Host row/header heights, toolbar replacement or omission and context-menu disabling MUST support read-only use without synthetic data headers or mutation commands.
+- Host row/header heights, optional viewport width filling, toolbar replacement or omission and context-menu disabling MUST support read-only use without synthetic data headers or mutation commands.
 
 ## DC-SHA-076 — Scoped row selection
 
@@ -268,3 +268,7 @@ The review slice connects the controlled filtering configuration to the existing
 - A supplied selectionRowIds scope MUST cover filtered loaded rows across pages; select-all MUST preserve selections outside that scope and derive checked/mixed state from that scope.
 - Disabled selection MUST suppress all selection callbacks without disabling scrolling, filtering or cell navigation; deleted IDs MUST still be pruned.
 - Source row numbering and stable identity MUST survive page changes, sort, filter and column reorder, with no duplicate accessible representation.
+
+## Composable-table implementation evidence
+
+DC-SHA-075–076 review implementation includes bounded rich overlays, measured detail rows, native radio keyboard callbacks and explicit focus return before closing an active detail. Focused evidence remains separate from UI approval and full qualification.

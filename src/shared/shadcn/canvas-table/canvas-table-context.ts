@@ -6,6 +6,10 @@ import type {
 import type { TableLayout } from "./canvas-table-layout.js";
 
 export interface TableState {
+  detailHeights: Map<
+    import("./canvas-table-types.js").CanvasTableRowId,
+    number
+  >;
   active: Cell | null;
   range: CellRange | null;
   target: "cell" | "row" | "column" | "sheet";

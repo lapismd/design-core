@@ -23,7 +23,7 @@ persistence, publication or consumer migration are included.
 ### Acceptance details
 
 - The Shadcn family MUST export FilterBuilder, field/operator/value/node/state types and state helpers, with the Filter entry point re-exporting the same implementation.
-- Nested All, Any and None groups MUST support searchable field selection, segmented field/operator/value rows with continuous full-width wrapped dividers and no predicate end border, adding and removing conditions and groups, and Clear filters.
+- Nested All, Any and None groups MUST support accessibly named searchable field selection, segmented field/operator/value rows with continuous full-width wrapped dividers and no predicate end border, adding and removing conditions and groups, and Clear filters.
 - Host field descriptors MUST supply stable IDs, labels, types, optional choices and optional custom operators/value editors without importing application contracts.
 - The family MUST compose existing Shadcn primitives and native CSS with documented `--ui-filter-builder-*` tokens, without importing Forms, Filter, Canvas Table, raw-query parsers or application APIs.
 
@@ -176,7 +176,7 @@ The first UI implementation exports the FilterType union from the focused Shadcn
 ### Acceptance details
 
 - An optional validation mode MUST default to field validation; custom mode MUST require a validator and surface its error accessibly.
-- Custom validators MUST receive literal values unchanged, including precise numeric strings and string-pair ranges; matching remains host-owned.
+- Custom validators MUST receive literal values unchanged, including precise numeric strings and string-pair ranges, while custom editors receive effective types and accessible error context; matching remains host-owned.
 - Invalid custom drafts MUST retain the last valid applied state, while external replacement and clearing retain their existing contracts.
 
 ## Composable-table review delivery

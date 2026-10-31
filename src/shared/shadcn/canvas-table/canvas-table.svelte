@@ -16,6 +16,8 @@
   import { createCanvasTableFiltering } from "./canvas-table-filter-state.svelte.js";
   import Toolbar from "./canvas-table-toolbar.svelte";
   import RowControls from "./canvas-table-row-controls.svelte";
+  import RichGrid from "./canvas-table-rich-grid.svelte";
+  import { rowSelectionOptions } from "./canvas-table-selection.js";
   import Accessibility from "./canvas-table-accessibility.svelte";
   import Overlays from "./canvas-table-overlays.svelte";
   import Menu from "./canvas-table-menu.svelte";
@@ -38,7 +40,15 @@
   });
   const filtering = createCanvasTableFiltering(() => props);
   const effectiveProps = $derived({ ...props, visibleRowIds: filtering.ids });
-  const layout = $derived(createLayout(effectiveProps, state.wrap, measure));
+  const layout = $derived(
+    createLayout(
+      effectiveProps,
+      state.wrap,
+      measure,
+      state.detailHeights,
+      state.width,
+    ),
+  );
   const ctx: TableContext = {
     props: () => effectiveProps,
     layout: () => layout,
@@ -70,6 +80,10 @@
   $effect(() => {
     const ids = new Set(props.rows.map((row) => row.id));
     if (props.headerRow ?? true) ids.delete(props.rows[0]?.id ?? "");
+    untrack(() => {
+      for (const id of state.detailHeights.keys())
+        if (!ids.has(id)) state.detailHeights.delete(id);
+    });
     const selected = props.selectedRowIds ?? [];
     const next = [...new Set(selected.filter((id) => ids.has(id)))];
     if (next.length !== selected.length)
@@ -106,7 +120,14 @@
   data-ui-part="root"
   class={["canvas-table", props.class].filter(Boolean).join(" ")}
 >
-  <Toolbar {ctx} {nav} />
+  {#if props.toolbar !== false}
+    {#if props.toolbar}
+      {@render props.toolbar({
+        selectedRowIds: props.selectedRowIds ?? [],
+        commitEdit: nav.commitEdit,
+      })}
+    {:else}<Toolbar {ctx} {nav} />{/if}
+  {/if}
   <div class="canvas-table__body">
     <Menu {ctx}>
       <div
@@ -114,11 +135,13 @@
         role="grid"
         tabindex="0"
         aria-label={props["aria-label"] ?? "Canvas table"}
-        aria-rowcount={props.rows.length}
+        aria-rowcount={props.rows.length + (props.columns ? 1 : 0)}
         aria-colcount={layout.widths.length}
         aria-readonly={!props.onCellChange}
         aria-activedescendant={activeDescendant}
-        aria-multiselectable={props.rowSelection || undefined}
+        aria-multiselectable={props.rowSelection
+          ? rowSelectionOptions(props.rowSelection).mode !== "single"
+          : undefined}
         data-gutter-width={layout.gutter}
         data-scroll-left={state.left}
         data-scroll-top={state.top}
@@ -140,7 +163,10 @@
           style:width="{layout.width}px"
           style:height="{layout.height}px"
         ></div>
-        <Accessibility {ctx} {instanceId} />
+        {#if props.columns}<RichGrid {ctx} {instanceId} />{:else}<Accessibility
+            {ctx}
+            {instanceId}
+          />{/if}
       </div>
       <canvas
         class="canvas-table__canvas"

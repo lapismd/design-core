@@ -1,7 +1,9 @@
+import { SvelteMap } from "svelte/reactivity";
 import type { TableState } from "./canvas-table-context.js";
 
 export function createTableState(): TableState {
   const state = $state<TableState>({
+    detailHeights: new SvelteMap(),
     active: null,
     range: null,
     target: "cell",

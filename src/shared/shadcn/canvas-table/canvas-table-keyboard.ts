@@ -5,7 +5,7 @@ import { applyCommand, tableTarget } from "./canvas-table-commands.js";
 export function createKeyboard(ctx: TableContext, nav: TableNavigation) {
   const s = ctx.state;
   function grid(event: KeyboardEvent) {
-    if (s.editing) return;
+    if (s.editing || event.target !== s.scroller) return;
     if (event.key === "Escape") {
       s.menu = null;
       s.range = null;

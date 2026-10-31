@@ -142,3 +142,34 @@ normal edits, sorting and external visibility do not retype active modes.
 Auto fields offer a Field type override and Auto reset. Explicit metadata types
 lock that choice. Filtering intersects host visibleRowIds without changing their
 order, source numbers, fixed header or hidden checkbox selections.
+
+## Composable data tables
+
+Use `columns: CanvasTableColumn[]` for stable column IDs and labels. Its optional
+`header` and `cell` Svelte snippets receive public column/cell contexts; rich
+content shares the canvas viewport and replaces painted labels/text. Set
+`headerRow={false}` when every supplied row is data. Keep descriptor, cell and
+width ordering aligned when hiding or moving columns.
+
+`rowHeight` and `columnHeaderHeight` accept CSS pixel sizes. `toolbar={false}`
+hides the sheet toolbar; a toolbar snippet replaces it and receives selected IDs
+and `commitEdit`. `contextMenu={false}` disables sheet menus. Unavailable edit and
+command callbacks keep data tables read-only. The existing color/font/focus
+`--ui-canvas-table-*` tokens also govern custom content; inherit semantic colors
+and use native CSS in snippets.
+
+Pass controlled `expandedRowIds`, `onExpandedRowIdsChange` and `rowDetails` with
+composable columns. Cell contexts expose `expanded`/`toggleExpanded`; details
+receive a row, source number and `close`. Measured detail heights enter the same
+layout as painted cells and disappear on collapse. Visible row/column windows
+bound mounted snippets, observers and native interactive controls.
+
+`rowSelection` also accepts `{ mode: "single" | "multiple", required?, disabled? }`.
+Hosts normalize initial values; controlled single selection uses real radio
+controls and required selection prevents clearing the final selected ID. Native
+radio keyboard activation calls the same controlled callback as pointer input.
+`selectionRowIds` supplies every filtered loaded ID across pages; omitted scope
+uses displayed body rows. Hidden selected IDs survive scope changes. `true`
+retains the existing multiple checkbox behavior.
+
+`fillWidth` stretches the last column only when the actual scroller has unused space, preserving normal horizontal scrolling for wide tables and accounting for reserved scrollbar space.

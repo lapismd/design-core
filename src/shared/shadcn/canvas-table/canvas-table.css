@@ -156,3 +156,71 @@
 .canvas-table__toolbar [data-filter-active="true"] {
   color: var(--primary);
 }
+
+.canvas-table__canvas {
+  z-index: 1;
+}
+.canvas-table__row-controls,
+.canvas-table__overlays {
+  z-index: 4;
+}
+.canvas-table__rich-grid {
+  position: absolute;
+  inset: 0 auto auto 0;
+  pointer-events: none;
+}
+.canvas-table__rich-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.canvas-table__rich-heading {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  box-sizing: border-box;
+  background: var(--ui-canvas-table-header);
+  border-inline-end: 1px solid var(--ui-canvas-table-border);
+  pointer-events: auto;
+  overflow: hidden;
+}
+.canvas-table__rich-cell {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding-inline: 6px;
+  overflow: hidden;
+  pointer-events: auto;
+}
+.canvas-table__fallback-cell {
+  pointer-events: none;
+}
+.canvas-table__cell-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  overflow: hidden;
+}
+.canvas-table__resize-handle {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 8px;
+  cursor: col-resize;
+}
+.canvas-table__row-detail-cell {
+  position: absolute;
+  z-index: 2;
+  pointer-events: auto;
+}
+.canvas-table__row-detail {
+  display: flow-root;
+  background: var(--ui-canvas-table-background);
+  border-bottom: 1px solid var(--ui-canvas-table-border);
+}
+.canvas-table__radio-group {
+  display: contents;
+}

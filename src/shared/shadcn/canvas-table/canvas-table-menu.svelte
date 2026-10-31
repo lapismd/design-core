@@ -9,22 +9,26 @@
   const commands = $derived(tableCommands(ctx));
 </script>
 
-<ContextMenu.Root>
-  <ContextMenu.Trigger class="canvas-table__menu-trigger"
-    >{@render children()}</ContextMenu.Trigger
-  >
-  {#if ctx.props().onCommand && ctx.state.active}
-    <ContextMenu.Content>
-      <ContextMenu.Group>
-        {#each commands as command (command.id)}
-          <ContextMenu.Item
-            disabled={command.disabled}
-            onSelect={() => applyCommand(ctx, command.id)}
-          >
-            <Glyph command={command.id} />{command.label}
-          </ContextMenu.Item>
-        {/each}
-      </ContextMenu.Group>
-    </ContextMenu.Content>
-  {/if}
-</ContextMenu.Root>
+{#if ctx.props().contextMenu === false}
+  {@render children()}
+{:else}
+  <ContextMenu.Root>
+    <ContextMenu.Trigger class="canvas-table__menu-trigger"
+      >{@render children()}</ContextMenu.Trigger
+    >
+    {#if ctx.props().onCommand && ctx.state.active}
+      <ContextMenu.Content>
+        <ContextMenu.Group>
+          {#each commands as command (command.id)}
+            <ContextMenu.Item
+              disabled={command.disabled}
+              onSelect={() => applyCommand(ctx, command.id)}
+            >
+              <Glyph command={command.id} />{command.label}
+            </ContextMenu.Item>
+          {/each}
+        </ContextMenu.Group>
+      </ContextMenu.Content>
+    {/if}
+  </ContextMenu.Root>
+{/if}

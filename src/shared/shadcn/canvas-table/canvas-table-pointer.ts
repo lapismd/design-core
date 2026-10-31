@@ -19,7 +19,14 @@ export function createPointer(ctx: TableContext, nav: TableNavigation) {
       : null;
   }
   function down(event: PointerEvent) {
-    if (event.button !== 0) return;
+    if (
+      event.button !== 0 ||
+      (event.target instanceof Element &&
+        event.target.closest(
+          "button,input,select,textarea,a,[data-canvas-interactive]",
+        ))
+    )
+      return;
     s.menu = null;
     nav.commitEdit();
     const target = hit(event);
@@ -111,6 +118,7 @@ export function createPointer(ctx: TableContext, nav: TableNavigation) {
     }
   }
   function contextMenu(event: MouseEvent) {
+    if (ctx.props().contextMenu === false) return;
     if (!ctx.props().onCommand) return;
     nav.commitEdit();
     const target = hit(event);
