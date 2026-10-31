@@ -144,12 +144,13 @@ Packed development/production acceptance retains restricted-picker initial
 search focus, immediate option focus, keyboard selection, physical popup
 removal and restored trigger focus alongside the existing full emoji search.
 The clean packed production graph is audited independently of workspace
-overrides; complete evidence is retained under `.release/` and blocks the gate
-unless it meets the explicit KaTeX policy in DC-PKG-009.
-Release tests MUST prove that only that advisory and its npm propagation
-chains remain accepted across package releases, with other findings,
-severity increases, changed vulnerable ranges, invalid responses, and command
-failures remaining blocking.
+overrides; complete evidence is retained under `.release/` and every finding
+blocks the gate under DC-PKG-009. The released Mira 0.1.4 repair retires the
+former KaTeX exception; its exact propagation chain remains a rejection
+regression alongside malformed reports, inconsistent counts and command errors.
+Release tests MUST prove that no advisory or propagation chain remains accepted
+across package releases, with every severity, changed vulnerable range, invalid
+response and command failure remaining blocking.
 Storybook runtime-diagnostic guard tests MUST cover formatted warnings,
 diagnostic URLs, error objects, logging preservation, and console restoration.
 The gate MUST retain diagnostics caught during component teardown and fail
