@@ -264,3 +264,5 @@ The FileTypeIcon wildcard family uses the framework-neutral MIT `material-file-i
 Structured filters add the focused shadcn/filter-builder export and Filter compatibility re-export; Canvas Table adds inference and filtering types. Public additions remain source-consumer compatible and require packed verification after UI approval (DC-SHA-069–074).
 
 The implemented focused Filter Builder source entry point and Filter re-export share one implementation and a strict source-consumer check. Package version and registry dependency ranges remain unchanged during UI review; packed qualification is explicitly deferred.
+
+Composable table public column/context/selection types extend the existing CanvasTable export under DC-SHA-075–076. FilterOperator custom validation extends the existing FilterBuilder entry point under DC-SHA-077. Existing defaults and entry points remain compatible.

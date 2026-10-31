@@ -168,3 +168,22 @@ baseline updates stay outside scope throughout.
 ## UI review implementation boundary
 
 The first UI implementation exports the FilterType union from the focused Shadcn boundary and aliases it as StructuredFilterType through Filter, preserving Filter's existing FilterType enum. FilterBuilder itself renders no outer overlay; Canvas Table supplies Popover and the Filter rows trigger. The concrete token defaults and copy-pasteable source examples are colocated with both families. Verification remains In progress until UI approval and subsequent full qualification.
+
+## DC-SHA-077 — Custom operator validation
+
+**Requirement.** FilterBuilder MUST allow a host operator to opt into authoritative custom value validation without weakening default validation.
+
+### Acceptance details
+
+- An optional validation mode MUST default to field validation; custom mode MUST require a validator and surface its error accessibly.
+- Custom validators MUST receive literal values unchanged, including precise numeric strings and string-pair ranges; matching remains host-owned.
+- Invalid custom drafts MUST retain the last valid applied state, while external replacement and clearing retain their existing contracts.
+
+## Composable-table review delivery
+
+DC-SHA-075–077 are specified before runtime changes. All new handwritten files
+remain at most 300 physical lines. Focused units, strict public types, interaction,
+axe and cold browser checks run before integrated Notebook UI review. Full
+`pnpm checks`, static catalog, packed qualification and publication remain
+explicitly deferred until UI approval. Archive preparation for the isolated
+review is not packed-consumer qualification or publication.

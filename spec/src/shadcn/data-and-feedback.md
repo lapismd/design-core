@@ -246,3 +246,25 @@ calendars and diagrams MUST resolve without filesystem or MIME inspection.
 Canvas Table optional structured filtering and bounded type inference are specified in [Structured filters](structured-filters.md), DC-SHA-072–074. This additive UI-first slice preserves DC-SHA-066–068 and defers broad qualification until explicit user UI approval.
 
 The review slice connects the controlled filtering configuration to the existing Canvas Table layout and accessible row controls; it preserves the existing source-row numbering and next-frame sort overlay tests.
+
+## DC-SHA-075 — Composable data tables
+
+**Requirement.** CanvasTable MUST support host-authored column headers, rich cells and expanded details through public snippets while retaining one geometry and accessible grid.
+
+### Acceptance details
+
+- Optional stable-ID column descriptors MUST supply labels and header/cell snippets that replace letters/painted text, while omitted descriptors MUST preserve spreadsheet behavior.
+- Controlled expanded row IDs and detail snippets MUST use measured heights shared by layout, painting, hit testing and navigation; observers MUST disconnect on recycling and teardown.
+- Rich content MUST be bounded by visible rows and columns, with at most one active accessibility row; native interactive descendants MUST remain operable without triggering spreadsheet commands.
+- Host row/header heights, toolbar replacement or omission and context-menu disabling MUST support read-only use without synthetic data headers or mutation commands.
+
+## DC-SHA-076 — Scoped row selection
+
+**Requirement.** CanvasTable MUST support controlled single/multiple, required and disabled row selection with a selectable scope independent of the displayed page.
+
+### Acceptance details
+
+- Existing boolean rowSelection MUST preserve its behavior, while single selection MUST use real radio controls; optional single selection MUST permit clearing while required selection MUST reject clearing the final row.
+- A supplied selectionRowIds scope MUST cover filtered loaded rows across pages; select-all MUST preserve selections outside that scope and derive checked/mixed state from that scope.
+- Disabled selection MUST suppress all selection callbacks without disabling scrolling, filtering or cell navigation; deleted IDs MUST still be pruned.
+- Source row numbering and stable identity MUST survive page changes, sort, filter and column reorder, with no duplicate accessible representation.

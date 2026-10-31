@@ -210,3 +210,5 @@ and feedback; the explicit package export and public surface map share that owne
 Structured Filter Builder source maps to shadcn/structured-filters.md (DC-SHA-069–074); Canvas Table filtering extends that chapter and its existing data-and-feedback contract. Verification stays In progress through UI review and deferred full qualification.
 
 The actual shadcn/filter-builder package export and Shadcn/Forms/Filter Builder catalog group map to DC-SHA-069. Canvas Table filter scenarios remain within its existing primary catalog title.
+
+Composable CanvasTable additions map to DC-SHA-075–076 in Shadcn Data and Feedback; FilterBuilder custom validation maps to DC-SHA-077 in Structured filters. The focused-first UI approval gate remains active for this new slice.
