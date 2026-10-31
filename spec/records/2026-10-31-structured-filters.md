@@ -18,10 +18,10 @@ focused Shadcn review port: 10329.
 | Stage           | Status                                                                            |
 | --------------- | --------------------------------------------------------------------------------- |
 | Specified       | Complete; DC-SHA-069–074 and full public contract in shadcn/structured-filters.md |
-| Implemented     | Complete UI slice; UI review pending                                              |
+| Implemented     | Complete UI implementation                                                        |
 | Focused-tested  | Complete; final scoped commands pass                                              |
-| UI-approved     | Pending user review                                                               |
-| Fully-qualified | Deferred until UI approval                                                        |
+| UI-approved     | User authorized full qualification and PR on 2026-10-31                           |
+| Fully-qualified | In progress on current remote main                                                |
 
 ## Tooling evidence
 
@@ -168,3 +168,11 @@ screenshot comparison, baseline update, full check, static build or packed
 consumer run was performed. Review server remains on 10329. Full qualification
 still awaits explicit UI approval. Raw follow-up logs use the
 /tmp/structured-filters-border-_, width-_ and review-\* prefixes.
+
+## Full qualification and PR authorized
+
+On 2026-10-31 the user authorized full qualification and temporary-workspace
+cleanup, then requested a GitHub PR and push instead of advancing local main.
+The earlier approval gate is lifted for full verification. Current results,
+branch disposition and resume instructions are in
+2026-10-31-canvas-filters-qualification.md. Prior deferred entries are historical.

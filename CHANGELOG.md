@@ -1,5 +1,14 @@
 # @lapismd/design-core
 
+## 0.7.4
+
+### Patch Changes
+
+- [#47](https://github.com/lapismd/design-core/pull/47) [`16cda14`](https://github.com/lapismd/design-core/commit/16cda1401c8cbae58fa9cc6bc93d82b592395662) Thanks [@stevejuma](https://github.com/stevejuma)! - Require the released Mira 0.1.4 private math repair and patched KaTeX runtime.
+  Retire the obsolete packed KaTeX audit exception so public Core consumers must
+  pass production dependency audits with zero findings. Preserve public imports,
+  Markdown behavior and the independently qualified Bits UI lifecycle patch.
+
 ## 0.7.3
 
 ### Patch Changes

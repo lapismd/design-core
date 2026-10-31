@@ -2,7 +2,7 @@
 
 Release 0.7.0 qualification consumed registry Mira `~0.1.1` and Visual Delta `0.0.9`,
 without temporary archive resolution. The source manifest requires published Mira
-`~0.1.2`. Catalog tooling uses patched Storybook
+`~0.1.4`. Catalog tooling uses patched Storybook
 10.6.3 and Vite 6.4.5 ranges. CI remains nonvisual; screenshot comparison is an
 explicit local command only. Release tests cover the helper that drops
 pnpm-only `npm_config_*` values before packed npm commands.
@@ -59,6 +59,10 @@ Release preparation uses the published Spec Validator 0.2.0 range and Changesets
 validation does not install its model/native dependency graph. The supported Node
 range follows Changesets 3. Declared renderer and tooling overrides retain patched
 workspace graphs, while packed consumers audit their own dependency resolution.
+Mira resolves from the released `~0.1.4` minimum, which privately bundles its
+math adapters and retains patched KaTeX 0.18.10. Core's packed runtime requires
+zero findings; its former KaTeX advisory exception is removed. Mira's separate
+Mermaid cohort acceptance does not transfer to Core or its consumers.
 
 ## Public surface coverage
 
@@ -122,9 +126,9 @@ remains unchanged.
 ## DC-ARCH-006 — External consumption
 
 Public archive acceptance audits the installed production graph independently
-of local overrides. The recorded user-approved KaTeX exception under DC-PKG-009
-is advisory-specific across package releases until upstream math ranges are
-patched; every other finding remains blocking and complete evidence is retained.
+of local overrides and requires zero findings under DC-PKG-009. The published
+Mira 0.1.4 math repair retires the former KaTeX exception. Every advisory and
+failed audit remains blocking, with complete evidence retained.
 
 **Requirement.** Independent first-party plugins MUST consume Design Core through its public versioned package boundary without repository source aliases or sibling workspace membership.
 

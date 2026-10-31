@@ -216,26 +216,19 @@ retains exact registry identities, source snapshots and before/after receipts.
 
 **Requirement.** Design Core MUST be packable as a public versioned source artifact whose manifest uses semver for runtime dependencies, and release automation MUST stop for manual bootstrap until the npm package exists.
 
-The user-approved 2026-10-11 packed-audit exception MAY accept only
-low-severity [GHSA-238p-pmpm-9mq7](https://github.com/advisories/GHSA-238p-pmpm-9mq7)
-for KaTeX `>=0.11.0 <0.18.2` and npm propagation chains terminating solely
-in that advisory, across current and subsequent Design Core releases until
-upstream math dependencies are patched. Package version changes MUST NOT
-expire this advisory-specific acceptance.
-The gate MUST reject other advisories, increased severity, changed vulnerable
-ranges, unresolved or cyclic chains, invalid responses, inconsistent counts,
-and command failures. Complete audit JSON MUST remain under `.release/`,
-and accepted exceptions MUST be printed. Remove the exception when upstream
-math ranges resolve patched KaTeX. The exception accepts a known remaining
-vulnerability; it does not repair or hide it. Clean audits require no exception,
-and workspace audits remain unchanged.
+The clean packed production graph MUST contain zero audit findings. The
+published Mira 0.1.4 private math repair removes the former KaTeX dependency
+path, so the October 11 advisory exception is retired. The gate MUST reject
+that former finding and every other advisory, invalid responses, inconsistent
+counts and command failures. Complete audit JSON MUST remain under `.release/`.
+Mira's separate Mermaid cohort acceptance MUST NOT apply to Design Core.
 
 ### Acceptance details
 
-- Mira must resolve through the published npm range `~0.1.2`, which admits compatible pre-1.0 patch releases; the authorized temporary Bits UI patch MUST bind released `2.20.2`, retaining its Scroll Area and text-selection teardown fixes; optional search tooling remains outside the normal validation dependency graph.
+- Mira must resolve through the published npm range `~0.1.4`, which admits compatible pre-1.0 patch releases and requires its private patched math runtime; the authorized temporary Bits UI patch MUST bind released `2.20.2`, retaining its Scroll Area and text-selection teardown fixes; optional search tooling remains outside the normal validation dependency graph.
 - Published development tooling dependencies must use npm semver ranges; pull requests and pushes to `main` must run the complete nonvisual check suite before the full and production-only dependency audits, using GitHub Actions that do not depend on the deprecated Node.js 20 action runtime.
 - The tarball must omit repository-only files and tolerate bounded npm metadata and released-tarball visibility delays during post-publication verification; each tarball retry must use a clean consumer, and unrelated install failures, integrity failures and signature/provenance failures must remain fatal.
-- Package checks must pack source even when its version is already published; registry and local archives must prepare rune modules and declarations, preserve public import names, and pass cold Svelte dependency prebundling plus bound Composer Input handle teardown with declared dependencies and zero Svelte diagnostics; the clean packed production graph must pass its independent audit or the recorded advisory-specific KaTeX exception.
+- Package checks must pack source even when its version is already published; registry and local archives must prepare rune modules and declarations, preserve public import names, and pass cold Svelte dependency prebundling plus bound Composer Input handle teardown with declared dependencies and zero Svelte diagnostics; the clean packed production graph must pass its independent audit with zero findings.
 
 ## DC-PKG-010 — Diff exports
 

@@ -1,6 +1,6 @@
 {
   "name": "@lapismd/design-core",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Shared Lapis design system, forms, shell, and workspace primitives",
   "license": "Apache-2.0",
   "repository": {
@@ -139,7 +139,7 @@
     "@iconify-json/lucide": "^1.2.63",
     "@iconify/utils": "^2.3.0",
     "@internationalized/date": "^3.12.2",
-    "@lapismd/mira": "~0.1.2",
+    "@lapismd/mira": "~0.1.4",
     "@lezer/common": "^1.2.3",
     "@lezer/highlight": "^1.2.3",
     "@lezer/lr": "^1.4.2",

@@ -183,6 +183,8 @@ The October 31 user-authorized Bits UI 2.20.2 exception permits only the tracked
 version-bound dependency patch under DC-PKG-009. Patch inputs map to the owning
 Architecture and Package chapters. Qualification uses the normal frozen registry
 graph with that explicit root patch and retains its provenance and checksums.
+The released Mira 0.1.4 intake retires Core's former KaTeX audit exception;
+packed production audits require zero findings under DC-PKG-009.
 
 **Requirement.** Repository agent guidance MUST keep external LapisMD repositories outside this pnpm workspace and consume published dependencies through npm semver ranges.
 
