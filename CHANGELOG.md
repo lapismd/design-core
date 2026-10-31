@@ -1,5 +1,17 @@
 # @lapismd/design-core
 
+## 0.7.2
+
+### Patch Changes
+
+- [#43](https://github.com/lapismd/design-core/pull/43) [`48f9820`](https://github.com/lapismd/design-core/commit/48f9820f5216f6a4b65b0dd6f9e37bc80994328c) Thanks [@stevejuma](https://github.com/stevejuma)! - Preserve mounted status controls during metadata updates and keep Explorer
+  reveal flashes from stealing later input focus. Use theme foreground on outline
+  and ghost buttons, and fit nested or transparent column content while excluding
+  hidden subtrees.
+
+  Consume the patched Minimatch release for editor associations while preserving
+  matching and specificity behavior.
+
 ## 0.7.1
 
 ### Patch Changes
