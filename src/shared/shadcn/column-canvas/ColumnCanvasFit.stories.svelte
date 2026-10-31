@@ -173,3 +173,48 @@
 >
   {#snippet template()}<Demo scenario="ellipsis" />{/snippet}
 </Story>
+<Story
+  name="Fit contents traverses transparent wrappers and excludes hidden content"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const content = canvas.getByTestId("fit-content");
+    const draft = canvas.getByRole("textbox", { name: "Retained draft" });
+    await userEvent.type(draft, " stays mounted");
+    const { handle } = await fit(canvasElement);
+    const expanded = () => {
+      expect(
+        Number(handle.getAttribute("aria-valuenow")),
+      ).toBeGreaterThanOrEqual(520);
+      expect(Number(handle.getAttribute("aria-valuenow"))).toBeLessThan(600);
+    };
+    await waitFor(expanded);
+    expect(canvas.getByTestId("fit-content")).toBe(content);
+    expect(canvas.getByRole("textbox", { name: "Retained draft" })).toBe(draft);
+    expect(draft).toHaveValue("Keep this draft stays mounted");
+    await userEvent.dblClick(handle);
+    await waitFor(() => expect(handle).toHaveAttribute("aria-valuenow", "320"));
+    await fit(canvasElement, true);
+    await waitFor(expanded);
+  }}
+>
+  {#snippet template()}<Demo scenario="contents" />{/snippet}
+</Story>
+<Story
+  name="Fit contents includes late clipped labels in dense trees"
+  play={async ({ canvasElement }) => {
+    const label = canvasElement.querySelector<HTMLElement>(".fit-label")!;
+    await waitFor(() =>
+      expect(label.scrollWidth).toBeGreaterThan(label.clientWidth + 1),
+    );
+    const { handle } = await fit(canvasElement);
+    await waitFor(() =>
+      expect(Number(handle.getAttribute("aria-valuenow"))).toBeGreaterThan(320),
+    );
+    expect(canvasElement.querySelector(".fit-label")).toBe(label);
+    await waitFor(() =>
+      expect(label.scrollWidth).toBeLessThanOrEqual(label.clientWidth + 1),
+    );
+  }}
+>
+  {#snippet template()}<Demo scenario="dense" />{/snippet}
+</Story>

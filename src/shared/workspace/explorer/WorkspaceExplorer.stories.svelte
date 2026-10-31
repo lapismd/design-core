@@ -887,6 +887,16 @@
         Number.parseInt(getComputedStyle(selected).fontWeight, 10),
       ).toBeLessThan(600);
     }
+    const createFile = within(canvasElement).getByRole("button", {
+      name: revealFixture.controller.labels.createFile,
+    });
+    createFile.focus();
+    expect(createFile).toHaveFocus();
+    await waitFor(
+      () => expect(revealFixture.controller.revealState.isFlashing).toBe(false),
+      { timeout: 5_000 },
+    );
+    expect(createFile).toHaveFocus();
   }}
 >
   {#snippet template()}

@@ -23,7 +23,13 @@
 
 <Story
   name="Variants and action feedback"
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
+    const foreground = getComputedStyle(canvasElement.ownerDocument.body).color;
+    for (const name of ["Outline", "Ghost"] as const) {
+      await expect(
+        getComputedStyle(canvas.getByRole("button", { name })).color,
+      ).toBe(foreground);
+    }
     await userEvent.click(canvas.getByRole("button", { name: "Save changes" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("Changes saved");
   }}
