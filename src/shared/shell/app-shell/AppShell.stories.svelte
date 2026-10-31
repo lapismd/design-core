@@ -461,14 +461,35 @@
       '[data-ui-part="main"]',
     );
     const projectsSidebar = canvas.getByLabelText("Projects sidebar");
+    const assertInline = async (phase: string) => {
+      try {
+        await expect(projectsSidebar).toHaveAttribute(
+          "data-presentation",
+          "inline",
+        );
+      } catch (cause) {
+        const panelId = nestedController.getPanelId(projectSidebarController);
+        throw new Error(
+          `App Shell ${phase}: ${JSON.stringify({
+            previewed: projectSidebarController.previewed,
+            desktopPreviewed: nestedController.isPanelDesktopPreviewed(panelId),
+            constrained: nestedController.isPanelConstrained(panelId),
+            presentation: projectsSidebar.getAttribute("data-presentation"),
+            focused:
+              projectsSidebar.ownerDocument.activeElement?.outerHTML.slice(
+                0,
+                200,
+              ),
+          })}`,
+          { cause },
+        );
+      }
+    };
 
     await expect(root).toBeInTheDocument();
     await expect(mainSurface).toBeInTheDocument();
     await expect(projectsSidebar).toHaveAttribute("data-variant", "outer");
-    await expect(
-      projectsSidebar,
-      "expanded project sidebar stays inline",
-    ).toHaveAttribute("data-presentation", "inline");
+    await assertInline("expanded project sidebar");
     const expandedProjectHeader = projectsSidebar.querySelector<HTMLElement>(
       '[data-ui-part="sidebar-header"]',
     );
@@ -723,10 +744,7 @@
     await new Promise<void>((resolve) => {
       setTimeout(resolve, 160);
     });
-    await expect(
-      projectsSidebar,
-      "leaving the edge preview restores inline presentation",
-    ).toHaveAttribute("data-presentation", "inline");
+    await assertInline("edge preview departure");
 
     await userEvent.hover(projectToggle);
     await new Promise<void>((resolve) => {
@@ -736,10 +754,7 @@
     await new Promise<void>((resolve) => {
       setTimeout(resolve, 260);
     });
-    await expect(
-      projectsSidebar,
-      "short toggle hover leaves no pending preview",
-    ).toHaveAttribute("data-presentation", "inline");
+    await assertInline("short toggle hover cancellation");
     await expect(projectsSidebar).not.toHaveAttribute("data-previewed");
 
     await userEvent.hover(projectToggle);
@@ -798,12 +813,9 @@
       expect(popupProjectSelector).toHaveFocus();
       expect(getComputedStyle(popupProjectSelector).pointerEvents).toBe("auto");
     });
-    projectSidebarController.schedulePreviewDismiss(0);
+    projectSidebarController.dismissPreview();
     await new Promise<void>((resolve) => setTimeout(resolve, 0));
-    await expect(
-      projectsSidebar,
-      "selection preview dismissal restores inline presentation",
-    ).toHaveAttribute("data-presentation", "inline");
+    await assertInline("forced cleanup after selection");
 
     const expandProjects = canvas.getByRole("button", {
       name: "Expand projects sidebar",
