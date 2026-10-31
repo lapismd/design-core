@@ -38,6 +38,9 @@ text.
 
 ## DC-FILTER-003 — Search Filter Bar
 
+Catalog pointer acceptance waits for CodeMirror's measured popup placement and
+checks the live option rectangle against the owner document's topmost hit target.
+
 **Requirement.** The Search Filter Bar family MUST compose text search, structured filters, commands, and controlled query changes from one reusable accessible query input.
 
 ### Acceptance details
@@ -78,3 +81,9 @@ text.
 - Updating extensions MUST preserve the editor document, selection and undo history.
 - Custom and filter modes MUST share controlled values, accessible errors, keyboard behavior and owner-document popup disposal.
 - CodeMirror queries MUST preserve multiple lines and expose multiline semantics; `focusAppearance="borderless"` MUST remove focused input chrome while retaining the caret, and invalid inputs MUST have a tinted error background with a spaced diagnostic.
+
+## Standalone structured editing
+
+Filter re-exports the Shadcn-owned FilterBuilder and structured types (DC-SHA-069–074). Use it for nested All/Any/None structured condition panels without query-language input. PowerSearch and SearchFilterBar retain their existing contracts. Domain query execution remains host-owned.
+
+The implemented Filter Builder facade exports its type union as StructuredFilterType, preserving the existing FilterType query enum and the existing SearchFilterBar and PowerSearch contracts. Standalone examples demonstrate direct mounting without Canvas Table.

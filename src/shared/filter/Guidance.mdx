@@ -21,14 +21,15 @@ Offline agent summary: `pnpm ui guide layers`. Catalog components:
 
 ## Layer boundary
 
-| Need                                    | Package                                           |
-| --------------------------------------- | ------------------------------------------------- |
-| Structured multi-field filters, no QL   | `PowerSearch` (`@lapismd/design-core/filter`)     |
-| Search pill, clear chrome, filter slots | `SearchFilterBar` (`@lapismd/design-core/filter`) |
-| Parse / highlight filter queries        | `parseFilterQuery`, `filterQuery()`               |
-| Field → operator → value completions    | Host `SearchFilterSyntax` + `filterSyntax` prop   |
-| Facet pickers (type, account, …)        | forms `FilterCommandPicker`                       |
-| Matching rows against a ledger          | App / domain package (not in this UI package)     |
+| Need                                    | Package                                                        |
+| --------------------------------------- | -------------------------------------------------------------- |
+| Nested All/Any/None condition panels    | **FilterBuilder** (standalone Shadcn family, re-exported here) |
+| Structured multi-field filters, no QL   | `PowerSearch` (`@lapismd/design-core/filter`)                  |
+| Search pill, clear chrome, filter slots | `SearchFilterBar` (`@lapismd/design-core/filter`)              |
+| Parse / highlight filter queries        | `parseFilterQuery`, `filterQuery()`                            |
+| Field → operator → value completions    | Host `SearchFilterSyntax` + `filterSyntax` prop                |
+| Facet pickers (type, account, …)        | forms `FilterCommandPicker`                                    |
+| Matching rows against a ledger          | App / domain package (not in this UI package)                  |
 
 ## Choosing a search surface
 
@@ -142,3 +143,7 @@ Regenerate the committed Lezer parser after grammar edits:
 ```bash
 pnpm filter:grammar
 ```
+
+## Standalone Filter Builder
+
+Use `FilterBuilder` for a structured field/operator/value panel with nested All, Any and None groups. It accepts a host field schema and controlled structured state, supports typed value editors and permitted type overrides, and has no Canvas Table dependency. Canvas Table is an optional consumer that owns generic matching over supplied cells. Raw expressions and application queries remain outside this UI.

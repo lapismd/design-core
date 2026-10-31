@@ -51,6 +51,7 @@ Action and content primitives adapt shadcn-svelte semantics to Design Core styli
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/swipe-item`.
+- Activation MUST run the consumer handler before automatic closing, retain default-prevention and `closeOnSelect` control, and safely finish when action, close-notification or full-swipe callbacks synchronously remove the action or root; disposed state MUST NOT read destroyed-owner props.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-005 — Toggle

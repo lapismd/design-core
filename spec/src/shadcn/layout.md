@@ -47,6 +47,12 @@ normal allocated width and reset their split without changing the pair total.
 Controlled widths MUST notify the host for both expansion and reset. Fitting
 MUST retain mounted content, selection and scroll position without loading data.
 
+The combined main-workspace integration retains the overflow-first scan while excluding scroll extents contaminated by hidden or inert descendants; dense-tree and transparent-wrapper scenarios qualify both sides of the merge.
+
+Fit measurement MUST include late clipped labels in deeply nested rendered
+content and traverse transparent `display: contents` wrappers. Hidden or inert
+subtrees MUST NOT contribute to the fit width; measurement work remains bounded.
+
 **Requirement.** Column Canvas MUST provide horizontally scrollable columns with consumer-owned items and responsive sizing. Wide auto mode MUST allocate scrolling pairs within bounds through inverse resizing and durable pair ratios. Leading `fixed` columns MUST pin their original expanded panels or collapsed rails, releasing trailing pins when scrolling minimums cannot fit. External Scroll Area viewports, custom rails, transient previews and accessible trailing content MUST preserve compact behavior and persistence.
 
 ### Acceptance details

@@ -108,7 +108,7 @@ test("quantity input keeps exact canonical values and handles huge slider bounds
   await expect(page.getByRole("slider")).toBeVisible();
   await expect(page.getByTestId("quantity-value")).toHaveText("1048576");
   await expect(page.getByTestId("quantity-edits")).toHaveText("0");
-  await page.getByRole("button", { name: "Capacity unit" }).click();
+  await page.getByRole("combobox", { name: "Capacity unit" }).click();
   await page.getByRole("option", { name: "KiB", exact: true }).click();
   const input = page.getByRole("spinbutton", { name: "Capacity", exact: true });
   await expect(input).toHaveValue("1024");

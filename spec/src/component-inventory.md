@@ -24,6 +24,12 @@ exactly one owning shared layer before it becomes a public export.
 
 Generic primitives in `src/shared/shadcn/`:
 
+`canvas-table/` is a project-authored Data Display family providing a canvas
+spreadsheet, toolbar, menus and independent optional row checkboxes. It consumes
+host-owned string-cell rows, stable IDs and mutation callbacks. Import
+`CanvasTable` and its types from `@lapismd/design-core/shadcn/canvas-table`.
+It has no application or CSV runtime dependency (DC-SHA-066–068).
+
 `file-type-icon/` owns filename-based Material file icons, exported through
 `@lapismd/design-core/shadcn/file-type-icon` (DC-SHA-064). Diff File Listing
 composes it without changing folder icons, row geometry or host-owned state.
@@ -312,3 +318,7 @@ lookup, serialization and navigation. No application routing or dispatch is owne
 FilePathInput is a shared Forms primitive adapted from JJ Store, with optional
 host-owned file selection and no filesystem authority. Workspace Settings may
 compose it and QuantityInput as first-party declarative inputs.
+
+## Planned structured filters
+
+`shadcn/filter-builder` is a project-authored generic Forms-category family, independently usable with a host field schema and controlled state (DC-SHA-069–074). Filter re-exports this implementation. Canvas Table composes its public Shadcn boundary; no reverse layer dependency is introduced.

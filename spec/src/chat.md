@@ -191,7 +191,9 @@ Hosts MAY opt into `scrollButton` in either transcript presentation. The shared
 Layout Scroll Button MUST appear only beyond the latest-content threshold, sit
 above a pinned Classic composer and jump within the owning viewport. Host `busy`
 controls its running glyph. Resize and late reader measurement MUST retain a
-bottom lock after the user returns, while upward reading keeps its position.
+bottom lock after the user returns, including a delayed scroll event delivered
+after content growth; only actual upward movement releases that lock. Upward
+reading keeps its position.
 Neither navigation nor the indicator may dispatch work or change source data.
 
 Reader links MUST retain foreground contrast on light/dark host surfaces and an
@@ -212,11 +214,10 @@ Table comments MUST appear between their referenced row and the following row,
 with unchanged source order and aligned column widths. Comment context MUST
 retain the complete captured row and its exact selection independently of the
 original source's later availability, using Mira's public table surface.
-Fenced code MUST use the captured code/patch reader's syntax, inline line
-comments and middle-fold controls. Mapping a fenced body into its captured
-Markdown MUST preserve the original anchor identity and UTF-16 selection.
-Fences labelled `diff` or `patch` MUST use the existing patch reader so additions,
-deletions and hunk headers retain their distinct presentation.
+Fenced code MUST use captured-reader syntax, inline line comments and middle-fold controls.
+Mapping a fenced body into captured Markdown MUST preserve original anchor identity and UTF-16 selection.
+Fences labelled `diff` or `patch` MUST retain the patch reader's distinct additions, deletions and hunk headers.
+Captured JSON MUST distinguish property names, strings and scalar values without parser diagnostics, preserving numbered prefixes and exact UTF-16 anchors.
 Initially collapsed tool groups MUST reveal their captured child tools when
 opened in either conversation view, including with an externally owned
 TranscriptController. Inner tool disclosures MUST remain independently usable.
@@ -357,7 +358,7 @@ empty or pending active drafts omit Queue. Idle Send availability is unchanged.
 ### Acceptance details
 
 - Suggestions MUST retain existing ComposerTrigger search and insertion contracts with keyboard navigation, selection replacement and host-supplied labels; each label occupies the first row, with its description wrapping beneath it without shrinking the label to zero width or overlapping it.
-- Completion tooltips MUST mount outside clipped editor ancestors in the owner document, remain pointer-selectable in Chromium and WebKit, and be removed on teardown, with aborted, stale, disabled or disposed searches unable to replace newer results or mutate the retained draft.
+- Completion tooltips MUST mount outside clipped editor ancestors in the owner document, remain pointer-selectable in Chromium and WebKit, and be removed on teardown, with aborted, stale, disabled or disposed searches unable to replace newer results or mutate the retained draft; destroyed editors MUST also reject queued sources, late results and retained actions before reading retired reactive callbacks.
 - IME composition and escaped inline or fenced code MUST not trigger unintended insertion or message submission.
 - Completion handling MUST claim Enter only for a registered trigger query and accept its selected item with unmodified Tab; Shift+Enter, Shift+Tab, Tab without a selected suggestion and ordinary document newlines MUST retain their existing behavior without submitting a message.
 

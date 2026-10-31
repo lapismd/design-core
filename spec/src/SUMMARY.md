@@ -9,6 +9,7 @@
 - [Shadcn / Actions and content](shadcn/actions-and-content.md)
 - [Shadcn / Data and feedback](shadcn/data-and-feedback.md)
 - [Shadcn / Disclosure and navigation](shadcn/disclosure-and-navigation.md)
+- [Shadcn / Structured filters](shadcn/structured-filters.md)
 - [Shadcn / Forms](shadcn/forms.md)
 - [Shadcn / Layout](shadcn/layout.md)
 - [Shadcn / Overlays](shadcn/overlays.md)

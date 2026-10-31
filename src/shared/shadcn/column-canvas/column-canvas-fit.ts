@@ -1,27 +1,47 @@
 /** Fit only the currently rendered content; never clone editors or load hidden data. */
 export function measureColumnContentWidth(root: HTMLElement): number {
-  // Deep column trees (branch cards, graphs, icons) can exceed a small walk
-  // budget before truncated labels are visited. Scan visible overflow first,
-  // then refine with the structured walk.
-  let overflowMax = 0;
-  for (const node of root.querySelectorAll("*")) {
+  // Preserve the main-workspace overflow scan without measuring scroll extents
+  // contaminated by descendants that the structured walk excludes.
+  const hidden = new Set<Element>();
+  const contaminated = new Set<Element>();
+  const visible: HTMLElement[] = [];
+  for (const node of [root, ...root.querySelectorAll("*")]) {
     if (!(node instanceof HTMLElement)) continue;
-    if (!node.getClientRects().length) continue;
-    if (node.scrollWidth > node.clientWidth + 1)
+    const style = getComputedStyle(node);
+    if (
+      (node.parentElement && hidden.has(node.parentElement)) ||
+      node.hasAttribute("inert") ||
+      style.display === "none" ||
+      style.visibility === "hidden" ||
+      (style.display !== "contents" && !node.getClientRects().length)
+    ) {
+      hidden.add(node);
+      let parent = node === root ? null : node.parentElement;
+      while (parent && !contaminated.has(parent)) {
+        contaminated.add(parent);
+        if (parent === root) break;
+        parent = parent.parentElement;
+      }
+    } else visible.push(node);
+  }
+  let overflowMax = 0;
+  for (const node of visible) {
+    if (!contaminated.has(node) && node.scrollWidth > node.clientWidth + 1)
       overflowMax = Math.max(overflowMax, node.scrollWidth);
   }
   let remaining = 65536;
   const number = (value: string) => Number.parseFloat(value) || 0;
-  function measure(node: Element): number {
+  function measure(node: Element): { width: number; excluded: boolean } {
     const style = getComputedStyle(node);
     if (
       style.display === "none" ||
       style.visibility === "hidden" ||
       node.hasAttribute("inert") ||
-      !node.getClientRects().length
+      (style.display !== "contents" && !node.getClientRects().length)
     )
-      return 0;
-    if (--remaining < 0) return node.getBoundingClientRect().width;
+      return { width: 0, excluded: true };
+    if (--remaining < 0)
+      return { width: node.getBoundingClientRect().width, excluded: false };
     const margin =
       number(style.marginInlineStart) + number(style.marginInlineEnd);
     const border =
@@ -29,17 +49,44 @@ export function measureColumnContentWidth(root: HTMLElement): number {
     const padding =
       number(style.paddingInlineStart) + number(style.paddingInlineEnd);
     if (node.matches("svg, img, canvas, video, input, textarea, select"))
-      return node.getBoundingClientRect().width + margin;
-    const widths: number[] = [];
-    for (const child of node.childNodes) {
-      if (remaining <= 0) break;
-      if (child instanceof Element) widths.push(measure(child));
-      else if (child.nodeType === Node.TEXT_NODE && child.textContent?.trim()) {
-        const range = node.ownerDocument.createRange();
-        range.selectNode(child);
-        widths.push(range.getBoundingClientRect().width);
+      return {
+        width: node.getBoundingClientRect().width + margin,
+        excluded: false,
+      };
+    const children: { element?: Element; width: number }[] = [];
+    let excluded = false;
+    function collect(parent: Element) {
+      for (const child of parent.childNodes) {
+        if (remaining <= 0) break;
+        if (child instanceof Element) {
+          const childStyle = getComputedStyle(child);
+          if (
+            childStyle.display === "contents" &&
+            childStyle.visibility !== "hidden" &&
+            !child.hasAttribute("inert")
+          ) {
+            remaining--;
+            collect(child);
+          } else {
+            const measured = measure(child);
+            excluded ||= measured.excluded;
+            if (measured.width)
+              children.push({ element: child, width: measured.width });
+          }
+        } else if (
+          child.nodeType === Node.TEXT_NODE &&
+          child.textContent?.trim()
+        ) {
+          const range = node.ownerDocument.createRange();
+          range.selectNode(child);
+          children.push({ width: range.getBoundingClientRect().width });
+        }
       }
     }
+    collect(node);
+    const widths = children.map((child) => child.width);
+    if (style.display === "contents")
+      return { width: Math.max(0, ...widths), excluded };
     const horizontal =
       (style.display.includes("flex") &&
         !style.flexDirection.startsWith("column")) ||
@@ -53,11 +100,11 @@ export function measureColumnContentWidth(root: HTMLElement): number {
         Math.max(0, widths.length - 1) * number(style.columnGap);
     else if (style.display.includes("grid")) {
       const rows = new Map<number, number[]>();
-      for (const child of Array.from(node.children)) {
-        if (remaining <= 0) break;
-        const top = Math.round(child.getBoundingClientRect().top);
+      for (const child of children) {
+        if (!child.element) continue;
+        const top = Math.round(child.element.getBoundingClientRect().top);
         const row = rows.get(top) ?? [];
-        row.push(measure(child));
+        row.push(child.width);
         rows.set(top, row);
       }
       content = Math.max(
@@ -70,19 +117,25 @@ export function measureColumnContentWidth(root: HTMLElement): number {
         ),
       );
     }
+    // Ancestor scrollWidth includes hidden/inert descendants even when skipped.
     const overflow =
-      node.scrollWidth > node.clientWidth + 1 ? node.scrollWidth + border : 0;
+      !excluded && node.scrollWidth > node.clientWidth + 1
+        ? node.scrollWidth + border
+        : 0;
     const minimum = style.minWidth.endsWith("px") ? number(style.minWidth) : 0;
-    return Math.ceil(
-      Math.max(
-        content + padding + border,
-        overflow,
-        minimum,
-        node.getBoundingClientRect().width,
-      ) + margin,
-    );
+    return {
+      width: Math.ceil(
+        Math.max(
+          content + padding + border,
+          overflow,
+          minimum,
+          node.getBoundingClientRect().width,
+        ) + margin,
+      ),
+      excluded,
+    };
   }
-  return Math.max(measure(root), overflowMax);
+  return Math.max(measure(root).width, overflowMax);
 }
 
 /** A finite default also bounds columns configured with maxWidth:null. */

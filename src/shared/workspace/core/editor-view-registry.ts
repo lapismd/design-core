@@ -97,7 +97,7 @@ function compileGlob(pattern: string): Minimatch | null {
   if (!normalized) return null;
   try {
     const matcher = new Minimatch(normalized, globOptions(normalized));
-    return matcher.makeRe() ? matcher : null;
+    return matcher.set.length > 0 ? matcher : null;
   } catch {
     return null;
   }

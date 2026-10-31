@@ -24,7 +24,9 @@
     title="Quick fix"
     onclick={stopRowActivation}
     onpointerdown={stopRowActivation}
-    onkeydown={stopRowActivation}
+    onkeydown={(event) => {
+      if (event.key !== "Escape") stopRowActivation(event);
+    }}
   >
     <WorkspaceIcon
       class="ui-workspace-problems__severity"

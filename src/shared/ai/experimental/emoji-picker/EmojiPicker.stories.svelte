@@ -38,9 +38,16 @@
     await waitFor(() =>
       expect(canvas.getByRole("status")).toHaveTextContent("Selected 🔥"),
     );
-    await expect(
-      canvas.queryByRole("textbox", { name: "Search emoji" }),
-    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        popover.queryByRole("textbox", { name: "Search emoji" }),
+      ).not.toBeInTheDocument(),
+    );
+    await waitFor(() =>
+      expect(
+        canvas.getByRole("button", { name: "Add reaction" }),
+      ).toHaveFocus(),
+    );
   }}
   parameters={{
     visualDelta: {
@@ -85,13 +92,19 @@
         popover.getByRole("textbox", { name: "Search emoji" }),
       ).toHaveFocus(),
     );
-    await userEvent.type(
-      popover.getByRole("textbox", { name: "Search emoji" }),
-      "{arrowdown}",
-    );
+    await userEvent.keyboard("{ArrowDown}");
     await waitFor(() => expect(first).toHaveFocus());
     await userEvent.keyboard("{ArrowRight}");
     await waitFor(() => expect(second).toHaveFocus());
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => {
+      expect(
+        popover.queryByRole("textbox", { name: "Search emoji" }),
+      ).toBeNull();
+      expect(
+        canvas.getByRole("button", { name: "Pick an emoji" }),
+      ).toHaveFocus();
+    });
   }}
   parameters={{
     visualDelta: {
@@ -151,6 +164,15 @@
       window.cancelAnimationFrame = cancelFrame;
       for (const callback of queuedFrames.values()) requestFrame(callback);
     }
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => {
+      expect(
+        within(document.body).queryByRole("textbox", { name: "Search emoji" }),
+      ).toBeNull();
+      expect(
+        canvas.getByRole("button", { name: "Pick an emoji" }),
+      ).toHaveFocus();
+    });
   }}
 >
   {#snippet template()}

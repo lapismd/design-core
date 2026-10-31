@@ -1,5 +1,46 @@
 # @lapismd/design-core
 
+## 0.7.3
+
+### Patch Changes
+
+- [#42](https://github.com/lapismd/design-core/pull/42) [`7d4091d`](https://github.com/lapismd/design-core/commit/7d4091d81f18a1e402c079f78034abeb169918af) Thanks [@stevejuma](https://github.com/stevejuma)! - Use the supported JSON grammar for captured transcript code, preserving property
+  highlighting and exact source coordinates without parser diagnostics. Retain
+  Swipe Item action policy before consumer callbacks and stop automatic closing
+  after synchronous owner disposal.
+
+  Allow Escape from the Problems quick-fix trigger to reach its portalled menu
+  while retaining row-activation isolation for the other keys.
+
+  Ship the authorized temporary Bits UI 2.20.2 lifecycle/focus patch with exact
+  consumer-root installation and removal provenance. Every consumer must apply
+  the same root pnpm patch; dependency metadata does not propagate it.
+
+## 0.7.2
+
+### Patch Changes
+
+- [#43](https://github.com/lapismd/design-core/pull/43) [`48f9820`](https://github.com/lapismd/design-core/commit/48f9820f5216f6a4b65b0dd6f9e37bc80994328c) Thanks [@stevejuma](https://github.com/stevejuma)! - Preserve mounted status controls during metadata updates and keep Explorer
+  reveal flashes from stealing later input focus. Use theme foreground on outline
+  and ghost buttons, and fit nested or transparent column content while excluding
+  hidden subtrees.
+
+  Consume the patched Minimatch release for editor associations while preserving
+  matching and specificity behavior.
+
+## 0.7.1
+
+### Patch Changes
+
+- [#38](https://github.com/lapismd/design-core/pull/38) [`e03b677`](https://github.com/lapismd/design-core/commit/e03b6776d20e7506eacb6e048c9726a0bc77d64c) Thanks [@stevejuma](https://github.com/stevejuma)! - Fence composer completion callbacks after their owning editor is destroyed so
+  conversation switching and comment teardown do not read retired reactive state.
+
+- [#40](https://github.com/lapismd/design-core/pull/40) [`86f0182`](https://github.com/lapismd/design-core/commit/86f01828f129eae21536b1ea94a01897c3081649) Thanks [@stevejuma](https://github.com/stevejuma)! - Restore the latest focus target without reading destroyed surface-owner props,
+  and retain accessible selected Filter Command Picker text in Lapis dark mode.
+
+- [#40](https://github.com/lapismd/design-core/pull/40) [`3b0392c`](https://github.com/lapismd/design-core/commit/3b0392ca4a15a2e88cc7ce43a3bf4f0ea58e99fa) Thanks [@stevejuma](https://github.com/stevejuma)! - Retain the transcript's bottom lock when a delayed scroll event arrives after
+  captured output grows, while preserving deliberate upward reading.
+
 ## 0.7.0
 
 ### Minor Changes

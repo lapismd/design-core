@@ -209,15 +209,11 @@
     group: createProblemsApp("group"),
   };
 
-  async function dismissProblemsFilter(ownerDocument: Document) {
+  async function dismissProblemsMenus(ownerDocument: Document) {
+    const menus = [...ownerDocument.querySelectorAll('[role="menu"]')];
     await userEvent.keyboard("{Escape}");
-    ownerDocument
-      .querySelectorAll('[data-slot="dropdown-menu-content"]')
-      .forEach((node) => node.remove());
-    ownerDocument.body.style.pointerEvents = "";
-    ownerDocument.body.style.overflow = "";
-    ownerDocument.body.removeAttribute("data-scroll-locked");
     await waitFor(() => {
+      for (const menu of menus) expect(menu).not.toBeInTheDocument();
       expect(
         ownerDocument.querySelector('[role="menu"][data-state="open"]'),
       ).toBeNull();
@@ -226,7 +222,7 @@
   }
 
   async function assertProblems(canvasElement: HTMLElement, surface: string) {
-    await dismissProblemsFilter(canvasElement.ownerDocument);
+    await dismissProblemsMenus(canvasElement.ownerDocument);
     const canvas = within(canvasElement);
     const panel = await canvas.findByRole("region", { name: "Problems" });
     expect(panel).toBeVisible();
@@ -512,7 +508,7 @@
         ),
       ).not.toBeInTheDocument(),
     );
-    await dismissProblemsFilter(canvasElement.ownerDocument);
+    await dismissProblemsMenus(canvasElement.ownerDocument);
     const searchInput = canvas.getByLabelText("Filter problems");
     await waitFor(() =>
       expect(getComputedStyle(searchInput).pointerEvents).not.toBe("none"),
@@ -527,6 +523,50 @@
     expect(fixtures.bottom.navigationLog).toContain(
       "document:///notes/welcome.md",
     );
+  }}
+>
+  {#snippet template()}{@render Shell(fixtures.bottom.app)}{/snippet}
+</Story>
+
+<Story
+  name="Quick fix Escape from trigger"
+  tags={["visual-pending"]}
+  parameters={{ docs: { source: { code: exampleSources.BottomPanel } } }}
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const documentCanvas = within(canvasElement.ownerDocument.body);
+    for (const mode of ["tree", "table"]) {
+      if (mode === "table")
+        await userEvent.click(
+          canvas.getByRole("button", { name: "View as Table" }),
+        );
+      const quickFix = (
+        await canvas.findAllByRole("button", { name: "Quick fix" })
+      )[0];
+      const navigationCount = fixtures.bottom.navigationLog.length;
+      quickFix.focus();
+      await userEvent.keyboard("{Enter}");
+      const item = await documentCanvas.findByRole("menuitem", {
+        name: "Fix heading level",
+      });
+      const menu = item.closest<HTMLElement>('[role="menu"]');
+      expect(menu).not.toBeNull();
+      expect(fixtures.bottom.navigationLog).toHaveLength(navigationCount);
+      quickFix.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "Escape",
+          code: "Escape",
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+      await waitFor(() => expect(menu).not.toBeInTheDocument());
+      await waitFor(() =>
+        expect(canvasElement.ownerDocument.body.style.pointerEvents).not.toBe(
+          "none",
+        ),
+      );
+    }
   }}
 >
   {#snippet template()}{@render Shell(fixtures.bottom.app)}{/snippet}

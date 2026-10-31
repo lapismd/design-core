@@ -1,5 +1,11 @@
 # Workspace / Framework
 
+Editor associations retain basename, nested-path, brace and literal-pattern
+matching through the patched registry matcher. Compile patterns through its
+public constructor and validate the resulting pattern set; oversized or failed
+compilation remains invalid. Do not require the removed regular-expression
+conversion API.
+
 Explorer pointer rejection follows DC-WS-033 in [Panels](panels.md). Its complete
 source and pointer qualification is recorded in
 `spec/records/2026-10-23-explorer-pointer-qualification.md`; consumer native

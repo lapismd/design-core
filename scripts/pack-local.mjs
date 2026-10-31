@@ -122,6 +122,7 @@ export async function packLocal(
       "README.md",
       "CHANGELOG.md",
       "LICENSE.md",
+      "patches",
       "spec/src/styling-and-themes.md",
     ];
     // Repository commands are not executable in either consumer archive.

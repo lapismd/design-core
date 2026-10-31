@@ -461,14 +461,35 @@
       '[data-ui-part="main"]',
     );
     const projectsSidebar = canvas.getByLabelText("Projects sidebar");
+    const assertInline = async (phase: string) => {
+      try {
+        await expect(projectsSidebar).toHaveAttribute(
+          "data-presentation",
+          "inline",
+        );
+      } catch (cause) {
+        const panelId = nestedController.getPanelId(projectSidebarController);
+        throw new Error(
+          `App Shell ${phase}: ${JSON.stringify({
+            previewed: projectSidebarController.previewed,
+            desktopPreviewed: nestedController.isPanelDesktopPreviewed(panelId),
+            constrained: nestedController.isPanelConstrained(panelId),
+            presentation: projectsSidebar.getAttribute("data-presentation"),
+            focused:
+              projectsSidebar.ownerDocument.activeElement?.outerHTML.slice(
+                0,
+                200,
+              ),
+          })}`,
+          { cause },
+        );
+      }
+    };
 
     await expect(root).toBeInTheDocument();
     await expect(mainSurface).toBeInTheDocument();
     await expect(projectsSidebar).toHaveAttribute("data-variant", "outer");
-    await expect(projectsSidebar).toHaveAttribute(
-      "data-presentation",
-      "inline",
-    );
+    await assertInline("expanded project sidebar");
     const expandedProjectHeader = projectsSidebar.querySelector<HTMLElement>(
       '[data-ui-part="sidebar-header"]',
     );
@@ -566,6 +587,9 @@
     await expect(firstFileIcon).toBeInTheDocument();
     const expandedProjectToggleRect = projectToggle.getBoundingClientRect();
     const expandedFirstFileIconRect = firstFileIcon!.getBoundingClientRect();
+    await waitFor(() =>
+      expect(getComputedStyle(filesToggle).pointerEvents).not.toBe("none"),
+    );
     await userEvent.click(filesToggle);
     await expect(filesToggle).toHaveFocus();
     await expect(filesSidebar).toHaveAttribute("data-state", "collapsed");
@@ -720,10 +744,7 @@
     await new Promise<void>((resolve) => {
       setTimeout(resolve, 160);
     });
-    await expect(projectsSidebar).toHaveAttribute(
-      "data-presentation",
-      "inline",
-    );
+    await assertInline("edge preview departure");
 
     await userEvent.hover(projectToggle);
     await new Promise<void>((resolve) => {
@@ -733,10 +754,7 @@
     await new Promise<void>((resolve) => {
       setTimeout(resolve, 260);
     });
-    await expect(projectsSidebar).toHaveAttribute(
-      "data-presentation",
-      "inline",
-    );
+    await assertInline("short toggle hover cancellation");
     await expect(projectsSidebar).not.toHaveAttribute("data-previewed");
 
     await userEvent.hover(projectToggle);
@@ -790,12 +808,14 @@
       "data-presentation",
       "overlay",
     );
-    projectSidebarController.schedulePreviewDismiss(0);
+    await waitFor(() => {
+      expect(popupProjectOption).not.toBeInTheDocument();
+      expect(popupProjectSelector).toHaveFocus();
+      expect(getComputedStyle(popupProjectSelector).pointerEvents).toBe("auto");
+    });
+    projectSidebarController.dismissPreview();
     await new Promise<void>((resolve) => setTimeout(resolve, 0));
-    await expect(projectsSidebar).toHaveAttribute(
-      "data-presentation",
-      "inline",
-    );
+    await assertInline("forced cleanup after selection");
 
     const expandProjects = canvas.getByRole("button", {
       name: "Expand projects sidebar",
@@ -1357,7 +1377,7 @@
     await expect(filesSidebar).toHaveFocus();
     await expect(projectsSidebar).toHaveAttribute("aria-hidden", "true");
 
-    const leftSelector = canvas.getByRole("button", {
+    const leftSelector = canvas.getByRole("combobox", {
       name: /^Choose left sidebar panel: /,
     });
     await expect(leftSelector).toHaveTextContent("Files");
@@ -1397,7 +1417,7 @@
       expect(mobileStage.scrollLeft).toBe(0);
     });
 
-    const rightSelector = canvas.getByRole("button", {
+    const rightSelector = canvas.getByRole("combobox", {
       name: /^Choose right sidebar panel: /,
     });
     await expect(rightSelector).toHaveTextContent("AI conversation");

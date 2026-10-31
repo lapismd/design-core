@@ -6,15 +6,22 @@ import {
   mkdtempSync,
   readFileSync,
   readdirSync,
+  realpathSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
 import net from "node:net";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { createRequire } from "node:module";
 import { chromium } from "playwright";
 import { fileURLToPath } from "node:url";
+import { npmCommandEnv } from "./npm-command-env.mjs";
 import { assertBrowserCss } from "./prepare-styles.mjs";
+import {
+  stagePublicDependencyPatch,
+  verifyInstalledDependencyPatch,
+} from "./public-dependency-patch.mjs";
 
 async function checkPrimitiveStates(page) {
   const styles = await page.evaluate(() => {
@@ -168,6 +175,42 @@ async function checkPrimitiveStates(page) {
   assert.equal(
     await page.getByTestId("packed-emoji-selection").textContent(),
     "🔥",
+  );
+  const reactionTrigger = page.getByRole("button", {
+    name: "Packed reactions",
+    exact: true,
+  });
+  await reactionTrigger.click();
+  const reactionSearch = page.getByRole("textbox", {
+    name: "Search emoji",
+    exact: true,
+  });
+  const firstReaction = page.getByRole("button", {
+    name: "React with thumbs up",
+    exact: true,
+  });
+  await firstReaction.waitFor({ state: "visible" });
+  await page.waitForFunction(
+    (element) => element.ownerDocument.activeElement === element,
+    await reactionSearch.elementHandle(),
+  );
+  await page.keyboard.press("ArrowDown");
+  assert.equal(
+    await firstReaction.evaluate(
+      (element) => element.ownerDocument.activeElement === element,
+    ),
+    true,
+  );
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("Enter");
+  assert.equal(
+    await page.getByTestId("packed-reaction-selection").textContent(),
+    "❤️",
+  );
+  await reactionSearch.waitFor({ state: "detached" });
+  await page.waitForFunction(
+    (element) => element.ownerDocument.activeElement === element,
+    await reactionTrigger.elementHandle(),
   );
   await page
     .getByRole("button", { name: "Choose avatar: PP", exact: true })
@@ -581,19 +624,21 @@ async function checkStyles(page) {
   );
 }
 
-/** Exercise the public archive with a fresh, unconfigured Svelte consumer. */
+/** Exercise the public archive with its explicit consumer-root patch contract. */
 export async function checkPublicPackageRuntime(tarball, registry) {
   const fixture = mkdtempSync(path.join(tmpdir(), "design-core-cold-public-"));
   let server;
   let browser;
   let serverLog = "";
   try {
+    const dependencyPatch = stagePublicDependencyPatch(tarball, fixture);
     writeFileSync(
       path.join(fixture, "package.json"),
       JSON.stringify({
         name: "design-core-public-runtime",
         private: true,
         type: "module",
+        pnpm: dependencyPatch.configuration,
         dependencies: { "@lapismd/design-core": "file:" + tarball },
         devDependencies: {
           svelte: "^5.57.1",
@@ -603,6 +648,10 @@ export async function checkPublicPackageRuntime(tarball, registry) {
           typescript: "^5.9.3",
         },
       }),
+    );
+    writeFileSync(
+      path.join(fixture, "pnpm-workspace.yaml"),
+      'packages:\n  - "."\nautoInstallPeers: false\n',
     );
     writeFileSync(
       path.join(fixture, "index.html"),
@@ -631,7 +680,7 @@ import { CodeBlock } from "@lapismd/design-core/shadcn/code-block";
 import { ToolCalls } from "@lapismd/design-core/ai/chat";
 import { WorkspaceSidebarToggle } from "@lapismd/design-core/workspace/sidebar-toggle";
 import { WorkspaceBottomPanelToggle } from "@lapismd/design-core/workspace/bottom-panel";
-import { EmojiPicker } from "@lapismd/design-core/shadcn/emoji-picker";
+import { EmojiPicker, DEFAULT_EMOJIS } from "@lapismd/design-core/shadcn/emoji-picker";
 import { ResponsiveTabs } from "@lapismd/design-core/shadcn/responsive-tabs";
 import { TagList, type TagListItem, type TagListProps } from "@lapismd/design-core/shadcn/tag-list";
 import { Avatar, AvatarGroup, type AvatarIdentity, type AvatarSize } from "@lapismd/design-core/shadcn/avatar";
@@ -666,6 +715,7 @@ import { EmojiPicker as LegacyEmojiPicker } from "@lapismd/design-core/ai/experi
 import HandleLifecycle from "./HandleLifecycle.svelte";
 if (EmojiPicker !== LegacyEmojiPicker) throw new Error("Emoji compatibility export differs");
 let selectedEmoji = $state("");
+let selectedReaction = $state("");
 let selectedTag = $state("");
 let packedReplyClicks = $state(0);
 const tags: readonly TagListItem[] = [
@@ -705,6 +755,8 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 {/each}
 <EmojiPicker triggerLabel="Packed emoji" onSelect={(emoji) => selectedEmoji = emoji} />
 <output data-testid="packed-emoji-selection">{selectedEmoji}</output>
+<EmojiPicker emojis={DEFAULT_EMOJIS} triggerLabel="Packed reactions" onSelect={(emoji) => selectedReaction = emoji} />
+<output data-testid="packed-reaction-selection">{selectedReaction}</output>
 <ResponsiveTabs bind:value={navigationValue} items={[{ value: "overview", label: "Overview" }, { value: "files", label: "Files" }]} />
 <div style="width:130px;--ui-tag-list-radius:4px"><TagList {...tagListProps} /></div>
 <output data-testid="packed-tag-selection">{selectedTag}</output>
@@ -779,22 +831,35 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
       }),
     );
     const install = spawnSync(
-      "npm",
+      "pnpm",
       [
         "install",
         "--ignore-scripts",
-        // Mira 0.0.x still declares a Tailwind peer through tailwind-variants.
-        // Omit auto-installed peers to prove CSS needs no compiler present;
-        // this fixture declares its required Svelte/tooling peers explicitly.
-        "--omit=peer",
-        "--no-audit",
-        "--no-fund",
+        "--ignore-pnpmfile",
+        "--config.auto-install-peers=false",
         "--registry",
         registry,
       ],
-      { cwd: fixture, encoding: "utf8", timeout: 240_000 },
+      {
+        cwd: fixture,
+        encoding: "utf8",
+        env: npmCommandEnv(),
+        timeout: 240_000,
+      },
     );
     assert.equal(install.status, 0, install.stderr || String(install.error));
+    const consumerRequire = createRequire(
+      realpathSync(
+        path.join(fixture, "node_modules/@lapismd/design-core/package.json"),
+      ),
+    );
+    const bitsRoot = path.dirname(
+      path.dirname(consumerRequire.resolve("bits-ui")),
+    );
+    verifyInstalledDependencyPatch(bitsRoot, dependencyPatch.manifest);
+    console.log(
+      `Explicit consumer-root Bits UI ${dependencyPatch.receipt.version} patch ${dependencyPatch.receipt.sha256} applied.`,
+    );
     for (const dependency of [
       "tailwindcss",
       "@tailwindcss/vite",

@@ -1,5 +1,15 @@
 # Package exports
 
+The Notebook support patch retains all public exports. Stable custom status
+mounts, Explorer reveal-focus ownership, themed Button foreground and visible
+column fitting are included together from the independently verified Notebook
+source candidate. Publication requires the combined source and packed-consumer
+gates; unrelated unfinished feature and release candidates remain preserved.
+The editor-association matcher consumes registry `minimatch@^11.0.3`, excluding
+the globparts-amplification advisory affecting older majors. Matching,
+validation and specificity retain the existing public behavior; the packed
+production audit keeps its existing fail-closed policy.
+
 Version 0.6.0 consumes the consolidated transcript, footer and presentation
 Changesets through the normal release-version command. Existing public import
 paths remain available; package publication still requires the verified archive.
@@ -7,7 +17,9 @@ Every runtime dependency uses a valid semver version or range, including the
 exact qualified Vaul Svelte prerelease rather than a floating distribution tag.
 
 Root development tooling consumes `@lapismd/spec-validator` at `^0.2.0` from
-npm. That pin stays outside the published package graph.
+npm. That pin stays outside the published package graph. The release test
+script also covers the packed npm environment helper; that helper is not part
+of the published package graph.
 
 The additive `./forms/file-path-input` export and Forms barrel expose FilePathInput and its props; Workspace Settings exports quantity and filePicker metadata without changing existing persisted field kinds.
 
@@ -23,6 +35,10 @@ from published archives. Packed acceptance exercises the new public footer,
 queue and XML context exports in cold development and production consumers.
 The same public archive acceptance covers versioned sent-comment edits, valid
 timestamp metadata and docked MarkdownComposer toolbar teardown/remount.
+
+The additive `./shadcn/canvas-table` family exports CanvasTable, its host-neutral
+row, command and props types, and documented token names. Canvas Table authoring
+fixtures remain excluded from the published package; consumer adoption is separate.
 
 The focused `shadcn/tag-list` family exports TagList and its item/props types.
 Strict source consumers cover the same existing wildcard export boundary.
@@ -159,6 +175,45 @@ Release inputs retain only changesets not already represented in the published
 changelog. Historical workspace integration must not reintroduce consumed
 changesets or repeat their version bumps and release notes.
 
+Current published release: npm Core **0.7.3** contains the captured JSON, Swipe
+teardown and Problems Escape repairs plus the authorized tracked Bits patch.
+Source PR #42 and version PR #45 are merged. The version head and merged release
+source each pass all 11 protected CI checks; clean packed-consumer validation,
+trusted publication, registry-byte/integrity verification, npm signatures and
+source-bound SLSA provenance pass. The package tag and GitHub release point to
+`1ff36f37c165a3496be4826be48b048fc812e38e`. Its corrected Shell acceptance uses
+the documented immediate cleanup action after selection, preserving the separate
+cancellable scheduled-dismissal contract and its assertions. Exact identities
+and retained failure history are in
+[the publication evidence](../records/2026-10-31-shell-preview-readiness.md#verified-073-publication).
+
+Remaining acceptance belongs to the final registry cohorts in the consuming
+repositories. Core's remaining dependency backlog is removal of the temporary
+patch after the upstream registry and complete acceptance gates below pass.
+
+[Bits UI PR #2264](https://github.com/huntabyte/bits-ui/pull/2264) has
+passing primary checks and awaits maintainer merge and an actual npm release.
+The user authorizes a temporary tracked pnpm patch against released Bits UI
+2.20.2 while that upstream release is unavailable. The shared patch MUST retain
+the existing Link Preview timer/listener and Slider teardown corrections and add
+the exact identical-container FocusScope guard from owner commit `692fbdf5`.
+Every application or package-test root MUST explicitly configure the same
+version-bound patch and freeze its lockfile; Core's published pnpm metadata does
+not propagate into downstream installations. Both retained-source release and
+prepared local archive profiles MUST ship the checksum-bound patch and
+installation/removal provenance with their public artifacts. Remove the
+patch only after a released dependency contains all retained fixes and complete
+source/public-consumer acceptance passes without it. Qualification with the
+explicit temporary patch MUST rerun the exact
+32-case Linux family boundary, complete nonvisual/package qualification and
+protected source/version PR checks before publication. Prepared owner archives
+MUST NOT satisfy the registry gate. Commands, counts and retained cross-browser
+limits are in [the original repair record](../records/2026-10-31-required-reader-swipe-release.md).
+Historical preparation archives preserve source evidence; they do not satisfy
+the separate final registry-consumer gate.
+The [temporary patch record](../records/2026-10-31-temporary-bits-patch.md)
+retains exact registry identities, source snapshots and before/after receipts.
+
 **Requirement.** Design Core MUST be packable as a public versioned source artifact whose manifest uses semver for runtime dependencies, and release automation MUST stop for manual bootstrap until the npm package exists.
 
 The user-approved 2026-10-11 packed-audit exception MAY accept only
@@ -177,9 +232,9 @@ and workspace audits remain unchanged.
 
 ### Acceptance details
 
-- Mira must resolve through a published npm semver dependency that admits compatible pre-1.0 patch releases; Bits UI MUST resolve from `^2.19.5` or a compatible range retaining its Scroll Area and text-selection teardown fixes; optional search tooling remains outside the normal validation dependency graph.
+- Mira must resolve through the published npm range `~0.1.2`, which admits compatible pre-1.0 patch releases; the authorized temporary Bits UI patch MUST bind released `2.20.2`, retaining its Scroll Area and text-selection teardown fixes; optional search tooling remains outside the normal validation dependency graph.
 - Published development tooling dependencies must use npm semver ranges; pull requests and pushes to `main` must run the complete nonvisual check suite before the full and production-only dependency audits, using GitHub Actions that do not depend on the deprecated Node.js 20 action runtime.
-- The tarball must omit repository-only files and tolerate bounded npm registry visibility delay during post-publication verification.
+- The tarball must omit repository-only files and tolerate bounded npm metadata and released-tarball visibility delays during post-publication verification; each tarball retry must use a clean consumer, and unrelated install failures, integrity failures and signature/provenance failures must remain fatal.
 - Package checks must pack source even when its version is already published; registry and local archives must prepare rune modules and declarations, preserve public import names, and pass cold Svelte dependency prebundling plus bound Composer Input handle teardown with declared dependencies and zero Svelte diagnostics; the clean packed production graph must pass its independent audit or the recorded advisory-specific KaTeX exception.
 
 ## DC-PKG-010 — Diff exports
@@ -212,3 +267,7 @@ Workspace sidebar and bottom-panel imports are also exercised with both states,
 retaining the default PanelToggle button and fixed standard icon without Tailwind.
 
 The FileTypeIcon wildcard family uses the framework-neutral MIT `material-file-icons` development-only asset source pinned to 2.4.0; it adds no React dependency or consumer source scan.
+
+Structured filters add the focused shadcn/filter-builder export and Filter compatibility re-export; Canvas Table adds inference and filtering types. Public additions remain source-consumer compatible and require packed verification after UI approval (DC-SHA-069–074).
+
+The implemented focused Filter Builder source entry point and Filter re-export share one implementation and a strict source-consumer check. Package version and registry dependency ranges remain unchanged during UI review; packed qualification is explicitly deferred.

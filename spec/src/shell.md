@@ -1,5 +1,9 @@
 # Shell
 
+The Bits UI 2.20.2 dependency intake retains native combobox semantics for panel
+selectors and the existing focus, selected-panel and completed-pointer-admission
+assertions. The authorized dependency patch does not change Shell ownership.
+
 The App Shell owns application structure and responsive layout while consumers own navigation and domain state.
 
 ## Public surface coverage
@@ -16,6 +20,14 @@ The App Shell owns application structure and responsive layout while consumers o
 
 ## DC-SHELL-001 — Shared Shell invariants
 
+Catalog interactions after closing a portalled selector wait for pointer
+hit-testing to return to the owned sidebar control. Selection acceptance also
+proves physical portal removal and restored selector focus, then uses the public
+immediate dismissal for consumer-forced cleanup. Scheduled preview dismissal
+remains cancellable when owned pointer/focus returns; earlier departure and
+short-hover phases verify that separate grace-period contract. A listbox leaving
+the accessibility tree alone does not prove that its exit transition has finished.
+
 **Requirement.** Shell contracts MUST own responsive application structure and transient layout state while leaving routing, domain data, and persistence adapters to consumers.
 
 ### Acceptance details
@@ -27,6 +39,10 @@ The App Shell owns application structure and responsive layout while consumers o
 
 ## DC-SHELL-002 — App Shell
 
+Catalog preview acceptance distinguishes edge departure, short-hover
+cancellation and selection-followed dismissal. Each phase retains its inline
+presentation, geometry and preview-state assertions independently.
+
 **Requirement.** The App Shell family MUST compose root, toolbar, navigation, main, body, sidebars, and responsive controls through documented compound parts.
 
 ### Acceptance details
@@ -34,7 +50,7 @@ The App Shell owns application structure and responsive layout while consumers o
 - The intended content pane, rather than the page or translated mobile stage, must own scrolling when the bounded-shell composition is used; `Sidebar.Body scrollable={false}` must retain bounded flex geometry while allowing a child chat or editor to own the only scroll viewport.
 - Body regions must support the documented scrollbar modes and an explicit non-main semantic element for embedded shell content, while compact and reference compositions preserve shell radius, bounded extension points, and component-owned presentation styling, including token-driven default padding on the shared main Toolbar, and nested roots must resolve responsive geometry without ancestor mode, dragging or minimum-main rules altering their lanes, controls or main surface.
 - Arbitrary same-side sidebars must support deterministic priority and structural ordering, independent persisted geometry, transparent rail borders and resize indicators in expanded, hover, preview and dragging states, per-panel previews, and exact main-surface replacement that restores inline automatically; keyboard resize focus MUST remain visible, and consumer hide/show transitions MUST retain the controller's closed state with zero layout width or restore an open panel at its retained width.
-- One compound `SurfaceLayer` must own covered bounds, logical-direction observation, dismissal, focus and inert restoration, transient panel suspension, mobile placement outside inert lane subtrees, active-lane mobile hosting, opt-in root mobile hosting for whole-stage overlays, teardown that removes live teleported nodes without reattaching removed nodes, and configured leading allowance across desktop and mobile, while explicit-controller toggles and public controller types remain consumer-safe under `exactOptionalPropertyTypes`.
+- One compound `SurfaceLayer` must own covered bounds, logical-direction observation, dismissal, latest-target focus restoration without reading retired owner props, inert restoration, transient panel suspension, mobile placement outside inert lane subtrees, active-lane mobile hosting, opt-in root mobile hosting for whole-stage overlays, teardown that removes live teleported nodes without reattaching removed nodes, and configured leading allowance across desktop and mobile, while explicit-controller toggles and public controller types remain consumer-safe under `exactOptionalPropertyTypes`.
 
 ## DC-SHELL-003 — Shell Guidance
 

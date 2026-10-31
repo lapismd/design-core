@@ -5,6 +5,11 @@ import {
 } from "@lapismd/spec-validator";
 
 const shadcnChapters = {
+  "canvas-table": [
+    "spec/src/shadcn/data-and-feedback.md",
+    "spec/src/shadcn/structured-filters.md",
+  ],
+  "filter-builder": ["spec/src/shadcn/structured-filters.md"],
   "file-type-icon": ["spec/src/shadcn/data-and-feedback.md"],
   "author-card": ["spec/src/shadcn/data-and-feedback.md"],
   "reference-chip": ["spec/src/shadcn/data-and-feedback.md"],
@@ -179,6 +184,10 @@ export default defineConfig(headingRequirements(), {
       ],
       rules: [
         {
+          pattern: "^patches/",
+          chapters: ["spec/src/architecture.md", "spec/src/packages.md"],
+        },
+        {
           pattern: "^src/spec/.*\\.mdx$",
           chapters: ["spec/src/storybook-catalog.md"],
         },
@@ -267,7 +276,7 @@ export default defineConfig(headingRequirements(), {
         },
       ],
       protected: [
-        "^(?:src/shared/|src/(?:styles|theme|storybook)\\.css$|src/themes/|src/spec/|\\.storybook/|\\.github/(?:actions|workflows)/|\\.env\\.example$|\\.gitignore$|scripts/|packages/[^/]+/src/|docs/agent/|AGENTS\\.md$|spec/(?:book\\.toml|public-surfaces\\.json)$|spec-validator\\.config\\.mjs$|package\\.json$|pnpm-lock\\.yaml$|pnpm-workspace\\.yaml$|turbo\\.json$|svelte\\.|vite\\.|vitest\\.|playwright\\.|tsconfig)",
+        "^(?:patches/|src/shared/|src/(?:styles|theme|storybook)\\.css$|src/themes/|src/spec/|\\.storybook/|\\.github/(?:actions|workflows)/|\\.env\\.example$|\\.gitignore$|scripts/|packages/[^/]+/src/|docs/agent/|AGENTS\\.md$|spec/(?:book\\.toml|public-surfaces\\.json)$|spec-validator\\.config\\.mjs$|package\\.json$|pnpm-lock\\.yaml$|pnpm-workspace\\.yaml$|turbo\\.json$|svelte\\.|vite\\.|vitest\\.|playwright\\.|tsconfig)",
       ],
     },
   },

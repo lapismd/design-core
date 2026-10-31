@@ -1,7 +1,12 @@
 <script lang="ts">
   import Transcript from "./Transcript.svelte";
+  import { tick } from "svelte";
   import type { TranscriptItem } from "./model.js";
-  let { view = "document" }: { view?: "document" | "classic" } = $props();
+  let {
+    view = "document",
+    delayedScroll = false,
+  }: { view?: "document" | "classic"; delayedScroll?: boolean } = $props();
+  let frame = $state<HTMLDivElement | null>(null);
   let busy = $state(false);
   let expanded = $state(false);
   let items = $state<TranscriptItem[]>(
@@ -48,6 +53,15 @@
       },
     ];
   }
+  async function resize() {
+    expanded = !expanded;
+    await tick();
+    // Browsers can deliver the preceding jump's scroll event after layout grew.
+    if (delayedScroll)
+      frame
+        ?.querySelector('[data-ui-part="scroll-area-viewport"]')
+        ?.dispatchEvent(new Event("scroll"));
+  }
 </script>
 
 <div class="controls">
@@ -55,9 +69,9 @@
     >{busy ? "Finish session" : "Run session"}</button
   >
   <button onclick={append}>Append response</button>
-  <button onclick={() => (expanded = !expanded)}>Resize captured output</button>
+  <button onclick={resize}>Resize captured output</button>
 </div>
-<div class="frame">
+<div class="frame" bind:this={frame}>
   <Transcript
     {items}
     {view}

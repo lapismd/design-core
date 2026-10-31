@@ -35,3 +35,17 @@ export const EmptyDraft = `<script lang="ts">
 {#if visible}
   <CommentComposer bind:value onRemove={() => { visible = false; }} />
 {/if}`;
+
+export const Lifecycle = `<script lang="ts">
+  import { tick } from "svelte";
+  import { CommentComposer } from "@lapismd/design-core/chat";
+  let value = $state("");
+  let shown = $state(true);
+  async function replace() {
+    shown = false;
+    await tick();
+    shown = true;
+  }
+</script>
+<button type="button" onclick={replace}>Replace composer</button>
+{#if shown}<CommentComposer bind:value />{/if}`;

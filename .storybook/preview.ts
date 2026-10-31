@@ -68,6 +68,7 @@ const preview: Preview = {
               "Actions and content",
               "Data and feedback",
               "Disclosure and navigation",
+              "Structured filters",
               "Forms",
               "Layout",
               "Overlays",

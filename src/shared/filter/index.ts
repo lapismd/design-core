@@ -33,3 +33,26 @@ export {
   type QueryParserOptions,
 } from "./filter-query/index.js";
 export * from "./filter-query/filters.js";
+
+export {
+  FilterBuilder,
+  createFilterState,
+  filterConditionCount,
+  normalizeFilterState,
+  validateFilterState,
+  filterOperators,
+  filterTypeLabels,
+} from "../shadcn/filter-builder/index.js";
+export type {
+  FilterBuilderProps,
+  FilterField,
+  FilterGroup,
+  FilterNode,
+  FilterCondition,
+  FilterOperator,
+  FilterOption,
+  FilterType as StructuredFilterType,
+  FilterValue,
+  FilterValueEditorProps,
+  StructuredFilterState,
+} from "../shadcn/filter-builder/index.js";

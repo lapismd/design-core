@@ -1,0 +1,21 @@
+:root {
+  --ui-canvas-table-background: var(--background);
+  --ui-canvas-table-foreground: var(--foreground);
+  --ui-canvas-table-header: var(--muted);
+  --ui-canvas-table-gutter: var(--muted);
+  --ui-canvas-table-muted: var(--muted-foreground);
+  --ui-canvas-table-border: var(--border);
+  --ui-canvas-table-selection: color-mix(
+    in srgb,
+    var(--primary) 16%,
+    transparent
+  );
+  --ui-canvas-table-accent: var(--primary);
+  --ui-canvas-table-search: var(--warning, #b45309);
+  --ui-canvas-table-font: var(--font-mono, ui-monospace, monospace);
+  --ui-canvas-table-column-1: var(--chart-1, #c2410c);
+  --ui-canvas-table-column-2: var(--chart-2, #15803d);
+  --ui-canvas-table-column-3: var(--chart-3, #1d4ed8);
+  --ui-canvas-table-column-4: var(--chart-4, #a21caf);
+  --ui-canvas-table-column-5: var(--chart-5, #a16207);
+}

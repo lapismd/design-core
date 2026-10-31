@@ -407,6 +407,14 @@
     {
       "name": "./forms/file-path-input",
       "requirement": "DC-FORM-049"
+    },
+    {
+      "name": "./shadcn/canvas-table",
+      "requirement": "DC-SHA-066"
+    },
+    {
+      "name": "./shadcn/filter-builder",
+      "requirement": "DC-SHA-069"
     }
   ],
   "catalog": [
@@ -1141,6 +1149,14 @@
     {
       "name": "Shadcn/Forms/Radio Group",
       "requirement": "DC-SHA-065"
+    },
+    {
+      "name": "Shadcn/Data Display/Canvas Table",
+      "requirement": "DC-SHA-066"
+    },
+    {
+      "name": "Shadcn/Forms/Filter Builder",
+      "requirement": "DC-SHA-069"
     }
   ]
 }

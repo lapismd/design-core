@@ -179,6 +179,11 @@ Published CLI script arguments are passed directly through pnpm without an extra
 
 ## DC-GOV-010 — Published dependency resolution
 
+The October 31 user-authorized Bits UI 2.20.2 exception permits only the tracked
+version-bound dependency patch under DC-PKG-009. Patch inputs map to the owning
+Architecture and Package chapters. Qualification uses the normal frozen registry
+graph with that explicit root patch and retains its provenance and checksums.
+
 **Requirement.** Repository agent guidance MUST keep external LapisMD repositories outside this pnpm workspace and consume published dependencies through npm semver ranges.
 
 ### Acceptance details
@@ -196,3 +201,10 @@ mention appearance, removal controls and host profile previews additionally map
 to shadcn/data-and-feedback.
 
 The FileTypeIcon family maps to DC-SHA-064 in the Shadcn data-and-feedback chapter, with a governed standalone catalog and native token metadata.
+
+Canvas Table maps its family and catalog title to DC-SHA-066–068 in Shadcn Data
+and feedback; the explicit package export and public surface map share that ownership.
+
+Structured Filter Builder source maps to shadcn/structured-filters.md (DC-SHA-069–074); Canvas Table filtering extends that chapter and its existing data-and-feedback contract. Verification stays In progress through UI review and deferred full qualification.
+
+The actual shadcn/filter-builder package export and Shadcn/Forms/Filter Builder catalog group map to DC-SHA-069. Canvas Table filter scenarios remain within its existing primary catalog title.

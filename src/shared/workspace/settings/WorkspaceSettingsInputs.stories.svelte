@@ -20,7 +20,7 @@
     const input = canvas.getByRole("spinbutton", { name: "Delay" });
     await expect(input).toHaveValue(1);
     await userEvent.click(
-      canvas.getByRole("button", { name: /^Delay unit: / }),
+      canvas.getByRole("combobox", { name: /^Delay unit: / }),
     );
     await userEvent.click(
       await within(document.body).findByRole("option", { name: /^ms$/ }),

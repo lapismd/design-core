@@ -1,9 +1,11 @@
 # Architecture
 
-Release 0.7.0 qualification consumes registry Mira `~0.1.1` and Visual Delta `0.0.9`,
-without temporary archive resolution. Catalog tooling uses patched Storybook
+Release 0.7.0 qualification consumed registry Mira `~0.1.1` and Visual Delta `0.0.9`,
+without temporary archive resolution. The source manifest requires published Mira
+`~0.1.2`. Catalog tooling uses patched Storybook
 10.6.3 and Vite 6.4.5 ranges. CI remains nonvisual; screenshot comparison is an
-explicit local command only.
+explicit local command only. Release tests cover the helper that drops
+pnpm-only `npm_config_*` values before packed npm commands.
 The Drawer runtime pins the already qualified `vaul-svelte@1.0.0-next.7` preview
 instead of its floating `next` tag; its resolved runtime graph is unchanged.
 
@@ -28,11 +30,19 @@ prepared output, while the local archive profile does not publish releases.
 Both archive profiles prepare browser CSS before packing. Tailwind remains an
 internal authoring tool; published styles require no consumer compiler or scan.
 
+Release 0.7.3 retains the qualified public runtime/export surface
+and frozen registry graph. Its Shell acceptance uses the existing immediate
+preview API for consumer-forced cleanup, while pointer/focus retention keeps the
+separate scheduled-dismissal contract cancellable. This private catalog
+correction adds no runtime adapter, dependency or public API.
+
 Design Core is a shared presentation and controller library. Consumer applications retain domain policy, persistence, transport, routing, and environment adapters. Component ownership and public-layer classification are maintained in the canonical [`component inventory`](component-inventory.md).
 
-Bits UI resolves from the published `^2.19.5` range, including upstream Scroll
-Area resize and text-selection teardown fixes. Runtime diagnostics remain fatal
-in Storybook browser tests, including dependency-originated diagnostics.
+Bits UI resolves from the published `^2.20.2` range, including upstream Scroll
+Area resize and text-selection teardown fixes. The authorized temporary pnpm
+patch binds 2.20.2 explicitly at each installation root and retains the three
+qualified lifecycle/focus repairs. Runtime diagnostics remain fatal in Storybook
+browser tests, including dependency-originated diagnostics.
 
 The development catalog and Storybook test host share one dependency-preparation
 inventory, including the exact Lucide imports discovered in catalog sources.
@@ -97,6 +107,11 @@ workspace graphs, while packed consumers audit their own dependency resolution.
 
 **Requirement.** Linked LapisMD packages MUST be fixed in their owning repository and rebuilt before Design Core validates the consumer integration.
 
+The October 31 user-authorized Bits UI exception uses a tracked reproducible
+pnpm patch over released 2.20.2, with retained owner provenance and explicit
+consumer-root configuration under DC-PKG-009. The public component contract
+remains unchanged.
+
 ### Acceptance details
 
 - Design Core must not vendor or patch a sibling package to conceal an upstream defect.
@@ -136,3 +151,11 @@ patched; every other finding remains blocking and complete evidence is retained.
 Community presentation additions remain source-owned generic families with no runtime or consumer imports; the focused Forms quantity entry point shares the existing Forms implementation.
 
 FileTypeIcon is a generic Shadcn-layer primitive. Diff composes its public family; application-specific state and file access remain host-owned.
+
+Canvas Table is a project-authored Shadcn Data Display family. Its viewport,
+geometry and interactions own no application state: CSV parsing, storage, data
+mutations and history remain host responsibilities (DC-SHA-066–068).
+
+Structured filters (DC-SHA-069–074) place the standalone builder in Shadcn, with Filter re-exporting it and Canvas Table owning generic matching of supplied cells. The builder imports neither higher layers nor application contracts. UI-first focused verification is explicitly authorized; broad qualification waits for user UI approval.
+
+The structured filter UI review slice preserves the Filter query-language FilterType enum by exporting the standalone union as StructuredFilterType through that higher-layer facade. Matching remains exclusively in Canvas Table; the standalone public entry point has no table import.

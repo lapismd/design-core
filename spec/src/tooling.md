@@ -61,8 +61,10 @@ checks; the command performs no publication or service installation.
 The same preparation compiles global CSS without source scanning, audits all
 prepared CSS and Svelte style blocks, and copies referenced assets and licenses.
 The cold archive consumer verifies both development and production styling
-without a Tailwind installation or Vite plugin, using `npm install --omit=peer`
-to exclude the legacy Mira dependency's automatic Tailwind peer installation.
+without a Tailwind installation or Vite plugin. During the authorized Bits UI
+patch, its clean pnpm root explicitly stages the archive's checksum-verified
+patch and disables automatic peer installation. Dependency pnpm metadata alone
+does not configure the consumer. Required peers remain explicitly declared.
 Required fixture peers such as Svelte are declared explicitly; the normal
 dependency tree's remaining Mira peer is tracked separately from CSS compilation.
 Both local and release archives reject remaining component utility selectors.
@@ -129,7 +131,18 @@ The staged compiler configuration keeps declaration output inside the archive
 fixture. `packages:pack` checks every exported runtime and type target, then
 starts a fresh Vite/Svelte consumer and exercises Button and reactive CodeEditor
 without consumer aliases or dependency overrides. The release artifact job
-installs Chromium before this check.
+installs Chromium before this check. Packed `npm` commands drop pnpm-only
+`npm_config_*` values (`verify-deps-before-run`, `npm-globalconfig`,
+`overrides`, `link-workspace-packages`, and `_jsr-registry`) so the consumer
+install does not warn about unknown npm configuration.
+The cold runtime fixture verifies the public patch's package, version, digest,
+three-file target scope and explicit root configuration. Invalid or missing
+patch artifacts fail the package gate before installation.
+After installation, the fixture resolves Bits from the actual installed Core
+package and verifies the declared version and all three patched file hashes.
+Packed development/production acceptance retains restricted-picker initial
+search focus, immediate option focus, keyboard selection, physical popup
+removal and restored trigger focus alongside the existing full emoji search.
 The clean packed production graph is audited independently of workspace
 overrides; complete evidence is retained under `.release/` and blocks the gate
 unless it meets the explicit KaTeX policy in DC-PKG-009.
@@ -165,7 +178,7 @@ artifact, including when a reported finding fails the gate.
 - Machine-readable output must be stable enough for repository automation.
 - Tooling failures must report an actionable source path or command.
 - Specification commands must retain separate validation, build, spec-first, index, search, and serve entry points through the configured shared CLI.
-- Release-safe aggregate gates must use bootstrap-safe validation and bounded post-publication npm visibility waits; cold Storybook tests must prebundle parser dependencies, lifecycle-sensitive checks must run serially, cold runs must have bounded windows, formatting must exclude `.local/` artifacts while preserving evidence, and packaging must reject local cache artifacts.
+- Release-safe aggregate gates must use bootstrap-safe validation and bounded post-publication npm metadata and released-tarball visibility waits with clean install attempts and fatal integrity/signature failures; cold Storybook tests must prebundle parser dependencies, lifecycle-sensitive checks must run serially, cold runs must have bounded windows, formatting must exclude `.local/` artifacts while preserving evidence, and packaging must reject local cache artifacts.
 
 ## DC-TOOL-004 — Offline documentation
 
@@ -208,3 +221,11 @@ run it before the shared validator. Runtime modules import only generated data.
 Radio Group conversion maps upstream FieldLabel group relationships to the
 existing semantic `data-slot="field-label"` boundary (DC-SHA-065), preserving
 focus behavior without publishing utility marker selectors.
+
+Strict source-consumer checks include Canvas Table optional props, stable row IDs,
+commands, token names and the selection-actions snippet. Focused browser acceptance
+uses the existing Shadcn pointer lane and workspace-derived Storybook ports.
+
+Structured filter UI review runs focused source-consumer, unit, story, browser, formatting and specification checks only. The user explicitly defers pnpm checks, all repository-wide suites, static Storybook and packed-consumer qualification until UI approval; durable evidence records that gate (DC-SHA-074).
+
+The UI review adds focused family import/physical-line audits and a strict standalone/table public source consumer; the existing Canvas Table browser files remain in the focused regression surface. These checks do not authorize the deferred full lanes.
