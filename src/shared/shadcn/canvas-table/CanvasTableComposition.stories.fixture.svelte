@@ -1,5 +1,7 @@
 <script lang="ts">
   import { untrack } from "svelte";
+  import ChevronRight from "@lucide/svelte/icons/chevron-right";
+  import ChevronDown from "@lucide/svelte/icons/chevron-down";
   import { Button } from "../button/index.js";
   import {
     CanvasTable,
@@ -55,9 +57,13 @@
   {#if context.column === 0}<Button
       variant="ghost"
       size="icon"
-      aria-label={"Expand row " + context.rowNumber}
+      aria-label={(context.expanded ? "Collapse row " : "Expand row ") +
+        context.rowNumber}
       aria-expanded={context.expanded}
-      onclick={context.toggleExpanded}>▸</Button
+      onclick={context.toggleExpanded}
+      >{#if context.expanded}<ChevronDown
+          aria-hidden="true"
+        />{:else}<ChevronRight aria-hidden="true" />{/if}</Button
     >{/if}
   <span>{context.value}</span>
 {/snippet}

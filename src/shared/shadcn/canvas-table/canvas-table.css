@@ -169,6 +169,13 @@
 .canvas-table__canvas {
   z-index: 1;
 }
+.canvas-table__frozen-gutter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  pointer-events: none;
+}
 .canvas-table__row-controls,
 .canvas-table__overlays {
   z-index: 4;

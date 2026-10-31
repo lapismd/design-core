@@ -20,6 +20,7 @@ describe("Canvas Table maintained source boundaries", () => {
     "canvas-table-interactions.spec.ts",
     "canvas-table-composition.spec.ts",
     "canvas-table-scrollarea.spec.ts",
+    "canvas-table-gutter.spec.ts",
   ])("keeps %s below 300 lines", (file) => {
     const source = readFileSync(
       new URL("../../../../tests/shadcn/" + file, import.meta.url),

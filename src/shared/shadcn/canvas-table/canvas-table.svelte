@@ -77,6 +77,12 @@
       if (tableState.canvas === node) tableState.canvas = null;
     };
   }
+  function holdGutter(node: HTMLCanvasElement) {
+    tableState.gutterCanvas = node;
+    return () => {
+      if (tableState.gutterCanvas === node) tableState.gutterCanvas = null;
+    };
+  }
   $effect(() => {
     paintTable(ctx);
   });
@@ -181,6 +187,11 @@
         class="canvas-table__canvas"
         aria-hidden="true"
         {@attach holdCanvas}
+      ></canvas>
+      <canvas
+        class="canvas-table__frozen-gutter"
+        aria-hidden="true"
+        {@attach holdGutter}
       ></canvas>
       <RowControls {ctx} />
       <Overlays {ctx} {nav} {keyboard} />

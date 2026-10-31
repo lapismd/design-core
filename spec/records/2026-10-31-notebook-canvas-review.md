@@ -127,3 +127,43 @@ table/input/WorkspaceShell stories; see its owning evidence record for exact
 Docker commands. Reviews remain on 10429 (shared) and 10529 (Notebook); 10329 was
 preserved. Keep new stories visual-pending, and resume the remaining migration
 qualification only within the existing UI-approval gate; no push, merge or publish.
+
+## UI feedback: Lucide fixtures and rapid horizontal scrolling (31 October)
+
+Implemented and focused-tested; UI approval and full qualification remain pending.
+The common composable-table fixture now uses decorative Lucide right/down chevrons
+and matching Expand/Collapse names in all four stories. Rich rows/headers previously
+depended on scroll-handler state to clip their left edge; compositor scrolling
+could advance before that state updated and briefly paint text over the gutter.
+A bounded decorative canvas copies the existing gutter bitmap into a fixed layer
+above rich content, below row controls and scrollbars. It shares geometry, theme,
+selection and DPR paint; it adds no focus target or second accessible grid.
+
+The browser regression deliberately suppresses scroll handlers while sweeping
+horizontal offsets in both directions, checking fixed bounds, opaque backing paint,
+stacking and stale scroll-state invariance without screenshot comparison. New
+helper/test files are 29/53 physical lines, included in the focused 300-line audit.
+
+- `pnpm spec:search "fixed gutter"`: QMD returned the owning CanvasTable contract.
+  `pnpm view @lapismd/spec-validator version`: latest 0.2.0, already installed.
+  `pnpm exec spec-validator doctor`: 10 passed, 1 script-alias warning, 0 failures.
+- `pnpm test:shadcn:pointer canvas-table-gutter`: baseline 1 failed (missing fixed
+  plane), exact post-fix rerun 1 passed/0 failed with the delayed-handler assertions.
+- `pnpm test:storybook src/shared/shadcn/canvas-table/CanvasTableComposition.stories.svelte --reporter=json --outputFile=.local/lucide-stories.json`:
+  baseline 1 failed/3 passed (missing disclosure SVG), exact rerun 4 passed/0 failed.
+- `pnpm test:unit src/shared/shadcn/canvas-table`: 134 passed/0 failed, including
+  the maintained-source and new test size guards.
+- `pnpm check:source-consumer`: 0 errors/0 warnings.
+- `pnpm test:storybook src/shared/shadcn/canvas-table --reporter=json --outputFile=.local/gutter-family.json`:
+  all 24 affected stories passed, 0 failed; existing a11y checks retained.
+- `pnpm test:shadcn:pointer canvas-table`: fresh Storybook, all 31 browser tests
+  passed/0 failed, including both ScrollArea strategies, resize/edit alignment,
+  selection, wrapping, filter focus, independent instances and teardown.
+- `pnpm spec:check`: all 3 specification lanes passed; icons audit passed.
+- `pnpm exec prettier --check src/shared/shadcn/canvas-table/CanvasTableComposition.stories.fixture.svelte src/shared/shadcn/canvas-table/CanvasTableComposition.stories.svelte src/shared/shadcn/canvas-table/canvas-table-paint-gutter.ts src/shared/shadcn/canvas-table/canvas-table-paint.ts src/shared/shadcn/canvas-table/canvas-table.svelte src/shared/shadcn/canvas-table/canvas-table.css src/shared/shadcn/canvas-table/canvas-table-context.ts src/shared/shadcn/canvas-table/canvas-table-state.svelte.ts src/shared/shadcn/canvas-table/canvas-table-behavior.spec.ts src/shared/shadcn/canvas-table/canvas-table-governance.spec.ts tests/shadcn/canvas-table-gutter.spec.ts`:
+  all matched files passed.
+
+The shared review on 10429 hot-reloads these changes; 10329 stays untouched.
+Notebook archive refresh and acceptance are recorded in its owning progress file.
+No broad qualification, visual baseline mutation or upstream delivery is authorized
+by this feedback; the full migration's existing UI approval gate remains active.

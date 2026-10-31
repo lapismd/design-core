@@ -9,6 +9,7 @@ import {
 import { columnLetter, HEADER_HEIGHT, SORT_HIT } from "./canvas-table-text.js";
 import { readTableTheme } from "./canvas-table-theme.js";
 import { clip, fill, paintText } from "./canvas-table-paint-text.js";
+import { paintFrozenGutter } from "./canvas-table-paint-gutter.js";
 
 export function paintTable(context: TableContext): void {
   const s = context.state;
@@ -227,4 +228,5 @@ export function paintTable(context: TableContext): void {
       theme.search,
     );
   if (tableTarget(context) === "cell") outline(s.active, theme.accent);
+  paintFrozenGutter(canvas, s.gutterCanvas, layout.gutter, scale);
 }

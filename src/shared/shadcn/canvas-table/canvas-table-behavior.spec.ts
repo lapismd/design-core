@@ -40,6 +40,7 @@ function context(patch: Partial<CanvasTableProps> = {}): TableContext {
     epoch: 0,
     scroller: null,
     canvas: null,
+    gutterCanvas: null,
     menu: null,
     drag: null,
   };

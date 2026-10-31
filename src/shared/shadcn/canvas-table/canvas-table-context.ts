@@ -25,6 +25,7 @@ export interface TableState {
   epoch: number;
   scroller: HTMLDivElement | null;
   canvas: HTMLCanvasElement | null;
+  gutterCanvas: HTMLCanvasElement | null;
   menu: { x: number; y: number } | null;
   drag: {
     kind: "resize" | "cell" | "row" | "column";

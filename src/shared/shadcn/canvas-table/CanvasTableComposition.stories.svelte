@@ -18,9 +18,14 @@
   name="Rich data table"
   play={async ({ canvasElement }) => {
     const c = within(canvasElement);
-    await userEvent.click(
-      await c.findByRole("button", { name: "Expand row 1" }),
+    const expand = await c.findByRole("button", { name: "Expand row 1" });
+    await expect(expand.querySelector("svg")).toHaveClass(
+      "lucide-chevron-right",
     );
+    await userEvent.click(expand);
+    await expect(
+      c.getByRole("button", { name: "Collapse row 1" }).querySelector("svg"),
+    ).toHaveClass("lucide-chevron-down");
     await expect(c.getByText("Details for Record 1")).toBeVisible();
     await userEvent.click(c.getByRole("button", { name: "Close row details" }));
     await expect(c.queryByText("Details for Record 1")).not.toBeInTheDocument();

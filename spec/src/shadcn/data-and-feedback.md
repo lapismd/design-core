@@ -216,7 +216,7 @@ calendars and diagrams MUST resolve without filesystem or MIME inspection.
 
 - Stable host row IDs, controlled column widths and optional filtered row order MUST drive fixed headers, column letters, sheet row numbers (including the fixed header as 1 and retaining source positions after filtering), bounded canvas painting and virtualized grid semantics.
 - Cell editing, range selection, address navigation, resize/autofit, wrapping, column colours, sorting, menus, and toolbar commands MUST retain the reference sheet behavior; all data mutations and undo/redo MUST remain host callbacks, and unavailable actions MUST be disabled or omitted.
-- Independent numbered and checkbox gutters, cell editors and sort overlays MUST share one geometry model, keep body editors below fixed headers and track scrolling and resizing in the next rendering frame without positional transition lag.
+- Independent numbered and checkbox gutters, cell editors and sort overlays MUST share one geometry model, keep body editors below fixed headers and track scrolling and resizing in the next rendering frame without positional transition lag, with an opaque fixed gutter paint layer above rich content even before scroll handlers execute.
 - Native CSS and documented `--ui-canvas-table-*` tokens MUST support both themes, keyboard focus and multiple independent instances; new stories MUST remain `visual-pending` without baseline changes.
 
 ## DC-SHA-067 — Canvas Table row selection
@@ -274,3 +274,5 @@ Its only scrolling viewport MUST compose the public ScrollArea in both axes; sty
 ## Composable-table implementation evidence
 
 DC-SHA-075–076 review implementation includes bounded rich overlays, measured detail rows, native radio keyboard callbacks and explicit focus return before closing an active detail. Focused evidence remains separate from UI approval and full qualification.
+
+Composable table stories use decorative Lucide right/down disclosure chevrons with matching Expand/Collapse labels; the fixed gutter layer reuses existing gutter paint, remains hidden from assistive technology, and leaves row controls and scrollbars operable (DC-SHA-066, DC-SHA-075).

@@ -189,3 +189,5 @@ explicitly deferred until UI approval. Archive preparation for the isolated
 review is not packed-consumer qualification or publication.
 
 CanvasTable filter application and focus recovery use the same public ScrollArea viewport as cell navigation; replacing the scroller MUST NOT introduce nested scrolling or change controlled filter draft/application semantics (DC-SHA-072).
+
+Filtered rich-cell and header content MUST remain below the frozen gutter paint during compositor scrolling, including while scroll-handler state is stale, without intercepting filter, row-selection or editing controls (DC-SHA-072).

@@ -232,3 +232,5 @@ Structured filter UI review runs focused source-consumer, unit, story, browser, 
 The UI review adds focused family import/physical-line audits and a strict standalone/table public source consumer; the existing Canvas Table browser files remain in the focused regression surface. These checks do not authorize the deferred full lanes.
 
 Focused strict source-consumer coverage includes ScrollArea viewportProps attributes and event currentTarget typing, alongside CanvasTable composition; native/styled browser checks retain scroll, resize, keyboard and teardown assertions without screenshot comparison (DC-SHA-038, DC-SHA-075).
+
+CanvasTable rapid-scroll regression coverage delays scroll listeners deliberately and checks fixed opaque gutter coverage, stacking and bounds without screenshot comparison, alongside Lucide disclosure state interactions (DC-SHA-066, DC-SHA-075).
