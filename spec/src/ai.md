@@ -243,6 +243,11 @@ wrapper/keyboard behavior.
 
 ## DC-AI-017 — Emoji Picker
 
+Catalog keyboard acceptance sends navigation from verified focus and completes
+after actual portal closure and restored trigger focus. A selection callback
+may precede portal teardown; acceptance MUST wait for the actual absence before
+checking restored focus.
+
 **Requirement.** The experimental Emoji Picker boundary MUST retain compatibility with the shared keyboard-accessible Emoji Picker under DC-SHA-054.
 
 ### Acceptance details

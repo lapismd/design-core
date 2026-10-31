@@ -566,6 +566,9 @@
     await expect(firstFileIcon).toBeInTheDocument();
     const expandedProjectToggleRect = projectToggle.getBoundingClientRect();
     const expandedFirstFileIconRect = firstFileIcon!.getBoundingClientRect();
+    await waitFor(() =>
+      expect(getComputedStyle(filesToggle).pointerEvents).not.toBe("none"),
+    );
     await userEvent.click(filesToggle);
     await expect(filesToggle).toHaveFocus();
     await expect(filesSidebar).toHaveAttribute("data-state", "collapsed");

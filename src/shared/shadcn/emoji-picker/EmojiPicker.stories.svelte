@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, within } from "storybook/test";
+  import { expect, userEvent, within, waitFor } from "storybook/test";
   import { EmojiPicker, DEFAULT_EMOJIS } from "./index.js";
   import * as sources from "./EmojiPicker.example-sources.js";
   import { emojiLibrary } from "./emoji-picker.stories.helpers.js";
@@ -111,12 +111,20 @@
     );
     const body = within(document.body);
     const search = body.getByRole("textbox", { name: "Search emoji" });
-    await userEvent.type(search, "{ArrowDown}");
-    await expect(
-      body.getByRole("button", { name: "React with thumbs up" }),
-    ).toHaveFocus();
+    const first = await body.findByRole("button", {
+      name: "React with thumbs up",
+    });
+    await waitFor(() => expect(search).toHaveFocus());
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(first).toHaveFocus();
     await userEvent.keyboard("{ArrowRight}{Enter}");
     await expect(canvas.getByRole("status")).toHaveTextContent("❤️");
+    await waitFor(() => {
+      expect(search).not.toBeInTheDocument();
+      expect(
+        canvas.getByRole("button", { name: "Pick an emoji" }),
+      ).toHaveFocus();
+    });
   }}
 >
   {#snippet template()}

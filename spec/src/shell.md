@@ -16,6 +16,10 @@ The App Shell owns application structure and responsive layout while consumers o
 
 ## DC-SHELL-001 — Shared Shell invariants
 
+Catalog interactions after closing a portalled selector wait for pointer
+hit-testing to return to the owned sidebar control. A listbox leaving the
+accessibility tree alone does not prove that its exit transition has finished.
+
 **Requirement.** Shell contracts MUST own responsive application structure and transient layout state while leaving routing, domain data, and persistence adapters to consumers.
 
 ### Acceptance details

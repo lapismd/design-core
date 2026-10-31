@@ -214,11 +214,10 @@ Table comments MUST appear between their referenced row and the following row,
 with unchanged source order and aligned column widths. Comment context MUST
 retain the complete captured row and its exact selection independently of the
 original source's later availability, using Mira's public table surface.
-Fenced code MUST use the captured code/patch reader's syntax, inline line
-comments and middle-fold controls. Mapping a fenced body into its captured
-Markdown MUST preserve the original anchor identity and UTF-16 selection.
-Fences labelled `diff` or `patch` MUST use the existing patch reader so additions,
-deletions and hunk headers retain their distinct presentation.
+Fenced code MUST use captured-reader syntax, inline line comments and middle-fold controls.
+Mapping a fenced body into captured Markdown MUST preserve original anchor identity and UTF-16 selection.
+Fences labelled `diff` or `patch` MUST retain the patch reader's distinct additions, deletions and hunk headers.
+Captured JSON MUST distinguish property names, strings and scalar values without parser diagnostics, preserving numbered prefixes and exact UTF-16 anchors.
 Initially collapsed tool groups MUST reveal their captured child tools when
 opened in either conversation view, including with an externally owned
 TranscriptController. Inner tool disclosures MUST remain independently usable.

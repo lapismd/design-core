@@ -38,6 +38,9 @@ text.
 
 ## DC-FILTER-003 — Search Filter Bar
 
+Catalog pointer acceptance waits for CodeMirror's measured popup placement and
+checks the live option rectangle against the owner document's topmost hit target.
+
 **Requirement.** The Search Filter Bar family MUST compose text search, structured filters, commands, and controlled query changes from one reusable accessible query input.
 
 ### Acceptance details

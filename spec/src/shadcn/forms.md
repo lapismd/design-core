@@ -34,6 +34,10 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 
 Catalog selection awaits the expected emoji button while the lazy grid loads;
 the search input can mount before selectable results are available.
+Keyboard acceptance verifies initial search focus before dispatching navigation
+without an extra pointer click, then retains the immediate option-focus
+assertion. Completion checks that the captured input leaves the document and
+that focus returns to the trigger.
 
 **Requirement.** Emoji Picker MUST provide host-neutral full and restricted emoji selection through the shared Popover or an inline panel, with native CSS and lazy-loaded Emoji Mart data.
 

@@ -171,6 +171,17 @@ Release inputs retain only changesets not already represented in the published
 changelog. Historical workspace integration must not reintroduce consumed
 changesets or repeat their version bumps and release notes.
 
+Current release backlog: npm Core 0.7.2 lacks the captured JSON and Swipe teardown
+repairs. Their next patch candidate passes the exact owner regressions, but its
+Linux RestrictedReactions boundary remains blocked by the upstream FocusScope
+defect. [Bits UI PR #2264](https://github.com/huntabyte/bits-ui/pull/2264) has
+passing primary checks and awaits maintainer merge and an actual npm release.
+Consume that released dependency through a normal range, then rerun the exact
+32-case Linux family boundary, complete nonvisual/package qualification and
+protected source/version PR checks before publication. Prepared owner archives
+MUST NOT satisfy the registry gate. Commands, counts and retained cross-browser
+limits are in [the pending patch record](../records/2026-10-31-required-reader-swipe-release.md).
+
 **Requirement.** Design Core MUST be packable as a public versioned source artifact whose manifest uses semver for runtime dependencies, and release automation MUST stop for manual bootstrap until the npm package exists.
 
 The user-approved 2026-10-11 packed-audit exception MAY accept only
