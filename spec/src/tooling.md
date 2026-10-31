@@ -61,8 +61,10 @@ checks; the command performs no publication or service installation.
 The same preparation compiles global CSS without source scanning, audits all
 prepared CSS and Svelte style blocks, and copies referenced assets and licenses.
 The cold archive consumer verifies both development and production styling
-without a Tailwind installation or Vite plugin, using `npm install --omit=peer`
-to exclude the legacy Mira dependency's automatic Tailwind peer installation.
+without a Tailwind installation or Vite plugin. During the authorized Bits UI
+patch, its clean pnpm root explicitly stages the archive's checksum-verified
+patch and disables automatic peer installation. Dependency pnpm metadata alone
+does not configure the consumer. Required peers remain explicitly declared.
 Required fixture peers such as Svelte are declared explicitly; the normal
 dependency tree's remaining Mira peer is tracked separately from CSS compilation.
 Both local and release archives reject remaining component utility selectors.
@@ -133,6 +135,14 @@ installs Chromium before this check. Packed `npm` commands drop pnpm-only
 `npm_config_*` values (`verify-deps-before-run`, `npm-globalconfig`,
 `overrides`, `link-workspace-packages`, and `_jsr-registry`) so the consumer
 install does not warn about unknown npm configuration.
+The cold runtime fixture verifies the public patch's package, version, digest,
+three-file target scope and explicit root configuration. Invalid or missing
+patch artifacts fail the package gate before installation.
+After installation, the fixture resolves Bits from the actual installed Core
+package and verifies the declared version and all three patched file hashes.
+Packed development/production acceptance retains restricted-picker initial
+search focus, immediate option focus, keyboard selection, physical popup
+removal and restored trigger focus alongside the existing full emoji search.
 The clean packed production graph is audited independently of workspace
 overrides; complete evidence is retained under `.release/` and blocks the gate
 unless it meets the explicit KaTeX policy in DC-PKG-009.

@@ -24,6 +24,13 @@ policy.
 
 ## Install
 
+This release requires the user-authorized temporary `bits-ui@2.20.2` pnpm patch.
+Each installation root must explicitly configure the identical patch and frozen
+lockfile; Design Core's dependency metadata does not propagate that setup.
+Follow [the packaged patch contract](patches/README.md) and its checksum manifest
+before qualifying runtime behavior. The patch retains Link Preview and Slider
+teardown safety and keyboard focus during repeated FocusScope mounting.
+
 ```sh
 pnpm add @lapismd/design-core svelte
 ```

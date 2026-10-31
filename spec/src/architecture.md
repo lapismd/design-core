@@ -32,9 +32,11 @@ internal authoring tool; published styles require no consumer compiler or scan.
 
 Design Core is a shared presentation and controller library. Consumer applications retain domain policy, persistence, transport, routing, and environment adapters. Component ownership and public-layer classification are maintained in the canonical [`component inventory`](component-inventory.md).
 
-Bits UI resolves from the published `^2.19.5` range, including upstream Scroll
-Area resize and text-selection teardown fixes. Runtime diagnostics remain fatal
-in Storybook browser tests, including dependency-originated diagnostics.
+Bits UI resolves from the published `^2.20.2` range, including upstream Scroll
+Area resize and text-selection teardown fixes. The authorized temporary pnpm
+patch binds 2.20.2 explicitly at each installation root and retains the three
+qualified lifecycle/focus repairs. Runtime diagnostics remain fatal in Storybook
+browser tests, including dependency-originated diagnostics.
 
 The development catalog and Storybook test host share one dependency-preparation
 inventory, including the exact Lucide imports discovered in catalog sources.
@@ -98,6 +100,11 @@ workspace graphs, while packed consumers audit their own dependency resolution.
 ## DC-ARCH-005 — Local source ownership
 
 **Requirement.** Linked LapisMD packages MUST be fixed in their owning repository and rebuilt before Design Core validates the consumer integration.
+
+The October 31 user-authorized Bits UI exception uses a tracked reproducible
+pnpm patch over released 2.20.2, with retained owner provenance and explicit
+consumer-root configuration under DC-PKG-009. The public component contract
+remains unchanged.
 
 ### Acceptance details
 

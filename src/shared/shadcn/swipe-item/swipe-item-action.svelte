@@ -32,8 +32,9 @@
   disabled={disabled || state.disabled}
   data-ui-part="action"
   onclick={(event) => {
+    const shouldClose = closeOnSelect;
     onclick?.(event);
-    if (!event.defaultPrevented && closeOnSelect) state.close();
+    if (!event.defaultPrevented && shouldClose) state.close();
   }}
 >
   {@render children?.()}

@@ -24,6 +24,7 @@
     "CHANGELOG.md",
     "LICENSE.md",
     "README.md",
+    "patches",
     "spec/src/styling-and-themes.md"
   ],
   "publishConfig": {
@@ -44,7 +45,7 @@
     "changeset": "changeset",
     "test:unit": "vitest run --project unit",
     "test:turbo": "node --test scripts/concurrency.test.mjs scripts/turbo-cache-report.test.mjs",
-    "test:release": "node --test scripts/design-core-release.test.mjs scripts/npm-command-env.test.mjs scripts/packed-audit-policy.test.mjs scripts/prepare-styles.test.mjs",
+    "test:release": "node --test scripts/design-core-release.test.mjs scripts/npm-command-env.test.mjs scripts/packed-audit-policy.test.mjs scripts/prepare-styles.test.mjs scripts/public-dependency-patch.test.mjs",
     "test:storybook": "vitest run --project storybook",
     "test:storybook:watch": "vitest --project storybook",
     "spec:build": "spec-validator build",
@@ -146,7 +147,7 @@
     "@lucide/svelte": "^1.21.0",
     "@tanstack/svelte-virtual": "^3.13.39",
     "@types/luxon": "^3.4.2",
-    "bits-ui": "^2.19.5",
+    "bits-ui": "^2.20.2",
     "chrono-node": "^2.10.1",
     "clsx": "^2.1.1",
     "codemirror-lang-mermaid": "^0.5.0",
@@ -337,6 +338,9 @@
       "ignoreGhsas": [
         "GHSA-gcqx-w48m-w2h4"
       ]
+    },
+    "patchedDependencies": {
+      "bits-ui@2.20.2": "patches/bits-ui@2.20.2.patch"
     }
   }
 }

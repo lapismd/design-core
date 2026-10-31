@@ -88,6 +88,9 @@ test("named participant groups retain keyboard tooltips and their default size",
   await group
     .getByRole("button", { name: "1 more participants: Sam Kim", exact: true })
     .focus();
+  await expect(
+    page.getByRole("tooltip", { name: "Alex Morgan", exact: true }),
+  ).toHaveCount(0);
   await expect(page.getByRole("tooltip")).toHaveText("Sam Kim");
 });
 

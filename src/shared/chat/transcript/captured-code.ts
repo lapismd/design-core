@@ -3,8 +3,8 @@ import { language, StreamLanguage } from "@codemirror/language";
 import {
   javascript,
   typescript,
-  json,
 } from "@codemirror/legacy-modes/mode/javascript";
+import { json } from "@codemirror/lang-json";
 import { python } from "@codemirror/legacy-modes/mode/python";
 import { java } from "@codemirror/legacy-modes/mode/clike";
 import { rust } from "@codemirror/legacy-modes/mode/rust";
@@ -36,7 +36,7 @@ export function fileCodeLanguage(path?: string): Extension {
   if (language.id === "javascript" || language.id === "jsx")
     return StreamLanguage.define(javascript);
   if (language.id === "rust") return StreamLanguage.define(rust);
-  if (language.id === "json") return StreamLanguage.define(json);
+  if (language.id === "json") return json();
   if (language.id === "python") return StreamLanguage.define(python);
   if (language.id === "java" || path?.toLowerCase().endsWith(".java"))
     return StreamLanguage.define(java);

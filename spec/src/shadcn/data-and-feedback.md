@@ -1,5 +1,8 @@
 # Shadcn / Data and feedback
 
+Keyboard-group acceptance preserves immediate focus transfer and observes the
+previous closed tooltip's actual teardown before asserting one current tooltip.
+
 Data and feedback primitives communicate state without taking ownership of consumer data or application workflows.
 
 ## Public surface coverage

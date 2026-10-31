@@ -1,5 +1,8 @@
 # Workspace / Components
 
+Settings quantity-unit acceptance uses the dependency's native combobox role
+and retains the same field labels, selected units and canonical-value checks.
+
 Sidebar and bottom-panel visibility controls compose PanelToggle under DC-SHA-053
 with its default button styling and a fixed standard icon. Mobile/settings
 visibility icons compose PanelToggleIcon. Controller actions, hints and drag

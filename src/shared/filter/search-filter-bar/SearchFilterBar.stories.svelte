@@ -166,12 +166,14 @@
     expect(detail!.getBoundingClientRect().height).toBeGreaterThan(
       detailLineHeight * 1.5,
     );
-    const optionRect = firstOption!.getBoundingClientRect();
-    const hit = canvasElement.ownerDocument.elementFromPoint(
-      optionRect.left + optionRect.width / 2,
-      optionRect.top + optionRect.height / 2,
-    );
-    expect(firstOption!.contains(hit)).toBe(true);
+    await waitFor(() => {
+      const optionRect = firstOption!.getBoundingClientRect();
+      const hit = canvasElement.ownerDocument.elementFromPoint(
+        optionRect.left + optionRect.width / 2,
+        optionRect.top + optionRect.height / 2,
+      );
+      expect(firstOption!.contains(hit)).toBe(true);
+    });
     await userEvent.keyboard("{Enter}");
     await waitFor(() => {
       expect(canvas.getByRole("status")).toHaveTextContent(/payee/i);

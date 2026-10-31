@@ -96,6 +96,7 @@ export class SwipeItemState {
     return side;
   });
 
+  #destroyed = false;
   #root: HTMLDivElement | null = null;
   #content: HTMLDivElement | null = null;
   #actions: Record<SwipeItemSide, SwipeItemActionsRegistration | null> = {
@@ -188,15 +189,17 @@ export class SwipeItemState {
   }
 
   setOpen(open: SwipeItemOpen): void {
-    if (this.disabled && open !== null) return;
+    if (this.#destroyed || (this.disabled && open !== null)) return;
     this.props.setOpen(open);
   }
 
   toggle(side: SwipeItemSide): void {
+    if (this.#destroyed) return;
     this.setOpen(this.open === side ? null : side);
   }
 
   close(options: { focusSide?: SwipeItemSide } = {}): void {
+    if (this.#destroyed) return;
     const focusSide = options.focusSide;
     this.setOpen(null);
     if (focusSide) {
@@ -484,6 +487,8 @@ export class SwipeItemState {
   };
 
   destroy(): void {
+    if (this.#destroyed) return;
+    this.#destroyed = true;
     this.#clearGesture();
     this.#clearWheelSession({ settle: false, clearOffset: true });
     if (this.#suppressClickTimer !== null && this.#root) {
