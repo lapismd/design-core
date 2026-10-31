@@ -133,3 +133,26 @@
   inset: 0;
   pointer-events: none;
 }
+
+.canvas-table__filter-popover {
+  --ui-popover-width: var(--ui-filter-builder-width);
+  --ui-popover-padding: 0.75rem;
+  --ui-popover-background: var(--ui-filter-builder-background, var(--popover));
+  max-width: calc(100svw - 1rem);
+  max-height: min(75svh, 42rem);
+  overflow: auto;
+  background: var(--ui-filter-builder-background, var(--popover));
+}
+.canvas-table__filter-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 0.25rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 0.6875rem;
+}
+.canvas-table__toolbar [data-filter-active="true"] {
+  color: var(--primary);
+}

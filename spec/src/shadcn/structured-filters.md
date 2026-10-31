@@ -164,3 +164,7 @@ tests. User UI approval is a separate gate before broad qualification.
 No deferred lane may be described as passed. Full qualification requires the
 recorded UI approval and final exact-command evidence; screenshot comparison and
 baseline updates stay outside scope throughout.
+
+## UI review implementation boundary
+
+The first UI implementation exports the FilterType union from the focused Shadcn boundary and aliases it as StructuredFilterType through Filter, preserving Filter's existing FilterType enum. FilterBuilder itself renders no outer overlay; Canvas Table supplies Popover and the Filter rows trigger. The concrete token defaults and copy-pasteable source examples are colocated with both families. Verification remains In progress until UI approval and subsequent full qualification.

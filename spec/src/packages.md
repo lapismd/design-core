@@ -269,3 +269,5 @@ retaining the default PanelToggle button and fixed standard icon without Tailwin
 The FileTypeIcon wildcard family uses the framework-neutral MIT `material-file-icons` development-only asset source pinned to 2.4.0; it adds no React dependency or consumer source scan.
 
 Structured filters add the focused shadcn/filter-builder export and Filter compatibility re-export; Canvas Table adds inference and filtering types. Public additions remain source-consumer compatible and require packed verification after UI approval (DC-SHA-069–074).
+
+The implemented focused Filter Builder source entry point and Filter re-export share one implementation and a strict source-consumer check. Package version and registry dependency ranges remain unchanged during UI review; packed qualification is explicitly deferred.

@@ -111,3 +111,34 @@ pointer state and theme subscriptions are instance-owned and disposed on unmount
 All handwritten family JS/TS/Svelte files, including authoring and tests, stay
 at or below 300 physical lines. The CSV plugin remains unchanged; adoption is
 a separate consumer task.
+
+## Structured filters and column types
+
+```tsx
+<script lang="ts">
+  import { CanvasTable, inferCanvasTableColumnTypes } from "@lapismd/design-core/shadcn/canvas-table";
+  import { createFilterState } from "@lapismd/design-core/shadcn/filter-builder";
+  import "@lapismd/design-core/styles.css";
+  const rows = [
+    { id: "header", cells: ["Name", "Amount"] },
+    { id: "a", cells: ["Alpha", "125"] },
+    { id: "b", cells: ["Beta", "75"] },
+  ];
+  let value = $state(createFilterState());
+  const types = inferCanvasTableColumnTypes(rows, { columnCount: 2 });
+</script>
+<div style="height: 420px">
+  <CanvasTable {rows} columnWidths={[200, 120]}
+    filtering={{ value, onValueChange: (next) => { value = next; } }} />
+</div>
+<p>Detected types: {types.join(", ")}</p>
+```
+
+`filtering` is opt-in and controlled. Optional `columns` supplies stable IDs,
+column indices, labels, explicit types and enum choices. Without metadata, IDs
+are positional; hosts moving columns should provide stable mappings.
+`sampleSize` defaults to 100 source body rows. Change `inferenceKey` to re-detect;
+normal edits, sorting and external visibility do not retype active modes.
+Auto fields offer a Field type override and Auto reset. Explicit metadata types
+lock that choice. Filtering intersects host visibleRowIds without changing their
+order, source numbers, fixed header or hidden checkbox selections.

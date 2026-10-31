@@ -206,3 +206,5 @@ Canvas Table maps its family and catalog title to DC-SHA-066–068 in Shadcn Dat
 and feedback; the explicit package export and public surface map share that ownership.
 
 Structured Filter Builder source maps to shadcn/structured-filters.md (DC-SHA-069–074); Canvas Table filtering extends that chapter and its existing data-and-feedback contract. Verification stays In progress through UI review and deferred full qualification.
+
+The actual shadcn/filter-builder package export and Shadcn/Forms/Filter Builder catalog group map to DC-SHA-069. Canvas Table filter scenarios remain within its existing primary catalog title.

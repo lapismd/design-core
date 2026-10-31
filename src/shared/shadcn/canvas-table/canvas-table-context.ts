@@ -33,6 +33,9 @@ export interface TableState {
 }
 
 export interface TableContext {
+  filterFields?:
+    | (() => readonly import("./canvas-table-filter-match.js").CanvasTableResolvedField[])
+    | undefined;
   props: () => CanvasTableProps;
   layout: () => TableLayout;
   state: TableState;

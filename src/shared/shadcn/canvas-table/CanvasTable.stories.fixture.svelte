@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { createFilterState } from "../filter-builder/index.js";
+  let structuredValue = $state(createFilterState());
   import { untrack } from "svelte";
   import { Button } from "../button/index.js";
   import { CanvasTable } from "./index.js";
@@ -15,6 +17,7 @@
     rowSelection = true,
     empty = false,
     wide = false,
+    structuredFilters = false,
     readOnly = false,
   }: {
     count?: number;
@@ -22,6 +25,7 @@
     rowSelection?: boolean;
     empty?: boolean;
     wide?: boolean;
+    structuredFilters?: boolean;
     readOnly?: boolean;
   } = $props();
   let rows = $state<CanvasTableRow[]>(
@@ -166,6 +170,14 @@
     {#if mounted}
       <CanvasTable
         {rows}
+        filtering={structuredFilters
+          ? {
+              value: structuredValue,
+              onValueChange: (next) => {
+                structuredValue = next;
+              },
+            }
+          : undefined}
         columnWidths={widths}
         visibleRowIds={filtered}
         headerRow={header}

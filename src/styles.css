@@ -40,6 +40,7 @@
 @import "./shared/shadcn/collapsible/collapsible.tokens.css";
 @import "./shared/shadcn/column-canvas/column-canvas.tokens.css";
 @import "./shared/shadcn/canvas-table/canvas-table.tokens.css";
+@import "./shared/shadcn/filter-builder/filter-builder.tokens.css";
 @import "./shared/shadcn/panel-toggle/panel-toggle.tokens.css";
 @import "./shared/shadcn/checkbox/checkbox.tokens.css";
 @import "./shared/shadcn/card/card.tokens.css";

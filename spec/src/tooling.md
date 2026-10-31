@@ -227,3 +227,5 @@ commands, token names and the selection-actions snippet. Focused browser accepta
 uses the existing Shadcn pointer lane and workspace-derived Storybook ports.
 
 Structured filter UI review runs focused source-consumer, unit, story, browser, formatting and specification checks only. The user explicitly defers pnpm checks, all repository-wide suites, static Storybook and packed-consumer qualification until UI approval; durable evidence records that gate (DC-SHA-074).
+
+The UI review adds focused family import/physical-line audits and a strict standalone/table public source consumer; the existing Canvas Table browser files remain in the focused regression surface. These checks do not authorize the deferred full lanes.

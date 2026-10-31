@@ -157,3 +157,5 @@ geometry and interactions own no application state: CSV parsing, storage, data
 mutations and history remain host responsibilities (DC-SHA-066–068).
 
 Structured filters (DC-SHA-069–074) place the standalone builder in Shadcn, with Filter re-exporting it and Canvas Table owning generic matching of supplied cells. The builder imports neither higher layers nor application contracts. UI-first focused verification is explicitly authorized; broad qualification waits for user UI approval.
+
+The structured filter UI review slice preserves the Filter query-language FilterType enum by exporting the standalone union as StructuredFilterType through that higher-layer facade. Matching remains exclusively in Canvas Table; the standalone public entry point has no table import.

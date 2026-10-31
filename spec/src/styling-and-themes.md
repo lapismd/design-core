@@ -336,3 +336,5 @@ Canvas Table imports documented `--ui-canvas-table-*` defaults through the share
 stylesheet and resolves those tokens into its canvas paint theme (DC-SHA-066).
 
 Structured Filter Builder uses native CSS and --ui-filter-builder-background, --ui-filter-builder-border, --ui-filter-builder-radius, --ui-filter-builder-gap and --ui-filter-builder-width tokens, inheriting existing control, focus and overlay tokens (DC-SHA-069–074).
+
+The Filter Builder token defaults are popover background, border, radius, a 0.5rem condition gap and clamp(22rem, 45svw, 48rem) suggested panel width. Table popovers apply viewport bounds and reuse the inherited nested portal contexts.

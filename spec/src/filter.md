@@ -85,3 +85,5 @@ checks the live option rectangle against the owner document's topmost hit target
 ## Standalone structured editing
 
 Filter re-exports the Shadcn-owned FilterBuilder and structured types (DC-SHA-069–074). Use it for nested All/Any/None structured condition panels without query-language input. PowerSearch and SearchFilterBar retain their existing contracts. Domain query execution remains host-owned.
+
+The implemented Filter Builder facade exports its type union as StructuredFilterType, preserving the existing FilterType query enum and the existing SearchFilterBar and PowerSearch contracts. Standalone examples demonstrate direct mounting without Canvas Table.

@@ -2,6 +2,7 @@
   import { Button } from "../button/index.js";
   import { Toggle } from "../toggle/index.js";
   import * as Tooltip from "../tooltip/index.js";
+  import Filter from "./canvas-table-filter.svelte";
   import Glyph from "./canvas-table-glyph.svelte";
   import { applyCommand, tableCommands } from "./canvas-table-commands.js";
   import type { TableContext } from "./canvas-table-context.js";
@@ -134,6 +135,13 @@
       </Tooltip.Root>
     {/each}
   </Tooltip.Provider>
+  {#if config.filtering}
+    <Filter
+      config={config.filtering}
+      fields={ctx.filterFields?.() ?? []}
+      beforeOpen={nav.commitEdit}
+    />
+  {/if}
   {#if config.rowSelection && config.selectionActions}
     <div class="canvas-table__selection-actions">
       {@render config.selectionActions(selected)}

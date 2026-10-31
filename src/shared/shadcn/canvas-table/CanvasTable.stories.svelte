@@ -29,7 +29,7 @@
 </script>
 
 <Story name="Basic">
-  {#snippet template()}<Demo rowSelection={false} />{/snippet}
+  {#snippet template()}<Demo rowSelection={false} structuredFilters />{/snippet}
 </Story>
 <Story
   name="Selection"
@@ -119,7 +119,7 @@
   {/snippet}
 </Story>
 <Story name="Wide table">
-  {#snippet template()}<Demo wide />{/snippet}
+  {#snippet template()}<Demo wide structuredFilters />{/snippet}
 </Story>
 <Story name="Empty">
   {#snippet template()}<Demo empty />{/snippet}

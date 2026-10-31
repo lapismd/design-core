@@ -244,3 +244,5 @@ calendars and diagrams MUST resolve without filesystem or MIME inspection.
 ## Structured filter extension
 
 Canvas Table optional structured filtering and bounded type inference are specified in [Structured filters](structured-filters.md), DC-SHA-072–074. This additive UI-first slice preserves DC-SHA-066–068 and defers broad qualification until explicit user UI approval.
+
+The review slice connects the controlled filtering configuration to the existing Canvas Table layout and accessible row controls; it preserves the existing source-row numbering and next-frame sort overlay tests.

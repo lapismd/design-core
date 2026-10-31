@@ -327,7 +327,8 @@
     "./forms/avatar-picker": "./src/shared/forms/avatar-picker/index.ts",
     "./forms/quantity-input": "./src/shared/forms/quantity-input/index.ts",
     "./forms/file-path-input": "./src/shared/forms/file-path-input/index.ts",
-    "./shadcn/canvas-table": "./src/shared/shadcn/canvas-table/index.ts"
+    "./shadcn/canvas-table": "./src/shared/shadcn/canvas-table/index.ts",
+    "./shadcn/filter-builder": "./src/shared/shadcn/filter-builder/index.ts"
   },
   "pnpm": {
     "overrides": {

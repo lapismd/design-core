@@ -13,6 +13,7 @@
   import { createKeyboard } from "./canvas-table-keyboard.js";
   import { attachScroller } from "./canvas-table-viewport.js";
   import { paintTable } from "./canvas-table-paint.js";
+  import { createCanvasTableFiltering } from "./canvas-table-filter-state.svelte.js";
   import Toolbar from "./canvas-table-toolbar.svelte";
   import RowControls from "./canvas-table-row-controls.svelte";
   import Accessibility from "./canvas-table-accessibility.svelte";
@@ -35,8 +36,15 @@
     return (text: string) =>
       context?.measureText(text).width ?? text.length * 7.8;
   });
-  const layout = $derived(createLayout(props, state.wrap, measure));
-  const ctx: TableContext = { props: () => props, layout: () => layout, state };
+  const filtering = createCanvasTableFiltering(() => props);
+  const effectiveProps = $derived({ ...props, visibleRowIds: filtering.ids });
+  const layout = $derived(createLayout(effectiveProps, state.wrap, measure));
+  const ctx: TableContext = {
+    props: () => effectiveProps,
+    layout: () => layout,
+    state,
+    filterFields: () => filtering.fields,
+  };
   const nav = createNavigation(ctx);
   const pointer = createPointer(ctx, nav);
   const keyboard = createKeyboard(ctx, nav);

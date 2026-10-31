@@ -1,3 +1,4 @@
+import type { CanvasTableFiltering } from "./canvas-table-filter-types.js";
 import type { Snippet } from "svelte";
 
 export type CanvasTableRowId = string | number;
@@ -30,6 +31,8 @@ export interface CanvasTableProps {
   columnWidths: readonly number[];
   /** Filtered body order. Omit to show all rows; the fixed header is excluded. */
   visibleRowIds?: readonly CanvasTableRowId[] | undefined;
+  /** Opt in to controlled structured filtering of provided cells. */
+  filtering?: CanvasTableFiltering | undefined;
   headerRow?: boolean | undefined;
   rowNumbers?: boolean | undefined;
   rowSelection?: boolean | undefined;
