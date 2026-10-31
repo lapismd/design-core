@@ -26,7 +26,7 @@
 
   let props: CanvasTableProps = $props();
   const instanceId = $props.id();
-  const tableState = createTableState();
+  const tableState = createTableState(() => props);
   const measure = $derived.by(() => {
     void tableState.epoch;
     const canvas = tableState.canvas;

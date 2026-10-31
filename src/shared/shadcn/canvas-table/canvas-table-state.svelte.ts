@@ -1,7 +1,12 @@
 import { SvelteMap } from "svelte/reactivity";
 import type { TableState } from "./canvas-table-context.js";
 
-export function createTableState(): TableState {
+import type { CanvasTableProps } from "./canvas-table-types.js";
+
+export function createTableState(
+  getProps: () => Partial<CanvasTableProps> = () => ({}),
+): TableState {
+  const display = $state({ wrap: false, colours: false });
   const state = $state<TableState>({
     detailHeights: new SvelteMap(),
     active: null,
@@ -10,8 +15,22 @@ export function createTableState(): TableState {
     editing: false,
     draft: "",
     selectOnEdit: false,
-    wrap: false,
-    colours: false,
+    get wrap() {
+      return getProps().wrapText ?? display.wrap;
+    },
+    set wrap(value) {
+      const props = getProps();
+      if (props.wrapText === undefined) display.wrap = value;
+      props.onWrapTextChange?.(value);
+    },
+    get colours() {
+      return getProps().columnColours ?? display.colours;
+    },
+    set colours(value) {
+      const props = getProps();
+      if (props.columnColours === undefined) display.colours = value;
+      props.onColumnColoursChange?.(value);
+    },
     left: 0,
     top: 0,
     width: 0,

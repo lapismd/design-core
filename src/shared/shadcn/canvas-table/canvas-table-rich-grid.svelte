@@ -152,6 +152,11 @@
           id={instanceId + "-cell-" + (entry.number - 1) + "-" + col}
           class:canvas-table__fallback-cell={!c?.cell}
           class="canvas-table__rich-cell"
+          style:white-space={ctx.state.wrap ? "pre-wrap" : "nowrap"}
+          style:overflow-wrap={ctx.state.wrap ? "anywhere" : undefined}
+          style:color={ctx.state.colours
+            ? `var(--ui-canvas-table-column-${(col % 5) + 1})`
+            : undefined}
           style:left="{rect.x}px"
           style:top="{rect.y}px"
           style:width="{rect.width}px"

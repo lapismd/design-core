@@ -108,7 +108,12 @@
               size="sm"
               variant="outline"
               aria-label={action.label}
-              disabled={action.id === "header" && !config.onHeaderRowChange}
+              disabled={action.id === "header"
+                ? !config.onHeaderRowChange
+                : action.id === "wrap"
+                  ? config.wrapText !== undefined && !config.onWrapTextChange
+                  : config.columnColours !== undefined &&
+                    !config.onColumnColoursChange}
               pressed={action.id === "wrap"
                 ? ctx.state.wrap
                 : action.id === "colours"

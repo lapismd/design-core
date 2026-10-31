@@ -177,3 +177,5 @@ retains the existing multiple checkbox behavior.
 CanvasTable composes Design Core ScrollArea as its only two-axis scrolling viewport. The viewport owns grid semantics, keyboard and pointer handlers, and all layout measurements; it inherits ScrollArea visibility preferences and its native/WebKit strategy. No additional scroll wrapper is needed.
 
 Expanded row details default to the UI sans font (`--font-sans`, with a system fallback). Their horizontal position uses native sticky layout, so scrolling does not wait for a JavaScript translation; hosts can style individual values within their detail snippet.
+
+Hosts replacing the toolbar can control `wrapText` and `columnColours` with their matching `onWrapTextChange` and `onColumnColoursChange` callbacks. Omitting a flag retains local sheet toolbar state. Rich content inherits wrapping and column text colour; child controls keep explicit semantic colours. Wrapping uses the shared four-line geometry limit.

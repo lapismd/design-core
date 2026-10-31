@@ -209,3 +209,30 @@ publication and visual-baseline gates remain in force.
 `pnpm package:local` prepared the combined review archive successfully at version
 0.8.0, SHA256 `ea3afda3a06d35e527e71ab3382f0040ca45de4cf2f746e798d2480f9816fcff`;
 this is temporary isolated review intake, not release/package qualification.
+
+## Review feedback: nested indicators and host display controls
+
+Specified, implemented and focused-tested. UI-approved: pending. Fully-qualified:
+deferred. Command now colours only its direct icon children, so a composed
+Checkbox retains its own foreground. CanvasTable now offers optional controlled
+`wrapText` / `columnColours` and matching callbacks; rich cells inherit presentation
+and wrapping uses the same bounded row geometry. Read-only controlled toolbar
+actions are disabled. New stories remain visual-pending.
+
+All commands use Node 24.10.0 on PATH. Latest registry spec-validator: 0.2.0.
+Doctor: 10 passed, 1 alias warning; QMD search `checkbox` succeeded without fallback.
+
+- `pnpm test:storybook src/shared/shadcn/command/Command.stories.svelte -t NestedCheckboxColours`: before 1 failed/2 skipped (muted tick vs checkbox foreground); after selector fix 1 failed (incorrect test Space key token), then 1 failed (2 ARIA findings in new fixture). Corrected keyboard input and used the public Group child snippet with rowgroup semantics; exact rerun 1 passed/0 failed/2 skipped.
+- `pnpm test:storybook src/shared/shadcn/command src/shared/shadcn/checkbox`: initial new regression 1 failed/14 passed; final 15 passed/0 failed.
+- `pnpm test:unit src/shared/shadcn/canvas-table/canvas-table-display.spec.ts`: before 1 failed/1 passed; after 2 passed/0 failed.
+- `pnpm test:storybook src/shared/shadcn/canvas-table/CanvasTableComposition.stories.svelte -t ControlledDisplay`: 1 passed/0 failed/4 skipped.
+- `pnpm test:unit src/shared/shadcn/canvas-table`: 139 passed/0 failed, including family file-size audit.
+- `pnpm test:storybook src/shared/shadcn/canvas-table src/shared/shadcn/command src/shared/shadcn/checkbox`: cold focused run, 40 passed/0 failed with accessibility retained.
+- `pnpm check:source-consumer`: 0 errors/0 warnings.
+- `pnpm spec:check`: initial 1 acceptance-count finding, then 1 acceptance-form finding, then 1 mapped-chapter finding; final all 3 lanes passed, plus icons audit. No requirements or test assertions were waived.
+- `pnpm exec prettier --write` on changed Svelte/TS source completed; focused check follows below.
+
+Temporary review archive preparation is `pnpm package:local`; this is isolated
+review intake only, not packed-consumer or release qualification. Notebook must
+refresh its checksum record and fresh Docker worker before consumer acceptance.
+No full suites, baselines, push, merge or publication.

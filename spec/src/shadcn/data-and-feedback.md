@@ -278,3 +278,5 @@ DC-SHA-075–076 review implementation includes bounded rich overlays, measured 
 Composable table stories use decorative Lucide right/down disclosure chevrons with matching Expand/Collapse labels; the fixed gutter layer reuses existing gutter paint, remains hidden from assistive technology, and leaves row controls and scrollbars operable (DC-SHA-066, DC-SHA-075).
 
 The disclosure fixture uses the compact 24px icon-xs control and a realistic account-review detail with owner, renewal value, review date, reference and activity; expanded content stays mounted with stable height and horizontal position during scrolling (DC-SHA-075).
+
+CanvasTable display settings MAY be host-controlled through `wrapText` and `columnColours`, with matching change callbacks; omitted flags retain the sheet toolbar's local state. Custom cell content MUST inherit the chosen column colour and wrapping, while the central row geometry accounts for up to four wrapped text lines. Explicit child control colours remain authoritative. Hosts omitting the default toolbar MAY compose their own display toggles.

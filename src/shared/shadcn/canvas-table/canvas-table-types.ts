@@ -38,6 +38,11 @@ export interface CanvasTableProps {
   columns?: readonly CanvasTableColumn[] | undefined;
   /** Stretch the final visible column to fill unused viewport space. */
   fillWidth?: boolean | undefined;
+  /** Controlled display settings; omit to retain the built-in toolbar state. */
+  wrapText?: boolean | undefined;
+  onWrapTextChange?: ((value: boolean) => void) | undefined;
+  columnColours?: boolean | undefined;
+  onColumnColoursChange?: ((value: boolean) => void) | undefined;
   rowHeight?: number | undefined;
   columnHeaderHeight?: number | undefined;
   expandedRowIds?: readonly CanvasTableRowId[] | undefined;

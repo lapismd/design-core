@@ -2,8 +2,12 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, within } from "storybook/test";
   import { CanvasTable } from "./index.js";
+  import DisplayDemo from "./CanvasTableDisplay.stories.fixture.svelte";
   import Demo from "./CanvasTableComposition.stories.fixture.svelte";
-  import { Composable } from "./CanvasTableComposition.example-sources.js";
+  import {
+    Composable,
+    Display,
+  } from "./CanvasTableComposition.example-sources.js";
   const { Story } = defineMeta({
     title: "Shadcn/Data Display/Canvas Table",
     component: CanvasTable,
@@ -67,4 +71,26 @@
     await expect(c.getByLabelText("Selected IDs")).toHaveTextContent(/^$/);
     await expect(radio).not.toBeChecked();
   }}>{#snippet template()}<Demo single optional />{/snippet}</Story
+>
+
+<Story
+  name="Controlled display"
+  parameters={{
+    docs: { source: { code: Display, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvasElement }) => {
+    const c = within(canvasElement);
+    const cell = c.getByRole("gridcell");
+    const height = cell.getBoundingClientRect().height;
+    const colour = getComputedStyle(cell).color;
+    await userEvent.click(c.getByRole("button", { name: "Wrap text" }));
+    await expect(cell.getBoundingClientRect().height).toBeGreaterThan(height);
+    await expect(getComputedStyle(cell).whiteSpace).toBe("pre-wrap");
+    await userEvent.click(c.getByRole("button", { name: "Column colours" }));
+    await expect(getComputedStyle(cell).color).not.toBe(colour);
+    await userEvent.click(c.getByRole("button", { name: "Wrap text" }));
+    await userEvent.click(c.getByRole("button", { name: "Column colours" }));
+    await expect(cell.getBoundingClientRect().height).toBe(height);
+    await expect(getComputedStyle(cell).color).toBe(colour);
+  }}>{#snippet template()}<DisplayDemo />{/snippet}</Story
 >

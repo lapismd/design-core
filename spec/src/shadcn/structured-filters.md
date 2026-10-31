@@ -193,3 +193,5 @@ CanvasTable filter application and focus recovery use the same public ScrollArea
 Filtered rich-cell and header content MUST remain below the frozen gutter paint during compositor scrolling, including while scroll-handler state is stale, without intercepting filter, row-selection or editing controls (DC-SHA-072).
 
 CSS-owned expanded-detail anchoring leaves controlled filter application and row-identity semantics unchanged; filtering and closing details retain the owning grid focus recovery path (DC-SHA-072, DC-SHA-075).
+
+Host-controlled CanvasTable `wrapText` and `columnColours` presentation settings MUST preserve the controlled filter tree, last valid applied conditions, selected IDs and host ordering. Hosts replacing the toolbar may place independent display toggles beside the filter trigger.

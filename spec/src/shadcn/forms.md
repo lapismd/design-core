@@ -66,6 +66,8 @@ completed closure.
 
 **Requirement.** The Command family MUST compose searchable command lists with keyboard navigation, grouping, empty state, selection, and a fixed viewport-contained dialog variant.
 
+Item icon paint MUST target owned direct-child icons; nested controls such as Checkbox MUST retain their own semantic indicator colour.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/command`.

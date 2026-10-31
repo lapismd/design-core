@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor, within } from "storybook/test";
+  import { Checkbox } from "../checkbox/index.js";
   import * as Command from "./index.js";
 
   const { Story } = defineMeta({
@@ -129,5 +130,57 @@
         </Command.Group>
       </Command.List>
     </Command.Dialog>
+  {/snippet}
+</Story>
+
+<Story
+  name="Nested checkbox colours"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const checkbox = canvas.getByRole("checkbox", { name: "Show score" });
+    const icon = checkbox.querySelector("svg")!;
+    await expect(checkbox).toBeChecked();
+    await expect(getComputedStyle(icon).color).toBe(
+      getComputedStyle(checkbox).color,
+    );
+    await userEvent.click(checkbox);
+    await expect(checkbox).not.toBeChecked();
+    await userEvent.keyboard(" ");
+    await expect(checkbox).toBeChecked();
+    await expect(getComputedStyle(checkbox.querySelector("svg")!).color).toBe(
+      getComputedStyle(checkbox).color,
+    );
+  }}
+>
+  {#snippet template()}
+    <Command.Root label="Column visibility">
+      <Command.Input
+        aria-controls="nested-checkbox-list"
+        aria-haspopup="grid"
+        placeholder="Find columns"
+      />
+      <Command.List id="nested-checkbox-list">
+        {#snippet child({ props })}
+          <div {...props} role="grid" aria-label="Column visibility">
+            <Command.Group>
+              {#snippet child({ props: groupProps })}
+                <div {...groupProps} role="rowgroup">
+                  <Command.Item value="score">
+                    {#snippet child({ props: itemProps })}
+                      <div {...itemProps} role="row">
+                        <div role="gridcell">
+                          <Checkbox checked aria-label="Show score" />
+                        </div>
+                        <div role="gridcell">Score</div>
+                      </div>
+                    {/snippet}
+                  </Command.Item>
+                </div>
+              {/snippet}
+            </Command.Group>
+          </div>
+        {/snippet}
+      </Command.List>
+    </Command.Root>
   {/snippet}
 </Story>

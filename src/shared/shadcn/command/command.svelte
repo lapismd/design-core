@@ -323,7 +323,7 @@
         height: calc(var(--spacing) * 4);
       }
       [data-ui-component="command"][data-ui-part="command-item"]
-        svg:not([class*="text-"]) {
+        > svg:not([class*="text-"]) {
         color: var(--muted-foreground);
       }
       :is(
