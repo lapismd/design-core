@@ -331,3 +331,8 @@ retaining the full-width background and ordinary content height. Hosts own
 platform/window values; plugins need no clearance padding.
 
 FileTypeIcon exposes `--ui-file-type-icon-size` (explicit override of the selected preset), named xs/s/md/lg preset tokens (12/14/16/24px, md default) and `--ui-file-type-icon-fallback-color` (`var(--muted-foreground)`). Material artwork retains its original colours; File Listing sets its existing 14px slot through the size token.
+
+Canvas Table imports documented `--ui-canvas-table-*` defaults through the shared
+stylesheet and resolves those tokens into its canvas paint theme (DC-SHA-066).
+
+Structured Filter Builder uses native CSS and --ui-filter-builder-background, --ui-filter-builder-border, --ui-filter-builder-radius, --ui-filter-builder-gap and --ui-filter-builder-width tokens, inheriting existing control, focus and overlay tokens (DC-SHA-069–074).

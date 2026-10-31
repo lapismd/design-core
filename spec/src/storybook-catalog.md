@@ -115,3 +115,7 @@ lazy library mounts; the search input alone does not prove grid readiness.
 
 - Svelte component markup must use Storybook's bundled `tsx` grammar while the catalog has no working Svelte or HTML alias.
 - Specification validation must reject the known plain-text `html`, `svelte`, and `markup` language values in authored MDX and Docs source metadata.
+
+## Structured filter extension
+
+Structured filter specification mirrors follow SUMMARY ordering under Specification/Shadcn. New Filter Builder and table filter scenarios remain visual-pending and run focused before the explicit UI approval gate (DC-SHA-074).

@@ -151,3 +151,9 @@ patched; every other finding remains blocking and complete evidence is retained.
 Community presentation additions remain source-owned generic families with no runtime or consumer imports; the focused Forms quantity entry point shares the existing Forms implementation.
 
 FileTypeIcon is a generic Shadcn-layer primitive. Diff composes its public family; application-specific state and file access remain host-owned.
+
+Canvas Table is a project-authored Shadcn Data Display family. Its viewport,
+geometry and interactions own no application state: CSV parsing, storage, data
+mutations and history remain host responsibilities (DC-SHA-066–068).
+
+Structured filters (DC-SHA-069–074) place the standalone builder in Shadcn, with Filter re-exporting it and Canvas Table owning generic matching of supplied cells. The builder imports neither higher layers nor application contracts. UI-first focused verification is explicitly authorized; broad qualification waits for user UI approval.

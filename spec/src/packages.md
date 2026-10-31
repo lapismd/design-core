@@ -36,6 +36,10 @@ queue and XML context exports in cold development and production consumers.
 The same public archive acceptance covers versioned sent-comment edits, valid
 timestamp metadata and docked MarkdownComposer toolbar teardown/remount.
 
+The additive `./shadcn/canvas-table` family exports CanvasTable, its host-neutral
+row, command and props types, and documented token names. Canvas Table authoring
+fixtures remain excluded from the published package; consumer adoption is separate.
+
 The focused `shadcn/tag-list` family exports TagList and its item/props types.
 Strict source consumers cover the same existing wildcard export boundary.
 
@@ -263,3 +267,5 @@ Workspace sidebar and bottom-panel imports are also exercised with both states,
 retaining the default PanelToggle button and fixed standard icon without Tailwind.
 
 The FileTypeIcon wildcard family uses the framework-neutral MIT `material-file-icons` development-only asset source pinned to 2.4.0; it adds no React dependency or consumer source scan.
+
+Structured filters add the focused shadcn/filter-builder export and Filter compatibility re-export; Canvas Table adds inference and filtering types. Public additions remain source-consumer compatible and require packed verification after UI approval (DC-SHA-069–074).

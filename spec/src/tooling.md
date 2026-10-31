@@ -221,3 +221,9 @@ run it before the shared validator. Runtime modules import only generated data.
 Radio Group conversion maps upstream FieldLabel group relationships to the
 existing semantic `data-slot="field-label"` boundary (DC-SHA-065), preserving
 focus behavior without publishing utility marker selectors.
+
+Strict source-consumer checks include Canvas Table optional props, stable row IDs,
+commands, token names and the selection-actions snippet. Focused browser acceptance
+uses the existing Shadcn pointer lane and workspace-derived Storybook ports.
+
+Structured filter UI review runs focused source-consumer, unit, story, browser, formatting and specification checks only. The user explicitly defers pnpm checks, all repository-wide suites, static Storybook and packed-consumer qualification until UI approval; durable evidence records that gate (DC-SHA-074).
