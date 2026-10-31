@@ -256,7 +256,7 @@ Its only scrolling viewport MUST compose the public ScrollArea in both axes; sty
 ### Acceptance details
 
 - Optional stable-ID column descriptors MUST supply labels and header/cell snippets that replace letters/painted text, while omitted descriptors MUST preserve spreadsheet behavior.
-- Controlled expanded row IDs and detail snippets MUST use measured heights shared by layout, painting, hit testing and navigation; observers MUST disconnect on recycling and teardown.
+- Controlled expanded row IDs and detail snippets MUST use measured heights shared by layout, painting, hit testing and navigation with CSS-owned horizontal anchoring and default sans UI typography; observers MUST disconnect on recycling and teardown.
 - Rich content MUST be bounded by visible rows and columns, with at most one active accessibility row; native interactive descendants MUST remain operable without triggering spreadsheet commands.
 - Host row/header heights, optional viewport width filling, toolbar replacement or omission and context-menu disabling MUST support read-only use without synthetic data headers or mutation commands.
 
@@ -276,3 +276,5 @@ Its only scrolling viewport MUST compose the public ScrollArea in both axes; sty
 DC-SHA-075–076 review implementation includes bounded rich overlays, measured detail rows, native radio keyboard callbacks and explicit focus return before closing an active detail. Focused evidence remains separate from UI approval and full qualification.
 
 Composable table stories use decorative Lucide right/down disclosure chevrons with matching Expand/Collapse labels; the fixed gutter layer reuses existing gutter paint, remains hidden from assistive technology, and leaves row controls and scrollbars operable (DC-SHA-066, DC-SHA-075).
+
+The disclosure fixture uses the compact 24px icon-xs control and a realistic account-review detail with owner, renewal value, review date, reference and activity; expanded content stays mounted with stable height and horizontal position during scrolling (DC-SHA-075).

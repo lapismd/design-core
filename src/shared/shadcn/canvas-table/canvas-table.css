@@ -227,13 +227,18 @@
   width: 8px;
   cursor: col-resize;
 }
-.canvas-table__row-detail-cell {
+.canvas-table__row-detail-track {
   position: absolute;
+  left: 0;
+}
+.canvas-table__row-detail-cell {
+  position: sticky;
   z-index: 2;
   pointer-events: auto;
 }
 .canvas-table__row-detail {
   display: flow-root;
+  font-family: var(--font-sans, system-ui);
   background: var(--ui-canvas-table-background);
   border-bottom: 1px solid var(--ui-canvas-table-border);
 }

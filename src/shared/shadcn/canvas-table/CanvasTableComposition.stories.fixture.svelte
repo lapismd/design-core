@@ -2,6 +2,7 @@
   import { untrack } from "svelte";
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
+  import RecordDetails from "./CanvasTableRecordDetails.stories.fixture.svelte";
   import { Button } from "../button/index.js";
   import {
     CanvasTable,
@@ -56,7 +57,7 @@
 {#snippet cell(context: CanvasTableCellContext)}
   {#if context.column === 0}<Button
       variant="ghost"
-      size="icon"
+      size="icon-xs"
       aria-label={(context.expanded ? "Collapse row " : "Expand row ") +
         context.rowNumber}
       aria-expanded={context.expanded}
@@ -68,11 +69,7 @@
   <span>{context.value}</span>
 {/snippet}
 {#snippet details(context: CanvasTableRowContext)}
-  <div class="composition-details">
-    <strong>Details for {context.row.cells[0]}</strong>
-    <p>This measured row detail shares the grid geometry.</p>
-    <Button onclick={context.close}>Close row details</Button>
-  </div>
+  <RecordDetails {context} />
 {/snippet}
 <div class="composition-fixture">
   <div class="composition-actions">
@@ -151,9 +148,5 @@
       transparent 70%
     );
     opacity: 0.5;
-  }
-  .composition-details {
-    padding: 1rem;
-    min-height: 100px;
   }
 </style>

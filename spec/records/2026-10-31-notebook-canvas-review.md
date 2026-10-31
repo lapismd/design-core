@@ -167,3 +167,45 @@ The shared review on 10429 hot-reloads these changes; 10329 stays untouched.
 Notebook archive refresh and acceptance are recorded in its owning progress file.
 No broad qualification, visual baseline mutation or upstream delivery is authorized
 by this feedback; the full migration's existing UI approval gate remains active.
+
+## UI feedback: compact disclosure and stable, useful row details (31 October)
+
+Implemented and focused-tested; UI approval and full qualification remain pending.
+Use Button's existing 24px `icon-xs` variant for row disclosure. Replace the
+placeholder detail with an account-review example containing an owner, renewal
+value, review date, reference, summary and activity, plus an accessible compact
+close control. Rich details default to UI sans typography; cell text keeps the
+sheet typography contract.
+
+Previously the detail's absolute left position included reactive scrollLeft,
+which raced native scrolling and shifted the panel until the handler ran.
+A full-row track now carries a horizontally sticky detail cell, retaining the
+existing measured height, viewport width, vertical clipping and focus recovery.
+Horizontal anchoring is compositor-owned rather than a per-scroll JS rewrite.
+
+- `pnpm test:shadcn:pointer canvas-table-details`: baseline 2 failed/0 passed
+  (36px disclosure instead of <=24.5px, and a 100px detail position error with
+  scroll handlers delayed); exact post-fix command: 2 passed/0 failed.
+  Tests also verify meaningful record fields, sans font, stable panel identity,
+  height and native vertical movement during the horizontal sweeps.
+- `pnpm test:unit src/shared/shadcn/canvas-table`: 136 passed/0 failed, including
+  the new fixture/test source-size guards (116/79 physical lines).
+- `pnpm check:source-consumer`: 0 errors/0 warnings.
+- `pnpm test:storybook src/shared/shadcn/canvas-table --reporter=json --outputFile=.local/detail-family.json`:
+  24 passed/0 failed, with interaction and accessibility checks retained.
+- `pnpm test:shadcn:pointer canvas-table`: a fresh Storybook process completed
+  all 33 browser tests, 0 failed, including prior gutter, both-axis alignment,
+  resize/edit, filter, checkbox/radio, detail measurement/focus and teardown cases.
+- `pnpm spec:check`: icons audit and all 3 specification lanes passed.
+- `pnpm exec prettier --check src/shared/shadcn/canvas-table/CanvasTableRecordDetails.stories.fixture.svelte src/shared/shadcn/canvas-table/CanvasTableComposition.stories.fixture.svelte src/shared/shadcn/canvas-table/canvas-table-row-details.svelte src/shared/shadcn/canvas-table/canvas-table.css src/shared/shadcn/canvas-table/canvas-table-governance.spec.ts tests/shadcn/canvas-table-details.spec.ts`:
+  all 6 files passed.
+
+The shared large-rich-table review is open on 10429 with the richer example.
+The combined isolated Notebook archive refresh follows in its owning record;
+the intermediate gutter archive was prepared but intentionally not installed
+while this additional UI feedback was being incorporated. Existing full-suite,
+publication and visual-baseline gates remain in force.
+
+`pnpm package:local` prepared the combined review archive successfully at version
+0.8.0, SHA256 `ea3afda3a06d35e527e71ab3382f0040ca45de4cf2f746e798d2480f9816fcff`;
+this is temporary isolated review intake, not release/package qualification.

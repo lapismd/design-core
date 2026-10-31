@@ -175,3 +175,5 @@ retains the existing multiple checkbox behavior.
 `fillWidth` stretches the last column only when the actual scroller has unused space, preserving normal horizontal scrolling for wide tables and accounting for reserved scrollbar space.
 
 CanvasTable composes Design Core ScrollArea as its only two-axis scrolling viewport. The viewport owns grid semantics, keyboard and pointer handlers, and all layout measurements; it inherits ScrollArea visibility preferences and its native/WebKit strategy. No additional scroll wrapper is needed.
+
+Expanded row details default to the UI sans font (`--font-sans`, with a system fallback). Their horizontal position uses native sticky layout, so scrolling does not wait for a JavaScript translation; hosts can style individual values within their detail snippet.

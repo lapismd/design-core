@@ -169,3 +169,5 @@ Composable CanvasTable snippets retain host data/evaluation ownership and share 
 CanvasTable composes the shared ScrollArea viewport directly, using its public viewportProps and bound viewport ref rather than a second scrolling wrapper; both strategies retain one accessible grid and one geometry owner (DC-SHA-038, DC-SHA-075).
 
 The fixed CanvasTable gutter paint is a bounded decorative copy of its existing canvas; rich DOM snippets retain one accessible grid and the same geometry owner, with no duplicate semantic rows (DC-SHA-066, DC-SHA-075).
+
+Expanded CanvasTable details use native sticky horizontal positioning and shared measured row geometry, without a host adapter or a per-scroll JavaScript translation; rich detail typography defaults to the UI sans font (DC-SHA-075).

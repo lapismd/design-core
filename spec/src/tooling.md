@@ -234,3 +234,5 @@ The UI review adds focused family import/physical-line audits and a strict stand
 Focused strict source-consumer coverage includes ScrollArea viewportProps attributes and event currentTarget typing, alongside CanvasTable composition; native/styled browser checks retain scroll, resize, keyboard and teardown assertions without screenshot comparison (DC-SHA-038, DC-SHA-075).
 
 CanvasTable rapid-scroll regression coverage delays scroll listeners deliberately and checks fixed opaque gutter coverage, stacking and bounds without screenshot comparison, alongside Lucide disclosure state interactions (DC-SHA-066, DC-SHA-075).
+
+Expanded-detail browser regressions exercise the compact disclosure target, realistic data typography, unchanged detail identity/height and native horizontal anchoring while scroll-state updates are delayed (DC-SHA-075).
