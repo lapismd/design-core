@@ -21,7 +21,10 @@ The App Shell owns application structure and responsive layout while consumers o
 ## DC-SHELL-001 — Shared Shell invariants
 
 Catalog interactions after closing a portalled selector wait for pointer
-hit-testing to return to the owned sidebar control. A listbox leaving the
+hit-testing to return to the owned sidebar control. Before deliberately
+dismissing its preview, selection acceptance also proves physical portal removal
+and restored selector focus: a late legitimate focus event keeps an owned
+preview open and cancels its pending dismissal. A listbox leaving the
 accessibility tree alone does not prove that its exit transition has finished.
 
 **Requirement.** Shell contracts MUST own responsive application structure and transient layout state while leaving routing, domain data, and persistence adapters to consumers.
@@ -34,6 +37,10 @@ accessibility tree alone does not prove that its exit transition has finished.
 - Shell tokens must remain the supported styling extension boundary, including `--ui-shell-main-border` with the inset, radius, and shadow main-surface tokens.
 
 ## DC-SHELL-002 — App Shell
+
+Catalog preview acceptance distinguishes edge departure, short-hover
+cancellation and selection-followed dismissal. Each phase retains its inline
+presentation, geometry and preview-state assertions independently.
 
 **Requirement.** The App Shell family MUST compose root, toolbar, navigation, main, body, sidebars, and responsive controls through documented compound parts.
 

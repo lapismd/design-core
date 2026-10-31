@@ -97,5 +97,5 @@ Unmount MUST cancel delayed activation and suppress stale failure presentation.
 
 - The lightbulb MUST be absent when `buildItemMenu` adds no entries.
 - The open menu MUST portal outside the Problems view without clipping to that container; collision-aware placement MAY choose either side of the panel.
-- Click MUST not navigate the row.
+- Pointer and keyboard trigger activation MUST not navigate the row; Escape from the opening trigger MUST reach the owning menu and dismiss its portal without clearing DOM nodes or document locks manually.
 - Unit tests and the bottom-panel story MUST cover presence, absence, menu titles, and outside-panel paint.

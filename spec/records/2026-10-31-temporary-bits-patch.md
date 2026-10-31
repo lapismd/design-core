@@ -143,6 +143,13 @@ authorizes qualified PR/version merges and release
 follow-through; authentication remains owned by the root workstream. No prepared
 source or archive-only pass is a published-package release claim.
 
+Subsequent hosted Shell acceptance exposes a popup-settlement precondition and
+broader owner qualification reproduces swallowed Problems Escape. The
+[popup record](2026-10-31-shell-preview-readiness.md) retains both original
+failures, the corrected 995-case/full nonvisual pass, independent tree/table
+coverage and the new clean public-package receipt. Its later archive is retained
+separately; the earlier source/archive identities above remain historical.
+
 Release HTTPS fetch confirms main remains `3ee2b016`. The 23 registered
 workspaces, including 14 available roots, remain accounted for in
 `/tmp/lapis-core-tracked-patch-final-workspaces-20261031.json`. Other registered
