@@ -352,7 +352,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - A source MUST expose `get`, asynchronous `set`, and disposable change subscription operations.
-- A validated write MUST update optimistically, accept a canonical source value, and roll back with an inline error on failure.
+- A validated write MUST update optimistically and reconcile failures to the current authoritative source value with an inline error, retaining the previous value if the source cannot be read.
 - Source notifications MUST update every renderer of the section without requesting controller persistence.
 - Section disposal MUST release its source subscription.
 

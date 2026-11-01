@@ -97,6 +97,43 @@
   const fileApp = createHeaderApp();
   const feedbackApp = createApp();
   const responsiveApp = createApp();
+  function createReconciledApp() {
+    const app = new AppShellController();
+    let enabled = true;
+    const listeners = new Set<() => void>();
+    app.settings.registerDefinition({
+      section: {
+        id: "service",
+        title: "Service settings",
+        fields: [
+          {
+            id: "enabled",
+            type: "boolean",
+            title: "Service enabled",
+            default: true,
+          },
+        ],
+      },
+      source: {
+        get: () => enabled,
+        set: async (_id, next) => {
+          enabled = next === true;
+          for (const listener of listeners) listener();
+          throw new Error(
+            "The change was saved, but its acknowledgement was lost.",
+          );
+        },
+        subscribe: (listener) => {
+          listeners.add(listener);
+          return () => listeners.delete(listener);
+        },
+      },
+    });
+    app.settings.selectSection("service");
+    app.settings.open();
+    return app;
+  }
+  const reconciledApp = createReconciledApp();
   const { Story } = defineMeta({
     title: "Workspace/Components/Settings",
     component: WorkspaceSettingsSurface,
@@ -104,6 +141,34 @@
     parameters: { layout: "fullscreen" },
   });
 </script>
+
+<Story
+  name="Saved source value after lost acknowledgement"
+  play={async ({ canvas }) => {
+    const toggle = await canvas.findByRole("switch", {
+      name: /^Service enabled$/,
+    });
+    await expect(toggle).toBeChecked();
+    await userEvent.click(toggle);
+    await waitFor(() => expect(toggle).not.toBeChecked());
+    await expect(canvas.getByRole("alert")).toHaveTextContent(
+      "The change was saved, but its acknowledgement was lost.",
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-settings-story-canvas">
+      <div class="ui-workspace-settings-story-frame">
+        <AppShellRoot controller={reconciledApp} theme="inherit"
+          ><WorkspaceSettingsSurface
+            controller={reconciledApp.settings}
+            app={reconciledApp}
+          /></AppShellRoot
+        >
+      </div>
+    </div>
+  {/snippet}
+</Story>
 
 <Story
   name="Full-width action feedback"
