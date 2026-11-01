@@ -338,3 +338,8 @@ stylesheet and resolves those tokens into its canvas paint theme (DC-SHA-066).
 Structured Filter Builder uses native CSS and --ui-filter-builder-background, --ui-filter-builder-border, --ui-filter-builder-radius, --ui-filter-builder-gap and --ui-filter-builder-width tokens, inheriting existing control, focus and overlay tokens (DC-SHA-069–074).
 
 The Filter Builder token defaults are popover background, border, radius, a 0.5rem condition gap and min(48rem, calc(100svw - 1rem)) suggested panel width. Table popovers apply viewport bounds and reuse the inherited nested portal contexts.
+
+Hosts may also set `--ui-workspace-window-controls-overlay-inline-end` and
+`--ui-workspace-window-controls-overlay-height` in viewport CSS pixels. Top
+headers reserve their own intersection with those control regions; a zero
+height disables overlay geometry.

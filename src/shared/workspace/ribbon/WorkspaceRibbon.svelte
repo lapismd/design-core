@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { windowControlsOverlap } from "../core/window-controls-overlap.js";
   import type { Snippet } from "svelte";
   import type { WorkspaceSide } from "../core/types.js";
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
@@ -27,6 +28,8 @@
 
 <aside
   class="ui-workspace-ribbon"
+  use:windowControlsOverlap
+  data-desktop-drag-region
   data-ui-component="workspace-ribbon"
   data-ui-part="root"
   data-side={side}
@@ -35,6 +38,7 @@
 >
   <nav
     class="ui-workspace-ribbon__actions"
+    data-desktop-drag-region="false"
     data-ui-part="top-actions"
     aria-label={`${side} ribbon primary actions`}
   >
@@ -64,6 +68,7 @@
 
   <nav
     class="ui-workspace-ribbon__actions ui-workspace-ribbon__actions--bottom"
+    data-desktop-drag-region="false"
     data-ui-part="bottom-actions"
     aria-label={`${side} ribbon secondary actions`}
   >

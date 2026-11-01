@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { windowControlsOverlap } from "../core/window-controls-overlap.js";
   import { disableOverlayPortalContextKey } from "../../../lib/overlay-portal-context.js";
   import { getContext } from "svelte";
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
@@ -209,6 +210,7 @@
   <div
     bind:this={tabIndicatorRoot}
     class="ui-workspace-tabs__header"
+    use:windowControlsOverlap
     data-ui-part="header"
     data-desktop-drag-region
     data-workspace-tab-strip="top"

@@ -263,3 +263,14 @@ disposer on callback replacement or removal; custom content supplies accessible
 names, buttons and overlay lifetime. Built-in status text/menu rendering remains
 the default (DC-WS-029). No repository or domain-specific content belongs in the
 workspace shell.
+
+## DC-WS-083 — Host window-controls overlay geometry
+
+**Requirement.** Workspace top tabs, stacked chrome and sidebar tab bars MUST reserve only the native window-control regions intersecting their top band. Hosts MUST supply overlay height and full-window leading/trailing clearances through public workspace tokens; Design Core MUST remain independent of browser and operating-system detection.
+
+### Acceptance details
+
+- Headers and ribbon actions MUST remain clear of native controls through live geometry, shell zoom, sidebar/ribbon changes and maximized groups without indenting lower split groups.
+- Zero overlay height MUST restore ordinary desktop geometry.
+- Reserved header space MUST remain draggable while buttons and tabs remain interactive.
+- Functional browser coverage MUST exercise leading and trailing controls, resize, sidebar changes and overlay removal without requiring screenshot comparisons.

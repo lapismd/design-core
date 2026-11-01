@@ -1,5 +1,8 @@
 # Workspace / Components
 
+Overlay title-bar intersections, including trailing controls and live height,
+follow [DC-WS-083](./framework.md#dc-ws-083).
+
 Settings quantity-unit acceptance uses the dependency's native combobox role
 and retains the same field labels, selected units and canonical-value checks.
 
