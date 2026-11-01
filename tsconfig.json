@@ -3,6 +3,7 @@
     "allowJs": true,
     "baseUrl": ".",
     "checkJs": true,
+    "ignoreDeprecations": "6.0",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
