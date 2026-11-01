@@ -1,5 +1,15 @@
 # @lapismd/design-core
 
+## 0.9.1
+
+### Patch Changes
+
+- [#53](https://github.com/lapismd/design-core/pull/53) [`085f802`](https://github.com/lapismd/design-core/commit/085f8027668da6851208d810ff14781f256a3fb5) Thanks [@stevejuma](https://github.com/stevejuma)! - Use foreground semantics and a persistent underline for link Buttons so primary fill colours do not produce unreadable text on dark surfaces.
+
+- [#53](https://github.com/lapismd/design-core/pull/53) [`085f802`](https://github.com/lapismd/design-core/commit/085f8027668da6851208d810ff14781f256a3fb5) Thanks [@stevejuma](https://github.com/stevejuma)! - Reconcile rejected controlled settings writes to their authoritative source value.
+  Keep a saved change visible after a lost acknowledgement while retaining its
+  inline error; fall back to the previous value if the source cannot be read.
+
 ## 0.9.0
 
 ### Minor Changes
