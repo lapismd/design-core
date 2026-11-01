@@ -274,3 +274,12 @@ workspace shell.
 - Zero overlay height MUST restore ordinary desktop geometry.
 - Reserved header space MUST remain draggable while buttons and tabs remain interactive.
 - Functional browser coverage MUST exercise leading and trailing controls, resize, sidebar changes and overlay removal without requiring screenshot comparisons.
+
+## DC-WS-084 — Native-control clearance divider
+
+**Requirement.** Native-control clearance in a top tab header MUST retain the shared lower divider when adjacent sidebars or ribbons are hidden.
+
+### Acceptance details
+
+- Leading and trailing clearance MUST use the public tab-divider paint.
+- Active tabs MUST retain their open lower edge into the view; clearance paint MUST NOT intercept pointer input or change layout.

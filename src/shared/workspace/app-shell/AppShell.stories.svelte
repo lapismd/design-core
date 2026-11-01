@@ -879,7 +879,7 @@
     docs: {
       description: {
         story:
-          "Host window-control measurements reserve only overlapping top chrome. Leading and trailing controls remain clear when docks change; ordinary browser geometry returns when the overlay is disabled.",
+          "Host window-control measurements reserve only overlapping top chrome. Leading and trailing controls remain clear when docks change, with a continuous lower divider through reserved space when sidebars close. Ordinary browser geometry returns when the overlay is disabled.",
       },
       source: {
         type: "code",
