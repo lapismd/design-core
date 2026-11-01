@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.10.0
+
+### Minor Changes
+
+- [#57](https://github.com/lapismd/design-core/pull/57) [`a95cf23`](https://github.com/lapismd/design-core/commit/a95cf238b9593147d754e2a595c84f6619848a84) Thanks [@stevejuma](https://github.com/stevejuma)! - Support host-supplied leading and trailing native window controls in workspace headers, including live title-bar height, layout changes and zoom.
+
 ## 0.9.1
 
 ### Patch Changes
