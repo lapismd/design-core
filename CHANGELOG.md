@@ -1,5 +1,31 @@
 # @lapismd/design-core
 
+## 0.9.0
+
+### Minor Changes
+
+- [#51](https://github.com/lapismd/design-core/pull/51) [`293bfea`](https://github.com/lapismd/design-core/commit/293bfeab6efd4c99142933d2b21e87a36c53216b) Thanks [@stevejuma](https://github.com/stevejuma)! - Allow hosts replacing the CanvasTable toolbar to control text wrapping and column colours, including rich cell content and matching custom header tints.
+
+- [#51](https://github.com/lapismd/design-core/pull/51) [`daa3d13`](https://github.com/lapismd/design-core/commit/daa3d137e4699de0bad1032e7a45e563706ef1ab) Thanks [@stevejuma](https://github.com/stevejuma)! - Add composable CanvasTable columns, measured expanded rows, configurable table chrome and scoped single/multiple row selection. Allow authoritative custom FilterBuilder validation with effective types and accessible editor errors.
+
+- [#51](https://github.com/lapismd/design-core/pull/51) [`7045760`](https://github.com/lapismd/design-core/commit/7045760617b39fbd7d1d886c181e389a1d42a239) Thanks [@stevejuma](https://github.com/stevejuma)! - Use whole-row selection in read-only CanvasTables, with ordinary, modifier and range clicks, row keyboard navigation and stable selection across filtering and sorting. Editable tables retain independent cell selection and row checkboxes.
+
+- [#51](https://github.com/lapismd/design-core/pull/51) [`0158a4f`](https://github.com/lapismd/design-core/commit/0158a4fe8f50e2e39f70a7c464cbb555baa58590) Thanks [@stevejuma](https://github.com/stevejuma)! - Compose CanvasTable with the shared two-axis ScrollArea. Add typed viewportProps
+  to preserve custom viewport semantics and handlers in styled and native modes.
+
+### Patch Changes
+
+- [#51](https://github.com/lapismd/design-core/pull/51) [`108ab51`](https://github.com/lapismd/design-core/commit/108ab5146b628086d8da076ca88fb5d663d60e76) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep rich table text below the fixed gutter during rapid compositor scrolling,
+  and use Lucide expansion/collapse icons in the composable table stories.
+
+- [#51](https://github.com/lapismd/design-core/pull/51) [`293bfea`](https://github.com/lapismd/design-core/commit/293bfeab6efd4c99142933d2b21e87a36c53216b) Thanks [@stevejuma](https://github.com/stevejuma)! - Preserve nested control indicator colours inside Command items.
+
+- [#51](https://github.com/lapismd/design-core/pull/51) [`7045760`](https://github.com/lapismd/design-core/commit/7045760617b39fbd7d1d886c181e389a1d42a239) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep rich table row highlights and cell outlines attached to their content during native scrolling, including delayed scroll notifications.
+
+- [#51](https://github.com/lapismd/design-core/pull/51) [`dc01f27`](https://github.com/lapismd/design-core/commit/dc01f27ba7363b496bf99aa3403366e6c3656b60) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep expanded row details horizontally anchored during scrolling, default their
+  typography to the UI sans font, and demonstrate compact disclosure buttons with
+  a realistic account-review detail.
+
 ## 0.8.0
 
 ### Minor Changes
