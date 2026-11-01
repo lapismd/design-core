@@ -76,3 +76,15 @@ No workspace was removed or overwritten.
 | required-release-20261031      | a860b3fab13b       | Yes       | Clean retained checkout; previously released or independently deferred work unchanged. |
 | swipe-lifetime-20261025        | f692cce4d942       | No        | Missing historical root retained; previous release disposition unchanged.              |
 | swipe-package-20261025         | f2971304d7e8       | No        | Missing historical root retained; previous release disposition unchanged.              |
+
+## Protected source acceptance
+
+[PR #57](https://github.com/lapismd/design-core/pull/57) merged at
+`a95cf238b9593147d754e2a595c84f6619848a84` after all eleven protected checks
+passed in [CI 41310008196](https://github.com/lapismd/design-core/actions/runs/41310008196).
+The complete component browser lane passed 196 cases with the existing
+conditional WebKit case skipped; there were no flaky or failed cases in that
+run. This resolves the earlier local navigation failure without altering its
+assertion. The generated 0.10.0 version PR contains only version/changelog and
+consumed Changeset metadata plus this source receipt; it must pass its own
+protected checks before trusted publication.
