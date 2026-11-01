@@ -20,7 +20,7 @@ export function hitTest(
 ): TableHit | null {
   if (x < 0 || y < 0 || !layout.widths.length) return null;
   const inGutter = x < layout.gutter;
-  if (inGutter && y < LETTER_HEIGHT) return { kind: "corner" };
+  if (inGutter && y < layout.letterHeight) return { kind: "corner" };
   const docX = x + left;
   let col = layout.edges.findIndex(
     (edge, i) =>
@@ -28,7 +28,7 @@ export function hitTest(
       docX >= edge &&
       docX < (layout.edges[i + 1] ?? 0),
   );
-  if (y < LETTER_HEIGHT && !inGutter) {
+  if (y < layout.letterHeight && !inGutter) {
     const boundary = layout.edges.findIndex(
       (edge, i) => i > 0 && Math.abs(docX - edge) <= 5,
     );
@@ -48,6 +48,8 @@ export function hitTest(
   const bodyY = y - layout.chrome + top;
   if (bodyY < 0 || bodyY >= (layout.offsets.at(-1) ?? 0)) return null;
   const index = rowAt(layout.offsets, bodyY);
+  if (bodyY - (layout.offsets[index] ?? 0) >= (layout.rowHeights[index] ?? 0))
+    return null;
   if (inGutter) return { kind: "row", index };
   return col < 0 ? null : { kind: "body", index, col };
 }

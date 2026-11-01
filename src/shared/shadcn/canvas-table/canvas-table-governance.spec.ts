@@ -15,18 +15,24 @@ describe("Canvas Table maintained source boundaries", () => {
       300,
     );
   });
-  it.each(["canvas-table.spec.ts", "canvas-table-interactions.spec.ts"])(
-    "keeps %s below 300 lines",
-    (file) => {
-      const source = readFileSync(
-        new URL("../../../../tests/shadcn/" + file, import.meta.url),
-        "utf8",
-      );
-      expect(
-        source.split("\n").length - Number(source.endsWith("\n")),
-      ).toBeLessThanOrEqual(300);
-    },
-  );
+  it.each([
+    "canvas-table.spec.ts",
+    "canvas-table-interactions.spec.ts",
+    "canvas-table-composition.spec.ts",
+    "canvas-table-scrollarea.spec.ts",
+    "canvas-table-gutter.spec.ts",
+    "canvas-table-details.spec.ts",
+    "canvas-table-rich-selection.spec.ts",
+    "canvas-table-readonly.spec.ts",
+  ])("keeps %s below 300 lines", (file) => {
+    const source = readFileSync(
+      new URL("../../../../tests/shadcn/" + file, import.meta.url),
+      "utf8",
+    );
+    expect(
+      source.split("\n").length - Number(source.endsWith("\n")),
+    ).toBeLessThanOrEqual(300);
+  });
   it("keeps the strict public consumer below 300 lines", () => {
     const source = readFileSync(
       new URL(
@@ -35,6 +41,17 @@ describe("Canvas Table maintained source boundaries", () => {
       ),
       "utf8",
     );
+    expect(
+      source.split("\n").length - Number(source.endsWith("\n")),
+    ).toBeLessThanOrEqual(300);
+  });
+  it.each([
+    "../scroll-area/scroll-area-viewport-props.ts",
+    "../scroll-area/ScrollAreaViewport.fixture.svelte",
+    "../scroll-area/ScrollAreaViewport.stories.svelte",
+    "../../../../tests/source/scroll-area-viewport-consumer.svelte",
+  ])("keeps viewport composition source %s below 300 lines", (file) => {
+    const source = readFileSync(new URL(file, family), "utf8");
     expect(
       source.split("\n").length - Number(source.endsWith("\n")),
     ).toBeLessThanOrEqual(300);

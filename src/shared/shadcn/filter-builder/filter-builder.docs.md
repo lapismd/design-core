@@ -56,3 +56,11 @@ Controls inherit the normal Input, Button, Select, Checkbox and focus tokens.
 Canvas Table bounds the popover to the viewport and uses the suggested width.
 Stories remain visual-pending. This slice is awaiting UI approval; full repository
 and packed-consumer qualification are intentionally deferred.
+
+Custom operators may set `validation: "custom"` together with `validate` to
+validate exact numeric strings or paired bounds without built-in field
+coercion. Missing validators fail closed. The default `"field"` mode preserves
+built-in checks in addition to custom errors. Custom value editors receive the
+effective override type, `invalid` and `describedBy`; forward those to native
+controls as `aria-invalid` and `aria-describedby`. The builder never evaluates
+host records.

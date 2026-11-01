@@ -23,7 +23,7 @@ persistence, publication or consumer migration are included.
 ### Acceptance details
 
 - The Shadcn family MUST export FilterBuilder, field/operator/value/node/state types and state helpers, with the Filter entry point re-exporting the same implementation.
-- Nested All, Any and None groups MUST support searchable field selection, segmented field/operator/value rows with continuous full-width wrapped dividers and no predicate end border, adding and removing conditions and groups, and Clear filters.
+- Nested All, Any and None groups MUST support accessibly named searchable field selection, segmented field/operator/value rows with continuous full-width wrapped dividers and no predicate end border, adding and removing conditions and groups, and Clear filters.
 - Host field descriptors MUST supply stable IDs, labels, types, optional choices and optional custom operators/value editors without importing application contracts.
 - The family MUST compose existing Shadcn primitives and native CSS with documented `--ui-filter-builder-*` tokens, without importing Forms, Filter, Canvas Table, raw-query parsers or application APIs.
 
@@ -168,3 +168,34 @@ baseline updates stay outside scope throughout.
 ## UI review implementation boundary
 
 The first UI implementation exports the FilterType union from the focused Shadcn boundary and aliases it as StructuredFilterType through Filter, preserving Filter's existing FilterType enum. FilterBuilder itself renders no outer overlay; Canvas Table supplies Popover and the Filter rows trigger. The concrete token defaults and copy-pasteable source examples are colocated with both families. Verification remains In progress until UI approval and subsequent full qualification.
+
+## DC-SHA-077 — Custom operator validation
+
+**Requirement.** FilterBuilder MUST allow a host operator to opt into authoritative custom value validation without weakening default validation.
+
+### Acceptance details
+
+- An optional validation mode MUST default to field validation; custom mode MUST require a validator and surface its error accessibly.
+- Custom validators MUST receive literal values unchanged, including precise numeric strings and string-pair ranges, while custom editors receive effective types and accessible error context; matching remains host-owned.
+- Invalid custom drafts MUST retain the last valid applied state, while external replacement and clearing retain their existing contracts.
+
+## Composable-table review delivery
+
+DC-SHA-075–077 are specified before runtime changes. All new handwritten files
+remain at most 300 physical lines. Focused units, strict public types, interaction,
+axe and cold browser checks run before integrated Notebook UI review. Full
+`pnpm checks`, static catalog, packed qualification and publication remain
+explicitly deferred until UI approval. Archive preparation for the isolated
+review is not packed-consumer qualification or publication.
+
+CanvasTable filter application and focus recovery use the same public ScrollArea viewport as cell navigation; replacing the scroller MUST NOT introduce nested scrolling or change controlled filter draft/application semantics (DC-SHA-072).
+
+Filtered rich-cell and header content MUST remain below the frozen gutter paint during compositor scrolling, including while scroll-handler state is stale, without intercepting filter, row-selection or editing controls (DC-SHA-072).
+
+CSS-owned expanded-detail anchoring leaves controlled filter application and row-identity semantics unchanged; filtering and closing details retain the owning grid focus recovery path (DC-SHA-072, DC-SHA-075).
+
+Host-controlled CanvasTable `wrapText` and `columnColours` presentation settings MUST preserve the controlled filter tree, last valid applied conditions, selected IDs and host ordering. Hosts replacing the toolbar may place independent display toggles beside the filter trigger.
+
+Column-colour header tints apply equally with structured filtering enabled; filtering MUST NOT reset controlled display state.
+
+The integrated Notebook filter UI was approved on 31 October 2026. Broad qualification retains controlled-state, source-consumer, interaction and accessibility checks; screenshot comparison and baseline updates remain excluded.

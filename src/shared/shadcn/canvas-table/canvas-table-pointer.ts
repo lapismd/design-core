@@ -19,12 +19,47 @@ export function createPointer(ctx: TableContext, nav: TableNavigation) {
       : null;
   }
   function down(event: PointerEvent) {
-    if (event.button !== 0) return;
+    if (
+      event.button !== 0 ||
+      (event.target instanceof Element &&
+        event.target.closest(
+          "button,input,select,textarea,a,[data-canvas-interactive]",
+        ))
+    )
+      return;
     s.menu = null;
     nav.commitEdit();
+    const cell =
+      event.target instanceof Element
+        ? event.target.closest<HTMLElement>("[data-rich-row-id]")
+        : null;
+    if (!ctx.props().onCellChange && cell) {
+      if (cell.closest('[role="grid"]') !== s.scroller) return;
+      const index = ctx
+        .layout()
+        .bodyIndex.get(JSON.parse(cell.dataset.richRowId!));
+      if (index != null) {
+        s.scroller?.focus();
+        nav.selectCell(index, 0, {
+          extend: event.shiftKey,
+          toggle: event.ctrlKey || event.metaKey,
+        });
+        return;
+      }
+    }
     const target = hit(event);
     if (!target) return;
     s.scroller?.focus();
+    if (
+      !ctx.props().onCellChange &&
+      (target.kind === "body" || target.kind === "row")
+    ) {
+      nav.selectCell(target.index, 0, {
+        extend: event.shiftKey,
+        toggle: event.ctrlKey || event.metaKey,
+      });
+      return;
+    }
     if (target.kind === "resize") {
       if (!ctx.props().onColumnWidthsChange) return;
       s.drag = {
@@ -111,6 +146,7 @@ export function createPointer(ctx: TableContext, nav: TableNavigation) {
     }
   }
   function contextMenu(event: MouseEvent) {
+    if (ctx.props().contextMenu === false) return;
     if (!ctx.props().onCommand) return;
     nav.commitEdit();
     const target = hit(event);

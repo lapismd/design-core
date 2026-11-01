@@ -16,11 +16,20 @@
   min-width: 0;
   min-height: 0;
 }
+.canvas-table__scroll-area {
+  width: 100%;
+  height: 100%;
+}
 .canvas-table__scroller {
   position: absolute;
   inset: 0;
-  overflow: auto;
   outline-offset: -2px;
+}
+.canvas-table__scrollbar {
+  z-index: 5;
+}
+.canvas-table__scroller {
+  overflow-anchor: none;
 }
 .canvas-table__scroller:focus-visible {
   outline: 2px solid var(--ui-canvas-table-accent, var(--ring));
@@ -155,4 +164,96 @@
 }
 .canvas-table__toolbar [data-filter-active="true"] {
   color: var(--primary);
+}
+
+.canvas-table__canvas {
+  z-index: 1;
+}
+.canvas-table__frozen-gutter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+.canvas-table__row-controls,
+.canvas-table__overlays {
+  z-index: 4;
+}
+.canvas-table__rich-grid {
+  position: absolute;
+  inset: 0 auto auto 0;
+  pointer-events: none;
+}
+.canvas-table__rich-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.canvas-table__rich-heading {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  box-sizing: border-box;
+  background: var(--ui-canvas-table-header);
+  border-inline-end: 1px solid var(--ui-canvas-table-border);
+  pointer-events: auto;
+  overflow: hidden;
+}
+.canvas-table__rich-cell {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding-inline: 6px;
+  background-color: var(--ui-canvas-table-background);
+  border-inline-end: 1px solid var(--ui-canvas-table-border);
+  border-bottom: 1px solid var(--ui-canvas-table-border);
+  overflow: hidden;
+  pointer-events: auto;
+}
+.canvas-table__rich-cell[data-selected="true"] {
+  background-image: linear-gradient(
+    var(--ui-canvas-table-selection),
+    var(--ui-canvas-table-selection)
+  );
+}
+.canvas-table__rich-cell[data-search="true"] {
+  box-shadow: inset 0 0 0 2px var(--ui-canvas-table-search);
+}
+.canvas-table__rich-cell[data-active="true"] {
+  box-shadow: inset 0 0 0 2px var(--ui-canvas-table-accent);
+}
+.canvas-table__fallback-cell {
+  pointer-events: none;
+}
+.canvas-table__cell-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.canvas-table__resize-handle {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 8px;
+  cursor: col-resize;
+}
+.canvas-table__row-detail-track {
+  position: absolute;
+  left: 0;
+}
+.canvas-table__row-detail-cell {
+  position: sticky;
+  z-index: 2;
+  pointer-events: auto;
+}
+.canvas-table__row-detail {
+  display: flow-root;
+  font-family: var(--font-sans, system-ui);
+  background: var(--ui-canvas-table-background);
+  border-bottom: 1px solid var(--ui-canvas-table-border);
+}
+.canvas-table__radio-group {
+  display: contents;
 }

@@ -4,6 +4,7 @@ import type { CanvasTableCommandId } from "./canvas-table-types.js";
 export function tableTarget(
   ctx: TableContext,
 ): TableContext["state"]["target"] {
+  if (!ctx.props().onCellChange) return "row";
   const range = ctx.state.range;
   const layout = ctx.layout();
   if (!range || !layout.body.length || !layout.widths.length)

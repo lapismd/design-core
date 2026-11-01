@@ -163,3 +163,11 @@ mutations and history remain host responsibilities (DC-SHA-066–068).
 Structured filters (DC-SHA-069–074) place the standalone builder in Shadcn, with Filter re-exporting it and Canvas Table owning generic matching of supplied cells. The builder imports neither higher layers nor application contracts. UI-first focused verification is explicitly authorized; broad qualification waits for user UI approval.
 
 The structured filter UI review slice preserves the Filter query-language FilterType enum by exporting the standalone union as StructuredFilterType through that higher-layer facade. Matching remains exclusively in Canvas Table; the standalone public entry point has no table import.
+
+Composable CanvasTable snippets retain host data/evaluation ownership and share the canvas geometry and virtualized grid; no Notebook dependency enters Design Core (DC-SHA-075–077).
+
+CanvasTable composes the shared ScrollArea viewport directly, using its public viewportProps and bound viewport ref rather than a second scrolling wrapper; both strategies retain one accessible grid and one geometry owner (DC-SHA-038, DC-SHA-075).
+
+The fixed CanvasTable gutter paint is a bounded decorative copy of its existing canvas; rich DOM snippets retain one accessible grid and the same geometry owner, with no duplicate semantic rows (DC-SHA-066, DC-SHA-075).
+
+Expanded CanvasTable details use native sticky horizontal positioning and shared measured row geometry, without a host adapter or a per-scroll JavaScript translation; rich detail typography defaults to the UI sans font (DC-SHA-075).

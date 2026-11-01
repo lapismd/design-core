@@ -6,6 +6,11 @@ import type {
 import type { TableLayout } from "./canvas-table-layout.js";
 
 export interface TableState {
+  rowSelectionIds: import("./canvas-table-types.js").CanvasTableRowId[];
+  detailHeights: Map<
+    import("./canvas-table-types.js").CanvasTableRowId,
+    number
+  >;
   active: Cell | null;
   range: CellRange | null;
   target: "cell" | "row" | "column" | "sheet";
@@ -21,6 +26,7 @@ export interface TableState {
   epoch: number;
   scroller: HTMLDivElement | null;
   canvas: HTMLCanvasElement | null;
+  gutterCanvas: HTMLCanvasElement | null;
   menu: { x: number; y: number } | null;
   drag: {
     kind: "resize" | "cell" | "row" | "column";

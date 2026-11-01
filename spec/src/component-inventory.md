@@ -322,3 +322,5 @@ compose it and QuantityInput as first-party declarative inputs.
 ## Planned structured filters
 
 `shadcn/filter-builder` is a project-authored generic Forms-category family, independently usable with a host field schema and controlled state (DC-SHA-069–074). Filter re-exports this implementation. Canvas Table composes its public Shadcn boundary; no reverse layer dependency is introduced.
+
+CanvasTable rich headers/cells, expanded details and scoped selection remain parts of its existing shared primitive family (DC-SHA-075–076), not Notebook-specific exports.

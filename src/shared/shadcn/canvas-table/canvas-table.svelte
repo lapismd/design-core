@@ -1,5 +1,6 @@
 <script lang="ts">
   import { untrack } from "svelte";
+  import { ScrollArea } from "../scroll-area/index.js";
   import type {
     CanvasTableProps,
     CanvasTableRowId,
@@ -16,6 +17,8 @@
   import { createCanvasTableFiltering } from "./canvas-table-filter-state.svelte.js";
   import Toolbar from "./canvas-table-toolbar.svelte";
   import RowControls from "./canvas-table-row-controls.svelte";
+  import RichGrid from "./canvas-table-rich-grid.svelte";
+  import { rowSelectionOptions } from "./canvas-table-selection.js";
   import Accessibility from "./canvas-table-accessibility.svelte";
   import Overlays from "./canvas-table-overlays.svelte";
   import Menu from "./canvas-table-menu.svelte";
@@ -23,10 +26,10 @@
 
   let props: CanvasTableProps = $props();
   const instanceId = $props.id();
-  const state = createTableState();
+  const tableState = createTableState(() => props);
   const measure = $derived.by(() => {
-    void state.epoch;
-    const canvas = state.canvas;
+    void tableState.epoch;
+    const canvas = tableState.canvas;
     const context = canvas?.getContext("2d");
     if (canvas && context)
       context.font =
@@ -38,30 +41,51 @@
   });
   const filtering = createCanvasTableFiltering(() => props);
   const effectiveProps = $derived({ ...props, visibleRowIds: filtering.ids });
-  const layout = $derived(createLayout(effectiveProps, state.wrap, measure));
+  const layout = $derived(
+    createLayout(
+      effectiveProps,
+      tableState.wrap,
+      measure,
+      tableState.detailHeights,
+      tableState.width,
+    ),
+  );
   const ctx: TableContext = {
     props: () => effectiveProps,
     layout: () => layout,
-    state,
+    state: tableState,
     filterFields: () => filtering.fields,
   };
   const nav = createNavigation(ctx);
   const pointer = createPointer(ctx, nav);
   const keyboard = createKeyboard(ctx, nav);
   const activeDescendant = $derived.by(() => {
-    if (!state.active || tableTarget(ctx) !== "cell") return undefined;
-    const entry = layout.byId.get(state.active.rowId);
+    if (!tableState.active) return undefined;
+    if (!props.onCellChange) {
+      const entry = layout.byId.get(tableState.active.rowId);
+      return entry ? instanceId + "-row-" + (entry.number - 1) : undefined;
+    }
+    if (tableTarget(ctx) !== "cell") return undefined;
+    const entry = layout.byId.get(tableState.active.rowId);
     return entry
-      ? instanceId + "-cell-" + (entry.number - 1) + "-" + state.active.col
+      ? instanceId + "-cell-" + (entry.number - 1) + "-" + tableState.active.col
       : undefined;
   });
-  function holdScroller(node: HTMLDivElement) {
-    return attachScroller(ctx, node);
-  }
+  let viewport = $state<HTMLElement | null>(null);
+  $effect(() => {
+    if (viewport)
+      return untrack(() => attachScroller(ctx, viewport as HTMLDivElement));
+  });
   function holdCanvas(node: HTMLCanvasElement) {
-    state.canvas = node;
+    tableState.canvas = node;
     return () => {
-      if (state.canvas === node) state.canvas = null;
+      if (tableState.canvas === node) tableState.canvas = null;
+    };
+  }
+  function holdGutter(node: HTMLCanvasElement) {
+    tableState.gutterCanvas = node;
+    return () => {
+      if (tableState.gutterCanvas === node) tableState.gutterCanvas = null;
     };
   }
   $effect(() => {
@@ -70,6 +94,13 @@
   $effect(() => {
     const ids = new Set(props.rows.map((row) => row.id));
     if (props.headerRow ?? true) ids.delete(props.rows[0]?.id ?? "");
+    untrack(() => {
+      for (const id of tableState.detailHeights.keys())
+        if (!ids.has(id)) tableState.detailHeights.delete(id);
+    });
+    const local = tableState.rowSelectionIds.filter((id) => ids.has(id));
+    if (local.length !== tableState.rowSelectionIds.length)
+      tableState.rowSelectionIds = local;
     const selected = props.selectedRowIds ?? [];
     const next = [...new Set(selected.filter((id) => ids.has(id)))];
     if (next.length !== selected.length)
@@ -84,19 +115,19 @@
         next.some((id, index) => id !== previousOrder?.[index]))
     ) {
       untrack(() => {
-        state.range = null;
-        state.target = "cell";
-        state.drag = null;
+        tableState.range = null;
+        tableState.target = "cell";
+        tableState.drag = null;
       });
     }
     previousOrder = next;
   });
   $effect(() => {
-    const cell = state.active;
+    const cell = tableState.active;
     if (cell && (nav.index(cell) < -1 || cell.col >= layout.widths.length)) {
-      state.active = null;
-      state.range = null;
-      state.editing = false;
+      tableState.active = null;
+      tableState.range = null;
+      tableState.editing = false;
     }
   });
 </script>
@@ -106,33 +137,49 @@
   data-ui-part="root"
   class={["canvas-table", props.class].filter(Boolean).join(" ")}
 >
-  <Toolbar {ctx} {nav} />
+  {#if props.toolbar !== false}
+    {#if props.toolbar}
+      {@render props.toolbar({
+        selectedRowIds: props.selectedRowIds ?? [],
+        commitEdit: nav.commitEdit,
+      })}
+    {:else}<Toolbar {ctx} {nav} />{/if}
+  {/if}
   <div class="canvas-table__body">
     <Menu {ctx}>
-      <div
-        class="canvas-table__scroller"
-        role="grid"
-        tabindex="0"
-        aria-label={props["aria-label"] ?? "Canvas table"}
-        aria-rowcount={props.rows.length}
-        aria-colcount={layout.widths.length}
-        aria-readonly={!props.onCellChange}
-        aria-activedescendant={activeDescendant}
-        aria-multiselectable={props.rowSelection || undefined}
-        data-gutter-width={layout.gutter}
-        data-scroll-left={state.left}
-        data-scroll-top={state.top}
-        {@attach holdScroller}
-        onpointerdown={pointer.down}
-        onpointermove={pointer.move}
-        onpointerup={pointer.up}
-        onpointercancel={pointer.up}
-        onlostpointercapture={() => {
-          state.drag = null;
+      <ScrollArea
+        class="canvas-table__scroll-area"
+        orientation="both"
+        bind:viewportRef={viewport}
+        scrollbarXClasses="canvas-table__scrollbar"
+        scrollbarYClasses="canvas-table__scrollbar"
+        viewportProps={{
+          class: "canvas-table__scroller",
+          role: "grid",
+          tabindex: 0,
+          "aria-label": props["aria-label"] ?? "Canvas table",
+          "aria-rowcount": props.rows.length + (props.columns ? 1 : 0),
+          "aria-colcount": layout.widths.length,
+          "aria-readonly": !props.onCellChange,
+          "aria-activedescendant": activeDescendant,
+          "aria-multiselectable":
+            props.rowSelection || !props.onCellChange
+              ? rowSelectionOptions(props.rowSelection).mode !== "single"
+              : undefined,
+          "data-gutter-width": layout.gutter,
+          "data-scroll-left": tableState.left,
+          "data-scroll-top": tableState.top,
+          onpointerdown: pointer.down,
+          onpointermove: pointer.move,
+          onpointerup: pointer.up,
+          onpointercancel: pointer.up,
+          onlostpointercapture: () => {
+            tableState.drag = null;
+          },
+          ondblclick: pointer.doubleClick,
+          oncontextmenu: pointer.contextMenu,
+          onkeydown: keyboard.grid,
         }}
-        ondblclick={pointer.doubleClick}
-        oncontextmenu={pointer.contextMenu}
-        onkeydown={keyboard.grid}
       >
         <div
           class="canvas-table__spacer"
@@ -140,12 +187,20 @@
           style:width="{layout.width}px"
           style:height="{layout.height}px"
         ></div>
-        <Accessibility {ctx} {instanceId} />
-      </div>
+        {#if props.columns}<RichGrid {ctx} {instanceId} />{:else}<Accessibility
+            {ctx}
+            {instanceId}
+          />{/if}
+      </ScrollArea>
       <canvas
         class="canvas-table__canvas"
         aria-hidden="true"
         {@attach holdCanvas}
+      ></canvas>
+      <canvas
+        class="canvas-table__frozen-gutter"
+        aria-hidden="true"
+        {@attach holdGutter}
       ></canvas>
       <RowControls {ctx} />
       <Overlays {ctx} {nav} {keyboard} />

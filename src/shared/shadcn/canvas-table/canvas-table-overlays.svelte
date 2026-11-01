@@ -57,7 +57,7 @@
   style:height="{ctx.state.height}px"
   style:clip-path={"inset(0 0 0 " + layout.gutter + "px)"}
 >
-  {#if config.onSort}
+  {#if config.onSort && !config.columns}
     {#each columns as col (col)}
       <div
         class="canvas-table__sort-anchor"
@@ -97,7 +97,7 @@
     <div
       class="canvas-table__editor-layer"
       style:clip-path={"inset(" +
-        (editorRect.header ? LETTER_HEIGHT : layout.chrome) +
+        (editorRect.header ? layout.letterHeight : layout.chrome) +
         "px 0 0 0)"}
     >
       <input

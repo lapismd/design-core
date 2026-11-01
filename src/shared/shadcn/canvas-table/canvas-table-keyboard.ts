@@ -5,11 +5,11 @@ import { applyCommand, tableTarget } from "./canvas-table-commands.js";
 export function createKeyboard(ctx: TableContext, nav: TableNavigation) {
   const s = ctx.state;
   function grid(event: KeyboardEvent) {
-    if (s.editing) return;
+    if (s.editing || event.target !== s.scroller) return;
     if (event.key === "Escape") {
       s.menu = null;
       s.range = null;
-      s.target = "cell";
+      s.target = ctx.props().onCellChange ? "cell" : "row";
       return;
     }
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "a") {
@@ -24,6 +24,14 @@ export function createKeyboard(ctx: TableContext, nav: TableNavigation) {
       else if (!event.shiftKey && props.canUndo) props.onUndo?.();
       return;
     }
+    if (!ctx.props().onCellChange && event.key === " ") {
+      event.preventDefault();
+      nav.selectCell(s.active ? nav.index(s.active) : 0, 0, {
+        toggle: true,
+        extend: event.shiftKey,
+      });
+      return;
+    }
     if (event.metaKey || event.ctrlKey || event.altKey) return;
     const delta: Record<string, [number, number]> = {
       ArrowDown: [1, 0],
@@ -34,8 +42,9 @@ export function createKeyboard(ctx: TableContext, nav: TableNavigation) {
     const direction = delta[event.key];
     if (direction) {
       event.preventDefault();
-      nav.move(...direction);
+      nav.move(...direction, { extend: event.shiftKey });
     } else if (event.key === "Tab") {
+      if (!ctx.props().onCellChange) return;
       // Let Tab leave the grid at its horizontal boundary.
       const col = s.active?.col;
       if (
@@ -47,9 +56,11 @@ export function createKeyboard(ctx: TableContext, nav: TableNavigation) {
       }
     } else if (event.key === "Enter") {
       event.preventDefault();
-      nav.beginEdit();
+      if (!ctx.props().onCellChange)
+        nav.selectCell(s.active ? nav.index(s.active) : 0, 0);
+      else nav.beginEdit();
     } else if (event.key === "Backspace" || event.key === "Delete") {
-      if (!s.active) return;
+      if (!s.active || !ctx.props().onCellChange) return;
       event.preventDefault();
       if (tableTarget(ctx) !== "cell") applyCommand(ctx, "delete");
       else ctx.props().onCellChange?.(s.active.rowId, s.active.col, "");

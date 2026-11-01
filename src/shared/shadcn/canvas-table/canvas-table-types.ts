@@ -1,6 +1,13 @@
 import type { CanvasTableFiltering } from "./canvas-table-filter-types.js";
 import type { Snippet } from "svelte";
 
+import type {
+  CanvasTableColumn,
+  CanvasTableRowContext,
+  CanvasTableSelection,
+  CanvasTableToolbarContext,
+} from "./canvas-table-composition-types.js";
+
 export type CanvasTableRowId = string | number;
 
 /** IDs must be unique and remain stable across edits, sorting and filtering. */
@@ -27,6 +34,25 @@ export interface CanvasTableCommand {
 
 export interface CanvasTableProps {
   rows: readonly CanvasTableRow[];
+  /** Optional stable columns; snippets render within the shared virtual grid. */
+  columns?: readonly CanvasTableColumn[] | undefined;
+  /** Stretch the final visible column to fill unused viewport space. */
+  fillWidth?: boolean | undefined;
+  /** Controlled display settings; omit to retain the built-in toolbar state. */
+  wrapText?: boolean | undefined;
+  onWrapTextChange?: ((value: boolean) => void) | undefined;
+  columnColours?: boolean | undefined;
+  onColumnColoursChange?: ((value: boolean) => void) | undefined;
+  rowHeight?: number | undefined;
+  columnHeaderHeight?: number | undefined;
+  expandedRowIds?: readonly CanvasTableRowId[] | undefined;
+  onExpandedRowIdsChange?: ((ids: CanvasTableRowId[]) => void) | undefined;
+  rowDetails?: Snippet<[CanvasTableRowContext]> | undefined;
+  /** Omit for the sheet toolbar; false hides it; a snippet replaces it. */
+  toolbar?: false | Snippet<[CanvasTableToolbarContext]> | undefined;
+  contextMenu?: boolean | undefined;
+  /** All filtered selectable IDs, independently of the displayed page. */
+  selectionRowIds?: readonly CanvasTableRowId[] | undefined;
   /** One width per column, in CSS pixels; controlled by the host. */
   columnWidths: readonly number[];
   /** Filtered body order. Omit to show all rows; the fixed header is excluded. */
@@ -35,9 +61,10 @@ export interface CanvasTableProps {
   filtering?: CanvasTableFiltering | undefined;
   headerRow?: boolean | undefined;
   rowNumbers?: boolean | undefined;
-  rowSelection?: boolean | undefined;
+  rowSelection?: boolean | CanvasTableSelection | undefined;
   selectedRowIds?: readonly CanvasTableRowId[] | undefined;
   onSelectedRowIdsChange?: ((ids: CanvasTableRowId[]) => void) | undefined;
+  /** Omit for read-only row navigation; provide to enable cell selection/editing. */
   onCellChange?:
     | ((rowId: CanvasTableRowId, column: number, value: string) => void)
     | undefined;

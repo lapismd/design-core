@@ -216,7 +216,7 @@ calendars and diagrams MUST resolve without filesystem or MIME inspection.
 
 - Stable host row IDs, controlled column widths and optional filtered row order MUST drive fixed headers, column letters, sheet row numbers (including the fixed header as 1 and retaining source positions after filtering), bounded canvas painting and virtualized grid semantics.
 - Cell editing, range selection, address navigation, resize/autofit, wrapping, column colours, sorting, menus, and toolbar commands MUST retain the reference sheet behavior; all data mutations and undo/redo MUST remain host callbacks, and unavailable actions MUST be disabled or omitted.
-- Independent numbered and checkbox gutters, cell editors and sort overlays MUST share one geometry model, keep body editors below fixed headers and track scrolling and resizing in the next rendering frame without positional transition lag.
+- Independent numbered and checkbox gutters, cell editors and sort overlays MUST share one geometry model, keep body editors below fixed headers and track scrolling and resizing in the next rendering frame without positional transition lag, with an opaque fixed gutter paint layer above rich content even before scroll handlers execute.
 - Native CSS and documented `--ui-canvas-table-*` tokens MUST support both themes, keyboard focus and multiple independent instances; new stories MUST remain `visual-pending` without baseline changes.
 
 ## DC-SHA-067 — Canvas Table row selection
@@ -246,3 +246,59 @@ calendars and diagrams MUST resolve without filesystem or MIME inspection.
 Canvas Table optional structured filtering and bounded type inference are specified in [Structured filters](structured-filters.md), DC-SHA-072–074. This additive UI-first slice preserves DC-SHA-066–068 and defers broad qualification until explicit user UI approval.
 
 The review slice connects the controlled filtering configuration to the existing Canvas Table layout and accessible row controls; it preserves the existing source-row numbering and next-frame sort overlay tests.
+
+## DC-SHA-075 — Composable data tables
+
+**Requirement.** CanvasTable MUST support host-authored column headers, rich cells and expanded details through public snippets while retaining one geometry and accessible grid.
+
+Its only scrolling viewport MUST compose the public ScrollArea in both axes; styled and native strategies MUST preserve grid semantics, scrollbar interaction, virtualized alignment, editing, keyboard operation and teardown.
+
+### Acceptance details
+
+- Optional stable-ID column descriptors MUST supply labels and header/cell snippets that replace letters/painted text, while omitted descriptors MUST preserve spreadsheet behavior.
+- Controlled expanded row IDs and detail snippets MUST use measured heights shared by layout, painting, hit testing and navigation with CSS-owned horizontal anchoring and default sans UI typography; observers MUST disconnect on recycling and teardown.
+- Rich content MUST be bounded by visible rows and columns, with at most one active accessibility row; native interactive descendants MUST remain operable without triggering spreadsheet commands.
+- Host row/header heights, optional viewport width filling, toolbar replacement or omission and context-menu disabling MUST support read-only use without synthetic data headers or mutation commands.
+
+## DC-SHA-076 — Scoped row selection
+
+**Requirement.** CanvasTable MUST support controlled single/multiple, required and disabled row selection with a selectable scope independent of the displayed page.
+
+### Acceptance details
+
+- Existing boolean rowSelection MUST preserve its checkbox-control behavior, while single selection MUST use real radio controls; optional single selection MUST permit clearing while required selection MUST reject clearing the final row.
+- A supplied selectionRowIds scope MUST cover filtered loaded rows across pages; select-all MUST preserve selections outside that scope and derive checked/mixed state from that scope.
+- Disabled selection MUST suppress all selection callbacks without disabling scrolling, filtering or cell navigation; deleted IDs MUST still be pruned.
+- Source row numbering and stable identity MUST survive page changes, sort, filter and column reorder, with no duplicate accessible representation.
+
+## Composable-table implementation evidence
+
+DC-SHA-075–076 review implementation includes bounded rich overlays, measured detail rows, native radio keyboard callbacks and explicit focus return before closing an active detail. Focused evidence remains separate from UI approval and full qualification.
+
+Composable table stories use decorative Lucide right/down disclosure chevrons with matching Expand/Collapse labels; the fixed gutter layer reuses existing gutter paint, remains hidden from assistive technology, and leaves row controls and scrollbars operable (DC-SHA-066, DC-SHA-075).
+
+The disclosure fixture uses the compact 24px icon-xs control and a realistic account-review detail with owner, renewal value, review date, reference and activity; expanded content stays mounted with stable height and horizontal position during scrolling (DC-SHA-075).
+
+CanvasTable display settings MAY be host-controlled through `wrapText` and `columnColours`, with matching change callbacks; omitted flags retain the sheet toolbar's local state. Custom cell content MUST inherit the chosen column colour and wrapping, while the central row geometry accounts for up to four wrapped text lines. Explicit child control colours remain authoritative. Hosts omitting the default toolbar MAY compose their own display toggles.
+
+Custom header snippets replacing the letter band MUST receive the same column text colour and eight-percent background tint as fixed sheet headers when column colours are enabled, restoring the normal header surface when disabled.
+
+The approved Notebook composition is now in full qualification. Verification fixtures supply measured detail state alongside existing viewport state, and optional single-selection stories match the complete row name so row 2 cannot match row 20.
+
+DC-SHA-075 rich-cell backgrounds, row/range selection and active/search outlines MUST share the cells' native scrolling coordinate system. Delayed viewport scroll notifications MUST NOT detach the selection paint from its content or expose stale selected rows. Default canvas-only painting remains unchanged, and custom/fallback rich cells retain the same tokens, borders and accessible grid.
+
+DC-SHA-075–076: omitting onCellChange defines read-only row navigation. Data-cell
+clicks and vertical keyboard navigation MUST select whole data rows, never cells,
+column ranges or fixed header rows. Plain click selects one row; Ctrl/Meta-click
+toggles additional rows, and Shift-click selects the visible-order anchor range.
+Single/required/disabled rules MUST apply. Repeated unchanged selections MUST NOT
+emit callbacks. Interactive descendants retain their own actions.
+
+With row controls enabled, read-only row actions MUST update controlled selectedRowIds.
+Without row controls, the component MUST retain local stable-ID row selection.
+Sorting/filtering MUST preserve selected identities; deleted IDs MUST be pruned.
+Ctrl/Meta+A MUST cover the filtered selection scope and preserve hidden selections.
+Keyboard focus MUST identify the row, Tab MUST leave the grid normally, and editable
+tables MUST retain cell editing, cell/range selection and independent checkboxes.
+
+Read-only rich-cell row identity MUST come from its owned DOM grid cell, including coordinate-free synthetic/assistive pointers; canvas-only rows use central hit testing. Nested grids and interactive descendants MUST keep their actions isolated. Browser assertions MUST wait for the story render boundary before checking viewport attributes.

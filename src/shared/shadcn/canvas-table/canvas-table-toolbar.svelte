@@ -31,7 +31,7 @@
 <div class="canvas-table__toolbar" role="toolbar" aria-label="Sheet">
   <input
     class="canvas-table__address"
-    aria-label="Cell address"
+    aria-label={config.onCellChange ? "Cell address" : "Row address"}
     value={draft ?? reference}
     spellcheck="false"
     onfocus={(event) => event.currentTarget.select()}
@@ -108,7 +108,12 @@
               size="sm"
               variant="outline"
               aria-label={action.label}
-              disabled={action.id === "header" && !config.onHeaderRowChange}
+              disabled={action.id === "header"
+                ? !config.onHeaderRowChange
+                : action.id === "wrap"
+                  ? config.wrapText !== undefined && !config.onWrapTextChange
+                  : config.columnColours !== undefined &&
+                    !config.onColumnColoursChange}
               pressed={action.id === "wrap"
                 ? ctx.state.wrap
                 : action.id === "colours"

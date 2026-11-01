@@ -230,3 +230,9 @@ uses the existing Shadcn pointer lane and workspace-derived Storybook ports.
 Structured filter UI review runs focused source-consumer, unit, story, browser, formatting and specification checks only. The user explicitly defers pnpm checks, all repository-wide suites, static Storybook and packed-consumer qualification until UI approval; durable evidence records that gate (DC-SHA-074).
 
 The UI review adds focused family import/physical-line audits and a strict standalone/table public source consumer; the existing Canvas Table browser files remain in the focused regression surface. These checks do not authorize the deferred full lanes.
+
+Focused strict source-consumer coverage includes ScrollArea viewportProps attributes and event currentTarget typing, alongside CanvasTable composition; native/styled browser checks retain scroll, resize, keyboard and teardown assertions without screenshot comparison (DC-SHA-038, DC-SHA-075).
+
+CanvasTable rapid-scroll regression coverage delays scroll listeners deliberately and checks fixed opaque gutter coverage, stacking and bounds without screenshot comparison, alongside Lucide disclosure state interactions (DC-SHA-066, DC-SHA-075).
+
+Expanded-detail browser regressions exercise the compact disclosure target, realistic data typography, unchanged detail identity/height and native horizontal anchoring while scroll-state updates are delayed (DC-SHA-075).

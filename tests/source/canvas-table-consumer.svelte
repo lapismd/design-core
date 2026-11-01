@@ -1,6 +1,8 @@
 <script lang="ts">
   import {
     CanvasTable,
+    type CanvasTableColumnContext,
+    type CanvasTableCellContext,
     canvasTableTokenNames,
     type CanvasTableProps,
     type CanvasTableRow,
@@ -62,3 +64,30 @@
 </div>
 <output aria-label="Edited value">{rows[1]?.cells[0]}</output>
 <output aria-label="Last command">{command?.id}</output>
+
+{#snippet columnHeader(context: CanvasTableColumnContext)}<strong
+    >{context.label}</strong
+  >{/snippet}
+{#snippet richCell(context: CanvasTableCellContext)}<button
+    type="button"
+    onclick={context.toggleExpanded}>{context.value}</button
+  >{/snippet}
+<div style="height: 300px">
+  <CanvasTable
+    rows={[{ id: "data", cells: ["Value"] }]}
+    columns={[
+      { id: "field", label: "Field", header: columnHeader, cell: richCell },
+    ]}
+    columnWidths={[200]}
+    headerRow={false}
+    toolbar={false}
+    contextMenu={false}
+    rowHeight={36}
+    columnHeaderHeight={80}
+    rowSelection={{ mode: "single", required: true, disabled: false }}
+    selectedRowIds={["data"]}
+    selectionRowIds={["data"]}
+    expandedRowIds={[]}
+    onExpandedRowIdsChange={() => {}}
+  />
+</div>

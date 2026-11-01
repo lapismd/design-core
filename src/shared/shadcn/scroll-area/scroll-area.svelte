@@ -10,6 +10,7 @@
   } from "./scroll-area-model.js";
   import { type WithoutChild } from "../../../lib/utils.js";
   import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
+  import type { ScrollAreaViewportProps } from "./scroll-area-viewport-props.js";
 
   function usesNativeWebKitScrolling(): boolean {
     // Hosts with frequent view teardown may opt into the owned, cancellable
@@ -35,6 +36,7 @@
   let {
     ref = $bindable(null),
     viewportRef = $bindable(null),
+    viewportProps = {},
     class: className,
     orientation = "vertical",
     scrollbarXClasses = "",
@@ -50,6 +52,8 @@
     scrollbarXClasses?: string | undefined;
     scrollbarYClasses?: string | undefined;
     viewportRef?: HTMLElement | null;
+    /** Attributes and handlers for the actual scroll viewport, not its root. */
+    viewportProps?: ScrollAreaViewportProps;
     scrollStrategy?: ScrollAreaStrategy;
     /** Fill a bounded viewport with layouts that size children by percentage. */
     fillContent?: boolean;
@@ -115,6 +119,7 @@
       tabindex={0}
       role="group"
       aria-label="Scrollable content"
+      {...omitDataUiIdentity(viewportProps)}
       data-ui-component="scroll-area"
       data-ui-part="scroll-area-viewport"
       data-slot="scroll-area-viewport"
@@ -146,6 +151,7 @@
     <ScrollAreaPrimitive.Viewport
       bind:ref={activeViewportRef}
       tabindex={0}
+      {...omitDataUiIdentity(viewportProps)}
       data-ui-component="scroll-area"
       data-ui-part="scroll-area-viewport"
       data-slot="scroll-area-viewport"

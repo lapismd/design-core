@@ -39,7 +39,15 @@
 {#if operator.value === "none"}
   <span class="filter-builder__no-value" aria-hidden="true">—</span>
 {:else if Custom}
-  <Custom {field} {operator} {value} {disabled} {onValueChange} />
+  <Custom
+    field={{ ...field, type }}
+    {operator}
+    {value}
+    {disabled}
+    {onValueChange}
+    {invalid}
+    {describedBy}
+  />
 {:else if operator.value === "multiple"}
   <Multiple
     values={Array.isArray(value) ? value : []}

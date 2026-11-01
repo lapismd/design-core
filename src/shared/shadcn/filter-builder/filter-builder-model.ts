@@ -88,12 +88,16 @@ export function validateFilterState(
       errors[node.id] = "Choose an operator for this field type.";
       return;
     }
+    if (operator.validation === "custom" && !operator.validate) {
+      errors[node.id] = "A custom validator is required.";
+      return;
+    }
     const custom = operator.validate?.(node.value);
     if (custom) {
       errors[node.id] = custom;
       return;
     }
-    if (operator.value === "none") return;
+    if (operator.value === "none" || operator.validation === "custom") return;
     if (operator.value === "multiple") {
       if (
         !Array.isArray(node.value) ||

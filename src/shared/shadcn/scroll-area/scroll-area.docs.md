@@ -85,3 +85,25 @@ Set the `orientation` prop to `"horizontal"` to enable horizontal scrolling.
   </div>
 </ScrollArea>
 ```
+
+## Viewport semantics
+
+Use `viewportProps` for the actual scrolling element's native attributes and
+event handlers, including `role`, `aria-label`, `tabindex`, `class`, and keyboard
+or pointer events. `viewportRef` binds that same element in both styled and
+native strategies. Root props still belong to the outer ScrollArea. Component
+and part identities remain owned by ScrollArea.
+
+```svelte
+<script lang="ts">
+  import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
+</script>
+
+<ScrollArea
+  orientation="both"
+  style="height: 240px; width: 100%"
+  viewportProps={{ role: "region", "aria-label": "Results" }}
+>
+  <div style="width: 1200px; height: 800px">Scrollable results</div>
+</ScrollArea>
+```
