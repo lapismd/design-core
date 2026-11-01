@@ -41,6 +41,15 @@ inventory. Their prior equivalence/deferment dispositions remain applicable;
 the already-merged automation #56 is now included through main 4422bf31.
 No workspace was overwritten, removed or updated merely for inventory.
 
+## Protected source acceptance
+
+[Source PR #59](https://github.com/lapismd/design-core/pull/59) merged at
+`e75c98083bbd87accfb7ad04447e066ad4214fb0` after all eleven protected checks
+passed in [CI 41321128326](https://github.com/lapismd/design-core/actions/runs/41321128326).
+The 0.10.1 version PR contains the generated version/changelog, consumed
+Changeset and this source receipt. Its protected checks and trusted publication
+remain required before Notes adopts the patch.
+
 | Workspace                      | Head               | Release disposition                                                                    |
 | ------------------------------ | ------------------ | -------------------------------------------------------------------------------------- |
 | catalog-package                | 7b90b0445bb4       | Missing historical root retained; previous release disposition unchanged.              |
