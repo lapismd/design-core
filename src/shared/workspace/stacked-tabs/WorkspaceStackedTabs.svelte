@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { windowControlsOverlap } from "../core/window-controls-overlap.js";
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
   import Maximize from "@lucide/svelte/icons/maximize";
   import Plus from "@lucide/svelte/icons/plus";
@@ -193,6 +194,7 @@
 >
   <header
     class="ui-workspace-stacked-tabs__chrome"
+    use:windowControlsOverlap
     data-ui-part="chrome"
     data-desktop-drag-region
   >

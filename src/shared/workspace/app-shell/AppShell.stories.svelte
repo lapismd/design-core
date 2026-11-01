@@ -239,6 +239,7 @@
     return app;
   }
 
+  const controlsApp = createDemoApp();
   const composedApp = createBottomPanelApp();
   const surfaceApp = createDemoApp();
   const alignmentApp = createBottomPanelApp();
@@ -866,6 +867,130 @@
     <div class="ui-app-shell-story-frame ui-app-shell-story-frame--settings">
       <AppShell.Root controller={pluginsApp} theme="inherit">
         <AppShell.CorePluginsSettings />
+      </AppShell.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Native window controls"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "Host window-control measurements reserve only overlapping top chrome. Leading and trailing controls remain clear when docks change; ordinary browser geometry returns when the overlay is disabled.",
+      },
+      source: {
+        type: "code",
+        language: "tsx",
+        code: `import { AppShell } from "@lapismd/design-core/workspace/app-shell";
+import { AppShellController } from "@lapismd/design-core/workspace/core";
+const controller = new AppShellController();
+
+<div style="--ui-workspace-window-controls-overlay-height:38px; --ui-workspace-window-controls-overlay-inline-start:80px; --ui-workspace-window-controls-overlay-inline-end:138px; height:100vh">
+  <AppShell.Root {controller}><AppShell.Surface displayMode="desktop" /></AppShell.Root>
+</div>`,
+      },
+    },
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/app-shell/native-window-controls-chromium.png",
+      ],
+    },
+  }}
+  play={async ({ canvasElement, step }) => {
+    const root = canvasElement.querySelector<HTMLElement>(
+      "[data-app-shell-root]",
+    )!;
+    const headers = () =>
+      Array.from(
+        root.querySelectorAll<HTMLElement>(
+          "[data-ui-component='workspace-tabs'] > [data-ui-part='header'], .ui-workspace-stacked-tabs__chrome, [data-ui-part='sidebar-tab-bar']",
+        ),
+      );
+    await waitFor(() => expect(headers().length).toBeGreaterThan(2));
+    for (const [start, end] of [
+      [80, 0],
+      [0, 138],
+    ]) {
+      await step(`Reserve native controls ${start}/${end}`, async () => {
+        root.style.setProperty(
+          "--ui-workspace-window-controls-overlay-height",
+          "38px",
+        );
+        root.style.setProperty(
+          "--ui-workspace-window-controls-overlay-inline-start",
+          `${start}px`,
+        );
+        root.style.setProperty(
+          "--ui-workspace-window-controls-overlay-inline-end",
+          `${end}px`,
+        );
+        await waitFor(() => {
+          const bounds = root.getBoundingClientRect();
+          for (const header of headers()) {
+            const rect = header.getBoundingClientRect();
+            if (rect.top >= bounds.top + 38) continue;
+            expect(header.dataset.windowControlsOverlap).toBe("true");
+            for (const control of header.querySelectorAll<HTMLElement>(
+              "button, [role='tab']",
+            )) {
+              const r = control.getBoundingClientRect();
+              if (r.width === 0 || r.height === 0) continue;
+              expect(r.left).toBeGreaterThanOrEqual(bounds.left + start - 1);
+              expect(r.right).toBeLessThanOrEqual(bounds.right - end + 1);
+            }
+          }
+        });
+        controlsApp.renderer.setSidebarOpen("left", false);
+        controlsApp.renderer.setSidebarOpen("right", false);
+        await waitFor(() =>
+          expect(
+            root.querySelector("[data-workspace-sidebar-side='left']"),
+          ).toBeNull(),
+        );
+        controlsApp.renderer.setSidebarOpen("left", true);
+        controlsApp.renderer.setSidebarOpen("right", true);
+      });
+    }
+    await step("Keep ribbon actions clear at reduced shell zoom", async () => {
+      root.style.zoom = "0.75";
+      root.style.setProperty(
+        "--ui-workspace-window-controls-overlay-height",
+        "38px",
+      );
+      root.style.setProperty(
+        "--ui-workspace-window-controls-overlay-inline-start",
+        "80px",
+      );
+      await waitFor(() => {
+        const controlsBottom = root.getBoundingClientRect().top + 38;
+        for (const ribbon of root.querySelectorAll<HTMLElement>(
+          "[data-workspace-ribbon]",
+        )) {
+          const button = ribbon.querySelector("button");
+          if (button)
+            expect(button.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+              controlsBottom,
+            );
+        }
+      });
+      root.style.zoom = "1";
+    });
+    root.style.setProperty(
+      "--ui-workspace-window-controls-overlay-height",
+      "0px",
+    );
+    await waitFor(() =>
+      expect(root.querySelector("[data-window-controls-overlap]")).toBeNull(),
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="ui-app-shell-story-frame">
+      <AppShell.Root controller={controlsApp} theme="inherit">
+        <AppShell.Surface displayMode="desktop" />
       </AppShell.Root>
     </div>
   {/snippet}

@@ -512,3 +512,15 @@
     8px + var(--ui-workspace-window-controls-overlay-inline-start, 0px)
   );
 }
+
+.ui-workspace-tabs__header[data-window-controls-overlap] {
+  --ui-workspace-window-controls-inline-start: 0px;
+  --ui-workspace-window-controls-overlay-inline-start: 0px;
+  box-sizing: border-box;
+  min-height: max(
+    var(--ui-workspace-tab-height),
+    var(--ui-workspace-controls-overlap-height)
+  );
+  padding-inline-start: var(--ui-workspace-controls-overlap-start);
+  padding-inline-end: var(--ui-workspace-controls-overlap-end);
+}

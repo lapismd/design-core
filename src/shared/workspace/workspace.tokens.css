@@ -58,6 +58,8 @@
   --ui-workspace-radius-large: var(--radius, 0.625rem);
   --ui-workspace-shadow: 0 12px 32px rgb(15 23 42 / 24%);
   --ui-workspace-window-controls-overlay-inline-start: 0px;
+  --ui-workspace-window-controls-overlay-inline-end: 0px;
+  --ui-workspace-window-controls-overlay-height: 0px;
   --ui-workspace-tab-height: 2.5rem;
   --ui-workspace-tab-active-height: 2.25rem;
   --ui-workspace-tab-width: 12.5rem;
