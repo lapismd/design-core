@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.10.1
+
+### Patch Changes
+
+- [#59](https://github.com/lapismd/design-core/pull/59) [`e75c980`](https://github.com/lapismd/design-core/commit/e75c98083bbd87accfb7ad04447e066ad4214fb0) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep the top tab-header divider continuous through native-control clearances when sidebars close, preserving active-tab contours and pointer behaviour.
+
 ## 0.10.0
 
 ### Minor Changes
