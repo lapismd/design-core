@@ -621,7 +621,14 @@ export class WorkspaceSettingsController {
           return true;
         } catch (caught) {
           if (this.#sourceWriteVersions.get(id) === version) {
-            this.values[id] = previous;
+            let resolved = previous;
+            try {
+              const current = registration.definition.source.get(id);
+              if (current !== undefined) resolved = cloneValue(current);
+            } catch {
+              // A failed read cannot replace the original write error.
+            }
+            this.values[id] = resolved;
             this.sourceErrors[id] =
               caught instanceof Error
                 ? caught.message

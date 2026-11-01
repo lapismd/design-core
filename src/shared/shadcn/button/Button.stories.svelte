@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
+  import * as exampleSources from "./Button.example-sources.js";
   import { Button, buttonTokenNames } from "./index.js";
 
   const { Story } = defineMeta({
@@ -89,5 +90,57 @@
       <Button variant="secondary">Secondary unchanged</Button>
       <Button variant="outline">Outline unchanged</Button>
     </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Link Lapis light"
+  exportName="LinkLapisLight"
+  globals={{ theme: "lapis", colorMode: "light" }}
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: exampleSources.Link, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    const button = canvas.getByRole("button", { name: "Sign out" });
+    await expect(getComputedStyle(button).color).toBe(
+      getComputedStyle(canvasElement.ownerDocument.body).color,
+    );
+    await expect(getComputedStyle(button).textDecorationLine).toContain(
+      "underline",
+    );
+    await userEvent.tab();
+    await expect(button).toHaveFocus();
+  }}
+>
+  {#snippet template()}
+    <Button variant="link">Sign out</Button>
+  {/snippet}
+</Story>
+
+<Story
+  name="Link Lapis dark"
+  exportName="LinkLapisDark"
+  globals={{ theme: "lapis", colorMode: "dark" }}
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: exampleSources.Link, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    const button = canvas.getByRole("button", { name: "Sign out" });
+    await expect(getComputedStyle(button).color).toBe(
+      getComputedStyle(canvasElement.ownerDocument.body).color,
+    );
+    await expect(getComputedStyle(button).textDecorationLine).toContain(
+      "underline",
+    );
+  }}
+>
+  {#snippet template()}
+    <Button variant="link">Sign out</Button>
   {/snippet}
 </Story>
