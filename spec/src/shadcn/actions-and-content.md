@@ -29,11 +29,11 @@ Action and content primitives adapt shadcn-svelte semantics to Design Core styli
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/shadcn/button`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The public boundary is `@lapismd/design-core/shadcn/button`; the catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 - Ghost and outline Button controls MUST provide visible hover feedback in both colour modes, and ghost keyboard focus MUST include background feedback.
 - Outline and ghost Button labels MUST use the theme foreground colour so they remain readable when nested under muted chrome.
+- Link Button labels MUST use foreground semantics and a persistent underline so primary fill colours cannot reduce light/dark text contrast.
 
 ## DC-SHA-003 — Button Group
 

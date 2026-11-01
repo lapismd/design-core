@@ -232,7 +232,7 @@
 <Story
   name="Link"
   exportName="Link"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/button/link-chromium.png"],

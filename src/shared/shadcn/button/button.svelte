@@ -195,7 +195,7 @@
         white-space: nowrap;
       }
       [data-ui-component="button"][data-variant="link"] {
-        color: var(--primary);
+        color: var(--foreground);
       }
       [data-ui-component="button"][data-variant="default"] {
         color: var(--ui-button-foreground, var(--primary-foreground));
@@ -211,6 +211,7 @@
         color: var(--destructive-foreground, #ffffff);
       }
       [data-ui-component="button"][data-variant="link"] {
+        text-decoration-line: underline;
         text-underline-offset: 4px;
       }
       [data-ui-component="button"][data-variant="outline"] {
