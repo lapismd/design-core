@@ -163,7 +163,7 @@
     "@changesets/changelog-github": "^1.0.1",
     "@changesets/cli": "^3.0.3",
     "@lapismd/spec-validator": "^0.2.0",
-    "@lapismd/storybook-addon-visual-delta": "0.0.9",
+    "@lapismd/storybook-addon-visual-delta": "0.1.0",
     "@lezer/generator": "^1.7.0",
     "@playwright/test": "1.62.1",
     "@storybook/addon-a11y": "^10.6.3",
