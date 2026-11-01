@@ -41,6 +41,9 @@ export const workspaceTokenNames = {
   shadow: "--ui-workspace-shadow",
   windowControlsOverlayInlineStart:
     "--ui-workspace-window-controls-overlay-inline-start",
+  windowControlsOverlayInlineEnd:
+    "--ui-workspace-window-controls-overlay-inline-end",
+  windowControlsOverlayHeight: "--ui-workspace-window-controls-overlay-height",
   tabHeight: "--ui-workspace-tab-height",
   tabActiveHeight: "--ui-workspace-tab-active-height",
   tabWidth: "--ui-workspace-tab-width",
@@ -156,6 +159,8 @@ export const workspaceTokenDefaults: Record<WorkspaceTokenKey, string> = {
   radiusLarge: "var(--radius, 0.625rem)",
   shadow: "0 12px 32px rgb(15 23 42 / 24%)",
   windowControlsOverlayInlineStart: "0px",
+  windowControlsOverlayInlineEnd: "0px",
+  windowControlsOverlayHeight: "0px",
   tabHeight: "2.5rem",
   tabActiveHeight: "2.25rem",
   tabWidth: "12.5rem",

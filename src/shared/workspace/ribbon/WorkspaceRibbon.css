@@ -6,7 +6,10 @@
   min-height: 0;
   flex: 0 0 var(--ui-workspace-ribbon-width);
   flex-direction: column;
-  padding-block-start: var(--ui-workspace-tab-height);
+  padding-block-start: max(
+    var(--ui-workspace-tab-height),
+    var(--ui-workspace-controls-overlap-height, 0px)
+  );
   color: var(--ui-workspace-muted-foreground);
   background: var(--ui-workspace-panel);
   user-select: none;
@@ -30,14 +33,22 @@
 }
 
 .ui-workspace-ribbon::before {
-  top: calc(var(--ui-workspace-tab-height) - 1px);
+  top: calc(
+    max(
+        var(--ui-workspace-tab-height),
+        var(--ui-workspace-controls-overlap-height, 0px)
+      ) - 1px
+  );
   right: 0;
   left: 0;
   height: 1px;
 }
 
 .ui-workspace-ribbon::after {
-  top: var(--ui-workspace-tab-height);
+  top: max(
+    var(--ui-workspace-tab-height),
+    var(--ui-workspace-controls-overlap-height, 0px)
+  );
   bottom: 0;
   width: 1px;
 }

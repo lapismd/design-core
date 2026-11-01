@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { windowControlsOverlap } from "../core/window-controls-overlap.js";
   import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
   import { ContextMenu } from "bits-ui";
   import type { Snippet } from "svelte";
@@ -203,12 +204,15 @@
       <div
         bind:this={tabIndicatorRoot}
         class="ui-workspace-sidebar__tab-bar"
+        use:windowControlsOverlap
         data-ui-part="sidebar-tab-bar"
         data-workspace-tab-strip="sidebar"
+        data-desktop-drag-region
         ondragleave={handleTabIndicatorLeave}
       >
         <div
           class="ui-workspace-sidebar__tab-list"
+          data-desktop-drag-region="false"
           role="tablist"
           aria-label={`${side === "left" ? "Left" : "Right"} sidebar tabs`}
         >
