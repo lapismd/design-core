@@ -66,6 +66,12 @@ importers:
       '@codemirror/view':
         specifier: ^6.43.15
         version: 6.43.15
+      '@dnd-kit/dom':
+        specifier: ^0.4.0
+        version: 0.4.0
+      '@dnd-kit/svelte':
+        specifier: ^0.4.0
+        version: 0.4.0(svelte@5.57.3)
       '@emoji-mart/data':
         specifier: ^1.2.1
         version: 1.2.1

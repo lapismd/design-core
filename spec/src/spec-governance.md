@@ -212,3 +212,5 @@ Structured Filter Builder source maps to shadcn/structured-filters.md (DC-SHA-06
 The actual shadcn/filter-builder package export and Shadcn/Forms/Filter Builder catalog group map to DC-SHA-069. Canvas Table filter scenarios remain within its existing primary catalog title.
 
 Composable CanvasTable additions map to DC-SHA-075–076 in Shadcn Data and Feedback; FilterBuilder custom validation maps to DC-SHA-077 in Structured filters. The focused-first UI approval gate remains active for this new slice.
+
+Kanban Board maps its family, catalog title and `./workspace/kanban` export surface to DC-WS-085 in the Workspace components chapter; the explicit package export and public surface map share that ownership.

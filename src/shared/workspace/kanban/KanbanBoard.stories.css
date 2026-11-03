@@ -1,0 +1,16 @@
+.ui-kanban-story-note {
+  color: var(--ui-kanban-ink-strong, var(--foreground));
+  font-size: 0.92rem;
+  line-height: 1.55;
+  padding: 1rem 1.1rem 1.2rem;
+}
+
+/* Story composition of the shared MarkdownComposer inside the detail note
+   surface: no avatar gutter (composer and footer sit flush left) and an
+   editor min-height that lands the toolbar/submit row just above the bottom
+   of the 14rem surface (14rem − 2px border − 0.5rem gap − 2rem footer). */
+.detail-note-surface.edit-mode .ui-markdown-composer {
+  --ui-markdown-composer-avatar-width: 0rem;
+  --ui-markdown-composer-avatar-gap: 0rem;
+  --ui-markdown-composer-document-min-height: calc(11.5rem - 2px);
+}

@@ -338,8 +338,9 @@ stylesheet and resolves those tokens into its canvas paint theme (DC-SHA-066).
 Structured Filter Builder uses native CSS and --ui-filter-builder-background, --ui-filter-builder-border, --ui-filter-builder-radius, --ui-filter-builder-gap and --ui-filter-builder-width tokens, inheriting existing control, focus and overlay tokens (DC-SHA-069–074).
 
 The Filter Builder token defaults are popover background, border, radius, a 0.5rem condition gap and min(48rem, calc(100svw - 1rem)) suggested panel width. Table popovers apply viewport bounds and reuse the inherited nested portal contexts.
-
 Hosts may also set `--ui-workspace-window-controls-overlay-inline-end` and
 `--ui-workspace-window-controls-overlay-height` in viewport CSS pixels. Top
 headers reserve their own intersection with those control regions; a zero
 height disables overlay geometry.
+
+Kanban Board ports the legacy Fizzy board stylesheet into colocated native CSS. The `--ui-kanban-*` theme layer defaults bind to host theme tokens with `.dark` overrides; per-lane accents flow through the local `--column-color` and `--card-color` variables. The default column swatch palette keeps the legacy hues darkened to their 700-level equivalents so white card-tab and count text retains WCAG AA contrast. The card meta grid adds an icon-matched strut so neighbouring cells share one line-box height and their bottom borders stay continuous, and applies the 0.5rem leading cell padding the legacy markup intended for its icon and priority cells — deliberate alignment and spacing fixes over the legacy reference, whose icon cell staggered the shared border and whose layered `pl-2` utilities never applied (DC-WS-085).

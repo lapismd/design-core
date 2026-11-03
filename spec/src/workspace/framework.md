@@ -264,6 +264,12 @@ names, buttons and overlay lifetime. Built-in status text/menu rendering remains
 the default (DC-WS-029). No repository or domain-specific content belongs in the
 workspace shell.
 
+The workspace barrel re-exports the generic Kanban Board family alongside the
+registered view surfaces. The board itself is passive: consuming views own
+column data, card identity, persistence and detail body content, while the
+family owns the collapsible lanes, dnd-kit drag & drop, pinned corner and
+dialogs (DC-WS-085).
+
 ## DC-WS-083 — Host window-controls overlay geometry
 
 **Requirement.** Workspace top tabs, stacked chrome and sidebar tab bars MUST reserve only the native window-control regions intersecting their top band. Hosts MUST supply overlay height and full-window leading/trailing clearances through public workspace tokens; Design Core MUST remain independent of browser and operating-system detection.
