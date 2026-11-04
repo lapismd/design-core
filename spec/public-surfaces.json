@@ -297,6 +297,10 @@
       "requirement": "DC-PKG-007"
     },
     {
+      "name": "./workspace/kanban",
+      "requirement": "DC-PKG-007"
+    },
+    {
       "name": "./workspace/menu",
       "requirement": "DC-PKG-007"
     },
@@ -929,6 +933,10 @@
     {
       "name": "Workspace/Components/Icon",
       "requirement": "DC-WS-015"
+    },
+    {
+      "name": "Workspace/Components/Kanban Board",
+      "requirement": "DC-WS-085"
     },
     {
       "name": "Workspace/Components/Menu",

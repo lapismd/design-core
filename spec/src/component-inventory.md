@@ -250,6 +250,9 @@ Application-independent workspace framework in `src/shared/workspace/`.
   resource navigation and quick-fix adapters
 - Startup surface (`Workspace/Components/Startup`): application-independent
   task progress and bounded failure presentation with host-owned actions
+- Kanban board (`Workspace/Components/Kanban Board`): generic collapsible
+  column board with dnd-kit pointer/keyboard drag & drop, pinned-card corner,
+  card detail and column view dialogs, and consumer-owned card data
 - Optional F-Mode and Notifications plugins; the shared controlled NotificationToasts presenter also accepts host-owned records, actions and lifecycle callbacks without a workspace controller
 
 Import: `@lapismd/design-core/workspace`. Production Workspace sources use

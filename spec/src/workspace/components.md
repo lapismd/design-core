@@ -36,6 +36,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 | Floating Layer                       | `@lapismd/design-core/workspace/floating-layer`  | DC-WS-013   |
 | Floating Window                      | `@lapismd/design-core/workspace/floating-window` | DC-WS-014   |
 | Workspace Icon                       | `@lapismd/design-core/workspace/icon`            | DC-WS-015   |
+| Kanban Board                         | `@lapismd/design-core/workspace/kanban`          | DC-WS-085   |
 | Workspace Menu                       | `@lapismd/design-core/workspace/menu`            | DC-WS-016   |
 | Mobile Shell                         | `@lapismd/design-core/workspace/mobile`          | DC-WS-017   |
 | Popout Surface                       | `@lapismd/design-core/workspace/popout`          | DC-WS-018   |
@@ -614,3 +615,14 @@ main-body and sidebar destinations marked with the `move` icon.
 - String fields MAY declare `filePicker` metadata with host-owned browse and error callbacks, without transferring filesystem or import authority.
 - Unit selection and cancelled browsing MUST not write, while invalid numeric drafts remain editable without replacing the retained value.
 - Settings MUST compose the generic Forms QuantityInput, FilePathInput and PasswordInput with shared validation, reset and disabled/read-only semantics.
+
+## DC-WS-085 — Kanban Board
+
+**Requirement.** The Kanban Board family MUST render consumer-owned columns and cards as a horizontally scrolling board with collapsible lanes, pointer and keyboard drag & drop, a pinned-card corner, and full-screen card detail and column view dialogs.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/workspace/kanban`; columns and cards are plain data (`KanbanColumnData`, `KanbanCardData`) and every mutation flows through consumer callbacks.
+- Drag & drop MUST compose the published `@dnd-kit/svelte` draggable/droppable primitives with a drag overlay and keyboard-sensor lift, matching the legacy Fizzy board behaviour.
+- The detail dialog MUST keep consumer-owned body content behind its `body` snippet and expose the shared body-editing state toggled by the Edit action and the `E` shortcut.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

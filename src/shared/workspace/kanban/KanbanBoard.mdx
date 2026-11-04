@@ -1,0 +1,66 @@
+import { Meta, Canvas, Primary, Source } from "@storybook/addon-docs/blocks";
+import { Basic } from "./KanbanBoard.example-sources.js";
+import * as KanbanBoardStories from "./KanbanBoard.stories.svelte";
+
+<Meta of={KanbanBoardStories} />
+
+# KanbanBoard
+
+A generic kanban board ported from the legacy Fizzy task board. It keeps the
+original layout and behaviour — collapsible columns, card drag & drop through
+`@dnd-kit/svelte`, the sticky pinned-cards corner, golden tickets, stamps, the
+full-screen card detail dialog, and the full-screen column view — while all
+domain data stays consumer-owned.
+
+## Usage
+
+<Source language="ts" code={Basic} />
+
+<Primary />
+
+## Board contract
+
+- `columns: KanbanColumnData[]` with `{ id, label, color, cards }` plus the
+  behaviour flags `primary`, `locked`, `isFixedPosition`, `isCompleted`, and
+  `excludeFromAutoExpand`.
+- `cards: KanbanCardData[]` carry presentational fields only: `title`, `color`,
+  `tags`, `pinned`, `golden`, `progress`, `createdAt`/`updatedAt`,
+  `statusText`/`priorityText`/`linkText`, `counters`, `stamp`, and
+  `closureMessage`.
+- Mutations are callbacks: `onMoveCardToColumn`, `onReorderColumns`,
+  `onEditColumn`, `onTogglePin`, `onPromoteGolden`, `onSaveTitle` (may resolve
+  to a replacement card id), plus the optional `onBoardMount` hook.
+- `detailBody` is the only content snippet: it renders the consumer-owned body
+  surface inside the detail dialog (legacy: task card row + editable markdown)
+  and receives `{ card, editing, setEditing }` wired to the Edit button and the
+  `E` shortcut. `brand`/`brandLabel` replace the detail header brand block.
+
+## Keyboard model
+
+Arrow keys move the selection between columns and cards, `Shift+Arrow` moves
+the selected card one column, `Home`/`End` jump to the first/last column, and
+`Escape` collapses to the primary lane or closes a dialog. `Enter`/`Space` on a
+focused card lifts it into the `@dnd-kit` keyboard drag (arrows target a
+column, `Enter`/`Space` drops, `Escape` cancels); the board-level `Enter`
+fallback opens the selected card's detail when focus rests on a
+non-interactive board region, and `Shift+P` pins the selected card.
+
+## Examples
+
+<Canvas of={KanbanBoardStories.FullBoard} />
+
+<Canvas of={KanbanBoardStories.CardDetailDialog} />
+
+## Style
+
+Colocated CSS: `KanbanBoard.css`, a faithful port of the legacy
+`fizzy-board.css`. Paint reads the `--ui-kanban-*` token layer, whose defaults
+bind to the host theme (`--background`, `--card`, `--foreground`,
+`--muted-foreground`, `--border`, `--primary-foreground`) with `.dark`
+overrides; per-lane accents arrive through the local `--column-color` /
+`--card-color` variables. The default column swatch palette keeps the legacy
+hues darkened to their 700-level equivalents so white tab and count text keeps
+WCAG AA contrast. The detail note surface classes (`detail-note-surface`,
+`edit-mode`, `detail-note-empty`) are exported as global CSS so consumer
+`detailBody` snippets can compose the same look; the note surface border is
+reserved transparent at rest and only painted while editing.

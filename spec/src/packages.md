@@ -270,3 +270,5 @@ Structured filters add the focused shadcn/filter-builder export and Filter compa
 The implemented focused Filter Builder source entry point and Filter re-export share one implementation and a strict source-consumer check. Package version and registry dependency ranges remain unchanged during UI review; packed qualification is explicitly deferred.
 
 Composable table public column/context/selection types extend the existing CanvasTable export under DC-SHA-075–076. FilterOperator custom validation extends the existing FilterBuilder entry point under DC-SHA-077. Existing defaults and entry points remain compatible.
+
+The additive `./workspace/kanban` family exports KanbanBoard, KanbanColumn, KanbanCard, KanbanCardDetail, KanbanColumnView, their data types and the shared swatch palette, and re-exports them from the existing workspace barrel. The family consumes the published `@dnd-kit/svelte` and `@dnd-kit/dom` packages for drag & drop. Stories, docs fixtures and example sources remain excluded from the published package; consumer adoption is separate (DC-WS-085).

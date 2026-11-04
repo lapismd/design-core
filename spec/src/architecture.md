@@ -175,3 +175,5 @@ CanvasTable composes the shared ScrollArea viewport directly, using its public v
 The fixed CanvasTable gutter paint is a bounded decorative copy of its existing canvas; rich DOM snippets retain one accessible grid and the same geometry owner, with no duplicate semantic rows (DC-SHA-066, DC-SHA-075).
 
 Expanded CanvasTable details use native sticky horizontal positioning and shared measured row geometry, without a host adapter or a per-scroll JavaScript translation; rich detail typography defaults to the UI sans font (DC-SHA-075).
+
+Kanban Board is a generic Workspace-layer surface ported from the legacy Fizzy task board. Its columns, cards, pins and dialogs own no application state: grouping, item identity, data mutation and drag persistence remain host responsibilities, and drag & drop composes the published `@dnd-kit/svelte` primitives (DC-WS-085).
