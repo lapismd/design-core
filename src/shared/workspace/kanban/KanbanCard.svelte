@@ -18,6 +18,7 @@
     selected = false,
     canMoveLeft = false,
     canMoveRight = false,
+    movesEnabled = true,
     onSelect,
     onOpen,
     onMoveLeft,
@@ -31,6 +32,8 @@
     canMoveLeft?: boolean;
     /** Enables the hover move-right pill. */
     canMoveRight?: boolean;
+    /** When false, the card cannot be lifted into a drag. */
+    movesEnabled?: boolean;
     /** Selection callback fired on focus and pointer down. */
     onSelect: () => void;
     /** Opens the card detail. */
@@ -63,6 +66,10 @@
         cardId: card.id,
       };
     },
+  });
+
+  $effect(() => {
+    draggable.draggable.disabled = !movesEnabled;
   });
 </script>
 

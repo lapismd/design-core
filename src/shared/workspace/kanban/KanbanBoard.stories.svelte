@@ -237,8 +237,18 @@
   const detailBoard = createStoryBoard();
   const columnViewBoard = createStoryBoard();
   const keyboardBoard = createStoryBoard();
+  const openBoard = createStoryBoard();
+  const readOnlyBoard = createStoryBoard();
 
   let noteDraft = $state("Body preview text.");
+
+  function handleOpenCard(cardId: string, columnId: string) {
+    const column = openBoard.board.columns.find(
+      (candidate) => candidate.id === columnId,
+    );
+    const card = column?.cards.find((candidate) => candidate.id === cardId);
+    openBoard.board.log = `Opened ${card?.title ?? cardId} from ${columnId}`;
+  }
 </script>
 
 {#snippet detailBody(context: KanbanDetailBodyContext)}
@@ -506,6 +516,88 @@
       {detailBody}
     />
     <output class="sr-only">{keyboardBoard.board.log}</output>
+  {/snippet}
+</Story>
+
+<Story
+  name="Card open callback"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.CardOpen,
+        language: "ts",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: /Open card: Draft the release announcement/,
+      }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Opened Draft the release announcement from backlog",
+    );
+    // The activation override replaces the built-in detail dialog entirely.
+    await expect(within(document.body).queryByRole("dialog")).toBeNull();
+  }}
+>
+  {#snippet template()}
+    <KanbanBoard
+      columns={openBoard.board.columns}
+      {...openBoard.handlers}
+      onCardOpen={handleOpenCard}
+      ariaLabel="Card open board"
+    />
+    <output class="sr-only">{openBoard.board.log}</output>
+  {/snippet}
+</Story>
+
+<Story
+  name="Read-only moves"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const selected = canvas.getByRole("button", {
+      name: /Open card: Explore plugin telemetry/,
+    });
+    // A disabled draggable either drops its drag affordance attributes or
+    // advertises aria-disabled; both mean the card cannot be lifted.
+    const roledescription = selected.getAttribute("aria-roledescription");
+    const ariaDisabled = selected.getAttribute("aria-disabled");
+    expect(roledescription === null || ariaDisabled === "true").toBe(true);
+    await expect(
+      canvas.getByRole("button", {
+        name: "Move Explore plugin telemetry left",
+      }),
+    ).toBeDisabled();
+
+    // The Shift+arrow move shortcut is inert while navigation still works.
+    await selected.focus();
+    await userEvent.keyboard("{Shift>}{ArrowRight}{/Shift}");
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "No board action",
+    );
+    await userEvent.keyboard("{ArrowRight}");
+    const selectedColumn = canvasElement.querySelector(
+      ".kanban-column.is-selected",
+    );
+    await expect(
+      within(selectedColumn as HTMLElement).getByRole("heading", {
+        name: /Backlog/,
+      }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <KanbanBoard
+      columns={readOnlyBoard.board.columns}
+      {...readOnlyBoard.handlers}
+      movesEnabled={false}
+      ariaLabel="Read-only board"
+    />
+    <output class="sr-only">{readOnlyBoard.board.log}</output>
   {/snippet}
 </Story>
 

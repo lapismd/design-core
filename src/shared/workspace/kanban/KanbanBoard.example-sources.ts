@@ -150,3 +150,31 @@ export const DetailBody = `<script lang="ts">
     {/if}
   {/snippet}
 </KanbanBoard>`;
+
+export const CardOpen = `<script lang="ts">
+  import {
+    KanbanBoard,
+    type KanbanColumnData,
+  } from "@lapismd/design-core/workspace/kanban";
+
+  let columns = $state<KanbanColumnData[]>([
+    /* …same shape as the Basic example… */
+  ]);
+
+  function openNote(cardId: string) {
+    const file = vault.getFileByPath(pathForCard(cardId));
+    if (file) app.openFile(file);
+  }
+</script>
+
+<!-- onCardOpen replaces the built-in detail dialog on every activation path. -->
+<KanbanBoard
+  {columns}
+  onMoveCardToColumn={moveCardToColumn}
+  onReorderColumns={reorderColumns}
+  onEditColumn={editColumn}
+  onTogglePin={togglePin}
+  onPromoteGolden={promoteGolden}
+  onSaveTitle={saveTitle}
+  onCardOpen={(cardId) => openNote(cardId)}
+/>`;

@@ -22,6 +22,8 @@
     onTogglePin,
     onPromoteGolden,
     onSaveTitle,
+    onCardOpen = undefined,
+    movesEnabled = true,
     onBoardMount = undefined,
     ariaLabel = "Kanban board. Use arrow keys to navigate, Enter to open a card, Shift+arrow to move a card.",
     emptyTitle = "No cards match this board",
@@ -50,6 +52,18 @@
       cardId: string,
       title: string,
     ) => Promise<string | null> | string | null;
+    /**
+     * Card activation override. When provided, card clicks, the board-level
+     * Enter fallback, pinned-card clicks and column-view opens invoke this
+     * callback instead of opening the built-in detail dialog.
+     */
+    onCardOpen?: (cardId: string, columnId: string) => void;
+    /**
+     * When false, drag & drop lifting, drop targets, move pills and the
+     * Shift+arrow move shortcut are disabled; the board stays navigable and
+     * read-only (for example when the grouped property is not writable).
+     */
+    movesEnabled?: boolean;
     /** Invoked once when the board mounts (legacy: entropy application). */
     onBoardMount?: () => void | Promise<void>;
     /** Accessible name for the board landmark. */
@@ -242,6 +256,7 @@
     cardId: string,
     toColumnId: string,
   ): Promise<void> {
+    if (!movesEnabled) return;
     const targetColumn = columns.find((column) => column.id === toColumnId);
     if (!targetColumn) return;
 
@@ -282,6 +297,10 @@
   function openCard(columnId: string, cardId: string): void {
     selectCard(columnId, cardId);
     pinsExpanded = false;
+    if (onCardOpen) {
+      onCardOpen(cardId, columnId);
+      return;
+    }
     detailOpen = true;
   }
 
@@ -515,6 +534,7 @@
               expanded={isExpanded(column.id)}
               {selectedCardId}
               selectedColumn={selectedColumnId === column.id}
+              {movesEnabled}
               {draggedCardId}
               onToggle={() => toggleColumn(column.id)}
               onMoveCard={(cardId, direction) =>
@@ -623,6 +643,7 @@
 
   <KanbanColumnView
     column={columnViewContext}
+    {movesEnabled}
     bind:open={columnViewOpen}
     {selectedCardId}
     onClose={() => {

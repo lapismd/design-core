@@ -11,6 +11,7 @@
     column,
     open = $bindable(false),
     selectedCardId = null,
+    movesEnabled = true,
     onClose,
     onSelectCard,
     onOpenCard,
@@ -22,6 +23,8 @@
     open: boolean;
     /** Card id rendering the selection outline. */
     selectedCardId?: string | null;
+    /** When false, cards cannot be lifted or moved. */
+    movesEnabled?: boolean;
     /** Closes the dialog (Back to board). */
     onClose: () => void;
     /** Selects a card without opening it. */
@@ -83,8 +86,9 @@
               <KanbanCard
                 {card}
                 selected={card.id === selectedCardId}
-                canMoveLeft={!column.locked}
-                canMoveRight={!column.locked}
+                canMoveLeft={movesEnabled && !column.locked}
+                canMoveRight={movesEnabled && !column.locked}
+                {movesEnabled}
                 onSelect={() => onSelectCard(card.id)}
                 onOpen={() => onOpenCard(card.id)}
                 onMoveLeft={() => onMoveCard(card.id, -1)}

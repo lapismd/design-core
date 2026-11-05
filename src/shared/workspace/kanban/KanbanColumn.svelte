@@ -38,6 +38,7 @@
     selectedCardId = null,
     selectedColumn = false,
     draggedCardId = null,
+    movesEnabled = true,
     onToggle,
     onMoveCard,
     onSelectCard,
@@ -59,6 +60,8 @@
     selectedColumn?: boolean;
     /** Card id currently being dragged, if any. */
     draggedCardId?: string | null;
+    /** When false, the column rejects drops and its cards cannot be lifted or moved. */
+    movesEnabled?: boolean;
     /** Expands or collapses the column (disabled for locked columns). */
     onToggle: () => void;
     /** Moves a card one column in `direction`. */
@@ -98,6 +101,10 @@
         columnId: column.id,
       };
     },
+  });
+
+  $effect(() => {
+    droppable.droppable.disabled = !movesEnabled;
   });
 
   $effect(() => {
@@ -294,8 +301,13 @@
               <KanbanCard
                 {card}
                 selected={card.id === selectedCardId}
-                canMoveLeft={!column.locked && columnIndex(card.id) >= 0}
-                canMoveRight={!column.locked && columnIndex(card.id) >= 0}
+                canMoveLeft={movesEnabled &&
+                  !column.locked &&
+                  columnIndex(card.id) >= 0}
+                canMoveRight={movesEnabled &&
+                  !column.locked &&
+                  columnIndex(card.id) >= 0}
+                {movesEnabled}
                 onSelect={() => onSelectCard(card.id)}
                 onOpen={() => onOpenCard(card.id)}
                 onMoveLeft={() => onMoveCard(card.id, -1)}
