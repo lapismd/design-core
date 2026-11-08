@@ -178,3 +178,23 @@ export const CardOpen = `<script lang="ts">
   onSaveTitle={saveTitle}
   onCardOpen={(cardId) => openNote(cardId)}
 />`;
+
+export const Reference = `<script lang="ts">
+  import { KanbanBoard, type KanbanColumnData } from "@lapismd/design-core/workspace/kanban";
+  let columns = $state<KanbanColumnData[]>([
+    { id: "Collect", label: "Collect", color: "#0e7490", cards: [{ id: "Research/Fieldwork.md", title: "Field observations", color: "#0e7490", tags: ["research"], statusText: "Maya Chen", priorityText: "0" }] },
+    { id: "Reflect", label: "Reflect", color: "#4d7c0f", cards: [] },
+  ]);
+</script>
+<KanbanBoard {columns}
+  onMoveCardToColumn={(id, targetId) => {
+    const source = columns.find(column => column.cards.some(card => card.id === id));
+    const target = columns.find(column => column.id === targetId);
+    const card = source?.cards.find(card => card.id === id);
+    if (!source || !target || !card) return;
+    source.cards = source.cards.filter(card => card.id !== id);
+    target.cards = [...target.cards, { ...card, color: target.color }];
+  }}
+  onReorderColumns={() => {}} onEditColumn={() => {}} onTogglePin={() => {}}
+  onPromoteGolden={() => {}} onSaveTitle={() => null}
+/>`;

@@ -26,6 +26,10 @@
 </script>
 
 <script lang="ts">
+  import {
+    referenceNotes,
+    type ReferenceCollection,
+  } from "./reference.stories.fixture";
   import type {
     KanbanCardData,
     KanbanColumnData,
@@ -146,9 +150,9 @@
     ];
   }
 
-  function createStoryBoard() {
+  function createStoryBoard(initialColumns = buildBoardColumns()) {
     const board = $state({
-      columns: buildBoardColumns(),
+      columns: initialColumns,
       log: "No board action",
     });
 
@@ -239,6 +243,38 @@
   const keyboardBoard = createStoryBoard();
   const openBoard = createStoryBoard();
   const readOnlyBoard = createStoryBoard();
+
+  function referenceColumns(
+    collection: ReferenceCollection,
+  ): KanbanColumnData[] {
+    const notes = referenceNotes.filter(
+      (note) => note.collection === collection,
+    );
+    return [...new Set(notes.map((note) => note.phase))].map((phase, index) => {
+      const color = index ? "#4d7c0f" : "#0e7490";
+      return {
+        id: phase,
+        label: phase,
+        color,
+        primary: index === 0,
+        cards: notes
+          .filter((note) => note.phase === phase)
+          .map((note) => ({
+            id: note.path,
+            title: note.title,
+            color,
+            tags: [...note.tags],
+            createdAt: note.date,
+            updatedAt: note.date,
+            statusText: note.owner,
+            priorityText: String(note.highlight),
+          })),
+      };
+    });
+  }
+  const rolesReference = createStoryBoard(referenceColumns("roles"));
+  const notesReference = createStoryBoard(referenceColumns("notes"));
+  const tasksReference = createStoryBoard(referenceColumns("tasks"));
 
   let noteDraft = $state("Body preview text.");
 
@@ -625,6 +661,94 @@
       ariaLabel="Empty board"
       emptyTitle="No tasks match this board"
       emptyDescription="Change the active grouping or filters to surface tasks."
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Roles reference"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "Portable Markdown reference data. Group names are consumer metadata; richer summaries, badges and activity follow in the next implementation slice.",
+      },
+      source: { code: exampleSources.Reference, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", {
+        name: /Open card: Engineering Manager, Infrastructure/,
+      }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <KanbanBoard
+      columns={rolesReference.board.columns}
+      {...rolesReference.handlers}
+      ariaLabel="Markdown reference board"
+      {detailBody}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Arbitrary Markdown reference"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "Portable Markdown reference data. Group names are consumer metadata; richer summaries, badges and activity follow in the next implementation slice.",
+      },
+      source: { code: exampleSources.Reference, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", { name: /Open card: Field observations/ }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <KanbanBoard
+      columns={notesReference.board.columns}
+      {...notesReference.handlers}
+      ariaLabel="Markdown reference board"
+      {detailBody}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Tasks reference"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "Portable Markdown reference data. Group names are consumer metadata; richer summaries, badges and activity follow in the next implementation slice.",
+      },
+      source: { code: exampleSources.Reference, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", {
+        name: /Open card: Review the release notes/,
+      }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <KanbanBoard
+      columns={tasksReference.board.columns}
+      {...tasksReference.handlers}
+      ariaLabel="Markdown reference board"
+      {detailBody}
     />
   {/snippet}
 </Story>

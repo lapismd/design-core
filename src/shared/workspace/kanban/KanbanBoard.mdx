@@ -78,3 +78,14 @@ WCAG AA contrast. The detail note surface classes (`detail-note-surface`,
 `edit-mode`, `detail-note-empty`) are exported as global CSS so consumer
 `detailBody` snippets can compose the same look; the note surface border is
 reserved transparent at rest and only painted while editing.
+
+## Markdown reference data
+
+The role, task and arbitrary Markdown scenarios adapt self-contained sample
+content from CV Studio `34486d1e`. Group names are consumer-provided values;
+no status field is required. Fixed dates keep the catalogs deterministic.
+The next slices add generic summaries/badges, Activity and optional anchoring.
+
+<Canvas of={KanbanBoardStories.RolesReference} />
+<Canvas of={KanbanBoardStories.ArbitraryMarkdownReference} />
+<Canvas of={KanbanBoardStories.TasksReference} />
