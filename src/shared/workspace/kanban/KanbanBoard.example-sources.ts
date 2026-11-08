@@ -247,3 +247,8 @@ export const GuardedDetail = `<script lang="ts">
     <button onclick={() => { saved = true; context.setEditing(false); }}>Save source</button>
   {/snippet}
 </KanbanCardDetail>`;
+
+export const Embedded = Basic.replace(
+  "<KanbanBoard\n",
+  '<main aria-label="Host workspace">\n<KanbanBoard\n',
+).replace(/\/>$/, "/>\n</main>");

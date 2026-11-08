@@ -534,7 +534,7 @@
 <svelte:window onkeydown={handleBoardKeydown} />
 
 <DragDropProvider onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-  <main
+  <section
     bind:this={boardRoot}
     class="board-root"
     data-ui-component="kanban-board"
@@ -606,7 +606,7 @@
         </section>
       {/if}
     {/if}
-  </main>
+  </section>
 
   <DragOverlay>
     {#snippet children(_source)}
