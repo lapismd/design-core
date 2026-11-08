@@ -1018,6 +1018,41 @@
     },
   }}
   play={async ({ canvas }) => {
+    const timeline = canvas
+      .getByRole("heading", { name: "Undated" })
+      .closest(".kanban-activity")!;
+    const viewport = timeline.querySelector<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    )!;
+    const day = timeline.querySelector<HTMLElement>(".kanban-activity__day")!;
+    const headers = [
+      ...day.querySelectorAll<HTMLElement>(".kanban-activity__column > h3"),
+    ];
+    for (const header of headers) {
+      expect(getComputedStyle(header).position).toBe("sticky");
+      expect(header.querySelector("time")?.getAttribute("datetime")).toBe(
+        "2026-06-27",
+      );
+    }
+    viewport.scrollTop = 120;
+    await fireEvent.scroll(viewport);
+    await waitFor(() => {
+      expect(viewport.scrollTop).toBe(120);
+      expect(
+        Math.abs(
+          headers[0]!.getBoundingClientRect().top -
+            viewport.getBoundingClientRect().top,
+        ),
+      ).toBeLessThan(2);
+    });
+    viewport.scrollTop = day.offsetHeight + day.offsetTop;
+    await fireEvent.scroll(viewport);
+    await waitFor(() =>
+      expect(headers[0]!.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+        day.getBoundingClientRect().bottom + 1,
+      ),
+    );
+    viewport.scrollTop = 0;
     await expect(canvas.getByText("No entries for 1 days")).toBeVisible();
     await expect(
       canvas.getByRole("heading", { name: "Undated" }),
@@ -1035,6 +1070,19 @@
       <KanbanActivityView
         columns={notesReference.board.columns}
         entries={[
+          ...[
+            "Workshop synthesis",
+            "Interview findings",
+            "Research directions",
+          ].map((title) => ({
+            card: {
+              ...notesReference.board.columns[1]!.cards[0]!,
+              id: title + ".md",
+              title,
+            },
+            columnId: "Reflect",
+            date: "2026-06-27",
+          })),
           {
             card: notesReference.board.columns[0]!.cards[0]!,
             columnId: "Collect",

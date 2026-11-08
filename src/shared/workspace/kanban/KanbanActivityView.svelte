@@ -34,6 +34,11 @@
   const lanes = $derived(
     columns.length ? columns : [{ id: "", label: "Entries" }],
   );
+  const laneDateLabel = (date: Date) =>
+    new Intl.DateTimeFormat(undefined, {
+      month: "short",
+      day: "numeric",
+    }).format(date);
   let selectedCardId = $state<string | null>(null);
   const dateLabel = (date: Date) =>
     new Intl.DateTimeFormat(undefined, {
@@ -60,7 +65,7 @@
         >
           <h2 class="kanban-activity__date">
             {#if day.date}<time datetime={day.key}>{dateLabel(day.date)}</time
-              >{:else}Undated{/if}
+              >{:else}<span>Undated</span>{/if}
           </h2>
           <div
             class="kanban-activity__columns"
@@ -74,23 +79,35 @@
                 class="kanban-activity__column"
                 aria-label={`${column.label} — ${day.date ? dateLabel(day.date) : "Undated"}`}
               >
-                <h3>{column.label} <span>({items.length})</span></h3>
-                {#each items as entry (entry.card.id)}
-                  <article class="kanban-activity__entry">
-                    <KanbanCard
-                      card={entry.card}
-                      columnId={entry.columnId}
-                      {cardSnippets}
-                      tabIndex={0}
-                      selected={selectedCardId === entry.card.id}
-                      movesEnabled={false}
-                      onSelect={() => (selectedCardId = entry.card.id)}
-                      onOpen={() => onCardOpen(entry.card.id, entry.columnId)}
-                      onMoveLeft={() => {}}
-                      onMoveRight={() => {}}
-                    />
-                  </article>
-                {:else}<p class="kanban-activity__empty">No entries</p>{/each}
+                <h3>
+                  <span class="kanban-activity__column-label"
+                    >{column.label}</span
+                  >
+                  {#if day.date}<time datetime={day.key}
+                      >{laneDateLabel(day.date)}</time
+                    >{/if}
+                  <span class="kanban-activity__column-count"
+                    >({items.length})</span
+                  >
+                </h3>
+                <div class="kanban-activity__cards">
+                  {#each items as entry (entry.card.id)}
+                    <article class="kanban-activity__entry">
+                      <KanbanCard
+                        card={entry.card}
+                        columnId={entry.columnId}
+                        {cardSnippets}
+                        tabIndex={0}
+                        selected={selectedCardId === entry.card.id}
+                        movesEnabled={false}
+                        onSelect={() => (selectedCardId = entry.card.id)}
+                        onOpen={() => onCardOpen(entry.card.id, entry.columnId)}
+                        onMoveLeft={() => {}}
+                        onMoveRight={() => {}}
+                      />
+                    </article>
+                  {:else}<p class="kanban-activity__empty">No entries</p>{/each}
+                </div>
               </section>
             {/each}
           </div>

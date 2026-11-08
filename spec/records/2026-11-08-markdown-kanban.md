@@ -32,3 +32,30 @@ all changed visual stories remain `visual-pending`.
 Bases consumer acceptance uses the verified archive as a temporary validation
 input. Publishable dependency manifests and lockfiles remain registry-based;
 publication and the subsequent consumer version upgrade are separate gates.
+
+## Activity header alignment
+
+Activity now follows the reference's centered date label on the section border
+and uppercase lane/date/count headings with a solid backdrop. Lane headings
+stick to the owned Shadcn viewport while the day scrolls, then release at the
+day boundary. Labels and lane counts still derive from consumer columns.
+The scrolling fixture includes several cards in one day to exercise both states.
+
+Exact regression command:
+`pnpm test:storybook src/shared/workspace/kanban/KanbanBoard.stories.svelte -t Activity`.
+The original header produced one failure (`static` rather than `sticky`),
+receipt `lapis-kanban-design-674b3978-7711-4516-add2-e85977e58a15`;
+the repaired story passes, receipt
+`lapis-kanban-design-cc729371-808f-4cd7-bc33-53cbcd3eeee7`.
+The final prepared archive passes a fresh production consumer, including CSS,
+themes, patched runtime, types and a zero-finding production audit, receipt
+`lapis-kanban-design-0a952166-d034-444b-bfb5-bc85c2153ccf`.
+That run caught one specification atomicity error, now corrected without
+changing product code; local `pnpm spec:check` passes including spec-first.
+Fresh combined `pnpm checks` passed on remote Docker, receipt
+`lapis-kanban-design-83b9226d-2cf0-478b-9552-e087eda6d0d7`, source
+`013409b4466d1b02eb2c7b1a4ea62e6f4cef4a44`: 1,128 unit, 1,055 Storybook
+(including all 20 Kanban stories), 17 workspace pointer, 17 shell pointer,
+three AI browser and 196 Shadcn pointer tests passed, with the one existing
+Shadcn skip unchanged. Formatting, types, governance, static Storybook and the
+visual metadata audit passed; no baselines changed.

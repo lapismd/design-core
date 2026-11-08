@@ -644,8 +644,8 @@ main-body and sidebar destinations marked with the `move` icon.
 
 ### Acceptance details
 
-- Literal calendar dates MUST retain their day while timestamps use the local calendar.
-- Entries with absent or invalid dates MUST remain visible as undated.
+- Literal calendar dates MUST retain their day while timestamps use the local calendar and absent or invalid dates remain visible as undated.
+- Lane headings MUST remain sticky within each day while its cards scroll, include the date beside the lane name and count, and release at the day boundary, with the centered date label straddling the top border.
 - Equal timestamps MUST preserve input order and gaps between dated sections MUST use calendar-day arithmetic.
 - Card activation MUST pass card and column identity to the consumer without inferring workflow events or mutating date fields.
 
