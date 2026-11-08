@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.12.2
+
+### Patch Changes
+
+- [#67](https://github.com/lapismd/design-core/pull/67) [`0dffb67`](https://github.com/lapismd/design-core/commit/0dffb673466ef3122951d7242bec382b7987c22f) Thanks [@stevejuma](https://github.com/stevejuma)! - Render Kanban as a labelled region so it can embed within a workspace without nested or duplicate main landmarks.
+
 ## 0.12.1
 
 ### Patch Changes
