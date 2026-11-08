@@ -32,12 +32,11 @@ test.describe("Kanban board real pointer behavior", () => {
   }) => {
     await openStory(page, storyId);
 
-    const backlog = page
-      .locator(".kanban-column")
-      .filter({ has: page.locator("#backlog-title") });
-    const inProgress = page
-      .locator(".kanban-column")
-      .filter({ has: page.locator("#in-progress-title") });
+    const backlog = page.getByRole("group", { name: "Backlog", exact: true });
+    const inProgress = page.getByRole("group", {
+      name: "In Progress",
+      exact: true,
+    });
 
     const card = backlog.getByRole("button", {
       name: /Open card: Draft the release announcement/,

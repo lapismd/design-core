@@ -98,6 +98,7 @@
     onEditColumn: (meta: KanbanColumnMeta) => void;
   } = $props();
 
+  const instanceId = $props.id();
   const count = $derived(column.cards.length);
   let menuOpen = $state(false);
   let editingColumn = $state(false);
@@ -162,6 +163,7 @@
 </script>
 
 <section
+  role="group"
   {@attach droppable.attach}
   class="kanban-column {expanded
     ? 'is-expanded'
@@ -169,13 +171,13 @@
     ? 'is-selected'
     : ''} {droppable.isDropTarget ? 'is-drop-target' : ''}"
   style={`--column-color: ${displayColor}; --card-count: ${Math.min(count, 15)}`}
-  aria-labelledby={`${column.id}-title`}
+  aria-labelledby={`${instanceId}-title`}
   data-ui-component="kanban-column"
   data-ui-part="root"
 >
   <div class="column-shell">
     {#if expanded}
-      <header class="column-header" data-ui-part="column-header">
+      <div class="column-header" data-ui-part="column-header">
         <Popover.Root open={menuOpen} onOpenChange={handleMenuOpenChange}>
           <Popover.Trigger>
             {#snippet child({ props }: { props: Record<string, unknown> })}
@@ -203,12 +205,12 @@
                 <div class="column-popover__field">
                   <label
                     class="column-popover__label"
-                    for={`${column.id}-title-input`}
+                    for={`${instanceId}-title-input`}
                   >
                     Name
                   </label>
                   <Input
-                    id={`${column.id}-title-input`}
+                    id={`${instanceId}-title-input`}
                     bind:value={titleDraft}
                   />
                 </div>
@@ -299,12 +301,12 @@
             ? `${count} ${column.label} cards, locked column`
             : `Collapse ${count} ${column.label}`}
           aria-expanded="true"
-          aria-controls={`${column.id}-cards`}
+          aria-controls={`${instanceId}-cards`}
           disabled={column.locked || !collapseEnabled}
           onclick={onToggle}
         >
           <span class="column-count" aria-hidden="true">{count}</span>
-          <h2 id={`${column.id}-title`} class="column-title">
+          <h2 id={`${instanceId}-title`} class="column-title">
             {column.label}
           </h2>
           <ChevronDownIcon class="column-chevron" />
@@ -329,9 +331,9 @@
             <Grid2X2Icon />
           </Button>
         </div>
-      </header>
+      </div>
 
-      <div id={`${column.id}-cards`} class="column-stack">
+      <div id={`${instanceId}-cards`} class="column-stack">
         <ScrollArea class="column-stack-scroll" orientation="vertical">
           <div class="column-stack-inner">
             {#each column.cards as card (card.id)}
@@ -366,12 +368,12 @@
         class="collapsed-column-button"
         aria-label={`Expand ${count} ${column.label}`}
         aria-expanded="false"
-        aria-controls={`${column.id}-cards`}
+        aria-controls={`${instanceId}-cards`}
         onclick={onToggle}
       >
         <span class="collapsed-progress" aria-hidden="true"></span>
         <span class="collapsed-count" aria-hidden="true">{count}</span>
-        <span id={`${column.id}-title`} class="collapsed-title"
+        <span id={`${instanceId}-title`} class="collapsed-title"
           >{column.label}</span
         >
       </Button>

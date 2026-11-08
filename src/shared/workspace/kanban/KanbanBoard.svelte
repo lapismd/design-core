@@ -80,7 +80,7 @@
     movesEnabled?: boolean;
     /** Invoked once when the board mounts (legacy: entropy application). */
     onBoardMount?: () => void | Promise<void>;
-    /** Accessible name for the board landmark. */
+    /** Accessible name for the board group. */
     ariaLabel?: string;
     /** Empty-board title. */
     emptyTitle?: string;
@@ -535,6 +535,7 @@
 
 <DragDropProvider onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
   <section
+    role="group"
     bind:this={boardRoot}
     class="board-root"
     data-ui-component="kanban-board"
@@ -580,6 +581,7 @@
 
       {#if pinnedCards.length}
         <section
+          role="group"
           class="pins-corner {pinsExpanded ? 'is-expanded' : ''}"
           aria-label="Pinned cards"
           data-ui-part="pins-corner"

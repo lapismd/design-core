@@ -369,7 +369,7 @@
         selector: ".column-count",
       }),
     ).toBeVisible();
-    const pins = canvas.getByRole("region", { name: "Pinned cards" });
+    const pins = canvas.getByRole("group", { name: "Pinned cards" });
     await expect(pins).toBeVisible();
     await expect(
       within(pins).getByRole("button", {
@@ -390,6 +390,72 @@
       {detailBody}
     />
     <output class="sr-only">{fullBoard.board.log}</output>
+  {/snippet}
+</Story>
+
+<Story
+  name="Multiple instances"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.MultipleInstances,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvasElement }) => {
+    const boards = [
+      ...canvasElement.querySelectorAll<HTMLElement>(
+        '[data-ui-component="kanban-board"]',
+      ),
+    ];
+    expect(boards).toHaveLength(2);
+    const ids = [...canvasElement.querySelectorAll<HTMLElement>("[id]")].map(
+      (element) => element.id,
+    );
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const board of boards) {
+      expect(board).toHaveAttribute("role", "group");
+      for (const column of board.querySelectorAll<HTMLElement>(
+        '[data-ui-component="kanban-column"]',
+      )) {
+        const title = document.getElementById(
+          column.getAttribute("aria-labelledby")!,
+        );
+        expect(title).not.toBeNull();
+        expect(column.contains(title)).toBe(true);
+      }
+    }
+    expect(
+      canvasElement.querySelectorAll('[data-ui-component="kanban-activity"]'),
+    ).toHaveLength(2);
+  }}
+>
+  {#snippet template()}
+    {#each [0, 1] as instance (instance)}
+      <div class="kanban-bounded-story">
+        <KanbanBoard
+          columns={embeddedBoard.board.columns}
+          {...embeddedBoard.handlers}
+          movesEnabled={false}
+        />
+      </div>
+      <div class="kanban-bounded-story">
+        <KanbanActivityView
+          columns={embeddedBoard.board.columns}
+          entries={[
+            {
+              card: embeddedBoard.board.columns[1]!.cards[0]!,
+              columnId: embeddedBoard.board.columns[1]!.id,
+              date: "2026-06-27",
+            },
+          ]}
+          onCardOpen={() => {}}
+        />
+      </div>
+    {/each}
   {/snippet}
 </Story>
 
@@ -1287,7 +1353,7 @@
       canvas.getByRole("main", { name: "Host workspace" }),
     ).toBeVisible();
     await expect(
-      canvas.getByRole("region", { name: "Embedded board" }),
+      canvas.getByRole("group", { name: "Embedded board" }),
     ).toBeVisible();
     expect(canvas.getAllByRole("main")).toHaveLength(1);
   }}
