@@ -14,3 +14,9 @@
   --ui-markdown-composer-avatar-gap: 0rem;
   --ui-markdown-composer-document-min-height: calc(11.5rem - 2px);
 }
+
+.kanban-bounded-story {
+  height: 420px;
+  width: 100%;
+  --kanban-board-height: 100%;
+}

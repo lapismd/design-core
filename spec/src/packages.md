@@ -203,7 +203,9 @@ the existing Link Preview timer/listener and Slider teardown corrections and add
 the exact identical-container FocusScope guard from owner commit `692fbdf5`.
 Every application or package-test root MUST explicitly configure the same
 version-bound patch and freeze its lockfile; Core's published pnpm metadata does
-not propagate into downstream installations. Both retained-source release and
+not propagate into downstream installations. Core's published Bits UI dependency
+MUST pin the exact qualified version, and archive intake MUST reject wider or
+different requirements before installing the consumer. Both retained-source release and
 prepared local archive profiles MUST ship the checksum-bound patch and
 installation/removal provenance with their public artifacts. Remove the
 patch only after a released dependency contains all retained fixes and complete
@@ -271,4 +273,9 @@ The implemented focused Filter Builder source entry point and Filter re-export s
 
 Composable table public column/context/selection types extend the existing CanvasTable export under DC-SHA-075–076. FilterOperator custom validation extends the existing FilterBuilder entry point under DC-SHA-077. Existing defaults and entry points remain compatible.
 
-The additive `./workspace/kanban` family exports KanbanBoard, KanbanColumn, KanbanCard, KanbanCardDetail, KanbanColumnView, their data types and the shared swatch palette, and re-exports them from the existing workspace barrel. The family consumes the published `@dnd-kit/svelte` and `@dnd-kit/dom` packages for drag & drop. Stories, docs fixtures and example sources remain excluded from the published package; consumer adoption is separate (DC-WS-085).
+The additive `./workspace/kanban` family exports KanbanBoard, KanbanColumn, KanbanCard, KanbanCardDetail, KanbanColumnView, their data types and the shared swatch palette. It is deliberately not re-exported from the workspace barrel: `@dnd-kit/dom` reads `ResizeObserver` at module scope, which node and jsdom barrel consumers do not provide. The family consumes the published `@dnd-kit/svelte` and `@dnd-kit/dom` packages for drag & drop. Stories, docs fixtures and example sources remain excluded from the published package; consumer adoption is separate (DC-WS-085).
+
+The Kanban subpath additionally exports generic card metadata, badge and snippet
+contracts, `KanbanActivityView`, timeline projection and explicit anchor
+resolution; the workspace barrel remains excluded (DC-WS-086, DC-WS-087,
+DC-WS-088, DC-WS-089).

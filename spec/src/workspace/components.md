@@ -622,7 +622,61 @@ main-body and sidebar destinations marked with the `move` icon.
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/kanban`; columns and cards are plain data (`KanbanColumnData`, `KanbanCardData`) and every mutation flows through consumer callbacks.
-- Drag & drop MUST compose the published `@dnd-kit/svelte` draggable/droppable primitives with a drag overlay and keyboard-sensor lift, matching the legacy Fizzy board behaviour.
+- The public boundary is `@lapismd/design-core/workspace/kanban`; columns and cards are plain data (`KanbanColumnData`, `KanbanCardData`), every mutation flows through consumer callbacks, a consumer-supplied `onCardOpen` MUST receive every card activation path (card click, board-level Enter, pinned card, column view) instead of the built-in detail dialog opening, and in-flow board surfaces MUST follow `--kanban-board-height` (default full viewport) with filled horizontal Scroll Area content and bounded vertical lane Scroll Areas so headers and selection rings stay inside the host.
+- Drag & drop MUST compose the published `@dnd-kit/svelte` draggable/droppable primitives with a drag overlay and keyboard-sensor lift, matching the legacy Fizzy board behaviour; with `movesEnabled` false the board MUST disable card lifts, drop targets, move pills and the Shift+arrow move shortcut while staying navigable.
 - The detail dialog MUST keep consumer-owned body content behind its `body` snippet and expose the shared body-editing state toggled by the Edit action and the `E` shortcut.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract, including portable role, task and arbitrary Markdown reference records without a required status property.
+
+## DC-WS-086 — Generic Kanban card presentation
+
+**Requirement.** Kanban cards MUST support consumer-formatted summaries, labelled metadata, generic badges and typed body, tag, metadata and badge snippets without requiring task-specific fields.
+
+### Acceptance details
+
+- Board, maximized-column, detail and activity surfaces MUST share supplied presentation regions, with detail-body paint exposed through `--ui-kanban-detail-surface`.
+- An explicit empty metadata array MUST suppress legacy placeholders.
+- Badge values MUST remain display text independent of completion stamps and date parsing while retaining rotated stamp paint and existing card compatibility.
+- Unsupported detail actions MUST be omitted when their callbacks are absent.
+
+## DC-WS-087 — Kanban Activity
+
+**Requirement.** Kanban Activity MUST present consumer-owned dated card entries by descending calendar day, with configurable columns and a reachable Undated section.
+
+### Acceptance details
+
+- Literal calendar dates MUST retain their day while timestamps use the local calendar and absent or invalid dates remain visible as undated.
+- Lane headings MUST remain sticky within each day while its cards scroll, include the date beside the lane name and count, and release at the day boundary, with the centered date label straddling the top border.
+- Equal timestamps MUST preserve input order and gaps between dated sections MUST use calendar-day arithmetic.
+- Card activation MUST pass card and column identity to the consumer without inferring workflow events or mutating date fields.
+
+## DC-WS-088 — Optional Kanban anchor
+
+**Requirement.** A Kanban board MUST accept an optional anchor column override and allow anchoring to be disabled.
+
+### Acceptance details
+
+- Omitted `anchorColumnId` MUST preserve the legacy primary/first-column default; an explicit identifier MUST keep that column expanded; `null` MUST disable anchoring.
+- A missing explicitly selected anchor MUST NOT fall back to another column.
+- Selection, moves, collapse and reordering MUST respect the resolved override.
+- An anchor MUST prevent its own collapse without restricting card moves, while disabling anchoring MUST permit every ordinary column to collapse.
+
+## DC-WS-089 — Guarded Kanban detail transitions
+
+**Requirement.** Kanban detail MUST permit the consumer to reject asynchronous close and move requests until owned editing persistence succeeds.
+
+### Acceptance details
+
+- Back, Escape, outside dismissal and stage moves MUST consult the same optional guard.
+- A rejected guard MUST retain the detail and its editor; writable titles MUST use a wrapping contenteditable surface.
+- A failed guard, title save or move MUST expose an accessible error, retain editing state and permit retry while closing awaits an in-flight title save.
+- Read-only moves MUST remain disabled in detail navigation as well as on the board, while `closeOnMove={false}` MUST retain the detail after a successful stage change.
+
+## DC-WS-090 — Reversible column colour previews
+
+**Requirement.** Column editing MUST preview draft colours without mutating persisted column data until Save.
+
+### Acceptance details
+
+- Hover and keyboard focus on a swatch MUST preview its colour on the column and its cards; leaving restores the selected draft.
+- Clicking a swatch MUST select and preview the draft without persisting it.
+- Save MUST notify the host with the chosen colour; Back, Escape and outside dismissal MUST restore the saved colour.

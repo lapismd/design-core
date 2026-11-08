@@ -29,15 +29,24 @@
   import { Input } from "@lapismd/design-core/shadcn/input";
   import * as Popover from "@lapismd/design-core/shadcn/popover";
   import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
-  import type { KanbanColumnData, KanbanColumnMeta } from "./kanban-types.js";
+  import type { Snippet } from "svelte";
+  import type {
+    KanbanColumnData,
+    KanbanCardSnippets,
+    KanbanColumnMeta,
+  } from "./kanban-types.js";
   import KanbanCard from "./KanbanCard.svelte";
 
   let {
     column,
+    cardSnippets = undefined,
     expanded = true,
+    collapseEnabled = true,
+    columnActions = undefined,
     selectedCardId = null,
     selectedColumn = false,
     draggedCardId = null,
+    movesEnabled = true,
     onToggle,
     onMoveCard,
     onSelectCard,
@@ -50,15 +59,23 @@
     onEditColumn,
   }: {
     /** Column data driving header, collapse and card rendering. */
+    /** Consumer-owned card presentation regions. */
+    cardSnippets?: KanbanCardSnippets;
     column: KanbanColumnData;
     /** Whether the lane shows its header and card stack. */
     expanded?: boolean;
+    /** Anchor enforcement affects collapse only, not card movement. */
+    collapseEnabled?: boolean;
+    /** Consumer-owned per-column controls, such as filters. */
+    columnActions?: Snippet<[column: KanbanColumnData]>;
     /** Currently selected card id, driving card selection outlines. */
     selectedCardId?: string | null;
     /** Whether this column owns the selection ring. */
     selectedColumn?: boolean;
     /** Card id currently being dragged, if any. */
     draggedCardId?: string | null;
+    /** When false, the column rejects drops and its cards cannot be lifted or moved. */
+    movesEnabled?: boolean;
     /** Expands or collapses the column (disabled for locked columns). */
     onToggle: () => void;
     /** Moves a card one column in `direction`. */
@@ -86,6 +103,12 @@
   let editingColumn = $state(false);
   let titleDraft = $state("");
   let colorDraft = $state("");
+  let hoveredColor = $state<string | null>(null);
+  let focusedColor = $state<string | null>(null);
+  const previewing = $derived(menuOpen && editingColumn);
+  const displayColor = $derived(
+    previewing ? (hoveredColor ?? focusedColor ?? colorDraft) : column.color,
+  );
 
   const droppable = createDroppable({
     get id() {
@@ -101,7 +124,13 @@
   });
 
   $effect(() => {
-    if (!menuOpen) {
+    droppable.droppable.disabled = !movesEnabled;
+  });
+
+  $effect(() => {
+    if (!menuOpen || !editingColumn) {
+      hoveredColor = null;
+      focusedColor = null;
       editingColumn = false;
       titleDraft = column.label;
       colorDraft = column.color;
@@ -139,7 +168,7 @@
     : 'is-collapsed'} {selectedColumn
     ? 'is-selected'
     : ''} {droppable.isDropTarget ? 'is-drop-target' : ''}"
-  style={`--column-color: ${column.color}; --card-count: ${Math.min(count, 15)}`}
+  style={`--column-color: ${displayColor}; --card-count: ${Math.min(count, 15)}`}
   aria-labelledby={`${column.id}-title`}
   data-ui-component="kanban-column"
   data-ui-part="root"
@@ -195,6 +224,11 @@
                           : ''}"
                         style={`--kanban-swatch-color: ${swatch}`}
                         aria-label={`Choose column color ${swatch}`}
+                        aria-pressed={colorDraft === swatch}
+                        onpointerenter={() => (hoveredColor = swatch)}
+                        onpointerleave={() => (hoveredColor = null)}
+                        onfocus={() => (focusedColor = swatch)}
+                        onblur={() => (focusedColor = null)}
                         onclick={() => {
                           colorDraft = swatch;
                         }}
@@ -261,12 +295,12 @@
         <Button
           variant="ghost"
           class="column-pill"
-          aria-label={column.locked
+          aria-label={column.locked || !collapseEnabled
             ? `${count} ${column.label} cards, locked column`
             : `Collapse ${count} ${column.label}`}
           aria-expanded="true"
           aria-controls={`${column.id}-cards`}
-          disabled={column.locked}
+          disabled={column.locked || !collapseEnabled}
           onclick={onToggle}
         >
           <span class="column-count" aria-hidden="true">{count}</span>
@@ -276,15 +310,25 @@
           <ChevronDownIcon class="column-chevron" />
         </Button>
 
-        <Button
-          variant="ghost"
-          size="icon"
-          class="column-maximize"
-          aria-label={`Maximize ${column.label} column`}
-          onclick={onOpenColumnView}
-        >
-          <Grid2X2Icon />
-        </Button>
+        <div class="column-header-actions">
+          {#if columnActions}{@render columnActions(column)}{/if}
+          {#if column.totalCount !== undefined && column.totalCount !== count}
+            <span
+              class="kanban-filter-count"
+              aria-label={`${count} of ${column.totalCount} cards`}
+              >{count}/{column.totalCount}</span
+            >
+          {/if}
+          <Button
+            variant="ghost"
+            size="icon"
+            class="column-maximize"
+            aria-label={`Maximize ${column.label} column`}
+            onclick={onOpenColumnView}
+          >
+            <Grid2X2Icon />
+          </Button>
+        </div>
       </header>
 
       <div id={`${column.id}-cards`} class="column-stack">
@@ -292,10 +336,17 @@
           <div class="column-stack-inner">
             {#each column.cards as card (card.id)}
               <KanbanCard
-                {card}
+                card={previewing ? { ...card, color: displayColor } : card}
+                columnId={column.id}
+                {cardSnippets}
                 selected={card.id === selectedCardId}
-                canMoveLeft={!column.locked && columnIndex(card.id) >= 0}
-                canMoveRight={!column.locked && columnIndex(card.id) >= 0}
+                canMoveLeft={movesEnabled &&
+                  !column.locked &&
+                  columnIndex(card.id) >= 0}
+                canMoveRight={movesEnabled &&
+                  !column.locked &&
+                  columnIndex(card.id) >= 0}
+                {movesEnabled}
                 onSelect={() => onSelectCard(card.id)}
                 onOpen={() => onOpenCard(card.id)}
                 onMoveLeft={() => onMoveCard(card.id, -1)}

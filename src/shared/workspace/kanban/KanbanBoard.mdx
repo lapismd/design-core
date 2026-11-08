@@ -30,6 +30,20 @@ domain data stays consumer-owned.
 - Mutations are callbacks: `onMoveCardToColumn`, `onReorderColumns`,
   `onEditColumn`, `onTogglePin`, `onPromoteGolden`, `onSaveTitle` (may resolve
   to a replacement card id), plus the optional `onBoardMount` hook.
+- `onCardOpen` is the card activation override: when provided, card clicks,
+  the board-level `Enter` fallback, pinned-card clicks and column-view opens
+  call `(cardId, columnId)` instead of opening the built-in detail dialog —
+  the hook bases-style consumers use to open the underlying note.
+- `movesEnabled` (default `true`) gates every move path: with `false`, cards
+  cannot be lifted (`aria-disabled`), drop targets reject, move pills disable
+  and `Shift+Arrow` is inert, while selection and dialogs keep working —
+  for read-only boards whose grouped property is not writable.
+- `--kanban-board-height` sizes the in-flow board surfaces (root, lane scroll
+  regions, empty state); it defaults to `100dvh` for full-screen workspace
+  views. Hosts embedding the board in a shorter pane set it to `100%` (with a
+  definite-height wrapper) so the selected-lane ring and column bottoms are
+  never clipped. The full-screen detail and column-view dialogs always remain
+  viewport-bound.
 - `detailBody` is the only content snippet: it renders the consumer-owned body
   surface inside the detail dialog (legacy: task card row + editable markdown)
   and receives `{ card, editing, setEditing }` wired to the Edit button and the
@@ -64,3 +78,19 @@ WCAG AA contrast. The detail note surface classes (`detail-note-surface`,
 `edit-mode`, `detail-note-empty`) are exported as global CSS so consumer
 `detailBody` snippets can compose the same look; the note surface border is
 reserved transparent at rest and only painted while editing.
+
+## Markdown reference data
+
+The role, task and arbitrary Markdown scenarios adapt self-contained sample
+content from CV Studio `34486d1e`. Group names are consumer-provided values;
+no status field is required. Fixed dates keep the catalogs deterministic.
+Cards accept summaries, individually ordered metadata and generic stamp badges. Body, tags, metadata and badge snippets let hosts replace each region. `anchorColumnId={null}` disables anchoring; a selected ID keeps that lane open. `KanbanActivityView` shares the card presentation and accepts host-derived dates. The detail card exports `--ui-kanban-detail-surface` so embedded Markdown readers and editors can share its paint.
+
+<Canvas of={KanbanBoardStories.RolesReference} />
+<Canvas of={KanbanBoardStories.ArbitraryMarkdownReference} />
+<Canvas of={KanbanBoardStories.TasksReference} />
+
+<Canvas of={KanbanBoardStories.GenericCardFields} />
+<Canvas of={KanbanBoardStories.ConfigurableAnchor} />
+<Canvas of={KanbanBoardStories.ActivityTimeline} />
+<Canvas of={KanbanBoardStories.ColumnColorPreview} />

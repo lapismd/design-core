@@ -4,24 +4,30 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import * as Dialog from "@lapismd/design-core/shadcn/dialog";
   import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
-  import type { KanbanColumnData } from "./kanban-types.js";
+  import type { KanbanColumnData, KanbanCardSnippets } from "./kanban-types.js";
   import KanbanCard from "./KanbanCard.svelte";
 
   let {
     column,
+    cardSnippets = undefined,
     open = $bindable(false),
     selectedCardId = null,
+    movesEnabled = true,
     onClose,
     onSelectCard,
     onOpenCard,
     onMoveCard,
   }: {
     /** Column presented full-screen, or null when closed. */
+    /** Consumer-owned card presentation regions. */
+    cardSnippets?: KanbanCardSnippets;
     column: KanbanColumnData | null;
     /** Dialog visibility. */
     open: boolean;
     /** Card id rendering the selection outline. */
     selectedCardId?: string | null;
+    /** When false, cards cannot be lifted or moved. */
+    movesEnabled?: boolean;
     /** Closes the dialog (Back to board). */
     onClose: () => void;
     /** Selects a card without opening it. */
@@ -82,9 +88,12 @@
             {#each column.cards as card (card.id)}
               <KanbanCard
                 {card}
+                columnId={column.id}
+                {cardSnippets}
                 selected={card.id === selectedCardId}
-                canMoveLeft={!column.locked}
-                canMoveRight={!column.locked}
+                canMoveLeft={movesEnabled && !column.locked}
+                canMoveRight={movesEnabled && !column.locked}
+                {movesEnabled}
                 onSelect={() => onSelectCard(card.id)}
                 onOpen={() => onOpenCard(card.id)}
                 onMoveLeft={() => onMoveCard(card.id, -1)}

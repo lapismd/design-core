@@ -139,6 +139,10 @@ installs Chromium before this check. Packed `npm` commands drop pnpm-only
 `npm_config_*` values (`verify-deps-before-run`, `npm-globalconfig`,
 `overrides`, `link-workspace-packages`, and `_jsr-registry`) so the consumer
 install does not warn about unknown npm configuration.
+Release configuration and packed-manifest intake MUST require the exact Bits UI
+version named by the checksum-bound patch manifest before installing a consumer;
+compatible ranges MUST fail early while installed-version and per-file hash
+checks remain mandatory under DC-PKG-009 and DC-ARCH-005.
 The cold runtime fixture verifies the public patch's package, version, digest,
 three-file target scope and explicit root configuration. Invalid or missing
 patch artifacts fail the package gate before installation.

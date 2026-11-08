@@ -67,6 +67,9 @@ Mira resolves from the released `~0.1.4` minimum, which privately bundles its
 math adapters and retains patched KaTeX 0.18.10. Core's packed runtime requires
 zero findings; its former KaTeX advisory exception is removed. Mira's separate
 Mermaid cohort acceptance does not transfer to Core or its consumers.
+The temporary Bits UI patch binds one qualified registry version. Core's
+published dependency declaration pins that exact version so a clean installer
+cannot select a later unpatched release through a compatible range.
 
 ## Public surface coverage
 

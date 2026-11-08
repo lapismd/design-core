@@ -264,11 +264,13 @@ names, buttons and overlay lifetime. Built-in status text/menu rendering remains
 the default (DC-WS-029). No repository or domain-specific content belongs in the
 workspace shell.
 
-The workspace barrel re-exports the generic Kanban Board family alongside the
-registered view surfaces. The board itself is passive: consuming views own
-column data, card identity, persistence and detail body content, while the
-family owns the collapsible lanes, dnd-kit drag & drop, pinned corner and
-dialogs (DC-WS-085).
+The Kanban Board family publishes through its dedicated
+`@lapismd/design-core/workspace/kanban` subpath and is deliberately excluded
+from the workspace barrel: its `@dnd-kit` dependency reads `ResizeObserver`
+at module scope, which barrel consumers in node or jsdom hosts do not provide.
+The board itself is passive: consuming views own column data, card identity,
+persistence and detail body content, while the family owns the collapsible
+lanes, dnd-kit drag & drop, pinned corner and dialogs (DC-WS-085).
 
 ## DC-WS-083 — Host window-controls overlay geometry
 

@@ -15,6 +15,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { npmCommandEnv } from "./npm-command-env.mjs";
 import { packLocal } from "./pack-local.mjs";
+import { validatePublicDependencyPatchRequirement } from "./public-dependency-patch.mjs";
 
 const scriptPath = fileURLToPath(import.meta.url);
 const root = path.resolve(path.dirname(scriptPath), "..");
@@ -414,6 +415,10 @@ async function prepare({ consumerInstall = false } = {}) {
 
 function checkReleaseConfig() {
   const pkg = packageJson();
+  validatePublicDependencyPatchRequirement(
+    pkg,
+    readJson(path.join(root, "patches", "manifest.json")),
+  );
   const changesetConfig = readJson(
     path.join(root, ".changeset", "config.json"),
   );

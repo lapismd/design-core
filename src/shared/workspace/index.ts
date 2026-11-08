@@ -18,7 +18,9 @@ export * from "./explorer/index.js";
 export * from "./floating-layer/index.js";
 export * from "./floating-window/index.js";
 export * from "./icon/index.js";
-export * from "./kanban/index.js";
+// Kanban is deliberately NOT barrel-exported: its `@dnd-kit` dependency reads
+// `ResizeObserver` at module scope, which would break node/jsdom consumers of
+// the workspace barrel. Import `@lapismd/design-core/workspace/kanban`.
 export * from "./menu/index.js";
 export * from "./mobile/index.js";
 export * from "./popout/index.js";
