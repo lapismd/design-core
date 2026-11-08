@@ -198,3 +198,52 @@ export const Reference = `<script lang="ts">
   onReorderColumns={() => {}} onEditColumn={() => {}} onTogglePin={() => {}}
   onPromoteGolden={() => {}} onSaveTitle={() => null}
 />`;
+
+export const Bounded = `<script lang="ts">
+  import { KanbanBoard, type KanbanColumnData } from "@lapismd/design-core/workspace/kanban";
+  const columns: KanbanColumnData[] = Array.from({ length: 12 }, (_, lane) => ({
+    id: String(lane), label: "Group " + (lane + 1), color: "#0e7490",
+    cards: Array.from({ length: 16 }, (_, item) => ({ id: lane + ":" + item, title: "Record " + item, color: "#0e7490", metadata: [] })),
+  }));
+</script>
+<div style="height: 420px; --kanban-board-height: 100%">
+  <KanbanBoard {columns} movesEnabled={false} onMoveCardToColumn={() => {}} onReorderColumns={() => {}} onEditColumn={() => {}} />
+</div>`;
+
+export const Generic = `<script lang="ts">
+  import { KanbanBoard, type KanbanColumnData } from "@lapismd/design-core/workspace/kanban";
+  const columns: KanbanColumnData[] = [
+    { id: "collect", label: "Collect", color: "#0e7490", cards: [{
+      id: "Research/Fieldwork.md", title: "Field observations", color: "#0e7490",
+      summary: "Capture observations from the riverside field visit.", tags: ["research"],
+      metadata: [{ id: "owner", label: "Owner", value: "Maya Chen" }, { id: "phase", label: "Phase", value: "Collect" }],
+      badge: { label: "Confidence", value: "Needs review" },
+    }] },
+  ];
+</script>
+<KanbanBoard {columns} anchorColumnId={null} movesEnabled={false}
+  onMoveCardToColumn={() => {}} onReorderColumns={() => {}} onEditColumn={() => {}} />`;
+
+export const Activity = `<script lang="ts">
+  import { KanbanActivityView } from "@lapismd/design-core/workspace/kanban";
+  let selected = $state("");
+</script>
+<div style="height: 600px">
+  <KanbanActivityView columns={[]} entries={[{ columnId: "", date: "2026-06-25", card: {
+    id: "Research/Fieldwork.md", title: "Field observations", color: "#0e7490", summary: "Capture observations from the riverside field visit.", metadata: [],
+  } }]} onCardOpen={(id) => (selected = id)} />
+</div>
+<p>{selected}</p>`;
+
+export const GuardedDetail = `<script lang="ts">
+  import { KanbanCardDetail } from "@lapismd/design-core/workspace/kanban";
+  let open = $state(true);
+  let saved = $state(false);
+</script>
+<KanbanCardDetail bind:open card={{ id: "note.md", title: "Field observations", color: "#0e7490", metadata: [] }}
+  columns={[]} onMoveToColumn={() => {}} onClose={() => {}}
+  beforeClose={() => saved}>
+  {#snippet body(context)}
+    <button onclick={() => { saved = true; context.setEditing(false); }}>Save source</button>
+  {/snippet}
+</KanbanCardDetail>`;

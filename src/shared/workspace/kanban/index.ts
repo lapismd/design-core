@@ -15,3 +15,17 @@ export type {
   KanbanDetailBodyContext,
   KanbanDetailColumnOption,
 } from "./kanban-types.js";
+
+export { default as KanbanActivityView } from "./KanbanActivityView.svelte";
+export {
+  buildKanbanActivityDays,
+  resolveKanbanAnchor,
+} from "./kanban-presentation.js";
+export type {
+  KanbanCardMetadata,
+  KanbanCardBadge,
+  KanbanCardContext,
+  KanbanCardSnippets,
+  KanbanActivityEntry,
+  KanbanActivityDay,
+} from "./kanban-types.js";

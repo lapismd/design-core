@@ -10,12 +10,17 @@
   import ZapIcon from "@lucide/svelte/icons/zap";
   import { Badge } from "@lapismd/design-core/shadcn/badge";
   import { Button } from "@lapismd/design-core/shadcn/button";
-  import type { KanbanCardData } from "./kanban-types.js";
+  import KanbanMetadata from "./KanbanMetadata.svelte";
+  import KanbanHighlight from "./KanbanHighlight.svelte";
+  import type { KanbanCardData, KanbanCardSnippets } from "./kanban-types.js";
   import { formatKanbanDate } from "./kanban-format.js";
 
   let {
     card,
+    columnId = "",
+    cardSnippets = undefined,
     selected = false,
+    tabIndex = undefined,
     canMoveLeft = false,
     canMoveRight = false,
     movesEnabled = true,
@@ -26,8 +31,14 @@
   }: {
     /** Card data driving the shared kanban card paint and meta cells. */
     card: KanbanCardData;
+    /** Owning group identity supplied to presentation snippets. */
+    columnId?: string;
+    /** Consumer-owned card regions. */
+    cardSnippets?: KanbanCardSnippets;
     /** Renders the selection outline and enables tab focus. */
     selected?: boolean;
+    /** Override roving board focus for standalone/timeline cards. */
+    tabIndex?: number;
     /** Enables the hover move-left pill. */
     canMoveLeft?: boolean;
     /** Enables the hover move-right pill. */
@@ -108,7 +119,7 @@
       : ''}"
     style={`--card-color: ${card.color}`}
     role="button"
-    tabindex={selected ? 0 : -1}
+    tabindex={tabIndex ?? (selected ? 0 : -1)}
     data-ui-part="root"
     onclick={onOpen}
     onfocus={onSelect}
@@ -122,7 +133,9 @@
           <span>{card.tabLabel ?? card.title}</span>
         </div>
 
-        {#if tags.length}
+        {#if cardSnippets?.tags}
+          {@render cardSnippets.tags({ card, columnId })}
+        {:else if tags.length}
           <div class="kanban-card__tags">
             <TagIcon class="kanban-card__tag-icon" />
             <div class="kanban-card__tag-list">
@@ -147,6 +160,16 @@
           <div class="kanban-card__title">{card.title}</div>
         </div>
 
+        {#if cardSnippets?.body}
+          <div class="kanban-card__summary">
+            {@render cardSnippets.body({ card, columnId })}
+          </div>
+        {:else if card.summary}
+          <p class="kanban-card__summary" data-ui-part="summary">
+            {card.summary}
+          </p>
+        {/if}
+
         {#if card.progress}
           <div class="kanban-card__progress">
             <CheckIcon />
@@ -156,19 +179,25 @@
       </div>
 
       <div class="kanban-card__footer" data-ui-part="card-footer">
-        <div class="card-meta">
-          <span class="meta-cell"
-            >Added <strong>{formatKanbanDate(card.createdAt)}</strong></span
-          >
-          <span class="meta-cell">
-            <RefreshCwIcon />
-            <strong>{formatKanbanDate(card.updatedAt)}</strong>
-          </span>
-          <span class="meta-cell">{card.linkText ?? card.statusText ?? ""}</span
-          >
-          <span class="meta-cell">{card.priorityText ?? "No priority"}</span>
-        </div>
-
+        {#if cardSnippets?.metadata}
+          {@render cardSnippets.metadata({ card, columnId })}
+        {:else if card.metadata !== undefined}
+          <KanbanMetadata fields={card.metadata} />
+        {:else}
+          <div class="card-meta">
+            <span class="meta-cell"
+              >Added <strong>{formatKanbanDate(card.createdAt)}</strong></span
+            >
+            <span class="meta-cell">
+              <RefreshCwIcon />
+              <strong>{formatKanbanDate(card.updatedAt)}</strong>
+            </span>
+            <span class="meta-cell"
+              >{card.linkText ?? card.statusText ?? ""}</span
+            >
+            <span class="meta-cell">{card.priorityText ?? "No priority"}</span>
+          </div>
+        {/if}
         {#if card.counters}
           <div class="kanban-card__counters">
             <span>
@@ -183,7 +212,11 @@
         {/if}
       </div>
 
-      {#if showMiniStamp && card.stamp}
+      {#if cardSnippets?.badge}
+        {@render cardSnippets.badge({ card, columnId })}
+      {:else if card.badge}
+        <KanbanHighlight badge={card.badge} />
+      {:else if showMiniStamp && card.stamp}
         <div class="not-now-mini-stamp" data-ui-part="mini-stamp">
           <span>{card.stamp.label}</span>
           <strong>{formatKanbanDate(card.stamp.date)}</strong>

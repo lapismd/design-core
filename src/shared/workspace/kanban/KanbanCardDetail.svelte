@@ -8,10 +8,13 @@
   import { Badge } from "@lapismd/design-core/shadcn/badge";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import * as Dialog from "@lapismd/design-core/shadcn/dialog";
-  import { Input } from "@lapismd/design-core/shadcn/input";
+  import KanbanMetadata from "./KanbanMetadata.svelte";
+  import KanbanHighlight from "./KanbanHighlight.svelte";
+  import "./KanbanBoard.css";
   import { formatKanbanDate } from "./kanban-format.js";
   import type {
     KanbanCardData,
+    KanbanCardSnippets,
     KanbanDetailBodyContext,
     KanbanDetailColumnOption,
   } from "./kanban-types.js";
@@ -25,10 +28,14 @@
     open = $bindable(false),
     onClose,
     onMoveToColumn,
-    onTogglePin,
-    onPromoteGolden,
-    onSaveTitle,
-    onMarkDone,
+    onTogglePin = undefined,
+    onPromoteGolden = undefined,
+    onSaveTitle = undefined,
+    onMarkDone = undefined,
+    beforeClose = undefined,
+    movesEnabled = true,
+    closeOnMove = true,
+    cardSnippets = undefined,
     brandLabel = "Kanban",
     brand = undefined,
     body = undefined,
@@ -48,15 +55,23 @@
     /** Closes the dialog (Back button). */
     onClose: () => void;
     /** Moves the card to the chosen stage column. */
-    onMoveToColumn: (columnId: string) => void;
+    onMoveToColumn: (columnId: string) => void | Promise<void>;
     /** Toggles the card's pinned state. */
-    onTogglePin: () => void;
+    onTogglePin?: () => void;
     /** Promotes the card to a golden ticket. */
-    onPromoteGolden: () => void;
+    onPromoteGolden?: () => void;
     /** Persists an edited title; may resolve to the card's replacement id. */
-    onSaveTitle: (title: string) => Promise<string | null> | string | null;
+    onSaveTitle?: (title: string) => Promise<string | null> | string | null;
     /** Marks the card done (moves it to the completion column). */
-    onMarkDone: () => void;
+    onMarkDone?: () => void | Promise<void>;
+    /** Flush host editing; false retains the dialog. */
+    beforeClose?: () => boolean | Promise<boolean>;
+    /** Disables all stage/completion mutations. */
+    movesEnabled?: boolean;
+    /** Preserve the open detail after a successful stage change when false. */
+    closeOnMove?: boolean;
+    /** Presentation regions shared with the board and activity. */
+    cardSnippets?: KanbanCardSnippets;
     /** Label rendered beside the default four-square logo in the header. */
     brandLabel?: string;
     /** Replaces the default brand block in the header. */
@@ -80,7 +95,8 @@
   let titleEditing = $state(false);
   let titleDraft = $state("");
   let titleSaving = $state(false);
-  let titleInput = $state<HTMLInputElement | null>(null);
+  let titleWrite: Promise<boolean> | null = null;
+  let titleInput = $state<HTMLElement | null>(null);
   let previousCardId = $state<string | null>(null);
   let detailRoot = $state<HTMLElement | null>(null);
 
@@ -107,29 +123,46 @@
     titleEditing = true;
     await tick();
     titleInput?.focus();
-    titleInput?.select();
+    if (titleInput) {
+      const range = document.createRange();
+      range.selectNodeContents(titleInput);
+      const selection = window.getSelection();
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+    }
   }
 
-  async function saveTitle(): Promise<void> {
+  async function saveTitle(): Promise<boolean> {
+    if (titleWrite) return titleWrite;
     const nextTitle = titleDraft.trim();
-    if (!card || !nextTitle || titleSaving) {
-      titleEditing = false;
-      titleDraft = card?.title ?? "";
-      return;
+    if (!card || !onSaveTitle) return true;
+    if (!nextTitle) {
+      transitionError = "Enter a title before saving.";
+      return false;
     }
-
     if (nextTitle === card.title) {
       titleEditing = false;
-      return;
+      return true;
     }
-
     titleSaving = true;
-    try {
-      await onSaveTitle(nextTitle);
-      titleEditing = false;
-    } finally {
-      titleSaving = false;
-    }
+    transitionError = "";
+    titleWrite = (async () => {
+      try {
+        await onSaveTitle!(nextTitle);
+        titleEditing = false;
+        return true;
+      } catch (error) {
+        transitionError =
+          error instanceof Error
+            ? error.message
+            : "Could not save the title. Try again.";
+        return false;
+      } finally {
+        titleSaving = false;
+        titleWrite = null;
+      }
+    })();
+    return titleWrite;
   }
 
   function cancelTitleEdit(): void {
@@ -138,7 +171,7 @@
   }
 
   async function handleTitleKeydown(event: KeyboardEvent): Promise<void> {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       await saveTitle();
       return;
@@ -212,8 +245,41 @@
     );
   }
 
+  let closing = $state(false);
+  let transitionError = $state("");
+
+  async function requestTransition(
+    action?: () => void | Promise<void>,
+    closeAfter = true,
+  ): Promise<void> {
+    if (closing) return;
+    closing = true;
+    transitionError = "";
+    try {
+      if ((titleEditing || titleWrite) && !(await saveTitle())) return;
+      if (beforeClose && !(await beforeClose())) {
+        transitionError =
+          "Could not save this card. Finish editing and try again.";
+        return;
+      }
+      await action?.();
+      if (closeAfter) {
+        open = false;
+        onClose();
+      }
+    } catch (error) {
+      transitionError =
+        error instanceof Error
+          ? error.message
+          : "Could not save this card. Try again.";
+    } finally {
+      closing = false;
+    }
+  }
+
   function handleOpenChange(nextOpen: boolean): void {
-    open = nextOpen;
+    if (nextOpen) open = true;
+    else void requestTransition();
   }
 </script>
 
@@ -234,7 +300,12 @@
         data-ui-part="page"
       >
         <header class="detail-header">
-          <Button variant="ghost" class="detail-back" onclick={onClose}>
+          <Button
+            variant="ghost"
+            class="detail-back"
+            onclick={() => void requestTransition()}
+            disabled={closing}
+          >
             Back
             <kbd>ESC</kbd>
           </Button>
@@ -254,21 +325,25 @@
         </header>
 
         <section class="detail-perma" aria-label="Card detail">
-          <div class="detail-actions detail-actions-left">
-            <Button
-              variant="outline"
-              size="icon"
-              class="detail-action-btn"
-              aria-label={isGolden
-                ? "Already a golden ticket"
-                : "Promote to golden ticket"}
-              disabled={isGolden}
-              onclick={onPromoteGolden}
-            >
-              <StarIcon />
-            </Button>
-          </div>
-
+          {#if transitionError}<p role="alert" class="kanban-detail-error">
+              {transitionError}
+            </p>{/if}
+          {#if onPromoteGolden}
+            <div class="detail-actions detail-actions-left">
+              <Button
+                variant="outline"
+                size="icon"
+                class="detail-action-btn"
+                aria-label={isGolden
+                  ? "Already a golden ticket"
+                  : "Promote to golden ticket"}
+                disabled={isGolden}
+                onclick={onPromoteGolden}
+              >
+                <StarIcon />
+              </Button>
+            </div>
+          {/if}
           <div class="detail-card-bg">
             <article class="detail-main-card">
               <header class="detail-card-header">
@@ -276,31 +351,46 @@
                   <span>{columnLabel}</span>
                 </div>
 
-                {#each tags as tag (tag)}
-                  <Badge variant="outline" class="detail-tag">
-                    <TagIcon />
-                    {tag}
-                  </Badge>
-                {/each}
+                {#if cardSnippets?.tags}
+                  {@render cardSnippets.tags({ card, columnId })}
+                {:else}
+                  {#each tags as tag (tag)}
+                    <Badge variant="outline" class="detail-tag">
+                      <TagIcon />
+                      {tag}
+                    </Badge>
+                  {/each}
+                {/if}
               </header>
 
-              <div class="detail-card-body">
+              <div
+                class="detail-card-body"
+                class:has-badge={Boolean(card.badge || cardSnippets?.badge)}
+              >
                 <div class="detail-card-content">
                   <Dialog.Title class="sr-only">{card.title}</Dialog.Title>
 
                   {#if titleEditing}
-                    <Input
-                      bind:ref={titleInput}
-                      bind:value={titleDraft}
-                      class="detail-title-input"
+                    <div
+                      bind:this={titleInput}
+                      bind:textContent={titleDraft}
+                      contenteditable="true"
+                      role="textbox"
+                      tabindex="0"
+                      aria-multiline="true"
                       aria-label="Card title"
-                      disabled={titleSaving}
+                      aria-disabled={titleSaving}
+                      aria-busy={titleSaving}
+                      class="detail-title detail-title-editor"
+                      onbeforeinput={(event) => {
+                        if (titleSaving) event.preventDefault();
+                      }}
                       onkeydown={handleTitleKeydown}
                       onblur={() => {
                         void saveTitle();
                       }}
-                    />
-                  {:else}
+                    ></div>
+                  {:else if onSaveTitle}
                     <button
                       type="button"
                       class="detail-title detail-title-button"
@@ -311,6 +401,8 @@
                     >
                       {card.title}
                     </button>
+                  {:else}
+                    <h1 class="detail-title">{card.title}</h1>
                   {/if}
 
                   {#if body}
@@ -323,6 +415,11 @@
                     </div>
                   {/if}
 
+                  {#if !body && cardSnippets?.body}
+                    {@render cardSnippets.body({ card, columnId })}
+                  {:else if !body && card.summary}
+                    <p>{card.summary}</p>
+                  {/if}
                   {#if card.progress}
                     <div class="detail-steps">
                       <strong
@@ -330,7 +427,7 @@
                         {card.progress.done}/{card.progress.total}</strong
                       >
                     </div>
-                  {:else}
+                  {:else if card.metadata === undefined}
                     <div class="detail-steps">
                       <span class="add-step-row">
                         <span class="step-box"></span>
@@ -345,15 +442,25 @@
                     <button
                       type="button"
                       class:current-stage={column.id === columnId}
-                      onclick={() => onMoveToColumn(column.id)}
-                      disabled={column.id === columnId}
+                      onclick={() =>
+                        void requestTransition(
+                          () => onMoveToColumn(column.id),
+                          closeOnMove,
+                        )}
+                      disabled={!movesEnabled ||
+                        closing ||
+                        column.id === columnId}
                     >
                       {column.label}
                     </button>
                   {/each}
                 </nav>
 
-                {#if isCompleted && stamp?.tone === "done" && stamp.date}
+                {#if cardSnippets?.badge}
+                  {@render cardSnippets.badge({ card, columnId })}
+                {:else if card.badge}
+                  <KanbanHighlight badge={card.badge} />
+                {:else if isCompleted && stamp?.tone === "done" && stamp.date}
                   <div class="done-stamp">
                     <span>{stamp.label}</span>
                     <strong
@@ -373,64 +480,76 @@
               </div>
 
               <footer class="detail-card-footer">
-                <div class="detail-meta">
-                  <span
-                    >Added <strong
-                      >{formatKanbanDate(card.createdAt, {
-                        year: true,
-                      })}</strong
-                    ></span
-                  >
-                  <span
-                    ><span aria-hidden="true">↻</span> Updated
-                    <strong
-                      >{formatKanbanDate(card.updatedAt, {
-                        year: true,
-                      })}</strong
-                    ></span
-                  >
-                  <span>Status <strong>{card.statusText ?? "—"}</strong></span>
-                  <span
-                    >Priority <strong>{card.priorityText ?? "none"}</strong
-                    ></span
-                  >
-                </div>
+                {#if cardSnippets?.metadata}
+                  {@render cardSnippets.metadata({ card, columnId })}
+                {:else if card.metadata !== undefined}
+                  <KanbanMetadata fields={card.metadata} />
+                {:else}
+                  <div class="detail-meta">
+                    <span
+                      >Added <strong
+                        >{formatKanbanDate(card.createdAt, {
+                          year: true,
+                        })}</strong
+                      ></span
+                    >
+                    <span
+                      ><span aria-hidden="true">↻</span> Updated
+                      <strong
+                        >{formatKanbanDate(card.updatedAt, {
+                          year: true,
+                        })}</strong
+                      ></span
+                    >
+                    <span>Status <strong>{card.statusText ?? "—"}</strong></span
+                    >
+                    <span
+                      >Priority <strong>{card.priorityText ?? "none"}</strong
+                      ></span
+                    >
+                  </div>
+                {/if}
               </footer>
             </article>
           </div>
 
-          <div class="detail-actions detail-actions-right">
-            <Button
-              variant="default"
-              size="icon"
-              class="detail-action-btn detail-dark"
-              aria-label={pinned ? "Unpin this card" : "Pin this card"}
-              onclick={onTogglePin}
-            >
-              {#if pinned}
-                <PinOffIcon />
-              {:else}
-                <PinIcon />
-              {/if}
-            </Button>
-          </div>
-
+          {#if onTogglePin}
+            <div class="detail-actions detail-actions-right">
+              <Button
+                variant="default"
+                size="icon"
+                class="detail-action-btn detail-dark"
+                aria-label={pinned ? "Unpin this card" : "Pin this card"}
+                onclick={onTogglePin}
+              >
+                {#if pinned}
+                  <PinOffIcon />
+                {:else}
+                  <PinIcon />
+                {/if}
+              </Button>
+            </div>
+          {/if}
           <div class="detail-notch">
-            <Button
-              class="detail-primary"
-              onclick={() => {
-                bodyEditing = true;
-              }}
-            >
-              Edit
-            </Button>
-            <Button
-              class="detail-primary"
-              disabled={isCompleted}
-              onclick={onMarkDone}
-            >
-              Mark as Done <kbd>D</kbd>
-            </Button>
+            {#if body || cardSnippets?.body}
+              <Button
+                class="detail-primary"
+                onclick={() => {
+                  bodyEditing = true;
+                }}
+              >
+                Edit
+              </Button>
+            {/if}
+            {#if onMarkDone}
+              <Button
+                class="detail-primary"
+                disabled={isCompleted || !movesEnabled || closing}
+                onclick={() => void requestTransition(onMarkDone)}
+              >
+                Mark as Done <kbd>D</kbd>
+              </Button>
+            {/if}
           </div>
 
           {#if closureMessage && !isNotNow && !isCompleted}

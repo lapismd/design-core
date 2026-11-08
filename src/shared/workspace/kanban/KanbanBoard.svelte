@@ -5,10 +5,12 @@
   import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
   import type {
     KanbanCardData,
+    KanbanCardSnippets,
     KanbanColumnData,
     KanbanColumnMeta,
     KanbanDetailBodyContext,
   } from "./kanban-types.js";
+  import { resolveKanbanAnchor } from "./kanban-presentation.js";
   import KanbanColumn from "./KanbanColumn.svelte";
   import KanbanCardDetail from "./KanbanCardDetail.svelte";
   import KanbanColumnView from "./KanbanColumnView.svelte";
@@ -16,12 +18,16 @@
 
   let {
     columns,
+    anchorColumnId = undefined,
+    cardSnippets = undefined,
+    columnActions = undefined,
+    beforeDetailClose = undefined,
     onMoveCardToColumn,
     onReorderColumns,
     onEditColumn,
-    onTogglePin,
-    onPromoteGolden,
-    onSaveTitle,
+    onTogglePin = undefined,
+    onPromoteGolden = undefined,
+    onSaveTitle = undefined,
     onCardOpen = undefined,
     movesEnabled = true,
     onBoardMount = undefined,
@@ -34,6 +40,14 @@
   }: {
     /** Ordered board columns; consumers derive them from their own data. */
     columns: KanbanColumnData[];
+    /** Undefined preserves legacy anchoring; null disables it. */
+    anchorColumnId?: string | null;
+    /** Consumer-owned card presentation shared across board surfaces. */
+    cardSnippets?: KanbanCardSnippets;
+    /** Consumer-owned per-column controls. */
+    columnActions?: Snippet<[column: KanbanColumnData]>;
+    /** Return false to retain a detail whose source could not be saved. */
+    beforeDetailClose?: () => boolean | Promise<boolean>;
     /** Persists a card move (drag-drop, move pills, stage nav, or keyboard). */
     onMoveCardToColumn: (
       cardId: string,
@@ -44,11 +58,11 @@
     /** Persists column title/colour edits from the column popover. */
     onEditColumn: (columnId: string, meta: KanbanColumnMeta) => void;
     /** Toggles a card's pinned state. */
-    onTogglePin: (cardId: string) => void | Promise<void>;
+    onTogglePin?: (cardId: string) => void | Promise<void>;
     /** Promotes a card to a golden ticket. */
-    onPromoteGolden: (cardId: string) => void | Promise<void>;
+    onPromoteGolden?: (cardId: string) => void | Promise<void>;
     /** Persists an edited title; may resolve to the card's replacement id. */
-    onSaveTitle: (
+    onSaveTitle?: (
       cardId: string,
       title: string,
     ) => Promise<string | null> | string | null;
@@ -98,9 +112,7 @@
   });
 
   function getPrimaryColumnId(): string | null {
-    return (
-      columns.find((column) => column.primary)?.id ?? columns[0]?.id ?? null
-    );
+    return resolveKanbanAnchor(columns, anchorColumnId);
   }
 
   const pinnedCards = $derived.by(() => {
@@ -148,7 +160,7 @@
 
     const firstActive = columns.find(
       (column) =>
-        !column.primary &&
+        column.id !== getPrimaryColumnId() &&
         !column.excludeFromAutoExpand &&
         column.cards.length > 0,
     );
@@ -168,13 +180,24 @@
     });
   });
 
+  $effect(() => {
+    const anchor = getPrimaryColumnId();
+    const ids = columns.map((column) => column.id);
+    untrack(() => {
+      const next = expandedColumnIds.filter((id) => ids.includes(id));
+      if (anchor && !next.includes(anchor)) next.unshift(anchor);
+      if (next.join("\0") !== expandedColumnIds.join("\0"))
+        expandedColumnIds = next;
+    });
+  });
+
   function isExpanded(columnId: string): boolean {
     return expandedColumnIds.includes(columnId);
   }
 
   function toggleColumn(columnId: string): void {
     const column = columns.find((candidate) => candidate.id === columnId);
-    if (!column || column.locked) return;
+    if (!column || column.locked || columnId === getPrimaryColumnId()) return;
 
     const primaryColumnId = getPrimaryColumnId();
 
@@ -321,7 +344,7 @@
   }
 
   async function togglePin(cardId: string): Promise<void> {
-    await onTogglePin(cardId);
+    await onTogglePin?.(cardId);
   }
 
   function getReorderableColumnIds(): string[] {
@@ -526,12 +549,15 @@
         </div>
       </div>
     {:else}
-      <ScrollArea class="board-scroll" orientation="both">
+      <ScrollArea class="board-scroll" orientation="horizontal" fillContent>
         <div class="board-row">
           {#each columns as column (column.id)}
             <KanbanColumn
               {column}
               expanded={isExpanded(column.id)}
+              collapseEnabled={column.id !== getPrimaryColumnId()}
+              {cardSnippets}
+              {columnActions}
               {selectedCardId}
               selectedColumn={selectedColumnId === column.id}
               {movesEnabled}
@@ -608,41 +634,47 @@
     onClose={() => {
       detailOpen = false;
     }}
-    onMoveToColumn={(columnId) => {
+    onMoveToColumn={async (columnId) => {
       if (!selectedContext) return;
-      void moveCardToColumn(selectedContext.card.id, columnId);
-      detailOpen = false;
+      await moveCardToColumn(selectedContext.card.id, columnId);
     }}
-    onTogglePin={() => {
-      if (selectedCardId) void togglePin(selectedCardId);
-    }}
-    onPromoteGolden={() => {
-      if (!selectedCardId) return;
-      void onPromoteGolden(selectedCardId);
-    }}
-    onSaveTitle={async (title) => {
-      if (!selectedContext) return null;
-      const nextId = await onSaveTitle(selectedContext.card.id, title);
-      if (nextId) {
-        selectedCardId = nextId;
-      }
-      return nextId ?? null;
-    }}
-    onMarkDone={() => {
-      if (!selectedContext) return;
-      const doneColumn = columns.find((column) => column.isCompleted);
-      if (doneColumn) {
-        void moveCardToColumn(selectedContext.card.id, doneColumn.id);
-        detailOpen = false;
-      }
-    }}
+    onTogglePin={onTogglePin
+      ? () => {
+          if (selectedCardId) void togglePin(selectedCardId);
+        }
+      : undefined}
+    onPromoteGolden={onPromoteGolden
+      ? () => {
+          if (selectedCardId) void onPromoteGolden?.(selectedCardId);
+        }
+      : undefined}
+    onSaveTitle={onSaveTitle
+      ? async (title) => {
+          if (!selectedContext) return null;
+          const nextId = await onSaveTitle?.(selectedContext.card.id, title);
+          if (nextId) selectedCardId = nextId;
+          return nextId ?? null;
+        }
+      : undefined}
+    onMarkDone={columns.some((column) => column.isCompleted)
+      ? async () => {
+          if (!selectedContext || !movesEnabled) return;
+          const doneColumn = columns.find((column) => column.isCompleted);
+          if (doneColumn)
+            await moveCardToColumn(selectedContext.card.id, doneColumn.id);
+        }
+      : undefined}
     {brandLabel}
     {brand}
     body={detailBody}
+    {cardSnippets}
+    {movesEnabled}
+    beforeClose={beforeDetailClose}
   />
 
   <KanbanColumnView
     column={columnViewContext}
+    {cardSnippets}
     {movesEnabled}
     bind:open={columnViewOpen}
     {selectedCardId}

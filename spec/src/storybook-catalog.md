@@ -46,6 +46,7 @@ lazy library mounts; the search input alone does not prove grid readiness.
 ### Acceptance details
 
 - Story titles, hierarchy, and specification-book position must remain stable discovery identifiers unless a migration is documented.
+- A host MAY opt an application story into the complete viewport with `parameters.catalogLayout: "full-viewport"` while ordinary component stories and Docs retain their existing padding.
 - Storybook documentation must link or derive from the owning source instead of copying normative contracts.
 
 ## DC-CAT-002 — Autodocs inventory

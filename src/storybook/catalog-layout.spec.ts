@@ -5,6 +5,28 @@ import {
 } from "./catalog-layout.js";
 
 describe("catalog story layout", () => {
+  it("allows explicit bounded application stories without changing regular catalog padding", () => {
+    expect(
+      usesFullViewportCatalogLayout({
+        title: "Plugins/Bases/Views/Kanban",
+        viewMode: "story",
+        parameters: { catalogLayout: "full-viewport" },
+      }),
+    ).toBe(true);
+    expect(
+      usesFullViewportCatalogLayout({
+        title: "Plugins/Bases/Views/Kanban",
+        viewMode: "story",
+      }),
+    ).toBe(false);
+    expect(
+      usesFullViewportCatalogLayout({
+        title: "Plugins/Bases/Views/Kanban",
+        viewMode: "docs",
+        parameters: { catalogLayout: "full-viewport" },
+      }),
+    ).toBe(false);
+  });
   it("uses edge-to-edge roots only for application-shell stories", () => {
     expect(
       usesFullViewportCatalogLayout({

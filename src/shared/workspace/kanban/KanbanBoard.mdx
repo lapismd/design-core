@@ -84,8 +84,13 @@ reserved transparent at rest and only painted while editing.
 The role, task and arbitrary Markdown scenarios adapt self-contained sample
 content from CV Studio `34486d1e`. Group names are consumer-provided values;
 no status field is required. Fixed dates keep the catalogs deterministic.
-The next slices add generic summaries/badges, Activity and optional anchoring.
+Cards accept summaries, individually ordered metadata and generic stamp badges. Body, tags, metadata and badge snippets let hosts replace each region. `anchorColumnId={null}` disables anchoring; a selected ID keeps that lane open. `KanbanActivityView` shares the card presentation and accepts host-derived dates. The detail card exports `--ui-kanban-detail-surface` so embedded Markdown readers and editors can share its paint.
 
 <Canvas of={KanbanBoardStories.RolesReference} />
 <Canvas of={KanbanBoardStories.ArbitraryMarkdownReference} />
 <Canvas of={KanbanBoardStories.TasksReference} />
+
+<Canvas of={KanbanBoardStories.GenericCardFields} />
+<Canvas of={KanbanBoardStories.ConfigurableAnchor} />
+<Canvas of={KanbanBoardStories.ActivityTimeline} />
+<Canvas of={KanbanBoardStories.ColumnColorPreview} />

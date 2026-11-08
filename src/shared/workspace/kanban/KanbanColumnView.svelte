@@ -4,11 +4,12 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import * as Dialog from "@lapismd/design-core/shadcn/dialog";
   import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
-  import type { KanbanColumnData } from "./kanban-types.js";
+  import type { KanbanColumnData, KanbanCardSnippets } from "./kanban-types.js";
   import KanbanCard from "./KanbanCard.svelte";
 
   let {
     column,
+    cardSnippets = undefined,
     open = $bindable(false),
     selectedCardId = null,
     movesEnabled = true,
@@ -18,6 +19,8 @@
     onMoveCard,
   }: {
     /** Column presented full-screen, or null when closed. */
+    /** Consumer-owned card presentation regions. */
+    cardSnippets?: KanbanCardSnippets;
     column: KanbanColumnData | null;
     /** Dialog visibility. */
     open: boolean;
@@ -85,6 +88,8 @@
             {#each column.cards as card (card.id)}
               <KanbanCard
                 {card}
+                columnId={column.id}
+                {cardSnippets}
                 selected={card.id === selectedCardId}
                 canMoveLeft={movesEnabled && !column.locked}
                 canMoveRight={movesEnabled && !column.locked}

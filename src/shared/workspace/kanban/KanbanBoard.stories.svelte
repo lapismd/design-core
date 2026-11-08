@@ -1,9 +1,17 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor, within } from "storybook/test";
+  import {
+    expect,
+    fireEvent,
+    userEvent,
+    waitFor,
+    within,
+  } from "storybook/test";
   import { MarkdownComposer } from "@lapismd/design-core/chat";
   import * as exampleSources from "./KanbanBoard.example-sources.js";
   import KanbanBoard from "./KanbanBoard.svelte";
+  import KanbanActivityView from "./KanbanActivityView.svelte";
+  import KanbanCardDetail from "./KanbanCardDetail.svelte";
   import "./KanbanBoard.stories.css";
 
   const { Story } = defineMeta({
@@ -238,6 +246,7 @@
   const fullBoard = createStoryBoard();
   const collapseBoard = createStoryBoard();
   const optionsBoard = createStoryBoard();
+  const previewBoard = createStoryBoard();
   const detailBoard = createStoryBoard();
   const columnViewBoard = createStoryBoard();
   const keyboardBoard = createStoryBoard();
@@ -268,6 +277,14 @@
             updatedAt: note.date,
             statusText: note.owner,
             priorityText: String(note.highlight),
+            summary: note.body.split("\n\n")[0],
+            metadata: [
+              { id: "owner", label: "Owner", value: note.owner },
+              { id: "source", label: "Source", value: note.path },
+              { id: "date", label: "Recorded", value: note.date || "—" },
+              { id: "phase", label: "Phase", value: note.phase },
+            ],
+            badge: { label: "Highlight", value: String(note.highlight) },
           })),
       };
     });
@@ -276,6 +293,35 @@
   const notesReference = createStoryBoard(referenceColumns("notes"));
   const tasksReference = createStoryBoard(referenceColumns("tasks"));
 
+  const tallBoard = createStoryBoard(
+    Array.from({ length: 12 }, (_, columnIndex) => ({
+      id: `group-${columnIndex}`,
+      label: `Group ${columnIndex + 1}`,
+      color: "#0e7490",
+      cards: Array.from({ length: 16 }, (_, index) => ({
+        id: `record-${columnIndex}-${index}`,
+        title: `Record ${columnIndex + 1}.${index + 1}`,
+        color: "#0e7490",
+        metadata: [],
+      })),
+    })),
+  );
+  const anchorBoard = createStoryBoard(referenceColumns("notes"));
+  let anchor = $state<string | null>("Reflect");
+  let activityLog = $state("No card opened");
+  let guardedOpen = $state(true);
+  let guardAttempts = $state(0);
+  let stageOpen = $state(true);
+  let stageId = $state("Collect");
+  let titleRetryOpen = $state(true);
+  let titleAttempts = $state(0);
+  let titleRetryCard = $state({
+    id: "fieldwork.md",
+    title: "Field observations",
+    color: COLOR_BACKLOG,
+    metadata: [],
+  });
+  const guardedColumns = referenceColumns("notes");
   let noteDraft = $state("Body preview text.");
 
   function handleOpenCard(cardId: string, columnId: string) {
@@ -672,7 +718,7 @@
     docs: {
       description: {
         story:
-          "Portable Markdown reference data. Group names are consumer metadata; richer summaries, badges and activity follow in the next implementation slice.",
+          "Portable Markdown reference data. Group names are consumer metadata; summaries, metadata and generic badges share the same presentation contract.",
       },
       source: { code: exampleSources.Reference, language: "tsx", type: "code" },
     },
@@ -702,7 +748,7 @@
     docs: {
       description: {
         story:
-          "Portable Markdown reference data. Group names are consumer metadata; richer summaries, badges and activity follow in the next implementation slice.",
+          "Portable Markdown reference data. Group names are consumer metadata; summaries, metadata and generic badges share the same presentation contract.",
       },
       source: { code: exampleSources.Reference, language: "tsx", type: "code" },
     },
@@ -730,7 +776,7 @@
     docs: {
       description: {
         story:
-          "Portable Markdown reference data. Group names are consumer metadata; richer summaries, badges and activity follow in the next implementation slice.",
+          "Portable Markdown reference data. Group names are consumer metadata; summaries, metadata and generic badges share the same presentation contract.",
       },
       source: { code: exampleSources.Reference, language: "tsx", type: "code" },
     },
@@ -749,6 +795,414 @@
       {...tasksReference.handlers}
       ariaLabel="Markdown reference board"
       {detailBody}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Bounded tall columns"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "A bounded pane keeps column headings and selection rings visible while only the card stacks scroll.",
+      },
+      source: { code: exampleSources.Bounded, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvasElement }) => {
+    const frame = canvasElement.querySelector<HTMLElement>(
+      ".kanban-bounded-story",
+    )!;
+    const shell = frame.querySelector<HTMLElement>(".column-shell")!;
+    const header = shell.querySelector<HTMLElement>(".column-header")!;
+    const viewport = shell.querySelector<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    )!;
+    expect(shell.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+      frame.getBoundingClientRect().bottom + 1,
+    );
+    expect(shell.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+      frame.getBoundingClientRect().top - 1,
+    );
+    expect(viewport.scrollHeight).toBeGreaterThan(viewport.clientHeight + 10);
+    const centers = [...header.querySelectorAll("button")].map((button) => {
+      const rect = button.getBoundingClientRect();
+      return rect.top + rect.height / 2;
+    });
+    expect(Math.max(...centers) - Math.min(...centers)).toBeLessThan(1);
+    const top = header.getBoundingClientRect().top;
+    viewport.scrollTop = 250;
+    expect(viewport.scrollTop).toBeGreaterThan(0);
+    expect(header.getBoundingClientRect().top).toBeCloseTo(top, 1);
+    const outer = frame.querySelector<HTMLElement>(
+      '.board-scroll [data-ui-part="scroll-area-viewport"]',
+    )!;
+    expect(outer.scrollHeight).toBeLessThanOrEqual(outer.clientHeight + 1);
+  }}
+>
+  {#snippet template()}
+    <div class="kanban-bounded-story">
+      <KanbanBoard columns={tallBoard.board.columns} {...tallBoard.handlers}>
+        {#snippet columnActions(column)}<button
+            aria-label={`Filter ${column.label}`}>Filter</button
+          >{/snippet}
+      </KanbanBoard>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Column color preview"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const page = within(document.body);
+    const column = canvas
+      .getByRole("heading", { name: "Backlog" })
+      .closest<HTMLElement>(".kanban-column")!;
+    const paint = () => column.style.getPropertyValue("--column-color").trim();
+    const original = paint();
+    const openEditor = async () => {
+      await userEvent.click(
+        canvas.getByRole("button", { name: "Column options for Backlog" }),
+      );
+      await userEvent.click(
+        page.getByRole("menuitem", { name: "Edit Column" }),
+      );
+    };
+    await openEditor();
+    const violet = page.getByRole("button", {
+      name: "Choose column color #6d28d9",
+    });
+    await userEvent.hover(violet);
+    await waitFor(() => expect(paint()).toBe("#6d28d9"));
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "No board action",
+    );
+    await userEvent.unhover(violet);
+    await waitFor(() => expect(paint()).toBe(original));
+    await violet.focus();
+    await fireEvent.focusIn(violet);
+    await waitFor(() => expect(paint()).toBe("#6d28d9"));
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(paint()).toBe(original));
+    await openEditor();
+    await userEvent.click(
+      page.getByRole("button", { name: "Choose column color #4d7c0f" }),
+    );
+    await userEvent.unhover(
+      page.getByRole("button", { name: "Choose column color #4d7c0f" }),
+    );
+    await waitFor(() => expect(paint()).toBe("#4d7c0f"));
+    await userEvent.click(page.getByRole("button", { name: "Back" }));
+    await waitFor(() => expect(paint()).toBe(original));
+    await userEvent.keyboard("{Escape}");
+    await openEditor();
+    await userEvent.click(
+      page.getByRole("button", { name: "Choose column color #6d28d9" }),
+    );
+    await userEvent.click(page.getByRole("button", { name: "Save" }));
+    await waitFor(() => expect(paint()).toBe("#6d28d9"));
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Edited column Backlog",
+    );
+    await openEditor();
+    await userEvent.click(
+      page.getByRole("button", { name: "Choose column color #a16207" }),
+    );
+    await userEvent.click(
+      canvasElement.querySelector<HTMLElement>(".board-row")!,
+    );
+    await waitFor(() => expect(paint()).toBe("#6d28d9"));
+    expect(canvasElement.querySelector(".column-popover__form")).toBeNull();
+  }}
+>
+  {#snippet template()}
+    <KanbanBoard
+      columns={previewBoard.board.columns}
+      {...previewBoard.handlers}
+    />
+    <output class="sr-only">{previewBoard.board.log}</output>
+  {/snippet}
+</Story>
+
+<Story
+  name="Generic card fields"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: exampleSources.Generic, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const card = canvas.getByRole("button", {
+      name: /Open card: Field observations/,
+    });
+    await expect(
+      within(card).getByText(
+        "Capture observations from the riverside field visit.",
+      ),
+    ).toBeVisible();
+    const cells = card.querySelectorAll<HTMLElement>(".kanban-metadata > div");
+    expect(cells).toHaveLength(4);
+    const [left, right, next] = [...cells].map((cell) =>
+      cell.getBoundingClientRect(),
+    );
+    expect(left.top).toBeCloseTo(right.top, 0);
+    expect(right.left).toBeGreaterThan(left.left);
+    expect(next.top).toBeGreaterThan(left.top);
+    expect(next.left).toBeCloseTo(left.left, 0);
+    await expect(within(card).getByLabelText("Highlight: 0")).toBeVisible();
+    await userEvent.click(card);
+    const page = within(document.body);
+    const badge = page
+      .getByRole("dialog")
+      .querySelector<HTMLElement>('[data-ui-part="card-badge"]')!;
+    const frame = badge.closest<HTMLElement>(".detail-card-body")!;
+    const rect = badge.getBoundingClientRect();
+    expect(rect.width).toBeGreaterThan(150);
+    expect(frame.getBoundingClientRect().right - rect.right).toBeLessThan(35);
+    expect(frame.getBoundingClientRect().bottom - rect.bottom).toBeLessThan(35);
+    await userEvent.click(page.getByRole("button", { name: /Back ESC/ }));
+  }}
+>
+  {#snippet template()}
+    <KanbanBoard
+      columns={notesReference.board.columns}
+      {...notesReference.handlers}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Configurable anchor"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: exampleSources.Generic, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const anchorButton = canvas.getByRole("button", {
+      name: /Reflect cards, locked column/,
+    });
+    await expect(anchorButton).toBeDisabled();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Disable anchoring" }),
+    );
+    const collapse = canvas.getByRole("button", { name: /Collapse .*Reflect/ });
+    await expect(collapse).toBeEnabled();
+    await userEvent.click(collapse);
+    await expect(
+      canvas.getByRole("button", { name: /Expand .*Reflect/ }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <button onclick={() => (anchor = null)}>Disable anchoring</button>
+    <KanbanBoard
+      columns={anchorBoard.board.columns}
+      {...anchorBoard.handlers}
+      anchorColumnId={anchor}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Activity timeline"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: exampleSources.Activity, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    await expect(canvas.getByText("No entries for 1 days")).toBeVisible();
+    await expect(
+      canvas.getByRole("heading", { name: "Undated" }),
+    ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: /Open card: Field observations/ }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Research/Fieldwork.md in Collect",
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="kanban-bounded-story">
+      <KanbanActivityView
+        columns={notesReference.board.columns}
+        entries={[
+          {
+            card: notesReference.board.columns[0]!.cards[0]!,
+            columnId: "Collect",
+            date: "2026-06-25",
+          },
+          {
+            card: notesReference.board.columns[1]!.cards[0]!,
+            columnId: "Reflect",
+            date: "2026-06-27",
+          },
+          {
+            card: {
+              id: "draft.md",
+              title: "Interview questions",
+              color: COLOR_BACKLOG,
+              metadata: [],
+            },
+            columnId: "Collect",
+            date: null,
+          },
+        ]}
+        onCardOpen={(id, column) => (activityLog = id + " in " + column)}
+      />
+    </div>
+    <output class="sr-only">{activityLog}</output>
+  {/snippet}
+</Story>
+
+<Story
+  name="Guarded detail retry"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.GuardedDetail,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async () => {
+    const page = within(document.body);
+    await userEvent.click(page.getByRole("button", { name: /Back ESC/ }));
+    await expect(page.getByRole("alert")).toHaveTextContent(
+      "Source write failed",
+    );
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(page.queryByRole("dialog")).toBeNull());
+  }}
+>
+  {#snippet template()}
+    <KanbanCardDetail
+      card={guardedColumns[0]!.cards[0]!}
+      columns={guardedColumns}
+      columnId="Collect"
+      columnLabel="Collect"
+      bind:open={guardedOpen}
+      onClose={() => {}}
+      onMoveToColumn={() => {}}
+      beforeClose={async () => {
+        guardAttempts += 1;
+        if (guardAttempts === 1) throw Error("Source write failed");
+        return true;
+      }}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Title save retry"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.GuardedDetail,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async () => {
+    const page = within(document.body);
+    await userEvent.click(
+      page.getByRole("button", { name: /Edit card title/ }),
+    );
+    const input = page.getByRole("textbox", { name: "Card title" });
+    await userEvent.clear(input);
+    await userEvent.type(input, "Reviewed field observations");
+    await userEvent.keyboard("{Enter}");
+    await expect(page.getByRole("alert")).toHaveTextContent(
+      "Title write failed",
+    );
+    await expect(input).toHaveTextContent("Reviewed field observations");
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() =>
+      expect(
+        page.getByRole("button", { name: /Edit card title/ }),
+      ).toHaveTextContent("Reviewed field observations"),
+    );
+    await userEvent.click(page.getByRole("button", { name: /Back ESC/ }));
+    await waitFor(() => expect(page.queryByRole("dialog")).toBeNull());
+  }}
+>
+  {#snippet template()}
+    <KanbanCardDetail
+      card={titleRetryCard}
+      columns={[]}
+      bind:open={titleRetryOpen}
+      onClose={() => {}}
+      onMoveToColumn={() => {}}
+      onSaveTitle={async (title) => {
+        titleAttempts += 1;
+        if (titleAttempts === 1) throw Error("Title write failed");
+        titleRetryCard.title = title;
+        return null;
+      }}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Persistent stage detail"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.GuardedDetail,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async () => {
+    const page = within(document.body);
+    const dialog = page.getByRole("dialog");
+    await userEvent.click(
+      within(dialog).getByRole("button", { name: "Reflect" }),
+    );
+    await waitFor(() =>
+      expect(
+        within(dialog).getByRole("button", { name: "Reflect" }),
+      ).toBeDisabled(),
+    );
+    await expect(dialog).toBeVisible();
+    const tint = dialog.querySelector<HTMLElement>(
+      '[data-ui-component="kanban-card-detail"]',
+    )!;
+    expect(tint.style.getPropertyValue("--card-color")).toBe(COLOR_DONE);
+    await userEvent.click(page.getByRole("button", { name: /Back ESC/ }));
+    await waitFor(() => expect(page.queryByRole("dialog")).toBeNull());
+  }}
+>
+  {#snippet template()}
+    <KanbanCardDetail
+      card={{
+        ...guardedColumns[0]!.cards[0]!,
+        color: stageId === "Collect" ? COLOR_BACKLOG : COLOR_DONE,
+      }}
+      columns={guardedColumns}
+      columnId={stageId}
+      columnLabel={stageId}
+      bind:open={stageOpen}
+      closeOnMove={false}
+      onClose={() => {}}
+      onMoveToColumn={(id) => {
+        stageId = id;
+      }}
     />
   {/snippet}
 </Story>

@@ -1,3 +1,5 @@
+import type { Snippet } from "svelte";
+
 /**
  * Generic kanban data contracts. Consumers (for example a bases view or a
  * tasks planner) map their own domain records onto these shapes; the board
@@ -38,6 +40,12 @@ export interface KanbanCardData {
   title: string;
   /** CSS colour value driving the card's `--card-color` paint. */
   color: string;
+  /** Short consumer-formatted description rendered beneath the title. */
+  summary?: string | null;
+  /** Generic metadata; an explicit empty array suppresses legacy meta cells. */
+  metadata?: KanbanCardMetadata[];
+  /** Generic highlight, independent of completion stamps and date semantics. */
+  badge?: KanbanCardBadge | null;
   /** Overrides the uppercase tab label at the top of the card; defaults to the title. */
   tabLabel?: string | null;
   /** Tag badges rendered beside the tab label. */
@@ -86,6 +94,47 @@ export interface KanbanColumnData {
   excludeFromAutoExpand?: boolean;
   /** Ordered cards in this column. */
   cards: KanbanCardData[];
+  /** Count before a consumer-owned column filter; omitted hides the total. */
+  totalCount?: number;
+}
+
+/** A consumer-formatted field, with a stable property id and accessible label. */
+export interface KanbanCardMetadata {
+  id: string;
+  label: string;
+  value: string;
+}
+
+/** Values are display text; the generic family never parses a badge as a date. */
+export interface KanbanCardBadge {
+  label: string;
+  value: string;
+  /** Defaults to the card's accent. */
+  color?: string;
+}
+
+export interface KanbanCardContext {
+  card: KanbanCardData;
+  columnId: string;
+}
+
+/** Optional presentation regions shared by board, detail, column and activity. */
+export interface KanbanCardSnippets {
+  body?: Snippet<[context: KanbanCardContext]>;
+  tags?: Snippet<[context: KanbanCardContext]>;
+  metadata?: Snippet<[context: KanbanCardContext]>;
+  badge?: Snippet<[context: KanbanCardContext]>;
+}
+
+export interface KanbanActivityEntry extends KanbanCardContext {
+  /** ISO timestamp or literal YYYY-MM-DD; missing/invalid values are undated. */
+  date?: string | null;
+}
+
+export interface KanbanActivityDay {
+  key: string;
+  date: Date | null;
+  entries: KanbanActivityEntry[];
 }
 
 /** Consumer-persisted column metadata written through the edit popover. */
