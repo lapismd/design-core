@@ -1,5 +1,17 @@
 # @lapismd/design-core
 
+## 0.12.0
+
+### Minor Changes
+
+- [#63](https://github.com/lapismd/design-core/pull/63) [`3e37174`](https://github.com/lapismd/design-core/commit/3e3717428fe76f1273993e6037f5ca2ff58a9bea) Thanks [@stevejuma](https://github.com/stevejuma)! - Add an optional `onCardOpen` activation override and a `movesEnabled` gate to the Kanban Board. `onCardOpen` receives `(cardId, columnId)` from card clicks, the board-level Enter fallback, pinned-card clicks, and column-view opens instead of the built-in detail dialog opening. `movesEnabled={false}` disables drag lifts, drop targets, move pills, and the Shift+arrow move shortcut for read-only boards while keeping navigation and dialogs intact. The in-flow board surfaces now follow a `--kanban-board-height` custom property (default `100dvh`), letting embedded hosts bound the board to a shorter container without clipping lane borders. The family is also removed from the workspace barrel (it stays on its dedicated `./workspace/kanban` subpath) because `@dnd-kit/dom` reads `ResizeObserver` at module scope, which node and jsdom barrel consumers do not provide.
+
+- [#63](https://github.com/lapismd/design-core/pull/63) [`3e37174`](https://github.com/lapismd/design-core/commit/3e3717428fe76f1273993e6037f5ca2ff58a9bea) Thanks [@stevejuma](https://github.com/stevejuma)! - Add generic card summaries, metadata grids, stamp badges and presentation snippets, an Activity timeline, configurable column anchoring, guarded detail transitions and reversible column-colour previews. Keep bounded column headers visible while card stacks scroll. Activity lane headings retain their date and count while scrolling within each day, with the centered date label on the day boundary.
+
+### Patch Changes
+
+- [#63](https://github.com/lapismd/design-core/pull/63) [`3e37174`](https://github.com/lapismd/design-core/commit/3e3717428fe76f1273993e6037f5ca2ff58a9bea) Thanks [@stevejuma](https://github.com/stevejuma)! - Pin the reviewed Bits UI runtime version while its version-bound patch is required, and reject incompatible package declarations before packed-consumer installation.
+
 ## 0.11.0
 
 ### Minor Changes
