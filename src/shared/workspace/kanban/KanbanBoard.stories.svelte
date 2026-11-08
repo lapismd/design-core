@@ -1028,8 +1028,17 @@
     const headers = [
       ...day.querySelectorAll<HTMLElement>(".kanban-activity__column > h3"),
     ];
+    const columns = day.querySelector<HTMLElement>(
+      ".kanban-activity__columns",
+    )!;
     for (const header of headers) {
       expect(getComputedStyle(header).position).toBe("sticky");
+      expect(
+        Math.abs(
+          header.getBoundingClientRect().top -
+            columns.getBoundingClientRect().top,
+        ),
+      ).toBeLessThan(0.5);
       expect(header.querySelector("time")?.getAttribute("datetime")).toBe(
         "2026-06-27",
       );
@@ -1038,6 +1047,15 @@
     await fireEvent.scroll(viewport);
     await waitFor(() => {
       expect(viewport.scrollTop).toBe(120);
+      for (const header of headers) {
+        const style = getComputedStyle(header);
+        expect(style.borderBlockStartWidth).toBe("1px");
+        expect(style.borderBlockStartStyle).toBe("solid");
+        expect(style.borderBlockStartColor).toBe(style.borderBlockEndColor);
+        expect(header.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+          viewport.getBoundingClientRect().top,
+        );
+      }
       expect(
         Math.abs(
           headers[0]!.getBoundingClientRect().top -

@@ -60,9 +60,9 @@
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  margin: 0 0 0.625rem;
+  margin: -1px 0 0.625rem;
   padding: calc(0.4rem + var(--activity-day-height) / 2) 0.75rem 0.4rem;
-  border-block-end: 1px solid var(--ui-kanban-border);
+  border-block: 1px solid var(--ui-kanban-border);
   background: linear-gradient(
     180deg,
     var(--ui-kanban-surface),
