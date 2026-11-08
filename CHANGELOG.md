@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.12.1
+
+### Patch Changes
+
+- [#65](https://github.com/lapismd/design-core/pull/65) [`a313b58`](https://github.com/lapismd/design-core/commit/a313b58d00a4e8f892b6012cb76a895d1d210d4c) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep a visible themed top border on sticky Kanban Activity column headings while their day content scrolls. Overlap the resting heading edge with the day border to retain a single separator.
+
 ## 0.12.0
 
 ### Minor Changes
