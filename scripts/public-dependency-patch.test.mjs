@@ -15,6 +15,7 @@ import { test } from "node:test";
 import {
   stagePublicDependencyPatch,
   validatePublicDependencyPatch,
+  validatePublicDependencyPatchRequirement,
   verifyInstalledDependencyPatch,
 } from "./public-dependency-patch.mjs";
 
@@ -24,6 +25,26 @@ const manifest = JSON.parse(
 const bytes = readFileSync(
   new URL("../patches/bits-ui@2.20.2.patch", import.meta.url),
 );
+
+test("the shipped dependency requirement binds the qualified patch version", () => {
+  validatePublicDependencyPatchRequirement(
+    JSON.parse(readFileSync(new URL("../package.json", import.meta.url))),
+    manifest,
+  );
+});
+
+test("patch intake rejects compatible ranges, other versions and absent dependencies", () => {
+  for (const requirement of ["^2.20.2", "~2.20.2", "2.20.6", undefined]) {
+    assert.throws(
+      () =>
+        validatePublicDependencyPatchRequirement(
+          { dependencies: { "bits-ui": requirement } },
+          manifest,
+        ),
+      /exact qualified version/,
+    );
+  }
+});
 
 test("public patch validates the exact composed runtime scope and bytes", () => {
   validatePublicDependencyPatch(manifest, bytes);
@@ -85,6 +106,10 @@ test("public archive stages identical bytes and explicit root pnpm configuration
   t.after(() => rmSync(directory, { recursive: true, force: true }));
   const packageRoot = path.join(directory, "package");
   mkdirSync(packageRoot);
+  writeFileSync(
+    path.join(packageRoot, "package.json"),
+    JSON.stringify({ dependencies: { "bits-ui": manifest.version } }),
+  );
   cpSync(
     new URL("../patches", import.meta.url),
     path.join(packageRoot, "patches"),

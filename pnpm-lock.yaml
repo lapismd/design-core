@@ -115,7 +115,7 @@ importers:
         specifier: ^3.7.6
         version: 3.7.6
       bits-ui:
-        specifier: ^2.20.2
+        specifier: 2.20.2
         version: 2.20.2(patch_hash=debd3bc7d43917f0967f0cc1e212fc5c7721c751d3b92bf8f31030d1c96289ad)(@internationalized/date@3.12.4)(svelte@5.57.3)
       chrono-node:
         specifier: ^2.10.3

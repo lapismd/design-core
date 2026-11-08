@@ -11,6 +11,15 @@ const runtimeFiles = [
   "dist/bits/utilities/focus-scope/focus-scope.svelte.js",
 ];
 
+/** A wider range could let a clean install bypass the qualified patch. */
+export function validatePublicDependencyPatchRequirement(pkg, manifest) {
+  assert.equal(
+    pkg.dependencies?.[manifest.package],
+    manifest.version,
+    "Patched runtime dependency must declare its exact qualified version",
+  );
+}
+
 export function validatePublicDependencyPatch(manifest, bytes) {
   assert.equal(
     manifest.schemaVersion,
@@ -80,14 +89,10 @@ export function verifyInstalledDependencyPatch(directory, manifest) {
 }
 
 function archiveFile(tarball, member) {
-  const result = spawnSync(
-    "tar",
-    ["-xOf", tarball, `package/patches/${member}`],
-    {
-      timeout: 10_000,
-      maxBuffer: 256 * 1024,
-    },
-  );
+  const result = spawnSync("tar", ["-xOf", tarball, `package/${member}`], {
+    timeout: 10_000,
+    maxBuffer: 256 * 1024,
+  });
   assert.equal(
     result.status,
     0,
@@ -99,10 +104,14 @@ function archiveFile(tarball, member) {
 /** Explicit consumer-root intake; dependency pnpm metadata does not propagate. */
 export function stagePublicDependencyPatch(tarball, fixture) {
   const manifest = JSON.parse(
-    archiveFile(tarball, "manifest.json").toString("utf8"),
+    archiveFile(tarball, "patches/manifest.json").toString("utf8"),
   );
-  const bytes = archiveFile(tarball, patchFile);
+  const bytes = archiveFile(tarball, `patches/${patchFile}`);
   validatePublicDependencyPatch(manifest, bytes);
+  validatePublicDependencyPatchRequirement(
+    JSON.parse(archiveFile(tarball, "package.json").toString("utf8")),
+    manifest,
+  );
   mkdirSync(path.join(fixture, "patches"));
   writeFileSync(path.join(fixture, "patches", patchFile), bytes);
   return {

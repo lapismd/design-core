@@ -203,7 +203,9 @@ the existing Link Preview timer/listener and Slider teardown corrections and add
 the exact identical-container FocusScope guard from owner commit `692fbdf5`.
 Every application or package-test root MUST explicitly configure the same
 version-bound patch and freeze its lockfile; Core's published pnpm metadata does
-not propagate into downstream installations. Both retained-source release and
+not propagate into downstream installations. Core's published Bits UI dependency
+MUST pin the exact qualified version, and archive intake MUST reject wider or
+different requirements before installing the consumer. Both retained-source release and
 prepared local archive profiles MUST ship the checksum-bound patch and
 installation/removal provenance with their public artifacts. Remove the
 patch only after a released dependency contains all retained fixes and complete
