@@ -244,6 +244,7 @@
   type StoryBoard = ReturnType<typeof createStoryBoard>;
 
   const fullBoard = createStoryBoard();
+  const embeddedBoard = createStoryBoard();
   const collapseBoard = createStoryBoard();
   const optionsBoard = createStoryBoard();
   const previewBoard = createStoryBoard();
@@ -1270,5 +1271,34 @@
         stageId = id;
       }}
     />
+  {/snippet}
+</Story>
+
+<Story
+  name="Embedded board"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: exampleSources.Embedded, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("main", { name: "Host workspace" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("region", { name: "Embedded board" }),
+    ).toBeVisible();
+    expect(canvas.getAllByRole("main")).toHaveLength(1);
+  }}
+>
+  {#snippet template()}
+    <main aria-label="Host workspace">
+      <KanbanBoard
+        columns={embeddedBoard.board.columns}
+        {...embeddedBoard.handlers}
+        ariaLabel="Embedded board"
+      />
+    </main>
   {/snippet}
 </Story>
