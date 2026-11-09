@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.12.3
+
+### Patch Changes
+
+- [#69](https://github.com/lapismd/design-core/pull/69) [`1cb85ac`](https://github.com/lapismd/design-core/commit/1cb85ac4e2dec3d59f5bca9e6ed6f20a0338981f) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep repeated Kanban and Activity embeds accessible using labelled widget groups and per-instance column IDs. Preserve column names and data identity while avoiding duplicate document landmarks and title/control IDs.
+
 ## 0.12.2
 
 ### Patch Changes
