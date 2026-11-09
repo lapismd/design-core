@@ -252,3 +252,23 @@ export const Embedded = Basic.replace(
   "<KanbanBoard\n",
   '<main aria-label="Host workspace">\n<KanbanBoard\n',
 ).replace(/\/>$/, "/>\n</main>");
+
+export const MultipleInstances = `<script lang="ts">
+  import { KanbanBoard, KanbanActivityView, type KanbanColumnData } from "@lapismd/design-core/workspace/kanban";
+
+  const columns: KanbanColumnData[] = [{
+    id: "draft", label: "Draft", color: "#475569",
+    cards: [{ id: "guide", title: "Writing guide", color: "#475569" }],
+  }];
+  const entries = [{ card: columns[0].cards[0], columnId: "draft", date: "2026-06-27" }];
+</script>
+
+{#each [0, 1] as instance (instance)}
+  <div style="height: 420px; --kanban-board-height: 100%">
+    <KanbanBoard {columns} movesEnabled={false}
+      onMoveCardToColumn={() => {}} onReorderColumns={() => {}} onEditColumn={() => {}} />
+  </div>
+  <div style="height: 420px">
+    <KanbanActivityView {columns} {entries} onCardOpen={() => {}} />
+  </div>
+{/each}`;

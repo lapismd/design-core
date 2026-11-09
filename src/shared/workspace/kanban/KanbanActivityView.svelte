@@ -50,7 +50,12 @@
 </script>
 
 <DragDropProvider>
-  <ScrollArea class="kanban-activity" orientation="both" aria-label={ariaLabel}>
+  <ScrollArea
+    class="kanban-activity"
+    orientation="both"
+    role="group"
+    aria-label={ariaLabel}
+  >
     <div class="kanban-activity__timeline" data-ui-component="kanban-activity">
       {#each days as day, index (day.key)}
         {@const previous = days[index - 1]}
@@ -60,6 +65,7 @@
           </p>
         {/if}
         <section
+          role="group"
           class="kanban-activity__day"
           aria-label={day.date ? dateLabel(day.date) : "Undated"}
         >
@@ -76,6 +82,7 @@
                 (entry) => !columns.length || entry.columnId === column.id,
               )}
               <section
+                role="group"
                 class="kanban-activity__column"
                 aria-label={`${column.label} — ${day.date ? dateLabel(day.date) : "Undated"}`}
               >
