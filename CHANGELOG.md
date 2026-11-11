@@ -1,5 +1,12 @@
 # @lapismd/design-core
 
+## 0.12.4
+
+### Patch Changes
+
+- [#71](https://github.com/lapismd/design-core/pull/71) [`b4ca5f2`](https://github.com/lapismd/design-core/commit/b4ca5f2b36357cc0a856b627a09ee766d1a1ffac) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep read-only Kanban cards clickable and keyboard-accessible after host data
+  refreshes, without allowing drag lifts or drop targets.
+
 ## 0.12.3
 
 ### Patch Changes
