@@ -116,16 +116,15 @@
       return `kanban-column:${column.id}`;
     },
     accept: "kanban-card",
+    get disabled() {
+      return !movesEnabled;
+    },
     get data() {
       return {
         type: "kanban-column",
         columnId: column.id,
       };
     },
-  });
-
-  $effect(() => {
-    droppable.droppable.disabled = !movesEnabled;
   });
 
   $effect(() => {
