@@ -71,16 +71,15 @@
       return `kanban-card:${card.id}`;
     },
     type: "kanban-card",
+    get disabled() {
+      return !movesEnabled;
+    },
     get data() {
       return {
         type: "kanban-card",
         cardId: card.id,
       };
     },
-  });
-
-  $effect(() => {
-    draggable.draggable.disabled = !movesEnabled;
   });
 </script>
 
@@ -113,7 +112,7 @@
   </div>
 
   <div
-    {@attach draggable.attach}
+    {@attach movesEnabled ? draggable.attach : undefined}
     class="kanban-card {selected ? 'is-selected' : ''} {card.golden
       ? 'is-golden'
       : ''}"

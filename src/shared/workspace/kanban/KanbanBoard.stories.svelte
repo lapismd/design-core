@@ -711,11 +711,12 @@
     const selected = canvas.getByRole("button", {
       name: /Open card: Explore plugin telemetry/,
     });
-    // A disabled draggable either drops its drag affordance attributes or
-    // advertises aria-disabled; both mean the card cannot be lifted.
-    const roledescription = selected.getAttribute("aria-roledescription");
-    const ariaDisabled = selected.getAttribute("aria-disabled");
-    expect(roledescription === null || ariaDisabled === "true").toBe(true);
+    await expect(selected).not.toHaveAttribute("aria-disabled", "true");
+    // Read-only cards retain activation without advertising drag affordances.
+    await expect(selected).not.toHaveAttribute(
+      "aria-roledescription",
+      "draggable",
+    );
     await expect(
       canvas.getByRole("button", {
         name: "Move Explore plugin telemetry left",
@@ -737,13 +738,45 @@
         name: /Backlog/,
       }),
     ).toBeVisible();
+    // Host reads replace card objects; the drag adapter must retain read-only state.
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Refresh read-only cards" }),
+    );
+    const refreshed = await canvas.findByRole("button", {
+      name: /Open card: Explore plugin telemetry refreshed/,
+    });
+    await expect(refreshed).not.toHaveAttribute(
+      "aria-roledescription",
+      "draggable",
+    );
+    await expect(refreshed).not.toHaveAttribute("aria-disabled", "true");
+    refreshed.focus();
+    await userEvent.keyboard("{Enter}");
+    await expect(canvas.getByRole("status")).toHaveTextContent("Opened mb-1");
+    await expect(refreshed).not.toHaveAttribute("aria-grabbed", "true");
   }}
 >
   {#snippet template()}
+    <button
+      onclick={() => {
+        readOnlyBoard.board.columns = readOnlyBoard.board.columns.map(
+          (column) => ({
+            ...column,
+            cards: column.cards.map((card) => ({
+              ...card,
+              title: `${card.title} refreshed`,
+            })),
+          }),
+        );
+      }}>Refresh read-only cards</button
+    >
     <KanbanBoard
       columns={readOnlyBoard.board.columns}
       {...readOnlyBoard.handlers}
       movesEnabled={false}
+      onCardOpen={(id) => {
+        readOnlyBoard.board.log = `Opened ${id}`;
+      }}
       ariaLabel="Read-only board"
     />
     <output class="sr-only">{readOnlyBoard.board.log}</output>
