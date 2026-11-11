@@ -711,11 +711,12 @@
     const selected = canvas.getByRole("button", {
       name: /Open card: Explore plugin telemetry/,
     });
-    // A disabled draggable either drops its drag affordance attributes or
-    // advertises aria-disabled; both mean the card cannot be lifted.
-    const roledescription = selected.getAttribute("aria-roledescription");
-    const ariaDisabled = selected.getAttribute("aria-disabled");
-    expect(roledescription === null || ariaDisabled === "true").toBe(true);
+    await expect(selected).not.toHaveAttribute("aria-disabled", "true");
+    // Read-only cards retain activation without advertising drag affordances.
+    await expect(selected).not.toHaveAttribute(
+      "aria-roledescription",
+      "draggable",
+    );
     await expect(
       canvas.getByRole("button", {
         name: "Move Explore plugin telemetry left",
@@ -744,7 +745,11 @@
     const refreshed = await canvas.findByRole("button", {
       name: /Open card: Explore plugin telemetry refreshed/,
     });
-    await expect(refreshed).not.toHaveAttribute("aria-disabled", "false");
+    await expect(refreshed).not.toHaveAttribute(
+      "aria-roledescription",
+      "draggable",
+    );
+    await expect(refreshed).not.toHaveAttribute("aria-disabled", "true");
     refreshed.focus();
     await userEvent.keyboard("{Enter}");
     await expect(canvas.getByRole("status")).toHaveTextContent("Opened mb-1");

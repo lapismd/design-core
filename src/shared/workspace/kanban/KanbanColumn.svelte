@@ -163,7 +163,7 @@
 
 <section
   role="group"
-  {@attach droppable.attach}
+  {@attach movesEnabled ? droppable.attach : undefined}
   class="kanban-column {expanded
     ? 'is-expanded'
     : 'is-collapsed'} {selectedColumn

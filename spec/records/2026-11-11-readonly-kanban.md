@@ -89,3 +89,32 @@ checksum assertion and all patch-policy code. With pnpm 10.32.1 pinned for the c
 passed: required patch hashes, clean-consumer types, cold development/production
 CSS/fonts/focus/themes/controls and the zero-finding production audit.
 `pnpm release:check` also passed; no package-policy assertion was changed.
+
+## Activation follow-up before merge
+
+Maintenance's full packed-consumer lane caught a second problem before the PR
+merged: the correctly disabled drag adapter also declared the card button
+aria-disabled=true, so Playwright's native click refused activation (one failed
+SHA-bound merge browser case). Auto-merge was disabled while addressing it.
+The source ReadOnlyMoves regression was strengthened to require enabled card
+activation after host refresh and failed 1/1 against the getter-only repair.
+
+Read-only cards and columns now omit the drag/drop attachment entirely while
+retaining the reactive disabled input; this removes drag-only accessibility
+attributes without disabling the independent card action. Default movable
+boards keep their existing attachment and keyboard drag behavior. No consumer
+force-click, wrapper or assertion bypass is introduced. The strengthened ReadOnlyMoves target passes 1/1 and all 22 Kanban stories
+pass in fresh browser processes.
+
+Final combined-source verification:
+`TURBO_CONCURRENCY=1 VITEST_MAX_WORKERS=2 STORYBOOK_PORT=9330 pnpm checks`
+exits 0 with pinned pnpm 10.32.1/Node 24.15.0, including 1,128 unit, 40 tooling,
+1,057 Storybook interaction/accessibility, 17 workspace, 17 shell, 3 AI and 196
+Shadcn browser passes with 1 existing platform skip. Functional, interaction and
+accessibility failures are all zero; the earlier composer/hover cases pass in
+the complete suite without retries, quarantine or assertion changes.
+
+The final archive also passes `pnpm packages:pack` with pinned tools: explicit
+consumer-root patch verification, clean types, cold development/production
+runtime acceptance and zero production audit findings. No dependency policy or
+checksum check was altered.

@@ -112,7 +112,7 @@
   </div>
 
   <div
-    {@attach draggable.attach}
+    {@attach movesEnabled ? draggable.attach : undefined}
     class="kanban-card {selected ? 'is-selected' : ''} {card.golden
       ? 'is-golden'
       : ''}"
