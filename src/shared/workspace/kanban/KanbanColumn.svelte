@@ -36,6 +36,7 @@
     KanbanColumnMeta,
   } from "./kanban-types.js";
   import KanbanCard from "./KanbanCard.svelte";
+  import KanbanVirtualStack from "./KanbanVirtualStack.svelte";
 
   let {
     column,
@@ -100,6 +101,7 @@
 
   const instanceId = $props.id();
   const count = $derived(column.cards.length);
+  let viewport = $state<HTMLElement | null>(null);
   let menuOpen = $state(false);
   let editingColumn = $state(false);
   let titleDraft = $state("");
@@ -160,6 +162,22 @@
     menuOpen = nextOpen;
   }
 </script>
+
+{#snippet renderCard(card: KanbanColumnData["cards"][number])}
+  <KanbanCard
+    card={previewing ? { ...card, color: displayColor } : card}
+    columnId={column.id}
+    {cardSnippets}
+    selected={card.id === selectedCardId}
+    canMoveLeft={movesEnabled && !column.locked && columnIndex(card.id) >= 0}
+    canMoveRight={movesEnabled && !column.locked && columnIndex(card.id) >= 0}
+    {movesEnabled}
+    onSelect={() => onSelectCard(card.id)}
+    onOpen={() => onOpenCard(card.id)}
+    onMoveLeft={() => onMoveCard(card.id, -1)}
+    onMoveRight={() => onMoveCard(card.id, 1)}
+  />
+{/snippet}
 
 <section
   role="group"
@@ -333,32 +351,30 @@
       </div>
 
       <div id={`${instanceId}-cards`} class="column-stack">
-        <ScrollArea class="column-stack-scroll" orientation="vertical">
-          <div class="column-stack-inner">
-            {#each column.cards as card (card.id)}
-              <KanbanCard
-                card={previewing ? { ...card, color: displayColor } : card}
-                columnId={column.id}
-                {cardSnippets}
-                selected={card.id === selectedCardId}
-                canMoveLeft={movesEnabled &&
-                  !column.locked &&
-                  columnIndex(card.id) >= 0}
-                canMoveRight={movesEnabled &&
-                  !column.locked &&
-                  columnIndex(card.id) >= 0}
-                {movesEnabled}
-                onSelect={() => onSelectCard(card.id)}
-                onOpen={() => onOpenCard(card.id)}
-                onMoveLeft={() => onMoveCard(card.id, -1)}
-                onMoveRight={() => onMoveCard(card.id, 1)}
-              />
-            {/each}
+        <ScrollArea
+          class="column-stack-scroll"
+          orientation="vertical"
+          bind:viewportRef={viewport}
+        >
+          {#if column.cards.length > 40}
+            <KanbanVirtualStack
+              cards={column.cards}
+              {viewport}
+              {selectedCardId}
+              {draggedCardId}
+              row={renderCard}
+            />
+          {:else}
+            <div class="column-stack-inner">
+              {#each column.cards as card (card.id)}
+                {@render renderCard(card)}
+              {/each}
 
-            {#if !column.cards.length}
-              <div class="column-no-cards">No cards</div>
-            {/if}
-          </div>
+              {#if !column.cards.length}
+                <div class="column-no-cards">No cards</div>
+              {/if}
+            </div>
+          {/if}
         </ScrollArea>
       </div>
     {:else}
