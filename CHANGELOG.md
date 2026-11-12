@@ -1,5 +1,15 @@
 # @lapismd/design-core
 
+## 0.13.0
+
+### Minor Changes
+
+- [#74](https://github.com/lapismd/design-core/pull/74) [`969a507`](https://github.com/lapismd/design-core/commit/969a50705ed05fe9fb21214bdb4653e956adc051) Thanks [@stevejuma](https://github.com/stevejuma)! - Restore live workspace Auto layout detection, replace mobile sidebar selectors with shadcn Select, expose transient mobile navigation and consumer search/creation actions, connect the mobile command palette, and restore scroll-aware mobile chrome. Use shared sidebar toggles and keep the Settings close action reachable in compact containers.
+
+### Patch Changes
+
+- [#73](https://github.com/lapismd/design-core/pull/73) [`a287001`](https://github.com/lapismd/design-core/commit/a287001d3d70519f1f63e1d838430936211c6f34) Thanks [@lapismd-dependency-bot](https://github.com/apps/lapismd-dependency-bot)! - Refresh first-party Lapis dependencies to the published versions recorded in this pull request.
+
 ## 0.12.4
 
 ### Patch Changes
