@@ -1321,6 +1321,11 @@ button.ui-workspace-copyable-value[data-ui-component="button"]:focus-visible {
     color: var(--ui-workspace-foreground);
   }
 
+  .ui-workspace-settings__mobile-close {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+
   .ui-workspace-settings__mobile-navigation-trigger span {
     overflow: hidden;
     text-overflow: ellipsis;

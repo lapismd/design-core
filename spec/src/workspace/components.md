@@ -287,6 +287,37 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - The public boundary is `@lapismd/design-core/workspace/mobile`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - The tab-count action MUST include its visible count as a separate readable token in its accessible name.
+- Sidebar toggles MUST compose the shared PanelToggle and expose their current expanded state; consumer Search actions retain their own label and behavior.
+
+## DC-WS-093 — Mobile sidebar selection
+
+**Requirement.** Mobile sidebar selection MUST compose the shared shadcn Select instead of a native select control.
+
+### Acceptance details
+
+- The trigger MUST retain its side-specific accessible name and current panel label.
+- Keyboard selection, Escape dismissal, portal containment and focus return MUST use the shared Select behavior.
+- Selection MUST activate the chosen controller tab and retain grouped sidebar content.
+
+## DC-WS-094 — Scroll-aware mobile chrome
+
+**Requirement.** The mobile editor MUST hide its floating navigation chrome while scrolling down and reveal it when scrolling up or returning to the top.
+
+### Acceptance details
+
+- Scroll state MUST come from the rendered view's actual descendant scroll events without editor-specific selectors.
+- Sidebar panning, opening navigation and changing editor MUST restore chrome and prevent stale hidden state.
+- Hidden controls MUST leave the keyboard tab order; reduced-motion preferences MUST be respected.
+
+## DC-WS-095 — Narrow Settings dismissal
+
+**Requirement.** App Shell Settings MUST expose a reachable close action at every supported container width.
+
+### Acceptance details
+
+- Compact Settings MUST place its close action beside the navigation trigger in the mobile toolbar without overlapping either control.
+- Desktop and compact presentations MUST expose exactly one accessible close action and return focus after dismissal.
+- Container resizing and nested navigation overlays MUST preserve dismissal behavior without closing Settings when a nested overlay consumes Escape.
 
 ## DC-WS-018 — Popout Surface
 

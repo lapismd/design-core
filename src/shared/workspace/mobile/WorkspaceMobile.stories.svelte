@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, within } from "storybook/test";
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
@@ -10,6 +10,8 @@
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import ExampleWorkspaceView from "../view-host/ExampleWorkspaceView.svelte";
   import WorkspaceMobile from "./WorkspaceMobile.svelte";
+  import MobileScrollExample from "./examples/MobileScrollExample.svelte";
+  import { scrollAwareChromeExample } from "./WorkspaceMobile.example-sources.js";
   import "./WorkspaceMobile.stories.css";
 
   const { Story } = defineMeta({
@@ -120,12 +122,18 @@
   const actionsController = createFixture();
   const tabActionsController = createFixture();
   const bottomPanelController = createFixture(true);
+  const scrollController = createFixture();
+  scrollController.registry.register({
+    kind: "svelte",
+    type: "mobile-example",
+    component: MobileScrollExample,
+  });
 </script>
 
 <Story
   name="Editor with revealable sidebars"
   tags={["visual-pending"]}
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     const tabs = canvas.getByRole("button", { name: /^Open \d+ tabs$/ });
     await expect(tabs).toHaveAccessibleName(
       `Open ${tabs.textContent?.trim()} tabs`,
@@ -138,6 +146,18 @@
     await expect(
       canvas.getByLabelText("Select left sidebar tab"),
     ).toBeVisible();
+    const selector = canvas.getByRole("combobox", {
+      name: "Select left sidebar tab",
+    });
+    await expect(selector).toHaveAttribute("data-ui-component", "select");
+    await userEvent.click(selector);
+    await userEvent.click(
+      within(canvasElement.ownerDocument.body).getByRole("option", {
+        name: /^Search$/,
+      }),
+    );
+    await expect(selector).toHaveTextContent("Search");
+    await expect(selector).toHaveFocus();
   }}
   parameters={{
     visualDelta: {
@@ -371,6 +391,33 @@
           includeSidebarsInTabs={true}
           includeFloatingInTabs={true}
         />
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Scroll-aware chrome"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: scrollAwareChromeExample, language: "tsx", type: "code" },
+      description: {
+        story:
+          "The rendered note owns scrolling; downward scroll hides mobile chrome and upward scroll restores it.",
+      },
+    },
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/mobile/scroll-aware-chrome-chromium.png",
+      ],
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-mobile-story-canvas">
+      <div class="ui-workspace-mobile-story-frame">
+        <WorkspaceMobile controller={scrollController} />
       </div>
     </div>
   {/snippet}

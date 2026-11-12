@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import type {
+    WorkspaceAction,
     WorkspaceBottomPanelAlignment,
     WorkspaceRequestedDisplayMode,
     WorkspaceTab,
@@ -29,6 +29,8 @@
     mobileIncludeSidebars,
     mobileIncludeBottomPanel,
     mobileIncludeFloating,
+    mobileSearchAction,
+    mobileCreateAction,
     bottomPanelAlignment,
     onOpenSettings,
     settingsTitle = "Settings",
@@ -43,6 +45,10 @@
     mobileIncludeSidebars?: boolean;
     mobileIncludeBottomPanel?: boolean;
     mobileIncludeFloating?: boolean;
+    /** Consumer-owned search destination; omitted surfaces open the left sidebar. */
+    mobileSearchAction?: WorkspaceAction;
+    /** Consumer-owned creation action; defaults to a new workspace tab. */
+    mobileCreateAction?: WorkspaceAction;
     /** Override the configured desktop bottom-panel alignment. */
     bottomPanelAlignment?: WorkspaceBottomPanelAlignment;
     onOpenSettings?: () => void;
@@ -81,7 +87,7 @@
     onOpenSettings?.();
   }
 
-  onMount(() => {
+  $effect(() => {
     const root = context.root;
     if (!root) return;
     const update = () => {
@@ -108,6 +114,9 @@
     includeFloatingInTabs={mobileIncludeFloating ??
       context.controller.mobile.includeFloatingInTabs}
     onOpenSettings={openSettings}
+    onOpenCommandPalette={() => context.controller.commands.openPalette()}
+    searchAction={mobileSearchAction}
+    createAction={mobileCreateAction}
   />
 {:else}
   <AppShellRibbon onOpenSettings={openSettings} />

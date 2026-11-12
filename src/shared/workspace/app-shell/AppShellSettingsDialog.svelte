@@ -85,7 +85,7 @@
       aria-modal="true"
       aria-labelledby="ui-app-shell-settings-title"
       onkeydown={(event) => {
-        if (event.key === "Escape") setOpen(false);
+        if (event.key === "Escape" && !event.defaultPrevented) setOpen(false);
       }}
     >
       <header class="ui-app-shell-settings-dialog__header">
@@ -104,6 +104,7 @@
       <WorkspaceSettingsSurface
         controller={controller.settings}
         app={controller}
+        onClose={() => setOpen(false)}
       />
     </div>
   </div>

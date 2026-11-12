@@ -97,6 +97,28 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 - Built-in dock-opening commands and the default-on tab title-bar preference MUST follow DC-WS-060 and DC-WS-061.
 - Default and explicit desktop composition MUST reserve a full-width footer track beneath ribbon, sidebars and content, with the footer, including its host safe-area inset, supplying their sole horizontal boundary; floating panes MUST stay above that track and omitting the footer MUST reclaim its space.
 
+## DC-WS-091 — Live workspace display mode
+
+**Requirement.** The default App Shell surface MUST derive its display mode from live mobile settings and its bounded root width.
+
+### Acceptance details
+
+- Always and Never MUST switch immediately without reloading; Auto MUST respond to width and configured-breakpoint changes in both directions.
+- Root observation MUST attach when the root becomes available and disconnect on teardown.
+- An explicit display-mode prop MUST retain precedence for controlled hosts and deterministic stories.
+- Switching presentation MUST preserve the selected editor and persisted desktop layout.
+
+## DC-WS-092 — Mobile navigation and consumer actions
+
+**Requirement.** Mobile navigation MUST expose controller-owned transient editor, tabs, menu and sidebar state, with consumer-supplied search and creation actions.
+
+### Acceptance details
+
+- Mobile command-palette actions MUST invoke the owning App Shell palette and dismiss their action sheet.
+- Search and creation MUST use supplied action labels, availability and callbacks; the default creation action remains a new workspace tab.
+- Programmatic sidebar selection MUST update its selector without replacing the main editor with the sidebar view.
+- Transient navigation MUST NOT enter persisted workspace layout or introduce application-specific file policy.
+
 ## DC-WS-004 — Workspace demo
 
 **Requirement.** The Workspace demo family MUST provide a reusable behaviorally real framework demonstration with replaceable consumer adapters.

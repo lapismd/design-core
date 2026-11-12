@@ -1,5 +1,6 @@
 <script lang="ts">
-  import type { WorkspaceTab } from "../core/types.js";
+  import { PanelToggle } from "../../shadcn/panel-toggle/index.js";
+  import type { WorkspaceAction, WorkspaceTab } from "../core/types.js";
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
 
@@ -13,6 +14,8 @@
     onOpenLeftSidebar,
     onOpenTabs,
     onToggleMenu,
+    searchAction,
+    createAction,
   }: {
     controller: WorkspaceShellController;
     activeTab: WorkspaceTab | null;
@@ -23,6 +26,8 @@
     onOpenLeftSidebar: () => void;
     onOpenTabs: () => void;
     onToggleMenu: () => void;
+    searchAction?: WorkspaceAction;
+    createAction?: WorkspaceAction;
   } = $props();
 
   let chrome = $derived.by(() => {
@@ -72,20 +77,33 @@
     >
       <WorkspaceIcon name="arrow-right" />
     </button>
+    {#if searchAction}
+      <button
+        type="button"
+        aria-label={searchAction.label}
+        disabled={searchAction.disabled}
+        onclick={searchAction.onSelect}
+      >
+        <WorkspaceIcon name={searchAction.icon ?? "search"} />
+      </button>
+    {:else}
+      <PanelToggle
+        size="icon"
+        expanded={controller.mobileNavigation.reveal === "left"}
+        side="left"
+        iconVariant="standard"
+        aria-label="Browse sidebar"
+        onclick={onOpenLeftSidebar}
+      />
+    {/if}
     <button
       type="button"
-      aria-label="Open search sidebar"
-      onclick={onOpenLeftSidebar}
+      aria-label={createAction?.label ?? "Create new tab"}
+      disabled={createAction ? createAction.disabled : !createTab}
+      onclick={(event) =>
+        createAction ? createAction.onSelect(event) : addTab()}
     >
-      <WorkspaceIcon name="search" />
-    </button>
-    <button
-      type="button"
-      aria-label="Create new tab"
-      disabled={!createTab}
-      onclick={addTab}
-    >
-      <WorkspaceIcon name="plus" />
+      <WorkspaceIcon name={createAction?.icon ?? "plus"} />
     </button>
     <button
       type="button"

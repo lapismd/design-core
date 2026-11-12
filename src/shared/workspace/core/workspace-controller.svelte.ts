@@ -129,7 +129,10 @@ export class WorkspaceItemRegistry<
   }
 }
 
+import { WorkspaceMobileNavigation } from "./mobile-navigation.svelte.js";
+
 export class WorkspaceShellController {
+  readonly mobileNavigation = new WorkspaceMobileNavigation();
   layout = $state<WorkspaceLayout>(createDefaultWorkspaceLayout());
   displayMode = $state<WorkspaceDisplayMode>("desktop");
   focusMode = $state<WorkspaceFocusModeState | null>(null);
