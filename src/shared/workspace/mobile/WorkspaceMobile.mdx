@@ -18,6 +18,16 @@ single-page editor, revealable sidebars, and an open-tab overview.
 `AppShell.Surface` reads these values from `AppShellController.mobile` unless a
 surface prop explicitly overrides them.
 
+`AppShell.Surface.mobileSearchAction` and `mobileCreateAction` accept public
+`WorkspaceAction` descriptors. The consumer owns file/search policy; the shell
+uses their labels, availability and callbacks. Without these descriptors the
+dock browses the left sidebar and creates workspace tabs.
+
+`controller.renderer.mobileNavigation` owns transient page, sidebar and menu
+state, so commands can open editor, tabs, menus and either sidebar. Its state is
+never serialized into the desktop layout. The App Shell surface connects its
+mobile action sheet to the existing command palette.
+
 ## Behavior
 
 Tab activation, close, undo close, creation, and sidebar selection use the same
@@ -44,3 +54,7 @@ public pieces:
 
 Every piece receives public controller, tab, or sidebar handles; none requires a
 global application value or private drag state.
+
+Sidebar selectors compose the shared shadcn Select with keyboard selection and
+focus return. Descendant note scroll events hide chrome while scrolling down
+and reveal it while scrolling up or returning to the top.

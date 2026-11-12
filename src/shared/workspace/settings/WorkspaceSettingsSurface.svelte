@@ -8,13 +8,17 @@
   import AppSettingsNavigation from "./AppSettingsNavigation.svelte";
   import AppSettingsRoot from "./AppSettingsRoot.svelte";
   import AppSettingsSearch from "./AppSettingsSearch.svelte";
+  import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
 
   let {
     controller,
     app,
+    onClose,
   }: {
     controller: WorkspaceSettingsController;
     app?: AppShellController;
+    /** Optional dismissal action for settings hosted in an overlay. */
+    onClose?: () => void;
   } = $props();
 
   let navigationOpen = $state(false);
@@ -78,6 +82,17 @@
         </div>
       </Sheet.Content>
     </Sheet.Root>
+    {#if onClose}
+      <Button
+        class="ui-workspace-settings__mobile-close"
+        variant="ghost"
+        size="icon-sm"
+        aria-label="Close settings"
+        onclick={onClose}
+      >
+        <WorkspaceIcon name="x" />
+      </Button>
+    {/if}
   </div>
   <AppSettingsContent />
 </AppSettingsRoot>

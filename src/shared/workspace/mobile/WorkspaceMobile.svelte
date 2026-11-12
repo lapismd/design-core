@@ -1,7 +1,11 @@
 <script lang="ts">
-  import { PanelToggleIcon } from "../../shadcn/panel-toggle/index.js";
+  import { PanelToggle } from "../../shadcn/panel-toggle/index.js";
   import { untrack } from "svelte";
-  import type { WorkspaceNode, WorkspaceTab } from "../core/types.js";
+  import type {
+    WorkspaceAction,
+    WorkspaceNode,
+    WorkspaceTab,
+  } from "../core/types.js";
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import WorkspaceMobileActionsDrawer from "./WorkspaceMobileActionsDrawer.svelte";
@@ -20,6 +24,9 @@
     includeBottomPanelInTabs = true,
     includeFloatingInTabs = true,
     onOpenSettings,
+    onOpenCommandPalette,
+    searchAction,
+    createAction,
   }: {
     controller: WorkspaceShellController;
     createTab?: (paneId: string) => WorkspaceTab;
@@ -29,6 +36,9 @@
     includeBottomPanelInTabs?: boolean;
     includeFloatingInTabs?: boolean;
     onOpenSettings?: () => void;
+    onOpenCommandPalette?: () => void;
+    searchAction?: WorkspaceAction;
+    createAction?: WorkspaceAction;
   } = $props();
 
   type Reveal = "left" | "center" | "right";
@@ -52,13 +62,15 @@
     startedOnClosePanel: boolean;
   };
 
-  let page = $state<"editor" | "tabs">(untrack(() => defaultPage));
-  let reveal = $state<Reveal>("center");
-  let menuOpen = $state(false);
+  const navigation = untrack(() => controller.mobileNavigation);
+  navigation.initialize(untrack(() => defaultPage));
   let stageElement = $state<HTMLDivElement | null>(null);
   let panGesture = $state<PanGesture | null>(null);
   let measuredSidebarWidth = $state(0);
-  let activeTab = $derived(controller.activeTab);
+  let editorTabId = $state<string | null>(
+    untrack(() => controller.activeTabId),
+  );
+  let editorHostId = $state(untrack(() => controller.activeHostId));
 
   function collectEntries(
     node: WorkspaceNode,
@@ -94,9 +106,54 @@
         )
       : []),
   ]);
+  let activeEntry = $derived(
+    entries.find((entry) => entry.tab.id === editorTabId),
+  );
+  let activeTab = $derived(activeEntry?.tab ?? null);
+
+  $effect(() => {
+    const active = entries.find(
+      (entry) => entry.tab.id === controller.activeTabId,
+    );
+    if (
+      active &&
+      (active.origin === "left" || active.origin === "right") &&
+      controller.displayMode === "mobile"
+    ) {
+      navigation.openSidebar(active.origin);
+    }
+    if (active && active.origin !== "left" && active.origin !== "right") {
+      editorTabId = active.tab.id;
+      editorHostId = controller.activeHostId;
+    } else if (
+      !entries.some(
+        (entry) =>
+          entry.tab.id === editorTabId &&
+          entry.origin !== "left" &&
+          entry.origin !== "right",
+      )
+    ) {
+      editorTabId = mainEntries[0]?.tab.id ?? null;
+      editorHostId = "root";
+    }
+  });
+
+  $effect(() => {
+    void editorTabId;
+    untrack(() => navigation.showChrome());
+  });
+
+  function handleScroll(event: Event) {
+    if (!panGesture && event.target instanceof HTMLElement) {
+      navigation.updateScroll(event.target.scrollTop);
+    }
+  }
+
   let stageDragging = $derived(Boolean(panGesture?.dragging));
   let stageOffset = $derived(
-    panGesture?.dragging ? `${panGesture.currentOffset}px` : offsetFor(reveal),
+    panGesture?.dragging
+      ? `${panGesture.currentOffset}px`
+      : offsetFor(navigation.reveal),
   );
 
   $effect(() => {
@@ -127,8 +184,8 @@
   function openTab(tab: WorkspaceTab) {
     const entry = entries.find((candidate) => candidate.tab.id === tab.id);
     controller.selectTab(tab.id);
-    page = "editor";
-    reveal =
+    navigation.openEditor();
+    navigation.reveal =
       entry?.origin === "left"
         ? "left"
         : entry?.origin === "right"
@@ -181,8 +238,9 @@
   }
 
   function handlePointerDown(event: PointerEvent) {
-    if (!stageElement || menuOpen || event.button !== 0) return;
+    if (!stageElement || navigation.menuOpen || event.button !== 0) return;
     if (isStageControl(event.target)) return;
+    navigation.showChrome();
     measuredSidebarWidth = sidebarWidth();
     const startedOnClosePanel = isClosePanel(event.target);
     const captured = event.pointerType !== "touch";
@@ -191,9 +249,9 @@
       pointerId: event.pointerId,
       startX: event.clientX,
       startY: event.clientY,
-      startOffset: numericOffset(reveal, measuredSidebarWidth),
+      startOffset: numericOffset(navigation.reveal, measuredSidebarWidth),
       sidebarWidth: measuredSidebarWidth,
-      currentOffset: numericOffset(reveal, measuredSidebarWidth),
+      currentOffset: numericOffset(navigation.reveal, measuredSidebarWidth),
       lastX: event.clientX,
       lastTime: event.timeStamp,
       velocityX: 0,
@@ -238,12 +296,12 @@
   function settleGesture(gesture: PanGesture, endX: number) {
     if (!gesture.dragging) return;
     if (Math.abs(gesture.velocityX) >= 0.45) {
-      reveal =
+      navigation.reveal =
         gesture.velocityX > 0
-          ? reveal === "right"
+          ? navigation.reveal === "right"
             ? "center"
             : "left"
-          : reveal === "left"
+          : navigation.reveal === "left"
             ? "center"
             : "right";
       return;
@@ -260,7 +318,9 @@
       center: -gesture.sidebarWidth,
       right: -2 * gesture.sidebarWidth,
     };
-    reveal = (Object.entries(snapPoints) as Array<[Reveal, number]>).reduce(
+    navigation.reveal = (
+      Object.entries(snapPoints) as Array<[Reveal, number]>
+    ).reduce(
       (nearest, [candidate, value]) =>
         Math.abs(offset - value) < Math.abs(offset - snapPoints[nearest])
           ? candidate
@@ -273,7 +333,7 @@
     if (!panGesture || panGesture.pointerId !== event.pointerId) return;
     const gesture = panGesture;
     if (gesture.dragging) settleGesture(gesture, event.clientX);
-    else if (gesture.startedOnClosePanel) reveal = "center";
+    else if (gesture.startedOnClosePanel) navigation.closeOverlays();
     clearGesture();
   }
 
@@ -297,24 +357,25 @@
   class="ui-workspace-mobile"
   data-ui-component="workspace-mobile"
   data-ui-part="root"
-  data-mobile-workspace-page={menuOpen ? "menu" : page}
-  data-mobile-left-sidebar-open={reveal === "left"}
-  data-mobile-right-sidebar-open={reveal === "right"}
+  data-mobile-workspace-page={navigation.menuOpen ? "menu" : navigation.page}
+  data-mobile-left-sidebar-open={navigation.reveal === "left"}
+  data-mobile-right-sidebar-open={navigation.reveal === "right"}
+  data-mobile-chrome-hidden={navigation.chromeHidden}
 >
-  {#if page === "tabs"}
+  {#if navigation.page === "tabs"}
     <WorkspaceMobileTabs
       {controller}
       tabs={entries.map((entry) => entry.tab)}
       {paneIdFor}
       {createTab}
-      onDone={() => (page = "editor")}
+      onDone={() => navigation.openEditor()}
       onOpenTab={openTab}
     />
   {:else}
     <div
       bind:this={stageElement}
       class="ui-workspace-mobile__stage"
-      data-mobile-stage-reveal={reveal}
+      data-mobile-stage-reveal={navigation.reveal}
       data-mobile-stage-dragging={stageDragging}
       data-mobile-stage-sidebar-width-px={measuredSidebarWidth || ""}
       aria-label="Mobile workspace stage"
@@ -327,7 +388,7 @@
     >
       <div
         class="ui-workspace-mobile__track"
-        data-reveal={reveal}
+        data-reveal={navigation.reveal}
         style:transform={`translateX(${stageOffset})`}
       >
         <aside
@@ -342,53 +403,52 @@
           />
         </aside>
 
-        <main>
-          <button
-            type="button"
+        <main onscrollcapture={handleScroll}>
+          <PanelToggle
             class="ui-workspace-mobile__sidebar-toggle"
+            expanded={navigation.reveal === "left"}
+            side="left"
+            iconVariant="standard"
             data-mobile-stage-control
-            aria-label={reveal === "left"
+            aria-label={navigation.reveal === "left"
               ? "Close left sidebar"
               : "Open left sidebar"}
-            onclick={() => (reveal = reveal === "left" ? "center" : "left")}
-          >
-            <PanelToggleIcon
-              expanded={reveal === "left"}
-              side="left"
-              iconVariant="standard"
-            />
-          </button>
+            onclick={() =>
+              navigation.reveal === "left"
+                ? navigation.closeOverlays()
+                : navigation.openSidebar("left")}
+          />
 
           <WorkspaceMobileViewActions
             {controller}
             {activeTab}
-            onOpenMenu={() => (menuOpen = true)}
+            onOpenMenu={() => navigation.openMenu()}
           />
 
           {#if activeTab}
             <WorkspaceViewHost
               {controller}
               tab={activeTab}
-              hostId={controller.activeHostId}
-              paneId={controller.activePaneId ?? "main"}
+              hostId={editorHostId}
+              paneId={activeEntry?.paneId ?? "main"}
             />
           {:else}
             <div class="ui-workspace-mobile__empty">
               <h2>No active view</h2>
               <p>Open a tab to choose a workspace leaf.</p>
-              <button type="button" onclick={() => (page = "tabs")}>
+              <button type="button" onclick={() => navigation.openTabs()}>
                 Open tabs
               </button>
             </div>
           {/if}
 
-          {#if reveal !== "center"}
+          {#if navigation.reveal !== "center"}
             <button
               type="button"
               class="ui-workspace-mobile__close-panel"
               data-mobile-stage-close-panel
               aria-label="Close sidebar"
-              onclick={() => (reveal = "center")}
+              onclick={() => navigation.closeOverlays()}
             ></button>
           {/if}
 
@@ -397,12 +457,20 @@
               {controller}
               {activeTab}
               tabCount={entries.length}
-              {page}
-              {menuOpen}
+              page={navigation.page}
+              menuOpen={navigation.menuOpen}
               {createTab}
-              onOpenLeftSidebar={() => (reveal = "left")}
-              onOpenTabs={() => (page = "tabs")}
-              onToggleMenu={() => (menuOpen = !menuOpen)}
+              onOpenLeftSidebar={() =>
+                navigation.reveal === "left"
+                  ? navigation.closeOverlays()
+                  : navigation.openSidebar("left")}
+              {searchAction}
+              {createAction}
+              onOpenTabs={() => navigation.openTabs()}
+              onToggleMenu={() =>
+                navigation.menuOpen
+                  ? navigation.closeOverlays()
+                  : navigation.openMenu()}
             />
           {/if}
         </main>
@@ -425,9 +493,11 @@
   <WorkspaceMobileActionsDrawer
     {controller}
     {activeTab}
-    bind:open={menuOpen}
+    bind:open={navigation.menuOpen}
     onNewTab={addTab}
-    onOpenRightSidebar={() => (reveal = "right")}
+    onOpenRightSidebar={() => navigation.openSidebar("right")}
     {onOpenSettings}
+    {onOpenCommandPalette}
+    {createAction}
   />
 </div>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { WorkspaceMenuEntry } from "../core/workspace-menu.js";
-  import type { WorkspaceTab } from "../core/types.js";
+  import type { WorkspaceAction, WorkspaceTab } from "../core/types.js";
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceMobileActionSheet from "./WorkspaceMobileActionSheet.svelte";
@@ -13,6 +13,7 @@
     onOpenRightSidebar,
     onOpenSettings,
     onOpenCommandPalette,
+    createAction,
   }: {
     controller: WorkspaceShellController;
     activeTab: WorkspaceTab | null;
@@ -21,6 +22,7 @@
     onOpenRightSidebar: () => void;
     onOpenSettings?: () => void;
     onOpenCommandPalette?: () => void;
+    createAction?: WorkspaceAction;
   } = $props();
 
   let menu = $derived(
@@ -47,10 +49,10 @@
     },
     {
       id: "new-tab",
-      title: "Create new tab",
-      icon: "square-pen",
-      disabled: false,
-      run: onNewTab,
+      title: createAction?.label ?? "Create new tab",
+      icon: createAction?.icon ?? "square-pen",
+      disabled: createAction?.disabled ?? false,
+      run: () => (createAction ? void createAction.onSelect() : onNewTab()),
     },
     {
       id: "right-sidebar",

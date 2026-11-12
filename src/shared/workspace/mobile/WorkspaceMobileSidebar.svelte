@@ -9,6 +9,7 @@
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import WorkspaceViewLabel from "../view-header/WorkspaceViewLabel.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
+  import * as Select from "../../shadcn/select/index.js";
 
   let {
     controller,
@@ -60,9 +61,7 @@
   let visibleGroupTabs = $derived(visibleTabs(selectedEntry?.item));
 
   $effect(() => {
-    if (!entries.some((entry) => entry.item.id === selectedValue)) {
-      selectedValue = modelSelectedValue;
-    }
+    selectedValue = modelSelectedValue;
   });
 
   function selectEntry(value: string) {
@@ -127,18 +126,27 @@
       class="ui-workspace-mobile-sidebar__selector"
       data-mobile-sidebar-selector={side}
     >
-      <label>
-        <span class="sr-only">Select {side} sidebar tab</span>
-        <select
+      <Select.Root
+        type="single"
+        value={selectedEntry?.item.id ?? ""}
+        onValueChange={selectEntry}
+      >
+        <Select.Trigger
+          class="ui-workspace-mobile-sidebar__trigger"
           aria-label={`Select ${side} sidebar tab`}
-          value={selectedEntry?.item.id ?? ""}
-          onchange={(event) => selectEntry(event.currentTarget.value)}
         >
-          {#each entries as entry (entry.item.id)}
-            <option value={entry.item.id}>{entry.item.title}</option>
-          {/each}
-        </select>
-      </label>
+          {selectedEntry?.item.title ?? "Select a panel"}
+        </Select.Trigger>
+        <Select.Content aria-label={`Select ${side} sidebar tab options`}>
+          <Select.Group>
+            {#each entries as entry (entry.item.id)}
+              <Select.Item value={entry.item.id} label={entry.item.title}>
+                {entry.item.title}
+              </Select.Item>
+            {/each}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
     </div>
   {/if}
 </div>
