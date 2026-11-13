@@ -27,6 +27,39 @@ async function dragWithPause(
 }
 
 test.describe("Kanban board real pointer behavior", () => {
+  test("drags a measured virtual card into another lane while rendering a bounded window", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1800, height: 1000 });
+    await openStory(
+      page,
+      "workspace-components-kanban-board--virtualized-draggable-lane",
+    );
+    const source = page.getByRole("button", {
+      name: /^Open card: Long lane card 1\./,
+    });
+    const target = page.getByRole("group", { name: "Target", exact: true });
+    const from = await source.boundingBox(),
+      to = await target.boundingBox();
+    expect(from).not.toBeNull();
+    expect(to).not.toBeNull();
+    await dragWithPause(
+      page,
+      { x: from!.x + from!.width / 2, y: from!.y + from!.height / 2 },
+      { x: to!.x + to!.width / 2, y: to!.y + to!.height / 2 },
+    );
+    await expect(page.locator(".kanban-card--overlay")).toBeVisible();
+    await page.mouse.up();
+    await expect(
+      target.getByRole("button", { name: /^Open card: Long lane card 1\./ }),
+    ).toBeVisible();
+    const activity = page.getByRole("group", { name: "Activity", exact: true });
+    await expect(activity.getByRole("heading")).toHaveText("Activity");
+    await expect(activity.locator(".column-count")).toHaveText("299");
+    expect(
+      await activity.locator('[data-ui-component="kanban-card"]').count(),
+    ).toBeLessThan(30);
+  });
   test("dragging a card onto another column moves it and expands the target", async ({
     page,
   }) => {
