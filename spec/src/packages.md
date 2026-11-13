@@ -1,5 +1,10 @@
 # Package exports
 
+The activation cohort consumes published Mira `~0.2.0` through a normal registry
+range and lockfile. This keeps Code Editor, YAML Editor and Chat on the same
+renderer line used by the deferred-plugin consumers. Existing public exports,
+CodeMirror ownership and host-controlled preview hooks remain unchanged.
+
 <!-- dependency-automation-policy -->
 
 Dependency update PRs from the trusted LapisMD App, Dependabot or Renovate MAY skip specification checks using the PR author rather than the rerun actor. Functional checks remain required. The shared `lapismd/dependency-automation` coordinator proposes published first-party npm updates with Changeset release intent where required; it does not merge, publish, sign or deploy. This CI policy changes no runtime or public contract in this chapter.
