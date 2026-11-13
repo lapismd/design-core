@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.13.1
+
+### Patch Changes
+
+- [#76](https://github.com/lapismd/design-core/pull/76) [`1fa3286`](https://github.com/lapismd/design-core/commit/1fa32864c754b0eb4ecc1d4a856d3524a95ffcae) Thanks [@stevejuma](https://github.com/stevejuma)! - Bound long Kanban lanes to a measured viewport window while preserving selection, keyboard navigation, drag behaviour and refresh position.
+
 ## 0.13.0
 
 ### Minor Changes
