@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.13.2
+
+### Patch Changes
+
+- [#78](https://github.com/lapismd/design-core/pull/78) [`55201a1`](https://github.com/lapismd/design-core/commit/55201a16f3e8adec08d1c9be220dfe8587df72db) Thanks [@lapismd-dependency-bot](https://github.com/apps/lapismd-dependency-bot)! - Refresh first-party Lapis dependencies to the published versions recorded in this pull request.
+
 ## 0.13.1
 
 ### Patch Changes
