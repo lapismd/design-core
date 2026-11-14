@@ -82,9 +82,11 @@ describe("Mira-owned editor shell boundary", () => {
     expect(satisfies("0.1.2", mira ?? "")).toBe(false);
     expect(satisfies("0.1.3", mira ?? "")).toBe(false);
     expect(satisfies("0.1.4", mira ?? "")).toBe(false);
-    expect(satisfies("0.1.5", mira ?? "")).toBe(true);
-    expect(satisfies("0.1.6", mira ?? "")).toBe(true);
-    expect(satisfies("0.2.0", mira ?? "")).toBe(false);
+    expect(satisfies("0.1.5", mira ?? "")).toBe(false);
+    expect(satisfies("0.1.6", mira ?? "")).toBe(false);
+    expect(satisfies("0.2.0", mira ?? "")).toBe(true);
+    expect(satisfies("0.2.1", mira ?? "")).toBe(true);
+    expect(satisfies("0.3.0", mira ?? "")).toBe(false);
     expect(mira).not.toMatch(/^(?:link|file|workspace):/);
     expect(workspace).not.toMatch(
       /(?:^|\n)\s*-\s*["']?\.\.\/mira-mde\/packages\/mira["']?\s*$/m,

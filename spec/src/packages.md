@@ -1,5 +1,10 @@
 # Package exports
 
+The activation cohort consumes published Mira `~0.2.0` through a normal registry
+range and lockfile. This keeps Code Editor, YAML Editor and Chat on the same
+renderer line used by the deferred-plugin consumers. Existing public exports,
+CodeMirror ownership and host-controlled preview hooks remain unchanged.
+
 <!-- dependency-automation-policy -->
 
 Dependency update PRs from the trusted LapisMD App, Dependabot or Renovate MAY skip specification checks using the PR author rather than the rerun actor. Functional checks remain required. The shared `lapismd/dependency-automation` coordinator proposes published first-party npm updates with Changeset release intent where required; it does not merge, publish, sign or deploy. This CI policy changes no runtime or public contract in this chapter.
@@ -231,7 +236,7 @@ Mira's separate Mermaid cohort acceptance MUST NOT apply to Design Core.
 
 ### Acceptance details
 
-- Mira must resolve through the published npm range `~0.1.5`, which admits compatible pre-1.0 patch releases and requires its private patched math runtime; the authorized temporary Bits UI patch MUST bind released `2.20.2`, retaining its Scroll Area and text-selection teardown fixes; optional search tooling remains outside the normal validation dependency graph.
+- Mira must resolve through the published npm range `~0.2.0`, which admits compatible pre-1.0 patch releases and requires its private patched math runtime; the authorized temporary Bits UI patch MUST bind released `2.20.2`, retaining its Scroll Area and text-selection teardown fixes; optional search tooling remains outside the normal validation dependency graph.
 - Published development tooling dependencies must use npm semver ranges; pull requests and pushes to `main` must run the complete nonvisual check suite before the full and production-only dependency audits, using GitHub Actions that do not depend on the deprecated Node.js 20 action runtime.
 - The tarball must omit repository-only files and tolerate bounded npm metadata and released-tarball visibility delays during post-publication verification; each tarball retry must use a clean consumer, and unrelated install failures, integrity failures and signature/provenance failures must remain fatal.
 - Package checks must pack source even when its version is already published; registry and local archives must prepare rune modules and declarations, preserve public import names, and pass cold Svelte dependency prebundling plus bound Composer Input handle teardown with declared dependencies and zero Svelte diagnostics; the clean packed production graph must pass its independent audit with zero findings.
