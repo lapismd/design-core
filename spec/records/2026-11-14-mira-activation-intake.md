@@ -24,7 +24,8 @@ YAML, Chat and AI unit cases pass. Complete `pnpm checks` passes 1,130 units,
 1,060 cold interaction/accessibility cases, static catalog metadata, all type
 and formatting checks, 27 Workspace, 17 Shell, three AI and 196 shared-control
 browser cases. The existing single WebKit-related skip remains unchanged.
-Public archive and hosted exact-head gates remain pending.
+Public development archive qualification now passes; hosted exact-head and
+new-version publication gates remain pending.
 
 An initial invocation through `pnpm test:unit -- ...` forwarded a literal
 separator that ran all 1,130 tests; it reproduces the same single failure but
@@ -60,3 +61,21 @@ Transcript, tooling, artwork and qualification candidates remain preserved
 outside this registry dependency intake. Equivalence is claimed only where
 exact file or normalized patch evidence exists. No Dependabot PR was open at
 preflight; no empty consolidation PR or unrelated feature merge is introduced.
+
+Clean empty source `a7491e50`, above committed evidence `66d86048`, produced the
+2,020,544-byte development archive with SHA-256
+`ef9cee6f2de38cbdf0a085089324ae1e4a89af81fb0088e26f9387afad6b2881`.
+Its prepared public exports retain Mira `~0.2.0` and contain no local dependency
+paths or aggregate CodeMirror package. Clean external type checks and actual
+development/production CSS, fonts, focus, themes, token overrides, TagList,
+reactive CodeEditor and bound Composer Input lifecycle pass without Svelte
+diagnostics. The packed production audit has zero findings; root audit retains
+one existing ignored low advisory, and the root production audit reports none.
+No new audit waiver was added.
+
+The archive run is `lapis-core-activation-3687383a-6ba1-4515-8122-bdece0f185f4`;
+independent identity/hash/export evidence is
+`lapis-server-terminal-pr/.local/core-mira-activation/public-consumer-verification.json`.
+This modified Core 0.13.1 archive is development evidence only and MUST NOT
+overwrite the already published version. A new Changesets version, exact-main
+CI and public integrity/provenance checks remain required.
