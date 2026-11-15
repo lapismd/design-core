@@ -244,3 +244,14 @@ Focused strict source-consumer coverage includes ScrollArea viewportProps attrib
 CanvasTable rapid-scroll regression coverage delays scroll listeners deliberately and checks fixed opaque gutter coverage, stacking and bounds without screenshot comparison, alongside Lucide disclosure state interactions (DC-SHA-066, DC-SHA-075).
 
 Expanded-detail browser regressions exercise the compact disclosure target, realistic data typography, unchanged detail identity/height and native horizontal anchoring while scroll-state updates are delayed (DC-SHA-075).
+
+## DC-TOOL-006 — Version pull request authentication
+
+**Requirement.** Trusted version automation MUST use the existing App's disposable repository-scoped token as its sole Changesets write credential.
+
+### Acceptance details
+
+- Only canonical main pushes may mint a token with contents and pull-request write permissions; job completion must revoke it.
+- The workflow token must remain read-only and checkout must disable persisted credentials.
+- Changesets must retain the existing version recipe and GitHub API commits with GitHub release creation disabled.
+- Focused workflow regression evidence must cover the guard, token scope and exclusive credential path.

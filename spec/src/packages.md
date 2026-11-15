@@ -284,3 +284,9 @@ The Kanban subpath additionally exports generic card metadata, badge and snippet
 contracts, `KanbanActivityView`, timeline projection and explicit anchor
 resolution; the workspace barrel remains excluded (DC-WS-086, DC-WS-087,
 DC-WS-088, DC-WS-089).
+
+## Version preparation
+
+Version PR authentication follows DC-TOOL-006 while preserving the existing
+Changesets version recipe, release guards and downstream publication approvals.
+No package version or release intent is manufactured to test authentication.
