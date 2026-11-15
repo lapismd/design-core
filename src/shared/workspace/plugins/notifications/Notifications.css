@@ -88,6 +88,7 @@
   inset-block-end: 2.5rem;
   z-index: calc(var(--ui-workspace-overlay-z-index) + 10);
   display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
   width: min(26rem, calc(100% - 1rem));
   max-height: min(38rem, calc(100% - 3.5rem));
   overflow: hidden;

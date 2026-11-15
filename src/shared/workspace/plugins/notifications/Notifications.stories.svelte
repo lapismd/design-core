@@ -237,6 +237,32 @@
   play={async ({ canvas, canvasElement }) => {
     await waitForPlugin(progressApp);
     progressHandle?.cancelled();
+    const overflowHandles = Array.from({ length: 12 }, (_, index) =>
+      progressApp.notifications.createProgress({
+        id: `story-queued-${index}`,
+        title: `Queued plugin ${index + 1}`,
+        message: "Waiting to install",
+      }),
+    );
+    await openCenter(progressApp, canvasElement);
+    const scrollRegion = canvasElement.querySelector<HTMLElement>(
+      ".ui-workspace-notifications__center-scroll",
+    );
+    expect(scrollRegion).not.toBeNull();
+    await waitFor(() => {
+      expect(scrollRegion!.scrollHeight).toBeGreaterThan(
+        scrollRegion!.clientHeight,
+      );
+    });
+    scrollRegion!.scrollTop = scrollRegion!.scrollHeight;
+    await waitFor(() => expect(scrollRegion!.scrollTop).toBeGreaterThan(0));
+    for (const handle of overflowHandles) handle.complete();
+    await waitFor(() => {
+      expect(
+        canvasElement.querySelectorAll("[data-notification-progress-id]"),
+      ).toHaveLength(0);
+    });
+
     progressHandle = progressApp.notifications.createProgress({
       id: "story-index",
       title: "Indexing workspace",
@@ -244,8 +270,7 @@
       cancellable: true,
     });
     progressHandle.report({ current: 45, total: 100 });
-    await openCenter(progressApp, canvasElement);
-    await expect(canvas.getByText("Indexing workspace")).toBeVisible();
+    await expect(await canvas.findByText("Indexing workspace")).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Cancel" }));
     await expect(
       canvas.getByRole("button", { name: "Cancelling" }),
