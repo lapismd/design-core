@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.13.4
+
+### Patch Changes
+
+- [#83](https://github.com/lapismd/design-core/pull/83) [`1c5692b`](https://github.com/lapismd/design-core/commit/1c5692bb840cce4e0541a29e5876838f483b6000) Thanks [@stevejuma](https://github.com/stevejuma)! - Preserve editor and portalled dialog focus when responsive shell mode changes, while retaining focus handoff from panels that leave their mobile presentation.
+
 ## 0.13.3
 
 ### Patch Changes
