@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.13.3
+
+### Patch Changes
+
+- [#81](https://github.com/lapismd/design-core/pull/81) [`9ce0f6e`](https://github.com/lapismd/design-core/commit/9ce0f6eabb8e00fdc680db9bbe1eb58538c3f600) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep notification-center headers fixed while long progress and history lists scroll inside the bounded panel.
+
 ## 0.13.2
 
 ### Patch Changes
