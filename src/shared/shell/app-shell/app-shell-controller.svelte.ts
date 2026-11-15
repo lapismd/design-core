@@ -129,8 +129,15 @@ export class AppShellMobileController {
 
   setResolvedMode(mode: AppShellResolvedDisplayMode): void {
     if (this.resolvedMode === mode) return;
+    const focused = this.#rootElement?.ownerDocument.activeElement;
+    const panelOwnedFocus =
+      focused && this.#panels.some((panel) => panel.element?.contains(focused));
     this.resolvedMode = mode;
-    this.showMain(false);
+    if (panelOwnedFocus) this.showMain(false);
+    else {
+      this.stage = "main";
+      this.#returnFocus = null;
+    }
   }
 
   registerPanel(registration: AppShellMobilePanelRegistration): () => void {
