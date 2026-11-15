@@ -37,7 +37,7 @@ Workspace plugins extend controllers and presentation through explicit registrat
 - The public boundary MUST remain `@lapismd/design-core/workspace/plugins/notifications`, with compatible app and controlled-record inputs including an optional `action.variant: "secondary"` themed resting surface that retains hover/focus feedback while omitted or `"ghost"` variants keep transparent resting chrome.
 - Controlled callbacks MUST expose dismissal, actions and timer pause/resume while hosts retain lifetime and persistence ownership.
 - Each record MUST announce once and distinguish severity with icons and theme colors.
-- The optional portal MUST retain modal keyboard access without stealing focus, anchor the stack at the bottom end of the viewport away from header controls and remove detached DOM on teardown.
+- The optional portal MUST retain modal keyboard access without stealing focus, anchor the stack at the bottom end of the viewport away from header controls, keep the notification center header fixed while overflowing progress and history rows scroll inside the bounded panel, and remove detached DOM on teardown.
 
 ## DC-WS-081 — Stable notification status placement
 
