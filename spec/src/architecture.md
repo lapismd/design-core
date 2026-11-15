@@ -181,3 +181,9 @@ The fixed CanvasTable gutter paint is a bounded decorative copy of its existing 
 Expanded CanvasTable details use native sticky horizontal positioning and shared measured row geometry, without a host adapter or a per-scroll JavaScript translation; rich detail typography defaults to the UI sans font (DC-SHA-075).
 
 Kanban Board is a generic Workspace-layer surface ported from the legacy Fizzy task board. Its columns, cards, pins and dialogs own no application state: grouping, item identity, data mutation and drag persistence remain host responsibilities, and drag & drop composes the published `@dnd-kit/svelte` primitives (DC-WS-085).
+
+## Release workflow authority
+
+Version PR automation follows DC-TOOL-006: only canonical main pushes mint the
+existing App's disposable token, with one repository and contents/PR writes.
+The version job's workflow token remains read-only and checkout persists no credentials.
