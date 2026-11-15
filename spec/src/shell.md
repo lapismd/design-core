@@ -17,6 +17,7 @@ The App Shell owns application structure and responsive layout while consumers o
 | Resize observation      | Shell geometry lifecycle        | DC-SHELL-005 |
 | Attached panels         | `Sidebar` and `Sidebar.Section` | DC-SHELL-006 |
 | Overlay page chrome     | `SurfaceLayer` compound parts   | DC-SHELL-007 |
+| Responsive focus        | Shell mode transitions          | DC-SHELL-008 |
 
 ## DC-SHELL-001 — Shared Shell invariants
 
@@ -103,3 +104,13 @@ presentation, geometry and preview-state assertions independently.
 - Header and Footer MUST remain outside the bounded body viewport; `Body scrollable={false}` MUST allow a child to own scrolling while the default retains its Scroll Area.
 - Mobile inset tokens MUST fall back to existing desktop inset values when unset; header/footer spacing and separators MUST use public tokens.
 - Scrim/Escape dismissal, portalled-menu Escape handling, focus return, coverage, panel suspension and restoration MUST retain their existing contracts.
+
+## DC-SHELL-008 — Responsive focus ownership
+
+**Requirement.** Changing the resolved shell display mode MUST reset the mobile stage without taking focus from main content or portalled widgets. Focus inside a registered panel MUST move to the shell root before its presentation changes.
+
+### Acceptance details
+
+- Main editor drafts and their focused element survive both mode changes.
+- An open portalled dialog keeps focus while the mobile stage resets.
+- A mode change preserves the existing root handoff for focus owned by a registered panel.
