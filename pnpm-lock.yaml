@@ -155,8 +155,8 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3
       '@lapismd/spec-validator':
-        specifier: ^0.2.0
-        version: 0.2.0
+        specifier: ^0.2.1
+        version: 0.2.1
       '@lapismd/storybook-addon-visual-delta':
         specifier: 0.1.5
         version: 0.1.5(playwright@1.64.1)(react@19.3.1)(storybook@10.6.5(@types/react@19.3.0)(prettier@3.3.3)(react@19.3.1))(svelte@5.57.3)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
@@ -859,8 +859,8 @@ packages:
       '@lezer/markdown': ^1.4.3
       svelte: ^5.0.0
 
-  '@lapismd/spec-validator@0.2.0':
-    resolution: {integrity: sha512-fUMh7fpoZXuMRAc5Jdo+Y2sUhAPeO5o5R5AIdwKEs/xNLS2W3mSSHimscxI58JuUEFPPk/SI+jE0Vcvv7gXdlw==}
+  '@lapismd/spec-validator@0.2.1':
+    resolution: {integrity: sha512-aHLByppZkay1axSm8KvCwOJz0si8aDyZBXDGWW+d2VQw+66f1KLimw2rEMjYIpLdoSG9+yN5Kd1MKlAJw7xUVw==}
     engines: {node: '>=22'}
     hasBin: true
 
@@ -4318,7 +4318,7 @@ snapshots:
       - supports-color
       - tailwindcss
 
-  '@lapismd/spec-validator@0.2.0':
+  '@lapismd/spec-validator@0.2.1':
     dependencies:
       jiti: 2.7.0
       typescript: 5.9.3
