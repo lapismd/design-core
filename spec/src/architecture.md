@@ -67,7 +67,7 @@ AI experimental entry points re-export that implementation. Hosts retain emoji
 identity and asset policy. Emoji Mart and its dataset are lazy dependencies,
 with the runtime prebundled by catalog hosts to avoid first-open reloads.
 
-Release preparation uses the published Spec Validator 0.2.0 range and Changesets 3. Optional QMD search remains available when installed by the developer; normal
+Release preparation uses the published Spec Validator 0.2.1 range and Changesets 3. Optional QMD search remains available when installed by the developer; normal
 validation does not install its model/native dependency graph. The supported Node
 range follows Changesets 3. Declared renderer and tooling overrides retain patched
 workspace graphs, while packed consumers audit their own dependency resolution.
@@ -194,3 +194,10 @@ Kanban Board is a generic Workspace-layer surface ported from the legacy Fizzy t
 Version PR automation follows DC-TOOL-006: only canonical main pushes mint the
 existing App's disposable token, with one repository and contents/PR writes.
 The version job's workflow token remains read-only and checkout persists no credentials.
+
+The development-only validator 0.2.1 patch retains DC-ARCH-008 and the existing
+Node-only CLI/library contract. Doctor now discovers the configured verification
+matrix rather than assuming a fixed filename; intentional wrapper-alias warnings
+remain visible. This changes neither component/runtime dependency ownership nor
+the qualified version command. Main's mapped spec-first range must include this
+architecture confirmation alongside the package floor change.

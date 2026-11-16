@@ -32,7 +32,7 @@ paths remain available; package publication still requires the verified archive.
 Every runtime dependency uses a valid semver version or range, including the
 exact qualified Vaul Svelte prerelease rather than a floating distribution tag.
 
-Root development tooling consumes `@lapismd/spec-validator` at `^0.2.0` from
+Root development tooling consumes `@lapismd/spec-validator` at `^0.2.1` from
 npm. That pin stays outside the published package graph. The release test
 script also covers the packed npm environment helper; that helper is not part
 of the published package graph.
@@ -297,3 +297,10 @@ DC-WS-088, DC-WS-089).
 Version PR authentication follows DC-TOOL-006 while preserving the existing
 Changesets version recipe, release guards and downstream publication approvals.
 No package version or release intent is manufactured to test authentication.
+
+The root-only validator patch preserves DC-PKG-008 and every public import,
+component, renderer, package version and publication gate. Its normal registry
+range and lock resolve 0.2.1, with no production dependency or release intent.
+The [validator intake record](../records/2026-11-16-validator021-main-handoff.md)
+retains the actual two-finding main-range regression and owner validation;
+trusted-bot PR exemptions do not substitute for main canonical coverage.
