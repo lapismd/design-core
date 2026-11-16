@@ -257,7 +257,7 @@ export default defineConfig(headingRequirements(), {
         },
         {
           pattern:
-            "^(?:turbo\\.json$|\\.env\\.example$|\\.github/(?:actions|workflows)/)",
+            "^(?:turbo\\.json$|\\.env\\.example$|\\.github/(?:(?:actions|workflows)/|versioning-runtime\\.json$))",
           chapters: [
             "spec/src/architecture.md",
             "spec/src/packages.md",
@@ -276,7 +276,7 @@ export default defineConfig(headingRequirements(), {
         },
       ],
       protected: [
-        "^(?:patches/|src/shared/|src/(?:styles|theme|storybook)\\.css$|src/themes/|src/spec/|\\.storybook/|\\.github/(?:actions|workflows)/|\\.env\\.example$|\\.gitignore$|scripts/|packages/[^/]+/src/|docs/agent/|AGENTS\\.md$|spec/(?:book\\.toml|public-surfaces\\.json)$|spec-validator\\.config\\.mjs$|package\\.json$|pnpm-lock\\.yaml$|pnpm-workspace\\.yaml$|turbo\\.json$|svelte\\.|vite\\.|vitest\\.|playwright\\.|tsconfig)",
+        "^(?:patches/|src/shared/|src/(?:styles|theme|storybook)\\.css$|src/themes/|src/spec/|\\.storybook/|\\.github/(?:(?:actions|workflows)/|versioning-runtime\\.json$)|\\.env\\.example$|\\.gitignore$|scripts/|packages/[^/]+/src/|docs/agent/|AGENTS\\.md$|spec/(?:book\\.toml|public-surfaces\\.json)$|spec-validator\\.config\\.mjs$|package\\.json$|pnpm-lock\\.yaml$|pnpm-workspace\\.yaml$|turbo\\.json$|svelte\\.|vite\\.|vitest\\.|playwright\\.|tsconfig)",
       ],
     },
   },

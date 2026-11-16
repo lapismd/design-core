@@ -1,5 +1,9 @@
 # Specification governance
 
+The source-owned `.github/versioning-runtime.json` is protected alongside CI
+workflows and maps to Architecture, Package exports and Tooling. DC-TOOL-006
+retains the sole App credential and qualifies runtime inputs before minting.
+
 The opt-in Shell layout additions extend DC-SHELL-004 and register
 DC-SHELL-005 through DC-SHELL-007. The offline Shell guide is classified under
 Tooling and agent guidance as well as pointing to its canonical Shell contract;

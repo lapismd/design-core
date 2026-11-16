@@ -1,5 +1,12 @@
 # Architecture
 
+DC-TOOL-006 places the pinned shared version-runtime guard before App minting
+on the existing canonical-main version path. Its source-owned qualification
+data preserves Node24, CLI3 and the root-package recipe without product changes.
+
+DC-TOOL-007 delegates successful workflow completion hints to the pinned shared
+coordinator. The caller executes no candidate code and changes no activation.
+
 <!-- dependency-automation-policy -->
 
 Dependency update PRs from the trusted LapisMD App, Dependabot or Renovate MAY skip specification checks using the PR author rather than the rerun actor. Functional checks remain required. The shared `lapismd/dependency-automation` coordinator proposes published first-party npm updates with Changeset release intent where required; it does not merge, publish, sign or deploy. This CI policy changes no runtime or public contract in this chapter.
