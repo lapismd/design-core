@@ -93,6 +93,8 @@ Repository tools keep source generation, discovery, documentation, validation, C
 | Validation commands   | Tooling         | DC-TOOL-003 |
 | Offline documentation | Tooling         | DC-TOOL-004 |
 | Turbo orchestration   | Tooling         | DC-TOOL-005 |
+| Version PR authority  | Tooling         | DC-TOOL-006 |
+| Completion wake-ups   | Tooling         | DC-TOOL-007 |
 
 ## DC-TOOL-001 — UI catalog CLI
 
@@ -247,11 +249,21 @@ Expanded-detail browser regressions exercise the compact disclosure target, real
 
 ## DC-TOOL-006 — Version pull request authentication
 
-**Requirement.** Trusted version automation MUST use the existing App's disposable repository-scoped token as its sole Changesets write credential.
+**Requirement.** Trusted version automation MUST validate its source-owned runtime before using the existing App's disposable repository-scoped token as its sole Changesets write credential.
 
 ### Acceptance details
 
-- Only canonical main pushes may mint a token with contents and pull-request write permissions; job completion must revoke it.
-- The workflow token must remain read-only and checkout must disable persisted credentials.
+- Only canonical main pushes may run the pinned shared runtime guard and mint a revocable repository contents/pull-request write token; the workflow token must remain read-only and checkout must disable persisted credentials.
+- The shared guard must bind the qualified CLI3, pnpm, config, formatter and workspace-policy inputs before App minting, without replacing the command or installing another runtime.
 - Changesets must retain the existing version recipe and GitHub API commits with GitHub release creation disabled.
 - Focused workflow regression evidence must cover the guard, token scope and exclusive credential path.
+
+## DC-TOOL-007 — Verified completion wake-ups
+
+**Requirement.** Completion notifications MUST delegate successful known workflow completions to the reviewed pinned coordinator without executing candidate code or granting source write authority.
+
+### Acceptance details
+
+- The caller must use only completed `workflow_run` events for CI, Storybook Pages and public release workflows, with no recursive notification name or cancellation concurrency.
+- It must grant only contents, Actions and pull-request reads and forward only the named existing App key; reusable source and automation-ref must share one reviewed commit.
+- The reusable boundary must verify current immutable source evidence before App minting and again before dispatch; every original functional, audit, publication and merge gate remains authoritative.

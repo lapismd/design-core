@@ -1,5 +1,12 @@
 # Package exports
 
+The DC-TOOL-006 runtime guard retains the exact root version/changelog command,
+pnpm and formatter policy qualified by the genuine pending-source proof.
+The package graph, publication gates and public exports remain unchanged.
+
+DC-TOOL-007 completion wake-ups retain those package gates and publication
+notifications; a hint prompts authoritative discovery rather than admission.
+
 The activation cohort consumes published Mira `~0.2.0` through a normal registry
 range and lockfile. This keeps Code Editor, YAML Editor and Chat on the same
 renderer line used by the deferred-plugin consumers. Existing public exports,
