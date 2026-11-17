@@ -1,6 +1,6 @@
 # Architecture
 
-Source package version: `0.13.4` (`@lapismd/design-core`).
+Source package version: `0.13.5` (`@lapismd/design-core`).
 
 DC-TOOL-006 places the pinned shared version-runtime guard before App minting
 on the existing canonical-main version path. Its source-owned qualification
