@@ -26,11 +26,13 @@ live activation, publication and durable reconciliation/replay are separate.
 Fourteen guard tests, all 62 release tests, three specification lanes, QMD and
 doctor pass. Full source validation exercised 1133 unit cases, 1066 Storybook
 interaction cases, static/metadata checks and Workspace/Shell/AI browser lanes.
-The matching Ubuntu browser image passed the fourteen-case focused regression
-selection. Its full Shadcn run has 193 passes, one governed skip and three failures
-(desktop filter width, collapsed preview readiness and emoji reset). These
-same three failures reproduce on unchanged main in the same environment and
-are tracked in [Core #92](https://github.com/lapismd/design-core/issues/92).
-They remain blocking until repaired or separately accepted; no baseline,
-assertion, timeout or product code is changed by this proposal. Activation
-therefore remains held.
+The initial browser failures reproduced on unchanged main under
+[Core #92](https://github.com/lapismd/design-core/issues/92). A separate owning
+product/verification slice repairs Emoji and Status Overflow closing sessions and
+corrects exact story readiness boundaries. Its
+[final source record](2026-11-17-browser-lifecycle-regressions.md) proves all
+1066 story cases and 196 pointer cases pass (one governed skip), together with
+every other nonvisual check lane. Baseline bytes and assertions remain intact.
+The unchanged development audit findings are recorded separately in Core #94;
+production audit is clean and no new exception is activated. Hosted acceptance,
+ordinary merge, publication and coordinator activation/settlement remain separate.

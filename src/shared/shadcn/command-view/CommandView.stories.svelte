@@ -185,7 +185,7 @@
       "dialog",
       { name: "Command view" },
     );
-    await expect(dialog).toBeVisible();
+    await waitFor(() => expect(dialog).toBeVisible());
     expectCommandView(dialog);
     await userEvent.keyboard("{Escape}");
     await waitFor(() => expect(dialog).not.toBeVisible());

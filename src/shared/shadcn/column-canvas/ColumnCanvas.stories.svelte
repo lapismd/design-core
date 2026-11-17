@@ -1386,9 +1386,11 @@
     await userEvent.click(
       preview.getByRole("button", { name: "Navigation options" }),
     );
-    await expect(
-      within(document.body).getByText("Portalled preview controls"),
-    ).toBeVisible();
+    await waitFor(() =>
+      expect(
+        within(document.body).getByText("Portalled preview controls"),
+      ).toBeVisible(),
+    );
     await expect(previewCanvas.isPreviewed("navigation")).toBe(true);
     await userEvent.keyboard("{Escape}");
 

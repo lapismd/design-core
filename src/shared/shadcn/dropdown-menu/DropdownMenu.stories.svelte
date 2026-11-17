@@ -98,11 +98,13 @@
 
 <Story
   name="Open menu"
-  tags={["visual-state", "visual-approved"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Open" }));
-    await expect(within(document.body).getByRole("menu")).toBeVisible();
+    await waitFor(() =>
+      expect(within(document.body).getByRole("menu")).toBeVisible(),
+    );
     await expect(
       within(document.body).getByRole("menuitem", { name: /Profile/ }),
     ).toBeVisible();
@@ -126,13 +128,15 @@
 
 <Story
   name="Open checkboxes menu"
-  tags={["visual-state", "visual-approved"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     const trigger = canvas.getByRole("button", { name: "Open" });
     await expect(trigger).toBeEnabled();
     await userEvent.click(trigger);
-    await expect(within(document.body).getByRole("menu")).toBeVisible();
+    await waitFor(() =>
+      expect(within(document.body).getByRole("menu")).toBeVisible(),
+    );
     await expect(
       within(document.body).getByRole("menuitemcheckbox", {
         name: "Status Bar",
@@ -160,13 +164,15 @@
 
 <Story
   name="Open radio group menu"
-  tags={["visual-state", "visual-approved"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     const trigger = canvas.getByRole("button", { name: "Open" });
     await expect(trigger).toBeEnabled();
     await userEvent.click(trigger);
-    await expect(within(document.body).getByRole("menu")).toBeVisible();
+    await waitFor(() =>
+      expect(within(document.body).getByRole("menu")).toBeVisible(),
+    );
     await expect(
       within(document.body).getByRole("menuitemradio", { name: "Bottom" }),
     ).toBeVisible();
@@ -192,7 +198,7 @@
 
 <Story
   name="Opens dialog from menu"
-  tags={["visual-state", "visual-approved"]}
+  tags={["visual-state", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -208,13 +214,17 @@
   play={async ({ canvas }) => {
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button"));
-    await expect(within(document.body).getByRole("menu")).toBeVisible();
+    await waitFor(() =>
+      expect(within(document.body).getByRole("menu")).toBeVisible(),
+    );
     await userEvent.click(
       within(document.body).getByRole("menuitem", { name: "New File..." }),
     );
-    await expect(
-      within(document.body).getByRole("dialog", { name: "Create New File" }),
-    ).toBeVisible();
+    await waitFor(() =>
+      expect(
+        within(document.body).getByRole("dialog", { name: "Create New File" }),
+      ).toBeVisible(),
+    );
   }}
 >
   {#snippet template()}

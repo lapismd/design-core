@@ -5,6 +5,10 @@ and its optional Canvas Table consumer. Bases supplies UI research only. No
 lapis-plugins source changes, raw expressions, SQL, CodeMirror, App, vault access,
 persistence, publication or consumer migration are included.
 
+Desktop popover geometry acceptance waits for the actual opening scale to reach
+the existing width bound before inspecting aligned controls. Animation frames
+must not be mistaken for final layout; narrow-viewport containment stays required.
+
 ## Public surface coverage
 
 | Surface                     | Public boundary                              | Requirement |

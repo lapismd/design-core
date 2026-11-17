@@ -131,7 +131,8 @@
     await expect(more).toBeVisible();
     await userEvent.click(more);
     const counter = body.getByRole("button", { name: "Custom status counter" });
-    await expect(counter).toBeVisible();
+    await waitFor(() => expect(counter).toBeVisible());
+    const overflow = counter.closest(".ui-workspace-status-overflow")!;
     expect(counter).toBe(original);
     await userEvent.click(counter);
     await expect(canvas.getByLabelText("Custom lifecycle")).toHaveTextContent(
@@ -139,10 +140,13 @@
     );
     await userEvent.keyboard("{Escape}");
     await expect(more).toHaveFocus();
+    await waitFor(() => expect(overflow).not.toHaveAttribute("aria-label"));
     await userEvent.click(more);
-    await expect(
-      body.getByRole("button", { name: "Custom status counter" }),
-    ).toBeVisible();
+    await waitFor(() =>
+      expect(
+        body.getByRole("button", { name: "Custom status counter" }),
+      ).toBeVisible(),
+    );
     await userEvent.keyboard("{Escape}");
     await userEvent.click(
       canvas.getByRole("button", { name: "Remove custom status" }),

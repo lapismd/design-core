@@ -53,6 +53,9 @@ Fit measurement MUST include late clipped labels in deeply nested rendered
 content and traverse transparent `display: contents` wrappers. Hidden or inert
 subtrees MUST NOT contribute to the fit width; measurement work remains bounded.
 
+Custom-preview catalog acceptance awaits real portalled control visibility
+before asserting completion; opening placement and animation are asynchronous.
+
 **Requirement.** Column Canvas MUST provide horizontally scrollable columns with consumer-owned items and responsive sizing. Wide auto mode MUST allocate scrolling pairs within bounds through inverse resizing and durable pair ratios. Leading `fixed` columns MUST pin their original expanded panels or collapsed rails, releasing trailing pins when scrolling minimums cannot fit. External Scroll Area viewports, custom rails, transient previews and accessible trailing content MUST preserve compact behavior and persistence.
 
 ### Acceptance details

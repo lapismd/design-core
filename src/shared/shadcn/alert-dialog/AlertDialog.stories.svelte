@@ -52,15 +52,17 @@
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Delete item" }));
     const dialog = await within(document.body).findByRole("alertdialog");
-    await expect(
-      within(dialog).getByRole("heading", { name: "Delete this item?" }),
-    ).toBeVisible();
+    await waitFor(() =>
+      expect(
+        within(dialog).getByRole("heading", { name: "Delete this item?" }),
+      ).toBeVisible(),
+    );
     await userEvent.click(
       within(dialog).getByRole("button", { name: "Delete" }),
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("confirmed");
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -105,16 +107,18 @@
 
 <Story
   name="Open alert dialog"
-  tags={["visual-state", "visual-approved"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Show Dialog" }));
     const dialog = await within(document.body).findByRole("alertdialog");
-    await expect(
-      within(dialog).getByRole("heading", {
-        name: "Are you absolutely sure?",
-      }),
-    ).toBeVisible();
+    await waitFor(() =>
+      expect(
+        within(dialog).getByRole("heading", {
+          name: "Are you absolutely sure?",
+        }),
+      ).toBeVisible(),
+    );
   }}
   parameters={{
     visualDelta: {

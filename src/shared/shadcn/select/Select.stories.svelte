@@ -111,9 +111,11 @@
     trigger.focus();
     await expect(trigger).toHaveFocus();
     await userEvent.keyboard("{Enter}");
-    await expect(
-      within(document.body).getByRole("listbox", { name: "Status options" }),
-    ).toBeVisible();
+    await waitFor(() =>
+      expect(
+        within(document.body).getByRole("listbox", { name: "Status options" }),
+      ).toBeVisible(),
+    );
   }}
   parameters={{
     visualDelta: {

@@ -1,5 +1,11 @@
 # Workspace / Components
 
+Catalog verification awaits opened severity menus, mobile Settings navigation
+and status overflow controls before inspecting or activating their contents.
+Opening transitions do not change existing lifecycle, identity or state checks.
+The status-overflow closing shell removes its label when its popup role ends;
+custom controls retain their original instance, focus and disposal accounting.
+
 Overlay title-bar intersections, including trailing controls and live height,
 follow [DC-WS-083](./framework.md#dc-ws-083).
 The lower divider continues through reserved header clearances under

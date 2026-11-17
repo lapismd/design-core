@@ -1,5 +1,9 @@
 # Workspace / Panels
 
+Problems catalog acceptance awaits opened severity items before inspecting their
+visibility, icons and colours. Existing counts, filter state, containment and
+consumer-owned diagnostic actions retain their exact assertions.
+
 Workspace panels provide generic domain-neutral views driven by consumer data and actions.
 
 ## Public surface coverage

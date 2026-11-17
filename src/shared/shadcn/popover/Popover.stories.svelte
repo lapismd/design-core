@@ -83,11 +83,13 @@
 
 <Story
   name="Open panel"
-  tags={["visual-state", "visual-approved"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Open popover" }));
-    await expect(within(document.body).getByText("Dimensions")).toBeVisible();
+    await waitFor(() =>
+      expect(within(document.body).getByText("Dimensions")).toBeVisible(),
+    );
   }}
   parameters={{
     visualDelta: {

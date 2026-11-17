@@ -19,11 +19,19 @@ test("full picker searches and selects with the keyboard, then reopens cleanly",
   await expect(
     page.getByRole("button", { name: "🔥", exact: true }),
   ).toBeVisible();
+  const firstPicker = await page.locator("em-emoji-picker").elementHandle();
+  const firstPopup = await page
+    .locator(".ui-emoji-picker-content")
+    .elementHandle();
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("ArrowLeft");
   await page.keyboard.press("Enter");
   await expect(page.getByRole("status")).toHaveText("🔥");
   await expect(trigger).toBeFocused();
+  expect(await firstPopup!.getAttribute("aria-label")).toBeNull();
+  expect(await firstPicker!.evaluate((element) => element.isConnected)).toBe(
+    false,
+  );
   await trigger.click();
   await expect(search).toHaveValue("");
   await expect(search).toBeFocused();

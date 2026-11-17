@@ -2,6 +2,10 @@
 
 Overlay primitives preserve accessible labelling, focus management, dismissal, placement, and controlled open state.
 
+Catalog play awaits each real opening surface's visibility before inspecting or
+using it. Finding a mounted role alone does not establish completed placement or
+animation. Existing focus, dismissal and geometry expectations remain unchanged.
+
 ## Public surface coverage
 
 | Surface       | Public boundary                             | Requirement |

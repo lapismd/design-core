@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, within } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import MessageActions from "./MessageActions.svelte";
   import Fixture from "./MessageActions.stories.fixture.svelte";
   import * as sources from "./MessageActions.example-sources.js";
@@ -28,9 +28,11 @@
     await expect(
       body.getByRole("menuitem", { name: /Edit message/ }),
     ).toHaveAttribute("aria-disabled", "true");
-    await expect(
-      body.getByText("Only the author can edit this message"),
-    ).toBeVisible();
+    await waitFor(() =>
+      expect(
+        body.getByText("Only the author can edit this message"),
+      ).toBeVisible(),
+    );
     await expect(body.queryByText("Hidden host action")).toBeNull();
     await userEvent.click(body.getByRole("menuitem", { name: "Copy message" }));
     await expect(canvas.getByTestId("message-action-result")).toHaveTextContent(
@@ -68,7 +70,7 @@
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Add reaction" }));
     const body = within(document.body);
-    await expect(body.getByText(/No emoji match/)).toBeVisible();
+    await waitFor(() => expect(body.getByText(/No emoji match/)).toBeVisible());
     await expect(body.queryByRole("button", { name: "Lapis gem" })).toBeNull();
   }}>{#snippet template()}<Fixture scenario="empty" />{/snippet}</Story
 >

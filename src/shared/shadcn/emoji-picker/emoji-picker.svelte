@@ -141,7 +141,7 @@
         collisionPadding={8}
         class="ui-emoji-picker-content"
         data-restricted={restricted}
-        aria-label={label}
+        aria-label={open ? label : undefined}
         onOpenAutoFocus={focusSearch}
         onkeydowncapture={(event) => {
           // The library consumes search Escape; its skin-tone menu owns its own layer.
@@ -155,7 +155,9 @@
           }
         }}
       >
-        {@render panel()}
+        {#if open}
+          {@render panel()}
+        {/if}
       </Popover.Content>
     </Popover.Root>
   {/if}

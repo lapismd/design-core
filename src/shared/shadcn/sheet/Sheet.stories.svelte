@@ -88,13 +88,15 @@
 
 <Story
   name="Open sheet"
-  tags={["visual-state", "visual-approved"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Open" }));
-    await expect(
-      within(document.body).getByRole("dialog", { name: "Edit profile" }),
-    ).toBeVisible();
+    await waitFor(() =>
+      expect(
+        within(document.body).getByRole("dialog", { name: "Edit profile" }),
+      ).toBeVisible(),
+    );
   }}
   parameters={{
     visualDelta: {
