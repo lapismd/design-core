@@ -177,6 +177,8 @@ checkout/port ownership. Startup qualification keeps preview host validation
 and the cold first-story readiness gate active.
 Clean package-consumer fixtures retain the source owner's exact package-manager
 binding and reject a different actual pnpm version before installing dependencies.
+Public-archive acceptance MUST verify the destructive alert description retains
+its full semantic foreground in development/production and light/dark modes.
 Workspace pointer acceptance MUST await the requested story's render and play
 completion before settling fonts or measuring drag targets, using the existing
 bounded framework-readiness window rather than a fixed startup delay.

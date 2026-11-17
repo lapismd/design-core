@@ -75,6 +75,7 @@ Warning-tag labels MUST retain at least 4.5:1 contrast on Lapis light and dark s
 
 - The public boundary is `@lapismd/design-core/shadcn/alert`.
 - An alert with a leading SVG MUST align its title in the second grid column without group marker classes.
+- Normal-size destructive descriptions MUST retain the full semantic foreground tone and at least 4.5:1 contrast on supported light and dark surfaces.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-013 — Empty

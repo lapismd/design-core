@@ -140,14 +140,6 @@
         )[data-slot="alert-description"] {
         color: var(--destructive);
       }
-      @supports (color: color-mix(in lab, red, red)) {
-        :is(
-            [data-ui-component="alert"][data-ui-part="alert"][data-variant="destructive"]
-              > *
-          )[data-slot="alert-description"] {
-          color: color-mix(in oklab, var(--destructive) 90%, transparent);
-        }
-      }
       @media (min-width: 48rem) {
         [data-ui-component="alert"][data-ui-part="alert-description"] {
           text-wrap: pretty;
