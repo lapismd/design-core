@@ -1,8 +1,12 @@
 # Package exports
 
-The DC-TOOL-006 runtime guard retains the exact root version/changelog command,
-pnpm and formatter policy qualified by the genuine pending-source proof.
-The package graph, publication gates and public exports remain unchanged.
+Source package version: `0.13.4` (`@lapismd/design-core`).
+
+The DC-TOOL-006 runtime guard binds the source-owned root version/changelog
+command, canonical-version helper, pnpm and formatter policy. Native version
+preparation refreshes only the declared current-version fact in this chapter
+and Architecture after Changesets, so the generated PR satisfies strict main
+spec-first coverage. Package graphs, exports and historical evidence are retained.
 
 DC-TOOL-007 completion wake-ups retain those package gates and publication
 notifications; a hint prompts authoritative discovery rather than admission.
