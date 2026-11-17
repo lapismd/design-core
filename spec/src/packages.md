@@ -1,6 +1,6 @@
 # Package exports
 
-Source package version: `0.13.4` (`@lapismd/design-core`).
+Source package version: `0.13.5` (`@lapismd/design-core`).
 
 The DC-TOOL-006 runtime guard binds the source-owned root version/changelog
 command, canonical-version helper, pnpm and formatter policy. Native version

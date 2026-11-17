@@ -1,5 +1,16 @@
 # @lapismd/design-core
 
+## 0.13.5
+
+### Patch Changes
+
+- [#89](https://github.com/lapismd/design-core/pull/89) [`5fa9157`](https://github.com/lapismd/design-core/commit/5fa91575e67829dca6b84f277e5f3a96782a10ba) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep visible textual reaction fallbacks and their counts in accessible names,
+  including when a host supplies actor or context labels. Preserve ordinary
+  Unicode-only names, custom-image presentation and reaction callbacks.
+
+- [#89](https://github.com/lapismd/design-core/pull/89) [`3305736`](https://github.com/lapismd/design-core/commit/330573685ca448e9d0cffbbeee08ebdc903c4015) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep destructive alert descriptions at the full semantic foreground tone so
+  normal-size error text meets contrast requirements in light and dark modes.
+
 ## 0.13.4
 
 ### Patch Changes
