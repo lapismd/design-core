@@ -1,5 +1,10 @@
 # Specification governance
 
+DC-TOOL-008 protects `.github/dependency-automation/canonical-intake.json`
+alongside its independent functional checker. Its source mappings retain all
+existing architecture, package and tooling owners; trusted bot specification
+exemptions cannot skip the ordinary intake check or release tests.
+
 The source-owned `.github/versioning-runtime.json` is protected alongside CI
 workflows and maps to Architecture, Package exports and Tooling. DC-TOOL-006
 retains the sole App credential and qualifies runtime inputs before minting.
