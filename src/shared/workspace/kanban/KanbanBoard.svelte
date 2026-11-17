@@ -21,6 +21,7 @@
     anchorColumnId = undefined,
     cardSnippets = undefined,
     columnActions = undefined,
+    columnMenuActions = undefined,
     beforeDetailClose = undefined,
     onMoveCardToColumn,
     onReorderColumns,
@@ -46,6 +47,10 @@
     cardSnippets?: KanbanCardSnippets;
     /** Consumer-owned per-column controls. */
     columnActions?: Snippet<[column: KanbanColumnData]>;
+    /** Consumer-owned actions rendered inside the column options menu. */
+    columnMenuActions?: Snippet<
+      [column: KanbanColumnData, closeMenu: () => void]
+    >;
     /** Return false to retain a detail whose source could not be saved. */
     beforeDetailClose?: () => boolean | Promise<boolean>;
     /** Persists a card move (drag-drop, move pills, stage nav, or keyboard). */
@@ -559,6 +564,7 @@
               collapseEnabled={column.id !== getPrimaryColumnId()}
               {cardSnippets}
               {columnActions}
+              {columnMenuActions}
               {selectedCardId}
               selectedColumn={selectedColumnId === column.id}
               {movesEnabled}
