@@ -1,8 +1,12 @@
 # Architecture
 
+Source package version: `0.13.4` (`@lapismd/design-core`).
+
 DC-TOOL-006 places the pinned shared version-runtime guard before App minting
 on the existing canonical-main version path. Its source-owned qualification
-data preserves Node24, CLI3 and the root-package recipe without product changes.
+data preserves Node24 and CLI3. The source-owned root-package recipe carries
+its current version fact into both mapped canonical release chapters without
+changing historical evidence or product contracts.
 
 DC-TOOL-007 delegates successful workflow completion hints to the pinned shared
 coordinator. The caller executes no candidate code and changes no activation.

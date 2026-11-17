@@ -4,11 +4,12 @@
   "packageManager": "pnpm@10.32.1",
   "configSha256": "e826bad3c0abecc9827fbfdbf0f3db4711f8efa14c8dc29e31123e44d77ae1e5",
   "scripts": {
-    "release:version": "changeset version && pnpm install --lockfile-only && prettier package.json CHANGELOG.md --write"
+    "release:version": "changeset version && pnpm install --lockfile-only && node scripts/release-spec-version.mjs --write && prettier package.json CHANGELOG.md --write"
   },
   "files": {
     ".prettierrc": "a35f5446ca921c8e76779b83c74a85ea7bd0f6b06340c5d6a5445b60d9b1b6b8",
     ".prettierignore": "054e60bae2250959ab812ce8ed6c3a36d5a1c58b4bda4171b07c0fd08178a05b",
-    "pnpm-workspace.yaml": "c2e412313313dccde580d5bcaf9dd9c60749319d1c0df39a1eff65f11297393b"
+    "pnpm-workspace.yaml": "c2e412313313dccde580d5bcaf9dd9c60749319d1c0df39a1eff65f11297393b",
+    "scripts/release-spec-version.mjs": "03a386d8431a503af4d0e40f15287baed5775420852077f6b9138a0d2d78bd56"
   }
 }

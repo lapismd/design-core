@@ -45,7 +45,7 @@
     "changeset": "changeset",
     "test:unit": "vitest run --project unit",
     "test:turbo": "node --test scripts/concurrency.test.mjs scripts/turbo-cache-report.test.mjs",
-    "test:release": "node --test scripts/design-core-release.test.mjs scripts/npm-command-env.test.mjs scripts/packed-audit-policy.test.mjs scripts/prepare-styles.test.mjs scripts/public-dependency-patch.test.mjs",
+    "test:release": "node --test scripts/design-core-release.test.mjs scripts/npm-command-env.test.mjs scripts/packed-audit-policy.test.mjs scripts/prepare-styles.test.mjs scripts/public-dependency-patch.test.mjs scripts/release-spec-version.test.mjs",
     "test:storybook": "vitest run --project storybook",
     "test:storybook:watch": "vitest --project storybook",
     "spec:build": "node scripts/dependency-automation/spec-policy.mjs build",
@@ -75,7 +75,7 @@
     "release:prepare": "node ./scripts/design-core-release.mjs prepare",
     "release:publish": "node ./scripts/design-core-release.mjs publish",
     "release:verify": "node ./scripts/design-core-release.mjs verify",
-    "release:version": "changeset version && pnpm install --lockfile-only && prettier package.json CHANGELOG.md --write",
+    "release:version": "changeset version && pnpm install --lockfile-only && node scripts/release-spec-version.mjs --write && prettier package.json CHANGELOG.md --write",
     "ui": "tsx scripts/ui-generator/cli.ts",
     "ui:guide": "tsx scripts/ui-generator/cli.ts guide",
     "ui:components": "tsx scripts/ui-generator/cli.ts components",
@@ -111,7 +111,8 @@
     "checks:visual": "pnpm checks:nonvisual && pnpm test:visual",
     "filter:grammar": "node scripts/generate-filter-query-parser.mjs",
     "icons:generate": "node scripts/generate-file-type-icons.mjs",
-    "icons:check": "node scripts/generate-file-type-icons.mjs --check"
+    "icons:check": "node scripts/generate-file-type-icons.mjs --check",
+    "release:spec-check": "node scripts/release-spec-version.mjs --check"
   },
   "peerDependencies": {
     "svelte": "^5.0.0"

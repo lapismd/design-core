@@ -259,12 +259,16 @@ Expanded-detail browser regressions exercise the compact disclosure target, real
 
 **Requirement.** Trusted version automation MUST validate its source-owned runtime before using the existing App's disposable repository-scoped token as its sole Changesets write credential.
 
+The canonical-version helper validates the complete declared output set before
+writing and refreshes only current package-version facts; missing or duplicate
+markers and redirected files fail closed while historical evidence is retained.
+
 ### Acceptance details
 
 - Only canonical main pushes may run the pinned shared runtime guard and mint a revocable repository contents/pull-request write token; the workflow token must remain read-only and checkout must disable persisted credentials.
-- The shared guard must bind the qualified CLI3, pnpm, config, formatter and workspace-policy inputs before App minting, without replacing the command or installing another runtime.
-- Changesets must retain the existing version recipe and GitHub API commits with GitHub release creation disabled.
-- Focused workflow regression evidence must cover the guard, token scope and exclusive credential path.
+- The shared guard must bind the qualified CLI3, pnpm, config, canonical-version helper, formatter and workspace-policy inputs before App minting without replacing the reviewed command or installing another runtime.
+- Changesets must execute the qualified source-owned recipe with validated current-version facts in both mapped canonical chapters and use GitHub API commits with GitHub release creation disabled.
+- Focused authentication regressions and a genuine pending-note whole-recipe proof must cover the changed binding without Deno or writer authority, including strict generated-candidate canonical checks independent of PR bot exemptions.
 
 ## DC-TOOL-007 — Verified completion wake-ups
 
