@@ -139,7 +139,7 @@ Hosts MAY disable action tooltips entirely while retaining accessible labels.
 
 ### Acceptance details
 
-- Custom emoji MUST use neutral shared registration records, with accessible reaction counts and independently controlled selected state.
+- Custom emoji MUST use neutral shared registration records, with accessible reaction counts and independently controlled selected state; default and supplied reaction names MUST include any visible textual fallback followed by its count while preserving supplied actor/context text and ordinary Unicode-only names.
 - Explicit restricted choices, including an empty list, MUST remain authoritative over the full picker and registered custom emoji.
 - Disabled state MUST block reaction changes and picker opening while host callbacks continue receiving the string and optional custom record.
 - The stable Chat and experimental AI imports MUST resolve to the same implementation and retain existing Unicode-only usage.

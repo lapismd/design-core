@@ -62,8 +62,9 @@
               {...props}
               pressed={reaction.selected ?? false}
               {disabled}
-              aria-label={reaction.label
-                ? `${accessibleLabel}: ${reaction.count}`
+              aria-label={reaction.label ||
+              (!custom && /[\p{L}\p{N}]/u.test(reaction.emoji))
+                ? `${accessibleLabel}: ${custom ? "" : `${reaction.emoji} `}${reaction.count}`
                 : accessibleLabel}
               data-ai-chat-part="reaction"
               onPressedChange={() => {

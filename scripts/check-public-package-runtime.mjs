@@ -54,6 +54,10 @@ async function checkPrimitiveStates(page) {
         .borderBottomWidth,
       alertColumn: css('[data-review="alert"] [data-slot="alert-title"]')
         .gridColumnStart,
+      destructiveAlert: css('[data-review="destructive-alert"]').color,
+      destructiveDescription: css(
+        '[data-review="destructive-alert"] [data-slot="alert-description"]',
+      ).color,
       compactTopHeight: css(
         '[data-review="panel-compact-top"] [data-ui-part="indicator"]',
       ).height,
@@ -85,6 +89,11 @@ async function checkPrimitiveStates(page) {
   assert.equal(styles.toggleMiddleBorder, "0px");
   assert.equal(styles.addonDivider, "1px");
   assert.equal(styles.alertColumn, "2");
+  assert.equal(
+    styles.destructiveDescription,
+    styles.destructiveAlert,
+    "Packed destructive descriptions must retain the full semantic foreground",
+  );
   assert.equal(styles.compactTopHeight, "5px");
   assert.equal(styles.standardTopHeight, "5px");
   assert.equal(styles.compactBottomHeight, "5px");
@@ -626,6 +635,11 @@ async function checkStyles(page) {
 
 /** Exercise the public archive with its explicit consumer-root patch contract. */
 export async function checkPublicPackageRuntime(tarball, registry) {
+  const { packageManager } = JSON.parse(
+    readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+  );
+  assert.match(packageManager, /^pnpm@\d+\.\d+\.\d+(?:\+.*)?$/);
+  const expectedPnpm = packageManager.slice(5).split("+")[0];
   const fixture = mkdtempSync(path.join(tmpdir(), "design-core-cold-public-"));
   let server;
   let browser;
@@ -638,6 +652,7 @@ export async function checkPublicPackageRuntime(tarball, registry) {
         name: "design-core-public-runtime",
         private: true,
         type: "module",
+        packageManager,
         pnpm: dependencyPatch.configuration,
         dependencies: { "@lapismd/design-core": "file:" + tarball },
         devDependencies: {
@@ -742,6 +757,7 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <ToggleGroup.Root type="single" orientation="vertical" variant="outline" spacing={0} data-review="joined"><ToggleGroup.Item value="first">First option</ToggleGroup.Item><ToggleGroup.Item value="middle">Middle option</ToggleGroup.Item><ToggleGroup.Item value="last">Last option</ToggleGroup.Item></ToggleGroup.Root>
 <InputGroup.Root data-review="addons"><InputGroup.Addon align="block-start" data-divided="true">Draft</InputGroup.Addon><InputGroup.Textarea aria-label="Archive draft" /><InputGroup.Addon align="block-end" data-divided="true">Private</InputGroup.Addon></InputGroup.Root>
 <Alert.Root data-review="alert"><svg aria-hidden="true" width="16" height="16"><circle cx="8" cy="8" r="6" /></svg><Alert.Title>Archive notice</Alert.Title><Alert.Description>Icon alignment.</Alert.Description></Alert.Root>
+<Alert.Root variant="destructive" data-review="destructive-alert"><Alert.Title>Request refused</Alert.Title><Alert.Description>Your prompt was not sent. Retain the draft and try again.</Alert.Description></Alert.Root>
 {#each panelVariants as iconVariant}{#each panelSides as side}<PanelToggle {iconVariant} {side} expanded data-review={['panel', iconVariant, side].join('-')} />{/each}{/each}
 <PanelToggleIcon {...panelIcon} class="packed-panel-icon" data-review="panel-icon-only" />
 {#snippet packedToolDetail()}<p>Packed captured output</p>{/snippet}
@@ -829,6 +845,25 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
         },
         include: ["*.ts", "*.svelte"],
       }),
+    );
+    const consumerPnpm = spawnSync("pnpm", ["--version"], {
+      cwd: fixture,
+      encoding: "utf8",
+      env: npmCommandEnv(),
+      timeout: 60_000,
+    });
+    assert.equal(
+      consumerPnpm.status,
+      0,
+      consumerPnpm.stderr || String(consumerPnpm.error),
+    );
+    assert.equal(
+      consumerPnpm.stdout.trim(),
+      expectedPnpm,
+      "Cold consumer must use the owner's qualified pnpm version",
+    );
+    console.log(
+      `Cold package consumer pnpm ${expectedPnpm} matches its owner.`,
     );
     const install = spawnSync(
       "pnpm",

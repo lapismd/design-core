@@ -171,6 +171,14 @@ entries, including the shared Workspace AppShell export graph and the Shell
 AppShell story module used by pointer acceptance, and await pending
 import requests before browser acceptance begins.
 Compilation failures return an unavailable response and allow a later retry.
+The checkout-owned launcher MUST supply an explicit `127.0.0.1` host matching the
+browser acceptance URLs while retaining forwarded Storybook options and existing
+checkout/port ownership. Startup qualification keeps preview host validation
+and the cold first-story readiness gate active.
+Clean package-consumer fixtures retain the source owner's exact package-manager
+binding and reject a different actual pnpm version before installing dependencies.
+Public-archive acceptance MUST verify the destructive alert description retains
+its full semantic foreground in development/production and light/dark modes.
 Workspace pointer acceptance MUST await the requested story's render and play
 completion before settling fonts or measuring drag targets, using the existing
 bounded framework-readiness window rather than a fixed startup delay.

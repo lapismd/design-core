@@ -191,6 +191,14 @@ Release inputs retain only changesets not already represented in the published
 changelog. Historical workspace integration must not reintroduce consumed
 changesets or repeat their version bumps and release notes.
 
+The cold public-archive consumer MUST inherit the owner's exact pnpm
+package-manager binding and verify its actual executable version before
+installation. Running outside the source workspace MUST NOT select Corepack's
+global default or change the retained dependency-patch contract.
+The public consumer MUST also exercise the destructive alert description in its
+existing light/dark development and production acceptance, preserving the full
+semantic foreground qualified by DC-SHA-012 and DC-CSS-004.
+
 Current published release: npm Core **0.7.3** contains the captured JSON, Swipe
 teardown and Problems Escape repairs plus the authorized tracked Bits patch.
 Source PR #42 and version PR #45 are merged. The version head and merged release
