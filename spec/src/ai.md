@@ -263,7 +263,7 @@ checking restored focus.
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/ai/experimental`; reaction names MUST retain their visible count alongside supplied participant context.
+- The public boundary is `@lapismd/design-core/ai/experimental`; default and supplied reaction names MUST retain visible textual fallbacks and counts alongside participant context, while ordinary Unicode-only names remain compatible.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - The experimental import MUST remain compatible with the shared Chat reaction implementation and neutral custom-emoji model defined by DC-CHAT-004.
 - Optional emoji choices MUST be omitted rather than forwarded as explicit `undefined` values.

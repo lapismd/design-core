@@ -180,6 +180,8 @@ async function startStorybook() {
       [
         path.join(root, "node_modules/storybook/dist/bin/dispatcher.js"),
         "dev",
+        "--host",
+        "127.0.0.1",
         "-p",
         port,
         "--exact-port",

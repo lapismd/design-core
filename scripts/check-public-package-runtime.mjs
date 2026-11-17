@@ -626,6 +626,11 @@ async function checkStyles(page) {
 
 /** Exercise the public archive with its explicit consumer-root patch contract. */
 export async function checkPublicPackageRuntime(tarball, registry) {
+  const { packageManager } = JSON.parse(
+    readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+  );
+  assert.match(packageManager, /^pnpm@\d+\.\d+\.\d+(?:\+.*)?$/);
+  const expectedPnpm = packageManager.slice(5).split("+")[0];
   const fixture = mkdtempSync(path.join(tmpdir(), "design-core-cold-public-"));
   let server;
   let browser;
@@ -638,6 +643,7 @@ export async function checkPublicPackageRuntime(tarball, registry) {
         name: "design-core-public-runtime",
         private: true,
         type: "module",
+        packageManager,
         pnpm: dependencyPatch.configuration,
         dependencies: { "@lapismd/design-core": "file:" + tarball },
         devDependencies: {
@@ -829,6 +835,25 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
         },
         include: ["*.ts", "*.svelte"],
       }),
+    );
+    const consumerPnpm = spawnSync("pnpm", ["--version"], {
+      cwd: fixture,
+      encoding: "utf8",
+      env: npmCommandEnv(),
+      timeout: 60_000,
+    });
+    assert.equal(
+      consumerPnpm.status,
+      0,
+      consumerPnpm.stderr || String(consumerPnpm.error),
+    );
+    assert.equal(
+      consumerPnpm.stdout.trim(),
+      expectedPnpm,
+      "Cold consumer must use the owner's qualified pnpm version",
+    );
+    console.log(
+      `Cold package consumer pnpm ${expectedPnpm} matches its owner.`,
     );
     const install = spawnSync(
       "pnpm",

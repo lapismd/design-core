@@ -1,8 +1,12 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor, within } from "storybook/test";
+  import { expect, fn, userEvent, waitFor, within } from "storybook/test";
   import ReactionBar, { type Reaction } from "./ReactionBar.svelte";
   import { DEFAULT_EMOJIS } from "../emoji-picker/index.js";
+  import {
+    CustomLabel,
+    TextualFallback,
+  } from "./ReactionBar.example-sources.js";
 
   const { Story } = defineMeta({
     title: "AI/Chat/Experimental/Reaction Bar",
@@ -81,6 +85,72 @@
     </div>
   {/snippet}
 </Story>
+
+<Story
+  name="Custom labels keep visible text reactions and counts"
+  args={{
+    reactions: [
+      { emoji: "lapis", count: 1, label: "1 reaction with lapis: Maya Chen" },
+    ],
+    onToggle: fn(),
+  }}
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: CustomLabel,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvas, args }) => {
+    const reaction = canvas.getByRole("button", {
+      name: /^1 reaction with lapis: Maya Chen:/,
+    });
+    await expect(reaction).toHaveTextContent(/lapis\s*1/);
+    await expect(reaction).toHaveAccessibleName(
+      "1 reaction with lapis: Maya Chen: lapis 1",
+    );
+    await expect(reaction).toHaveAttribute("aria-pressed", "false");
+    await userEvent.click(reaction);
+    await expect(args.onToggle).toHaveBeenCalledWith("lapis");
+  }}
+/>
+
+<Story
+  name="Default labels keep visible text reactions and counts"
+  args={{
+    reactions: [
+      { emoji: "ship_it", count: 2 },
+      { emoji: "👀", count: 3 },
+    ],
+    onToggle: fn(),
+  }}
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: TextualFallback,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvas, args }) => {
+    const fallback = canvas.getByRole("button", {
+      name: /^2 reactions with ship_it/,
+    });
+    await expect(fallback).toHaveAccessibleName(
+      "2 reactions with ship_it: ship_it 2",
+    );
+    await expect(
+      canvas.getByRole("button", { name: "3 reactions with 👀" }),
+    ).toBeVisible();
+    await userEvent.click(fallback);
+    await expect(args.onToggle).toHaveBeenCalledWith("ship_it");
+  }}
+/>
 
 <style>
   :global([data-story="reaction-frame"]) {
