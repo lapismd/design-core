@@ -1,6 +1,42 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync } from "node:fs";
 import { checkPackedAudit } from "./packed-audit-policy.mjs";
+
+test("required source audit collects both raw graphs with no active HIGH admission", () => {
+  const policy = JSON.parse(
+    readFileSync(
+      new URL("../.github/development-audit-policy.json", import.meta.url),
+    ),
+  );
+  assert.deepEqual(policy, {
+    schemaVersion: 2,
+    repository: "lapismd/design-core",
+    approvals: [],
+  });
+  const workflow = readFileSync(
+    new URL("../.github/workflows/ci.yml", import.meta.url),
+    "utf8",
+  );
+  const audit = workflow.split("\n  audit:\n")[1].split("\n  validate:\n")[0];
+  assert.match(audit, /fetch-depth: 0/);
+  assert.match(
+    audit,
+    /uses: lapismd\/lapis-ci\/actions\/check-development-audit@63e64958e9b271d36feba06a162ee02b079a3206/,
+  );
+  assert.match(audit, /policy-file: \.github\/development-audit-policy\.json/);
+  assert.match(audit, /report-directory: \.release\/development-audit/);
+  assert.match(audit, /if: always\(\)/);
+  assert.match(audit, /uses: actions\/upload-artifact@v7/);
+  assert.match(audit, /if-no-files-found: error/);
+  assert.doesNotMatch(audit, /continue-on-error|audit-level|ignoreGhsas/);
+  assert.match(workflow.split("\n  validate:\n")[1], /- audit/);
+  const release = readFileSync(
+    new URL("../.github/workflows/release.yml", import.meta.url),
+    "utf8",
+  );
+  assert.match(release, /production-consumer-audit\.json/);
+});
 
 function report() {
   return {

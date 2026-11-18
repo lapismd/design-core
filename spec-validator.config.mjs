@@ -260,7 +260,8 @@ export default defineConfig(headingRequirements(), {
           chapters: ["spec/src/spec-governance.md", "spec/src/tooling.md"],
         },
         {
-          pattern: "^scripts/(?!spec-validation/)",
+          pattern:
+            "^(?:scripts/(?!spec-validation/)|\\.github/development-audit-policy\\.json$)",
           chapters: ["spec/src/tooling.md"],
         },
         {
@@ -284,6 +285,7 @@ export default defineConfig(headingRequirements(), {
         },
       ],
       protected: [
+        "^\\.github/development-audit-policy\\.json$",
         "^\\.github/dependency-automation/",
         "^(?:patches/|src/shared/|src/(?:styles|theme|storybook)\\.css$|src/themes/|src/spec/|\\.storybook/|\\.github/(?:(?:actions|workflows)/|versioning-runtime\\.json$)|\\.env\\.example$|\\.gitignore$|scripts/|packages/[^/]+/src/|docs/agent/|AGENTS\\.md$|spec/(?:book\\.toml|public-surfaces\\.json)$|spec-validator\\.config\\.mjs$|package\\.json$|pnpm-lock\\.yaml$|pnpm-workspace\\.yaml$|turbo\\.json$|svelte\\.|vite\\.|vitest\\.|playwright\\.|tsconfig)",
       ],

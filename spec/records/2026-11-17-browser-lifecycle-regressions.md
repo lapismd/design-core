@@ -77,3 +77,8 @@ Changesets/config uses 4.0.7 and Tailwind CLI/Parcel watcher/micromatch uses 2.3
 Production audit has zero findings. This slice adds no ignore or exception and
 does not transfer another repository's approval. Existing source, packed-audit,
 publication and activation policy remain authoritative.
+
+Correction: hosted run44208170836 subsequently proved these two HIGH findings
+fail the required Dependency audits job and aggregate Validate. They block merge
+and publication; see [the required audit correction](2026-11-18-shared-development-audit.md).
+All earlier product pass/failure counts remain evidence, without an audit waiver.

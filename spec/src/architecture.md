@@ -1,5 +1,8 @@
 # Architecture
 
+DC-TOOL-009 makes full and production dependency audits a required shared-checker
+boundary; a disabled source proposal grants no runtime or release authority.
+
 <!-- dependency-intake:framework-registry:start -->
 
 Current registry dependency coordinates; qualification remains separate.

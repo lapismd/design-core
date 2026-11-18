@@ -36,3 +36,8 @@ every other nonvisual check lane. Baseline bytes and assertions remain intact.
 The unchanged development audit findings are recorded separately in Core #94;
 production audit is clean and no new exception is activated. Hosted acceptance,
 ordinary merge, publication and coordinator activation/settlement remain separate.
+
+Correction: hosted run44208170836 subsequently proved these two HIGH findings
+fail the required Dependency audits job and aggregate Validate. They block merge
+and publication; see [the required audit correction](2026-11-18-shared-development-audit.md).
+All earlier product pass/failure counts remain evidence, without an audit waiver.

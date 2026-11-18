@@ -1,5 +1,8 @@
 # Package exports
 
+DC-TOOL-009 retains zero production findings and the independent packed public
+consumer audit; development admission never changes package exports or peers.
+
 <!-- dependency-intake:framework-registry:start -->
 
 Current registry dependency coordinates; qualification remains separate.

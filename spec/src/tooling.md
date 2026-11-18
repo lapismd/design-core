@@ -305,3 +305,14 @@ markers and redirected files fail closed while historical evidence is retained.
 - Architecture, package and tooling chapters retain factual managed slots; manual prose, stale policy, immutable-version integrity changes and unrelated first-party metadata or edges fail closed.
 - Development-only intake creates no publication intent; runtime range changes require the exact source-owned patch Changeset, with ordinary CI and packed-consumer qualification still required.
 - The reviewed shared guard derives actual release intent before App minting and version writes while preserving the qualified recipe; verified completion, separate activation and durable reconciliation/replay remain required.
+
+## DC-TOOL-009 — Exact development audit decisions
+
+**Requirement.** The required dependency-audit job MUST collect complete full and production graphs through the immutable reviewed shared checker and reject any finding without an exact source-owned approval.
+
+### Acceptance details
+
+- An empty schema2 approval list blocks every development finding; a separate disabled proposal grants no acceptance or merge authority.
+- Any later HIGH decision requires explicit approval bound to the exact repository, dependency-source, manifest, lock, version, advisory and development path; expiry, a known fix or a stable successor beyond the reviewed ceiling ends acceptance.
+- Production findings, unrelated findings, unavailable or muted evidence and changed graph bindings remain blocking; raw full, production and decision evidence is retained even on failure.
+- Packed public-consumer production audits and all functional, browser, release and publication gates remain independently required.
