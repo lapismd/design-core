@@ -12,15 +12,11 @@
   "findings": [
     {
       "version": "4.0.7",
-      "paths": [
-        ".>@changesets/cli>@changesets/config>picomatch"
-      ]
+      "paths": [".>@changesets/cli>@changesets/config>picomatch"]
     },
     {
       "version": "2.3.2",
-      "paths": [
-        ".>@tailwindcss/cli>@parcel/watcher>micromatch>picomatch"
-      ]
+      "paths": [".>@tailwindcss/cli>@parcel/watcher>micromatch>picomatch"]
     }
   ],
   "vulnerableVersions": "<=4.0.7",
