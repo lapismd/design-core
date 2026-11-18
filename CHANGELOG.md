@@ -1,5 +1,14 @@
 # @lapismd/design-core
 
+## 0.13.6
+
+### Patch Changes
+
+- [#93](https://github.com/lapismd/design-core/pull/93) [`afda8ed`](https://github.com/lapismd/design-core/commit/afda8edbf346d86fc886774968207ea7822db703) Thanks [@stevejuma](https://github.com/stevejuma)! - Dispose the emoji selection panel immediately when its popover closes so rapid
+  reopening starts with fresh search state and cannot retain a closing session.
+  Keep emoji and status-overflow closing shells free of labels after their popup
+  role is removed, preserving valid accessibility through exit animations.
+
 ## 0.13.5
 
 ### Patch Changes
