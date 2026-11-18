@@ -1,5 +1,40 @@
 {
   "schemaVersion": 2,
   "repository": "lapismd/design-core",
-  "approvals": []
+  "approvals": [
+    {
+      "advisory": "GHSA-fc5q-39xc-vjpf",
+      "package": "picomatch",
+      "version": "4.0.7",
+      "severity": "high",
+      "path": ".>@changesets/cli>@changesets/config>picomatch",
+      "scope": "development-only",
+      "vulnerableRange": "<=4.0.7",
+      "patchedRange": "<0.0.0",
+      "sourceSha": "7d2b32dc1fa0e444bdef39276f9c6014cea328a4",
+      "manifestSha256": "bb57b420e4d8d45c0e47ac60d20573a512deb424d194111cc3ff934e75e0343b",
+      "lockSha256": "41d8405f554d352444bcce704a1d997787712367f29c34bcce17baa803534703",
+      "approvedAt": "2026-11-18T13:30:52.633Z",
+      "expiresAt": "2026-11-19T00:00:00.000Z",
+      "authority": "explicit-user",
+      "record": "spec/records/2026-11-18-development-high-decision.md"
+    },
+    {
+      "advisory": "GHSA-fc5q-39xc-vjpf",
+      "package": "picomatch",
+      "version": "2.3.2",
+      "severity": "high",
+      "path": ".>@tailwindcss/cli>@parcel/watcher>micromatch>picomatch",
+      "scope": "development-only",
+      "vulnerableRange": "<=4.0.7",
+      "patchedRange": "<0.0.0",
+      "sourceSha": "7d2b32dc1fa0e444bdef39276f9c6014cea328a4",
+      "manifestSha256": "bb57b420e4d8d45c0e47ac60d20573a512deb424d194111cc3ff934e75e0343b",
+      "lockSha256": "41d8405f554d352444bcce704a1d997787712367f29c34bcce17baa803534703",
+      "approvedAt": "2026-11-18T13:30:52.633Z",
+      "expiresAt": "2026-11-19T00:00:00.000Z",
+      "authority": "explicit-user",
+      "record": "spec/records/2026-11-18-development-high-decision.md"
+    }
+  ]
 }

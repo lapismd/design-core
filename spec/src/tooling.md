@@ -312,7 +312,7 @@ markers and redirected files fail closed while historical evidence is retained.
 
 ### Acceptance details
 
-- An empty schema2 approval list blocks every development finding; a separate disabled proposal grants no acceptance or merge authority.
-- Any later HIGH decision requires explicit approval bound to the exact repository, dependency-source, manifest, lock, version, advisory and development path; expiry, a known fix or a stable successor beyond the reviewed ceiling ends acceptance.
+- An empty schema2 approval list blocks every development finding; a separate disabled proposal alone grants no acceptance or merge authority.
+- The current explicit-user HIGH picomatch approvals are bound to the exact repository, dependency-source, manifest, lock, version, advisory and development paths in [the HIGH decision](../records/2026-11-18-development-high-decision.md); expiry, a known fix or a stable successor beyond the reviewed ceiling ends acceptance.
 - Production findings, unrelated findings, unavailable or muted evidence and changed graph bindings remain blocking; raw full, production and decision evidence is retained even on failure.
 - Packed public-consumer production audits and all functional, browser, release and publication gates remain independently required.

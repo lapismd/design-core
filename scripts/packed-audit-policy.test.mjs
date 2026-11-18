@@ -3,17 +3,52 @@ import test from "node:test";
 import { readFileSync } from "node:fs";
 import { checkPackedAudit } from "./packed-audit-policy.mjs";
 
-test("required source audit collects both raw graphs with no active HIGH admission", () => {
+test("required source audit collects both raw graphs with exact explicit-user HIGH admissions", () => {
   const policy = JSON.parse(
     readFileSync(
       new URL("../.github/development-audit-policy.json", import.meta.url),
     ),
   );
-  assert.deepEqual(policy, {
-    schemaVersion: 2,
-    repository: "lapismd/design-core",
-    approvals: [],
-  });
+  assert.equal(policy.schemaVersion, 2);
+  assert.equal(policy.repository, "lapismd/design-core");
+  assert.equal(policy.approvals.length, 2);
+  for (const entry of policy.approvals) {
+    assert.equal(entry.advisory, "GHSA-fc5q-39xc-vjpf");
+    assert.equal(entry.package, "picomatch");
+    assert.equal(entry.severity, "high");
+    assert.equal(entry.scope, "development-only");
+    assert.equal(entry.vulnerableRange, "<=4.0.7");
+    assert.equal(entry.patchedRange, "<0.0.0");
+    assert.equal(entry.sourceSha, "7d2b32dc1fa0e444bdef39276f9c6014cea328a4");
+    assert.equal(
+      entry.manifestSha256,
+      "bb57b420e4d8d45c0e47ac60d20573a512deb424d194111cc3ff934e75e0343b",
+    );
+    assert.equal(
+      entry.lockSha256,
+      "41d8405f554d352444bcce704a1d997787712367f29c34bcce17baa803534703",
+    );
+    assert.equal(entry.approvedAt, "2026-11-18T13:30:52.633Z");
+    assert.equal(entry.expiresAt, "2026-11-19T00:00:00.000Z");
+    assert.equal(entry.authority, "explicit-user");
+    assert.equal(
+      entry.record,
+      "spec/records/2026-11-18-development-high-decision.md",
+    );
+  }
+  assert.deepEqual(
+    policy.approvals.map(({ version, path }) => ({ version, path })),
+    [
+      {
+        version: "4.0.7",
+        path: ".>@changesets/cli>@changesets/config>picomatch",
+      },
+      {
+        version: "2.3.2",
+        path: ".>@tailwindcss/cli>@parcel/watcher>micromatch>picomatch",
+      },
+    ],
+  );
   const workflow = readFileSync(
     new URL("../.github/workflows/ci.yml", import.meta.url),
     "utf8",

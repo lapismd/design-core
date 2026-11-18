@@ -1,7 +1,8 @@
 # Architecture
 
 DC-TOOL-009 makes full and production dependency audits a required shared-checker
-boundary; a disabled source proposal grants no runtime or release authority.
+boundary; only exact explicit-user development approvals may admit matching
+findings, and they grant no runtime or release authority.
 
 <!-- dependency-intake:framework-registry:start -->
 
