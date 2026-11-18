@@ -7,8 +7,8 @@ packed-consumer audits remain clean and blocking for every other finding.
 
 ## Reviewed source and evidence
 
-Dependency source: `7d2b32dc1fa0e444bdef39276f9c6014cea328a4`.
-Manifest SHA256: `bb57b420e4d8d45c0e47ac60d20573a512deb424d194111cc3ff934e75e0343b`.
+Dependency source: `81a46ee403c4f129e0800fe597ca35033a809751` (Version Packages `0.13.6` public version bump; lockfile unchanged from the original approved graph).
+Manifest SHA256: `214d0036dc96398e2e35833620b9c80631742a124029f0f564766e8d183dc3b2`.
 Lock SHA256: `41d8405f554d352444bcce704a1d997787712367f29c34bcce17baa803534703`.
 
 The disabled proposal at
@@ -31,3 +31,12 @@ Vulnerable range `<=4.0.7`, patched range `<0.0.0`. Expiry remains
 successor above 4.0.7. The shared checker additionally limits HIGH to 48 hours
 from this approval timestamp. No renewal, broader ignore, production exception,
 or cross-repository transfer is granted.
+
+## Version Packages rebind
+
+The Version Packages pull request only advances the public package version in
+`package.json` to `0.13.6`. The lockfile and installed picomatch paths remain
+identical. Under the same explicit-user HIGH decision and original expiry, the
+operational policy bindings were updated to this dependency-source commit and
+manifest digest so the temporary admission continues to apply until expiry or a
+known fix.

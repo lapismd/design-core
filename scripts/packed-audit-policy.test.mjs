@@ -19,10 +19,10 @@ test("required source audit collects both raw graphs with exact explicit-user HI
     assert.equal(entry.scope, "development-only");
     assert.equal(entry.vulnerableRange, "<=4.0.7");
     assert.equal(entry.patchedRange, "<0.0.0");
-    assert.equal(entry.sourceSha, "7d2b32dc1fa0e444bdef39276f9c6014cea328a4");
+    assert.equal(entry.sourceSha, "81a46ee403c4f129e0800fe597ca35033a809751");
     assert.equal(
       entry.manifestSha256,
-      "bb57b420e4d8d45c0e47ac60d20573a512deb424d194111cc3ff934e75e0343b",
+      "214d0036dc96398e2e35833620b9c80631742a124029f0f564766e8d183dc3b2",
     );
     assert.equal(
       entry.lockSha256,
