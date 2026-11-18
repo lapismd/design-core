@@ -484,7 +484,7 @@
       const item = documentCanvas.getByRole("menuitemcheckbox", {
         name: label,
       });
-      expect(item).toBeVisible();
+      await waitFor(() => expect(item).toBeVisible());
       const icon = item.querySelector<SVGElement>(
         '[data-ui-component="workspace-icon"]',
       );

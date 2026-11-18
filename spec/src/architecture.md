@@ -1,5 +1,24 @@
 # Architecture
 
+DC-TOOL-009 makes full and production dependency audits a required shared-checker
+boundary; only exact explicit-user development approvals may admit matching
+findings, and they grant no runtime or release authority.
+
+<!-- dependency-intake:framework-registry:start -->
+
+Current registry dependency coordinates; qualification remains separate.
+
+<!-- prettier-ignore -->
+| Manifest | Dependency | Range | Locked version |
+| --- | --- | --- | --- |
+| `package.json` (dependencies) | `@lapismd/mira` | `~0.2.0` | `0.2.0` |
+| `package.json` (devDependencies) | `@lapismd/spec-validator` | `^0.2.1` | `0.2.1` |
+| `package.json` (devDependencies) | `@lapismd/storybook-addon-visual-delta` | `0.1.5` | `0.1.5` |
+
+Manifest, peer and integrity facts SHA256: `82c9f9b74449becf9e82ce2650ff0d25c89c68edaade1385a092ece5833af819`.
+
+<!-- dependency-intake:framework-registry:end -->
+
 Source package version: `0.13.5` (`@lapismd/design-core`).
 
 DC-TOOL-006 places the pinned shared version-runtime guard before App minting

@@ -1,5 +1,20 @@
 # Tooling
 
+<!-- dependency-intake:framework-registry:start -->
+
+Current registry dependency coordinates; qualification remains separate.
+
+<!-- prettier-ignore -->
+| Manifest | Dependency | Range | Locked version |
+| --- | --- | --- | --- |
+| `package.json` (dependencies) | `@lapismd/mira` | `~0.2.0` | `0.2.0` |
+| `package.json` (devDependencies) | `@lapismd/spec-validator` | `^0.2.1` | `0.2.1` |
+| `package.json` (devDependencies) | `@lapismd/storybook-addon-visual-delta` | `0.1.5` | `0.1.5` |
+
+Manifest, peer and integrity facts SHA256: `82c9f9b74449becf9e82ce2650ff0d25c89c68edaade1385a092ece5833af819`.
+
+<!-- dependency-intake:framework-registry:end -->
+
 <!-- dependency-automation-policy -->
 
 Dependency update PRs from the trusted LapisMD App, Dependabot or Renovate MAY skip specification checks using the PR author rather than the rerun actor. Functional checks remain required. The shared `lapismd/dependency-automation` coordinator proposes published first-party npm updates with Changeset release intent where required; it does not merge, publish, sign or deploy. This CI policy changes no runtime or public contract in this chapter.
@@ -279,3 +294,25 @@ markers and redirected files fail closed while historical evidence is retained.
 - The caller must use only completed `workflow_run` events for CI, Storybook Pages and public release workflows, with no recursive notification name or cancellation concurrency.
 - It must grant only contents, Actions and pull-request reads and forward only the named existing App key; reusable source and automation-ref must share one reviewed commit.
 - The reusable boundary must verify current immutable source evidence before App minting and again before dispatch; every original functional, audit, publication and merge gate remains authoritative.
+
+## DC-TOOL-008 — Bounded dependency intake
+
+**Requirement.** First-party dependency automation MUST preserve the source-owned workspace profile, independently validate registry facts and compatible patch transitions in normal functional checks, and retain every source, public-contract, audit, release and publication gate.
+
+### Acceptance details
+
+- Mira, the Node-only specification validator and Visual Delta remain the only selected registry inputs; major, 0.x minor, peer-routing and unrelated source changes are held.
+- Architecture, package and tooling chapters retain factual managed slots; manual prose, stale policy, immutable-version integrity changes and unrelated first-party metadata or edges fail closed.
+- Development-only intake creates no publication intent; runtime range changes require the exact source-owned patch Changeset, with ordinary CI and packed-consumer qualification still required.
+- The reviewed shared guard derives actual release intent before App minting and version writes while preserving the qualified recipe; verified completion, separate activation and durable reconciliation/replay remain required.
+
+## DC-TOOL-009 — Exact development audit decisions
+
+**Requirement.** The required dependency-audit job MUST collect complete full and production graphs through the immutable reviewed shared checker and reject any finding without an exact source-owned approval.
+
+### Acceptance details
+
+- An empty schema2 approval list blocks every development finding; a separate disabled proposal alone grants no acceptance or merge authority.
+- The current explicit-user HIGH picomatch approvals are bound to the exact repository, dependency-source, manifest, lock, version, advisory and development paths in [the HIGH decision](../records/2026-11-18-development-high-decision.md); expiry, a known fix or a stable successor beyond the reviewed ceiling ends acceptance.
+- Production findings, unrelated findings, unavailable or muted evidence and changed graph bindings remain blocking; raw full, production and decision evidence is retained even on failure.
+- Packed public-consumer production audits and all functional, browser, release and publication gates remain independently required.

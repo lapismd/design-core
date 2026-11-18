@@ -160,7 +160,9 @@
       expect(input.selectionStart).toBe(0);
       expect(input.selectionEnd).toBe("Maya Chen".length);
     });
-    await expect(body.getByRole("option", { name: "Maya Chen" })).toBeVisible();
+    await waitFor(() =>
+      expect(body.getByRole("option", { name: "Maya Chen" })).toBeVisible(),
+    );
     await expect(
       body.getByRole("option", { name: "Priya Shah" }),
     ).toBeVisible();
@@ -199,9 +201,9 @@
     const body = within(canvasElement.ownerDocument.body);
 
     await userEvent.type(input, "Pri");
-    await expect(
-      body.getByRole("option", { name: "Priya Shah" }),
-    ).toBeVisible();
+    await waitFor(() =>
+      expect(body.getByRole("option", { name: "Priya Shah" })).toBeVisible(),
+    );
     nextField.focus();
 
     await waitFor(() => {
@@ -235,7 +237,7 @@
     );
     await expect(options.length).toBeGreaterThanOrEqual(2);
     await expect(options[0]).toHaveAttribute("aria-selected", "true");
-    await expect(options[1]!).toBeVisible();
+    await waitFor(() => expect(options[1]!).toBeVisible());
     // Pointer hover still exercised; row style also forced via forceHoverIndex
     // so the baseline stays stable after the visual suite blurs focus.
     await userEvent.hover(options[1]!);

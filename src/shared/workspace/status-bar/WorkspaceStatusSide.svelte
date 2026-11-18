@@ -68,7 +68,7 @@
       side="top"
       align={side === "left" ? "start" : "end"}
       sideOffset={6}
-      aria-label={`${side} status items`}
+      aria-label={open ? `${side} status items` : undefined}
       onOpenAutoFocus={(event) => {
         event.preventDefault();
         queueMicrotask(() =>

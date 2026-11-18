@@ -1,5 +1,9 @@
 # Forms / Inputs
 
+Catalog acceptance awaits actual visibility after asynchronous popup opening
+before inspecting or choosing suggestions. Existing focus, selection, value and
+owner-sheet assertions remain exact; no animation is disabled for verification.
+
 Quantity unit selectors retain Bits UI 2.20.2's native combobox role while
 preserving unit labels, canonical values and edit-count assertions.
 

@@ -39,7 +39,7 @@
     const close = within(dialog).getByRole("button", {
       name: "Close",
     });
-    expect(close.getBoundingClientRect().width).toBe(32);
+    await waitFor(() => expect(close.getBoundingClientRect().width).toBe(32));
     expect(
       close.querySelector("svg")!.getBoundingClientRect().width,
     ).toBeLessThanOrEqual(16);

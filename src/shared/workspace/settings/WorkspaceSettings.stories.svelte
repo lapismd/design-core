@@ -786,7 +786,7 @@
     const sheet = within(document.body).getByRole("dialog", {
       name: "Settings navigation",
     });
-    await expect(sheet).toBeVisible();
+    await waitFor(() => expect(sheet).toBeVisible());
     await expect(
       within(sheet).getByRole("searchbox", { name: "Search settings" }),
     ).toBeVisible();

@@ -90,12 +90,12 @@
         name: "Project palette",
       },
     );
-    await expect(dialog).toBeVisible();
+    await waitFor(() => expect(dialog).toBeVisible());
     await expect(dialog).toHaveStyle({ position: "fixed" });
     const overlay = canvasElement.ownerDocument.querySelector<HTMLElement>(
       '[data-ui-component="dialog"][data-ui-part="dialog-overlay"]',
     );
-    await expect(overlay).toBeVisible();
+    await waitFor(() => expect(overlay).toBeVisible());
     await expect(getComputedStyle(overlay!).backgroundColor).toBe(
       "rgba(0, 0, 0, 0.5)",
     );

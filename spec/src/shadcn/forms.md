@@ -1,5 +1,9 @@
 # Shadcn / Forms
 
+Command/dialog and Select catalog acceptance awaits real opening surface
+visibility before asserting contents or acting on them. Focus and keyboard
+behavior retain their immediate governed assertions.
+
 Shadcn form controls provide the low-level accessible inputs used directly or inside Design Core form composition.
 
 ## Public surface coverage
@@ -38,6 +42,11 @@ Keyboard acceptance verifies initial search focus before dispatching navigation
 without an extra pointer click, then retains the immediate option-focus
 assertion. Completion checks that the captured input leaves the document and
 that focus returns to the trigger.
+Closing the controlled popover disposes its selection-panel session immediately,
+including during the exit animation. Rapid reopening starts with fresh search
+state and one live library instance; inline presentation keeps its own session.
+The empty closing popup shell removes its accessible label when Bits UI removes
+its role, so exit animation cannot expose a labelled generic container.
 The authorized Bits UI 2.20.2 patch retains these focus assertions. Select
 catalog checks use the dependency's native combobox role, named listbox and
 option group, then verify pointer admission and a real follow-up action after

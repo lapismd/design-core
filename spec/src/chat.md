@@ -1,5 +1,9 @@
 # Chat
 
+Message-action catalog acceptance awaits real menu explanations and emoji popup
+visibility before checking or using their contents; enabled/disabled state and
+host-owned action outcomes retain their original assertions.
+
 Transcript captured-file headings and disclosures compose FileTypeIcon from an explicit block path. Default tool titles use their captured target path; host-supplied icons and error/running status indicators take precedence. Pathless context labels and host-owned reference/suggestion content are not treated as filenames. Labelled tool disclosure bodies MUST expose a group role so their accessible names remain valid.
 
 Chat is the host-neutral presentation family. Existing stable AI chat primitives

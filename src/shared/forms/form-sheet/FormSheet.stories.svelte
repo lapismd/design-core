@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, within } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import FormSheet from "./FormSheet.svelte";
 
   const { Story } = defineMeta({
@@ -32,7 +32,7 @@
     const dialog = within(document.body).getByRole("dialog", {
       name: "Import proposal",
     });
-    await expect(dialog).toBeVisible();
+    await waitFor(() => expect(dialog).toBeVisible());
     await expect(document.activeElement).toBe(
       within(dialog).getByText("Import proposal"),
     );

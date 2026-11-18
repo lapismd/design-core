@@ -233,6 +233,10 @@ test("uses desktop room to keep field, predicate and value on one line", async (
   await page.setViewportSize({ width: 1000, height: 800 });
   await open(page);
   const panel = page.getByRole("dialog", { name: "Filter table rows" });
+  // The Popover enters at 95% scale; qualify its completed desktop geometry.
+  await expect
+    .poll(async () => (await panel.boundingBox())?.width ?? 0)
+    .toBeGreaterThanOrEqual(760);
   const panelBox = (await panel.boundingBox())!;
   const tops = await page
     .locator(".filter-builder__segments")

@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, within } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import ChipAutocomplete from "./ChipAutocomplete.svelte";
 
   const { Story } = defineMeta({
@@ -67,7 +67,7 @@
       within(dialog).getByRole("option", { name: "svelte" }),
     );
 
-    expect(dialog).toBeVisible();
+    await waitFor(() => expect(dialog).toBeVisible());
     expect(within(dialog).getByText("svelte")).toBeVisible();
     expect(canvas.getByRole("status")).toHaveTextContent("svelte");
   }}
