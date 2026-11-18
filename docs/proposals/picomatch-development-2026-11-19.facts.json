@@ -44,7 +44,14 @@
       "advisory",
       "time",
       "officialRegistry"
-    ]
+    ],
+    "evidenceSha256": {
+      "scripts/run-development-audit.mjs": "c3de181ca3aa943d61ee070e572e1ea40086c13536c6162e5252c29679188796",
+      "scripts/development-audit.mjs": "df111eccbdfbed1c78b2e9da1ef7450f7f2fe105c29b7298698fa64dd11da2f5",
+      "scripts/development-audit-scope.mjs": "490d5cf72f1ee9466138d2cf2a964c5265399a37565a449cfe6ca8970be96c6b",
+      "scripts/development-audit-high.test.mjs": "3fc932b341bf391b1bf6696c730fd09076ad6f949e1200d668efb1ef7ce2100b",
+      "scripts/development-audit-cli.test.mjs": "df033860e86c993cd85367810a2c79e995c5e3c0e366c1bd2131244ccd644e82"
+    }
   },
   "bindings": {
     "package.json": "bb57b420e4d8d45c0e47ac60d20573a512deb424d194111cc3ff934e75e0343b",
@@ -67,6 +74,45 @@
     "production": 0
   },
   "actualQualification": {
-    "status": "pending actual immutable-source probe; no acceptance granted"
+    "schemaVersion": 1,
+    "sourceSha": "7d2b32dc1fa0e444bdef39276f9c6014cea328a4",
+    "manifestSha256": "bb57b420e4d8d45c0e47ac60d20573a512deb424d194111cc3ff934e75e0343b",
+    "lockSha256": "41d8405f554d352444bcce704a1d997787712367f29c34bcce17baa803534703",
+    "checkedAt": "2026-11-18T01:29:15.148Z",
+    "rawVulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 2,
+      "critical": 0
+    },
+    "productionVulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0
+    },
+    "accepted": [],
+    "retired": [],
+    "allowed": false,
+    "status": "blocked",
+    "reason": "unapproved-finding",
+    "rawFullExitCode": 1,
+    "rawProductionExitCode": 0,
+    "processExit": 1,
+    "probeSource": "c994aa448426077bc86ac0a636f32a1c0e0ce841",
+    "cleanCommittedSource": true,
+    "sharedGitHubDistributionBuildScriptsDisabled": true,
+    "reportSha256": {
+      "decision.json": "0f81eda2533216b5b09911f4646d01e696f8518dbbae5b1005ec4791bafe2ec9",
+      "full-audit.json": "996a9159688a38657f2efd8235e0f25800a8bb8071099ba25e5cee2d3eb9b76a",
+      "production-audit.json": "b77cd333890663982bc998118491c2e6b465d2a811ba8d11bfcb89817b760760"
+    },
+    "sourcePolicyTests": 63,
+    "specLanes": 3,
+    "fullFormatting": "pass",
+    "actionlint": "pass",
+    "recipeManifestLockUnchanged": true
   }
 }
