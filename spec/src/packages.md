@@ -18,7 +18,7 @@ Manifest, peer and integrity facts SHA256: `82c9f9b74449becf9e82ce2650ff0d25c89c
 
 <!-- dependency-intake:framework-registry:end -->
 
-Source package version: `0.13.6` (`@lapismd/design-core`).
+Source package version: `0.13.7` (`@lapismd/design-core`).
 
 The DC-TOOL-006 runtime guard binds the source-owned root version/changelog
 command, canonical-version helper, pnpm and formatter policy. Native version

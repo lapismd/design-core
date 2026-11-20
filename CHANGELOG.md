@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.13.7
+
+### Patch Changes
+
+- [#96](https://github.com/lapismd/design-core/pull/96) [`c6afc40`](https://github.com/lapismd/design-core/commit/c6afc408cbb8a853db73b17af760a86c308e0dd1) Thanks [@stevejuma](https://github.com/stevejuma)! - Allow consumers to add icon-bearing actions to the Kanban column options menu.
+
 ## 0.13.6
 
 ### Patch Changes
