@@ -44,6 +44,7 @@
     expanded = true,
     collapseEnabled = true,
     columnActions = undefined,
+    columnMenuActions = undefined,
     selectedCardId = null,
     selectedColumn = false,
     draggedCardId = null,
@@ -69,6 +70,10 @@
     collapseEnabled?: boolean;
     /** Consumer-owned per-column controls, such as filters. */
     columnActions?: Snippet<[column: KanbanColumnData]>;
+    /** Consumer-owned actions rendered inside the column options menu. */
+    columnMenuActions?: Snippet<
+      [column: KanbanColumnData, closeMenu: () => void]
+    >;
     /** Currently selected card id, driving card selection outlines. */
     selectedCardId?: string | null;
     /** Whether this column owns the selection ring. */
@@ -160,6 +165,10 @@
 
   function handleMenuOpenChange(nextOpen: boolean): void {
     menuOpen = nextOpen;
+  }
+
+  function closeMenu(): void {
+    menuOpen = false;
   }
 </script>
 
@@ -306,6 +315,11 @@
                   <PaletteIcon />
                   <span>Edit Column</span>
                 </Button>
+                {#if columnMenuActions}
+                  <div class="column-menu-extension">
+                    {@render columnMenuActions(column, closeMenu)}
+                  </div>
+                {/if}
               </div>
             {/if}
           </Popover.Content>

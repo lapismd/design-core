@@ -8,6 +8,8 @@
     within,
   } from "storybook/test";
   import { MarkdownComposer } from "@lapismd/design-core/chat";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import CopyIcon from "@lucide/svelte/icons/copy";
   import * as exampleSources from "./KanbanBoard.example-sources.js";
   import KanbanBoard from "./KanbanBoard.svelte";
   import KanbanActivityView from "./KanbanActivityView.svelte";
@@ -493,6 +495,20 @@
       canvas.getByRole("button", { name: "Column options for Backlog" }),
     );
     const page = within(document.body);
+    const copyAction = page.getByRole("menuitem", {
+      name: "Copy GitHub links",
+    });
+    await expect(copyAction.querySelector("svg")).toBeVisible();
+    await userEvent.click(copyAction);
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Copied links for Backlog",
+    );
+    await expect(
+      page.queryByRole("menuitem", { name: "Copy GitHub links" }),
+    ).not.toBeInTheDocument();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Column options for Backlog" }),
+    );
     await userEvent.click(page.getByRole("menuitem", { name: "Edit Column" }));
     const nameInput = page.getByLabelText("Name");
     await userEvent.clear(nameInput);
@@ -512,7 +528,21 @@
       columns={optionsBoard.board.columns}
       {...optionsBoard.handlers}
       ariaLabel="Column options board"
-    />
+    >
+      {#snippet columnMenuActions(column, closeMenu)}
+        <Button
+          variant="ghost"
+          role="menuitem"
+          onclick={() => {
+            optionsBoard.board.log = `Copied links for ${column.label}`;
+            closeMenu();
+          }}
+        >
+          <CopyIcon aria-hidden="true" />
+          <span>Copy GitHub links</span>
+        </Button>
+      {/snippet}
+    </KanbanBoard>
     <output class="sr-only">{optionsBoard.board.log}</output>
   {/snippet}
 </Story>
