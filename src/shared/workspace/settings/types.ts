@@ -118,6 +118,10 @@ export interface WorkspaceActionResult {
 export interface WorkspaceOutputSetting extends WorkspaceSettingBase {
   type: "output";
   presentation?: "text" | "code" | "status" | "copyable";
+  /** Stack the control below its label so it can use the full settings width. */
+  layout?: "full-width";
+  /** Show the complete copyable value and wrap it within the control. */
+  showFullValue?: boolean;
   emptyLabel?: string;
   copyLabel?: string;
   leadingCharacters?: number;

@@ -122,6 +122,7 @@
       field.type === "object-array" ||
       field.type === "object-grid" ||
       field.type === "object-map" ||
+      (field.type === "output" && field.layout === "full-width") ||
       (field.type === "custom" && field.presentation === "full-width")
       ? "stacked"
       : "row";
@@ -463,6 +464,7 @@
             emptyLabel={field.emptyLabel}
             leadingCharacters={field.leadingCharacters}
             trailingCharacters={field.trailingCharacters}
+            showFullValue={field.showFullValue}
           />
         {:else}
           <output
