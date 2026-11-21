@@ -419,7 +419,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - Output presentations MUST include text, code, status, and copyable values.
 - Copy feedback MUST not replace the underlying complete value.
 - The accessible name MUST contain the shortened visible value as well as the complete copy payload.
-- The component MUST use public Workspace tokens and remain usable at narrow widths.
+- The component MUST use public Workspace tokens and support narrow widths, with optional full-width layout and full-value wrapping.
 
 ## DC-WS-068 — Settings object-row actions
 

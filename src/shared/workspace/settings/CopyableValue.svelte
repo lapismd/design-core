@@ -10,6 +10,7 @@
     emptyLabel = "None",
     leadingCharacters = 8,
     trailingCharacters = 4,
+    showFullValue = false,
     class: className,
     testId,
   }: {
@@ -18,6 +19,7 @@
     emptyLabel?: string;
     leadingCharacters?: number;
     trailingCharacters?: number;
+    showFullValue?: boolean;
     class?: string;
     testId?: string;
   } = $props();
@@ -27,7 +29,9 @@
   let resetTimer: ReturnType<typeof setTimeout> | undefined;
   let displayValue = $derived(
     value
-      ? shortenCopyableValue(value, leadingCharacters, trailingCharacters)
+      ? showFullValue
+        ? value
+        : shortenCopyableValue(value, leadingCharacters, trailingCharacters)
       : emptyLabel,
   );
 
@@ -63,6 +67,7 @@
     aria-label={`Copy full ${label}: ${value}${displayValue !== value ? ` · ${displayValue}` : ""}`}
     title={`Copy full ${label}`}
     data-testid={testId}
+    data-full-value={showFullValue || undefined}
     data-copied={copied || undefined}
     data-copy-failed={failed || undefined}
     onclick={() => void copy()}

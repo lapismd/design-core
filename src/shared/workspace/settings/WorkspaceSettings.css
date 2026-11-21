@@ -777,6 +777,22 @@ button.ui-workspace-copyable-value[data-ui-component="button"] code {
   white-space: nowrap;
 }
 
+button.ui-workspace-copyable-value[data-ui-component="button"][data-full-value="true"] {
+  width: 100%;
+  height: auto;
+  min-height: 1.65rem;
+  justify-content: space-between;
+  padding-block: 0.35rem;
+  text-align: start;
+}
+
+button.ui-workspace-copyable-value[data-ui-component="button"][data-full-value="true"]
+  code {
+  overflow-wrap: anywhere;
+  white-space: normal;
+  line-height: 1.4;
+}
+
 button.ui-workspace-copyable-value[data-ui-component="button"]
   [data-ui-component="workspace-icon"] {
   width: 0.75rem;

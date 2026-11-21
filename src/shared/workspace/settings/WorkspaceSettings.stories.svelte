@@ -457,6 +457,14 @@
               copyLabel: "revision ID",
             },
             {
+              id: "demo.endpoint",
+              type: "output",
+              presentation: "copyable",
+              layout: "full-width",
+              showFullValue: true,
+              title: "Server address",
+            },
+            {
               id: "demo.unsupported",
               type: "unsupported",
               title: "Future schema value",
@@ -489,6 +497,8 @@
     const values: Record<string, unknown> = {
       ...defaults,
       "demo.revision": "revision-abcdefghijklmnopqrstuvwxyz",
+      "demo.endpoint":
+        "https://notes-for-the-whole-team.example.com/api/content/v1",
     };
     const listeners = new Set<(fieldId?: string) => void>();
     const definition: WorkspaceSettingsDefinition = {
@@ -1350,6 +1360,20 @@
       ),
     );
     await expect(copyRevision).toHaveAttribute("data-copied", "true");
+
+    const address =
+      "https://notes-for-the-whole-team.example.com/api/content/v1";
+    const copyAddress = canvas.getByRole("button", {
+      name: `Copy full Server address: ${address}`,
+    });
+    await expect(copyAddress).toHaveTextContent(address);
+    expect(copyAddress.closest("[data-setting-layout]")).toHaveAttribute(
+      "data-setting-layout",
+      "stacked",
+    );
+    copyAddress.focus();
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() => expect(writeText).toHaveBeenCalledWith(address));
 
     const search = canvas.getByRole("searchbox", {
       name: "Search settings",
