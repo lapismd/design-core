@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.13.8
+
+### Patch Changes
+
+- [#98](https://github.com/lapismd/design-core/pull/98) [`4325a94`](https://github.com/lapismd/design-core/commit/4325a94ec16a5fad00840c418a5695bfc6bce124) Thanks [@stevejuma](https://github.com/stevejuma)! - Allow settings to show a full-width copyable output that wraps long values, such as server addresses.
+
 ## 0.13.7
 
 ### Patch Changes
